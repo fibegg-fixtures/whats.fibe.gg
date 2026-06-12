@@ -1,5 +1,5 @@
 .hero {
-  padding: 5rem 1.25rem 4rem;
+  padding: 2rem 1.25rem;
   background:
     radial-gradient(1000px 560px at 18% -12%, color-mix(in srgb, var(--brand-500) 13%, transparent), transparent 62%),
     radial-gradient(1000px 560px at 82% -12%, color-mix(in srgb, var(--gold-500) 11%, transparent), transparent 62%),
@@ -8,6 +8,12 @@
   border-bottom: 1px solid var(--ink-4);
   position: relative;
   overflow: hidden;
+  min-height: calc(100vh - var(--ifm-navbar-height, 60px));
+  min-height: calc(100dvh - var(--ifm-navbar-height, 60px));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .hero::before {
@@ -76,10 +82,6 @@
 
 @media (min-width: 768px) {
   .hero {
-    min-height: calc(100vh - var(--ifm-navbar-height, 60px));
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 0 1.25rem;
   }
 }

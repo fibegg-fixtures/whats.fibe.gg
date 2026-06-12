@@ -360,3 +360,10 @@ table td { border-color: var(--ink-4) !important; }
     animation-duration: 0.001ms !important;
   }
 }
+
+/* Mobile navbar: hide brand logo and title to leave only toggle + search bar */
+@media (max-width: 996px) {
+  .navbar__brand {
+    display: none !important;
+  }
+}
