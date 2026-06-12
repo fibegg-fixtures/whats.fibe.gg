@@ -1,0 +1,86 @@
+.hero {
+  padding: 5rem 1.25rem 4rem;
+  background:
+    radial-gradient(1000px 560px at 18% -12%, color-mix(in srgb, var(--brand-500) 13%, transparent), transparent 62%),
+    radial-gradient(1000px 560px at 82% -12%, color-mix(in srgb, var(--gold-500) 11%, transparent), transparent 62%),
+    radial-gradient(900px 480px at 50% 115%, color-mix(in srgb, var(--brand-700) 9%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--ink-2) 0%, var(--ink-3) 100%);
+  border-bottom: 1px solid var(--ink-4);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.65;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 3px),
+    linear-gradient(color-mix(in srgb, var(--brand-500) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-500) 6%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(60% 60% at 50% 40%, #000 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(60% 60% at 50% 40%, #000 30%, transparent 80%);
+}
+
+.inner {
+  position: relative;
+  max-width: 980px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--brand-500) 32%, transparent);
+  border-radius: 3px;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-300);
+  background: color-mix(in srgb, var(--brand-500) 7%, transparent);
+}
+
+.title {
+  font-size: clamp(2.25rem, 5vw + 1rem, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0 0 1.25rem;
+  color: var(--fg-1);
+  font-family: var(--font-display);
+}
+
+.lede {
+  font-size: clamp(1rem, 0.9vw + 0.8rem, 1.2rem);
+  line-height: 1.55;
+  color: var(--fg-3);
+  margin: 0 auto 2rem;
+  max-width: 720px;
+}
+
+.ctas {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta {
+  border-radius: 3px !important;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    min-height: calc(100vh - var(--ifm-navbar-height, 60px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.25rem;
+  }
+}
+

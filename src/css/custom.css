@@ -1,0 +1,362 @@
+/**
+ * Fibe — Docusaurus theme overrides.
+ *
+ * Phoenix Terminal visual system shared with why.fibe.gg: phosphor green,
+ * signal gold, warm olive graphite, and recessed instrument panels.
+ */
+
+:root {
+  /* Brand — phosphor green */
+  --brand-50:  #f1fbe6;
+  --brand-200: #c8f0a3;
+  --brand-300: #abe87f;
+  --brand-400: #92df62;
+  --brand-500: #79d44e;
+  --brand-600: #5cb43a;
+  --brand-700: #46942e;
+  --brand-800: #357424;
+
+  /* Gold — signal strand */
+  --gold-200: #f9e8a4;
+  --gold-300: #f5da79;
+  --gold-400: #eec854;
+  --gold-500: #e2b33a;
+  --gold-600: #c0952b;
+  --gold-700: #99761f;
+
+  --teal-400:  #56d8c0;
+  --ember-400: #f08760;
+  --ember-500: #e26a44;
+
+  /* Brand color — Docusaurus primary */
+  --ifm-color-primary: var(--brand-500);
+  --ifm-color-primary-dark: var(--brand-600);
+  --ifm-color-primary-darker: var(--brand-700);
+  --ifm-color-primary-darkest: var(--brand-800);
+  --ifm-color-primary-light: var(--brand-400);
+  --ifm-color-primary-lighter: var(--brand-300);
+  --ifm-color-primary-lightest: var(--brand-200);
+
+  /* Background system */
+  --ink-0:  #191c14;
+  --ink-1:  #2e3327;
+  --ink-2:  #252a1e;
+  --ink-3:  #20251a;
+  --ink-4:  #434a35;
+  --ink-5:  #545c42;
+  --ink-6:  #757d5e;
+
+  --ifm-background-color: var(--ink-1);
+  --ifm-background-surface-color: var(--ink-2);
+  --ifm-navbar-background-color: color-mix(in srgb, var(--ink-0) 88%, transparent);
+  --ifm-footer-background-color: var(--ink-0);
+
+  /* Foreground */
+  --fg-0: #fdfbf0;
+  --fg-1: #f3f0e0;
+  --fg-2: #e5e2cf;
+  --fg-3: #c7c4ae;
+  --fg-4: #a19f89;
+  --fg-5: #918f7c;
+
+  --ifm-font-color-base: var(--fg-2);
+  --ifm-heading-color: var(--fg-1);
+  --ifm-color-emphasis-200: var(--ink-4);
+  --ifm-color-emphasis-300: var(--ink-5);
+  --ifm-color-emphasis-600: var(--fg-4);
+  --ifm-color-emphasis-700: var(--fg-3);
+  --ifm-color-emphasis-800: var(--fg-2);
+
+  /* Code */
+  --ifm-code-background: color-mix(in srgb, var(--brand-500) 10%, transparent);
+  --ifm-code-color: var(--gold-200);
+  --docusaurus-highlighted-code-line-bg: color-mix(in srgb, var(--brand-500) 15%, transparent);
+
+  /* Hairlines + cards */
+  --ifm-toc-border-color: var(--ink-4);
+  --ifm-table-stripe-background: var(--ink-2);
+  --ifm-table-border-color: var(--ink-4);
+  --ifm-hover-overlay: color-mix(in srgb, var(--brand-500) 8%, transparent);
+
+  /* Typography */
+  --font-display: "Chakra Petch", "Play", ui-sans-serif, system-ui, sans-serif;
+  --ifm-font-family-base: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ifm-font-family-monospace: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ifm-h1-font-size: 2.25rem;
+  --ifm-h2-font-size: 1.6rem;
+  --ifm-h3-font-size: 1.25rem;
+  --ifm-line-height-base: 1.65;
+
+  /* Layout */
+  --ifm-container-width: 1280px;
+  --ifm-spacing-horizontal: 1.25rem;
+}
+
+/* Dark mode is the only mode, but be explicit anyway. */
+[data-theme='dark'] {
+  --ifm-background-color: var(--ink-1);
+  --ifm-background-surface-color: var(--ink-2);
+}
+
+/* Body */
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 4px),
+    var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+}
+
+/* Make the navbar a translucent floating bar.
+   Apply backdrop-filter only when the mobile drawer is closed — backdrop-filter
+   creates a containing block for descendants with position: fixed, which would
+   trap the mobile drawer (.navbar-sidebar) inside the navbar's 60-px box. */
+.navbar {
+  border-bottom: 1px solid var(--ink-4);
+  background: var(--ifm-navbar-background-color);
+  position: sticky;
+}
+.navbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--brand-500) 55%, transparent) 18%,
+    color-mix(in srgb, var(--gold-400) 55%, transparent) 82%,
+    transparent 100%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.navbar:not(.navbar-sidebar--show) {
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+}
+.navbar__brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* Fibe nav mark — rounded square, etched into the chrome. */
+.navbar__logo img {
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px var(--ink-5);
+}
+
+/* Headings */
+.markdown h1,
+.markdown h2,
+.markdown h3,
+article h1,
+article h2,
+article h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+.markdown h2, article h2 { margin-top: 2.5rem; border-top: 1px solid var(--ink-4); padding-top: 2rem; }
+.markdown h2:first-of-type, article h2:first-of-type { border-top: none; padding-top: 0; margin-top: 1.5rem; }
+.markdown h3, article h3 { margin-top: 2rem; }
+
+/* Lead paragraph after H1 */
+.markdown > p:first-of-type {
+  font-size: 1.1rem;
+  color: var(--fg-3);
+  line-height: 1.65;
+}
+
+/* Code blocks */
+pre, code {
+  font-family: var(--ifm-font-family-monospace);
+}
+.theme-code-block {
+  background: var(--ink-2) !important;
+  border: 1px solid var(--ink-4);
+  border-radius: 6px;
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,0.24),
+    inset 0 -1px 0 rgba(255,255,255,0.03);
+}
+.theme-code-block pre,
+.theme-code-block code,
+.theme-code-block .prism-code {
+  background: transparent !important;
+}
+
+/* Admonitions (tip, caution, info, details) */
+.theme-admonition {
+  border-radius: 6px;
+  border-left-width: 4px;
+}
+
+/* Tables — keep table semantics, but allow horizontal scroll
+   inside the cell on narrow screens so wide tables (3+ columns
+   with long content) don't break the page layout. */
+table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+table th {
+  background-color: var(--ink-2);
+  color: var(--ifm-heading-color);
+  border-color: var(--ink-4) !important;
+}
+table td { border-color: var(--ink-4) !important; }
+
+/* Mobile: tables become block-scrollable. The table itself still uses
+   its natural width but scrolls inside its own container instead of
+   pushing the page wider. */
+@media (max-width: 768px) {
+  .markdown table,
+  article table {
+    display: block;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+  .markdown table tbody,
+  article table tbody {
+    /* Keep cells from collapsing to one column when the table becomes block. */
+    display: table;
+    width: 100%;
+    min-width: max-content;
+  }
+}
+
+/* Mobile: keep code blocks from pushing the page wider. */
+@media (max-width: 768px) {
+  .theme-code-block,
+  pre {
+    max-width: 100%;
+  }
+}
+
+/* Cards */
+.card {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(80% 80% at 100% 0%, color-mix(in srgb, var(--brand-500) 10%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--ink-2), var(--ink-3));
+  border: 1px solid var(--ink-4);
+  border-radius: 6px;
+  padding: 1.25rem 1.4rem;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,0.26),
+    inset 0 -1px 0 rgba(255,255,255,0.03);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background:
+    linear-gradient(var(--brand-400), var(--brand-400)) left 0 top 0 / 14px 2px,
+    linear-gradient(var(--brand-400), var(--brand-400)) left 0 top 0 / 2px 14px,
+    linear-gradient(var(--brand-400), var(--brand-400)) right 0 bottom 0 / 14px 2px,
+    linear-gradient(var(--brand-400), var(--brand-400)) right 0 bottom 0 / 2px 14px;
+  background-repeat: no-repeat;
+}
+.card:hover {
+  border-color: color-mix(in srgb, var(--brand-500) 45%, var(--ink-4));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+/* Sidebar */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ink-4);
+}
+.menu__link {
+  border-radius: 6px;
+}
+.menu__link--active {
+  background: color-mix(in srgb, var(--brand-500) 10%, transparent);
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+/* Pagination footer */
+.pagination-nav__link {
+  border: 1px solid var(--ink-4);
+  background: var(--ink-2);
+  border-radius: 6px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.pagination-nav__link:hover {
+  border-color: color-mix(in srgb, var(--brand-500) 45%, var(--ink-4));
+  background: var(--ink-3);
+}
+
+/* Footer (when our swizzled Footer isn't active, fall back style) */
+.footer--dark {
+  background-color: var(--ifm-footer-background-color);
+  border-top: 1px solid var(--ink-4);
+}
+
+/* Search */
+.DocSearch-Button, .navbar__search-input {
+  background-color: var(--ink-2);
+  border: 1px solid var(--ink-4);
+  border-radius: 6px;
+}
+
+.button {
+  border-radius: 3px;
+  font-family: var(--font-display);
+  letter-spacing: 0;
+}
+
+.button--primary {
+  border: none;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  background: linear-gradient(180deg, var(--gold-300) 0%, var(--gold-500) 100%);
+  color: var(--ink-0);
+  box-shadow:
+    0 8px 24px color-mix(in srgb, var(--gold-700) 32%, transparent),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+.button--primary:hover {
+  background: linear-gradient(180deg, var(--gold-200) 0%, var(--gold-400) 100%);
+  color: var(--ink-0);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--gold-700) 45%, transparent);
+}
+
+.button--secondary {
+  border-color: var(--ink-5);
+  background: rgba(255,255,255,0.03);
+  color: var(--fg-1);
+}
+
+.button--secondary:hover {
+  border-color: color-mix(in srgb, var(--brand-500) 50%, transparent);
+  background: color-mix(in srgb, var(--brand-500) 6%, transparent);
+  color: var(--fg-1);
+}
+
+/* Selection */
+::selection {
+  background: color-mix(in srgb, var(--brand-500) 40%, transparent);
+  color: var(--fg-0);
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}
