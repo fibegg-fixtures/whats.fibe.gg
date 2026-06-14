@@ -1,11 +1,11 @@
 ---
 title: Common workflows
-description: Repo-backed launch, greenfield setup, brownfield transform, multi-step pipelines, live monitoring, CI integration. The end-to-end stories you'll actually use.
+description: Repo-backed launch, greenfield setup, switch-template workflows, multi-step pipelines, live monitoring, CI integration. The end-to-end stories you'll actually use.
 slug: /sdk/workflows
 sidebar_position: 8
 sidebar_label: Common workflows
 image: /img/og/sdk-workflows.png
-keywords: [launch, greenfield, brownfield, pipeline, monitor, CI, GitHub Actions, fibe_launch_create, fibe_greenfield_create, fibe_playgrounds_transform]
+keywords: [launch, greenfield, switch-template, pipeline, monitor, CI, GitHub Actions, fibe_launch, fibe_greenfield_create, fibe_playgrounds_switch_template]
 ---
 
 End-to-end stories using the [CLI](/sdk/cli-reference/), [Go library](/sdk/go-library/), and [MCP tools](/sdk/tools-catalog/). Pick the workflow that matches what you're doing.
@@ -19,7 +19,7 @@ Use this when a GitHub repo already contains a Fibe-compatible `fibe.yml`, `fibe
 ```sh
 fibe github apps connect
 
-fibe launch owner/repo --marquee-id 1
+fibe launch owner/repo --marquee 1
 fibe launch https://github.com/owner/repo --ref main --file deploy/fibe.yml
 ```
 
@@ -32,7 +32,7 @@ For an AI agent:
 ```jsonc
 // the agent calls:
 {
-  "tool": "fibe_launch_create",
+  "tool": "fibe_launch",
   "args": {
     "repository_url": "owner/repo",
     "github_ref": "main",
@@ -42,7 +42,7 @@ For an AI agent:
 }
 ```
 
-See [`fibe_launch_create`](/reference/tools/launch-create/) for the full parameter list.
+See [`fibe_launch`](/reference/tools/launch/) for the full parameter list.
 
 ## Playground create: existing Playspec with launch overrides
 
@@ -56,14 +56,14 @@ fibe pg create --name demo --playspec starter --marquee next \
   --service web.env_vars.RAILS_ENV=production
 ```
 
-`--playspec` and `--marquee` accept the same IDs or names as `--playspec-id` and `--marquee-id`. Repeated `--service` flags merge into the create payload and win over values loaded from `-f`.
+`--playspec` and `--marquee` accept IDs or names. Repeated `--service` flags merge into the create payload and win over values loaded from `-f`.
 
 ## Greenfield: repo snapshot to app-owned repos
 
 Use this when the repo is a starting template. Fibe reads the selected config once, creates new app-owned destination repo(s), then launches normally.
 
 ```sh
-fibe greenfield owner/repo --marquee-id 1
+fibe greenfield owner/repo --marquee 1
 fibe greenfield owner/repo@feature/foo --name my-app --github-account me
 ```
 
@@ -85,13 +85,13 @@ For an AI agent:
 
 See [`fibe_greenfield_create`](/reference/tools/greenfield-create/) for the full parameter list.
 
-## Brownfield transform: rewrite an existing Playground
+## Switch Template: rewrite an existing Playground
 
-"I want this Playground but with a different template / new repos / changed services — without losing its ID and URL." That's [`fibe_playgrounds_transform`](/reference/tools/playgrounds-transform/).
+"I want this Playground but with a different template / new repos / changed services — without losing its ID and URL." That's [`fibe_playgrounds_switch_template`](/reference/tools/playgrounds-switch-template/).
 
 ```jsonc
 {
-  "tool": "fibe_playgrounds_transform",
+  "tool": "fibe_playgrounds_switch_template",
   "args": {
     "id_or_name": 42,
     "mode": "apply",
@@ -116,7 +116,7 @@ Behind the scenes: provisions the repos the new template references (tune that w
     "steps": [
       {
         "id": "make_pg",
-        "tool": "fibe_launch_create",
+        "tool": "fibe_launch",
         "args": {
           "repository_url": "me/auth-service",
           "github_ref": "main",
@@ -188,7 +188,7 @@ jobs:
         id: deploy
         run: |
           set -e
-          OUT=$(fibe tricks trigger --playspec-id 42 -o json)
+          OUT=$(fibe tricks trigger --playspec 42 -o json)
           ID=$(echo "$OUT" | jq -r '.id')
           echo "trick_id=$ID" >> $GITHUB_OUTPUT
 
@@ -200,16 +200,16 @@ jobs:
         run: fibe tricks logs ${{ steps.deploy.outputs.trick_id }}
 ```
 
-The API key here is narrowly scoped: `launch:write` + `playgrounds:read` (tricks are job-mode playgrounds), with a granular restriction to the one Playspec (`--granular-scope playspecs:read=42`). If it leaks, the blast radius is one Trick.
+The API key here is intentionally small but not Playspec-confined: `launch:write` is required to trigger the run, and it is not a granular per-Playspec scope. Add only the read scopes the workflow needs, restrict those resource-backed scopes where possible, and use a short expiration for CI keys.
 
-Tricks take no per-run flags — values like the branch go into Job ENV (the `job-env set` step above) or get baked into the job-mode Playspec.
+Tricks support a few per-run flags such as `--env-overrides`, `--only-service`, and `--except-service`. Use those for one-off runs; values that should survive across runs still belong in Job ENV (the `job-env set` step above) or in the job-mode Playspec.
 
 ## Babysit a long-running Trick
 
 For a CI workflow that waits but also reports progress, use `--follow` semantics:
 
 ```sh
-fibe tricks trigger --playspec-id 42 -o json | jq -r '.id' | xargs -I {} sh -c '
+fibe tricks trigger --playspec 42 -o json | jq -r '.id' | xargs -I {} sh -c '
   fibe tricks logs {} --follow &
   fibe wait trick {} --status completed --timeout 1h
 '

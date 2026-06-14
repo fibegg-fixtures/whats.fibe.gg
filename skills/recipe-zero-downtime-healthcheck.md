@@ -94,11 +94,11 @@ services:
   web:
     labels:
       fibe.gg/zerodowntime: "true"
-      fibe.gg/healthcheck_path: $$var__HEALTHCHECK_PATH
-      fibe.gg/healthcheck_interval: $$var__HEALTHCHECK_INTERVAL
-      fibe.gg/healthcheck_timeout: $$var__HEALTHCHECK_TIMEOUT
-      fibe.gg/healthcheck_retries: $$var__HEALTHCHECK_RETRIES
-      fibe.gg/healthcheck_start_period: $$var__HEALTHCHECK_START_PERIOD
+      fibe.gg/healthcheck_path: /up
+      fibe.gg/healthcheck_interval: 10s
+      fibe.gg/healthcheck_timeout: 5s
+      fibe.gg/healthcheck_retries: "5"
+      fibe.gg/healthcheck_start_period: 30s
 
 x-fibe.gg:
   variables:
@@ -106,26 +106,31 @@ x-fibe.gg:
       name: "Healthcheck path"
       required: true
       default: "/up"
+      path: services.web.labels.fibe.gg/healthcheck_path
     HEALTHCHECK_INTERVAL:
       name: "Healthcheck interval"
       required: true
       default: "10s"
       validation: "/^[0-9]+(ms|s|m)$/"
+      path: services.web.labels.fibe.gg/healthcheck_interval
     HEALTHCHECK_TIMEOUT:
       name: "Healthcheck timeout"
       required: true
       default: "5s"
       validation: "/^[0-9]+(ms|s|m)$/"
+      path: services.web.labels.fibe.gg/healthcheck_timeout
     HEALTHCHECK_RETRIES:
       name: "Healthcheck retries"
       required: true
       default: "5"
       validation: "/^[1-9][0-9]*$/"
+      path: services.web.labels.fibe.gg/healthcheck_retries
     HEALTHCHECK_START_PERIOD:
       name: "Healthcheck start period"
       required: true
       default: "30s"
       validation: "/^[0-9]+(ms|s|m)$/"
+      path: services.web.labels.fibe.gg/healthcheck_start_period
 ```
 
 ## Total rollout budget

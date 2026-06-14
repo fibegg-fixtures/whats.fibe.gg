@@ -30,7 +30,7 @@ For 2 services, anchors might be overkill. For 5+ services, they're essential.
 # ============================================================
 
 x-app-env: &app-env
-  RAILS_ENV: $$var__RAILS_ENV
+  RAILS_ENV: production
   DATABASE_URL: "postgres://app:$$var__DB_PASS@pgbouncer:5432/$$var__DB_NAME"
   REDIS_URL: redis://redis:6379/0
   RAILS_LOG_TO_STDOUT: "1"
@@ -45,8 +45,8 @@ x-app-deps: &app-deps
     condition: service_healthy
 
 x-app-build-labels: &app-build-labels
-  fibe.gg/repo_url: $$var__REPO_URL
-  fibe.gg/branch: $$var__BRANCH
+  fibe.gg/repo_url: https://github.com/owner/repo
+  fibe.gg/branch: main
   fibe.gg/dockerfile: Dockerfile
   fibe.gg/source_mount: "/rails"
   fibe.gg/env_file: env.example
@@ -61,8 +61,8 @@ services:
     shm_size: 1gb
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: $$var__DB_PASS
-      POSTGRES_DB: $$var__DB_NAME
+      POSTGRES_PASSWORD: placeholder
+      POSTGRES_DB: app
     volumes:
       - pg_data:/var/lib/postgresql/data
     healthcheck:
@@ -79,7 +79,7 @@ services:
       DB_HOST: postgres
       DB_PORT: 5432
       DB_USER: postgres
-      DB_PASSWORD: $$var__DB_PASS
+      DB_PASSWORD: placeholder
       POOL_MODE: transaction
       AUTH_TYPE: scram-sha-256
     depends_on:
@@ -134,7 +134,7 @@ services:
       fibe.gg/start_command: bin/rails server -b 0.0.0.0
       fibe.gg/port: 3000
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: app
       fibe.gg/production: "true"
       fibe.gg/zerodowntime: "true"
       fibe.gg/healthcheck_path: /up
@@ -173,29 +173,46 @@ x-fibe.gg:
       name: "Repository URL"
       required: true
       default: "https://github.com/owner/repo"
+      paths:
+        - services.setup.labels.fibe.gg/repo_url
+        - services.web.labels.fibe.gg/repo_url
+        - services.jobs.labels.fibe.gg/repo_url
     BRANCH:
       name: "Branch"
       required: true
       default: "main"
+      paths:
+        - services.setup.labels.fibe.gg/branch
+        - services.web.labels.fibe.gg/branch
+        - services.jobs.labels.fibe.gg/branch
     SUBDOMAIN:
       name: "Subdomain"
       required: true
       default: "app"
       validation: "/^[a-z0-9][a-z0-9-]*[a-z0-9]$/"
+      path: services.web.labels.fibe.gg/subdomain
     RAILS_ENV:
       name: "Rails environment"
       required: true
       default: "production"
+      paths:
+        - services.setup.environment.RAILS_ENV
+        - services.web.environment.RAILS_ENV
+        - services.jobs.environment.RAILS_ENV
     DB_NAME:
       name: "Database name"
       required: true
       default: "app"
+      path: services.postgres.environment.POSTGRES_DB
     DB_PASS:
       name: "Database password"
       required: true
       random: true
       secret: true
       sensitive: true
+      paths:
+        - services.postgres.environment.POSTGRES_PASSWORD
+        - services.pgbouncer.environment.DB_PASSWORD
     WEB_REPLICAS:
       name: "Web replicas"
       required: true
@@ -228,9 +245,9 @@ The "everyone waits for these" dependency set. Use `<<: *app-deps` to extend wit
 
 The Fibe labels common to all services that build from the same repo. Override per-service in `labels: <<: *app-build-labels` + extra labels.
 
-### Hybrid `${VAR}` and `$$var__`
+### Hybrid `${VAR}` and path-bound variables
 
-The skeleton above uses Fibe's `$$var__NAME` form throughout, plus `path:` bindings where a typed write matters (`deploy.replicas` as integer). That is the form that works on Fibe: launch values are substituted by the template compiler before Compose ever runs.
+The skeleton above uses literal YAML nodes plus `path:`/`paths:` bindings for whole values. Inline `$$var__NAME` appears only inside `DATABASE_URL` string fragments, where writing the whole URL through `paths:` would duplicate a derived value across services.
 
 Compose-style `${VAR}` placeholders are NOT fed by launch variables — Compose's `${VAR}` substitution uses the environment passed at compose start, and Fibe does not put template variables there. A `${VAR:-default}` deploys as the literal default (or empty). Keep `${VAR}` only if the same file must also run as plain `docker compose up`, and then add a `path:`/`paths:` binding for every such variable so the launch value overwrites the node at compile time. Also note that `${VAR}` is rejected inside `fibe.gg/*` labels — only `$$var__NAME` markers are allowed there.
 
@@ -240,7 +257,7 @@ For each variable, decide between three patterns:
 
 1. **One path** — single location, written once: `path: services.db.environment.POSTGRES_PASSWORD`.
 2. **Multiple paths** — write to many locations simultaneously: `paths: [a, b, c]`.
-3. **Inline only** — use `$$var__NAME` in many services' environments; declare with no `path`/`paths` (referenced means it's "used").
+3. **Inline fragments only** — use `$$var__NAME` inside a larger string when the variable is just one fragment of a derived value.
 
 For shared envs that appear in an anchored block, option 3 + inline is the simplest. The anchor expands to N services, each containing `$$var__NAME`, and the substitution touches all of them.
 

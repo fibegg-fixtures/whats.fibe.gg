@@ -27,8 +27,8 @@ services:
       db:
         condition: service_healthy
     labels:
-      fibe.gg/repo_url: $$var__REPO_URL
-      fibe.gg/branch: $$var__BRANCH
+      fibe.gg/repo_url: https://github.com/owner/repo
+      fibe.gg/branch: main
       fibe.gg/source_mount: /app
       fibe.gg/start_command: sh -c "npm ci && npm test"
       fibe.gg/job_watch: "true"
@@ -59,18 +59,24 @@ x-fibe.gg:
     trigger_config:
       enabled: true
       event_type: push
-      repo_url: $$var__REPO_URL
-      branch: $$var__BRANCH
+      repo_url: https://github.com/owner/repo
+      branch: main
       prop_id: 1
       marquee_id: 1
   variables:
     REPO_URL:
       name: "Repository URL"
       required: true
+      paths:
+        - services.test.labels.fibe.gg/repo_url
+        - x-fibe.gg.metadata.trigger_config.repo_url
     BRANCH:
       name: "Branch (or '*' for all — must be a specific branch in trigger_config)"
       required: true
       default: "main"
+      paths:
+        - services.test.labels.fibe.gg/branch
+        - x-fibe.gg.metadata.trigger_config.branch
 ```
 
 ## Test command per framework

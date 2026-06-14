@@ -80,7 +80,9 @@ Useful for CI, Docker containers, and anywhere a profile on disk isn't available
 | `FIBE_MCP_YOLO` | Set to `1` to skip the confirmation gate on destructive MCP tools. |
 | `FIBE_MCP_REQUIRE_AUTH` | Multi-tenant MCP: reject requests without `Authorization: Bearer`. |
 
-The active profile wins: once any profile is configured, `FIBE_API_KEY` and `FIBE_DOMAIN` are ignored (the CLI reports them as ignored). They're fallbacks for when no profile exists — ideal for CI and containers. For a per-call override, use the `--api-key`, `--domain`, or `--profile` flags. With no profile **and** no env vars, every call fails with a clear "you need to log in" error.
+For CLI commands and `fibe mcp serve`, the active profile wins: once any profile is configured, `FIBE_API_KEY` and `FIBE_DOMAIN` are ignored unless you pass explicit flags (the CLI reports ignored env vars in `fibe auth status`). They're fallbacks for when no profile exists — ideal for CI and containers. For a per-call override, use the `--api-key`, `--domain`, or `--profile` flags. With no profile **and** no env vars, every call fails with a clear "you need to log in" error.
+
+For Go code using the SDK directly, explicit client options win first, then `FIBE_API_KEY` / `FIBE_DOMAIN`, then the local credential store for the selected domain.
 
 ## CI usage
 
@@ -91,7 +93,7 @@ A typical GitHub Actions step:
   env:
     FIBE_API_KEY: ${{ secrets.FIBE_API_KEY }}
   run: |
-    fibe tricks trigger --playspec-id 42
+    fibe tricks trigger --playspec 42
 ```
 
 Mint a **scoped, expiring** API key for CI (see [Granular resource restriction](/advanced/api-keys/)). Don't reuse your personal-account key for automation; it's a bigger blast radius if it leaks.
@@ -141,7 +143,7 @@ Only if you've explicitly minted an **agent-accessible** API key — that's a ke
 <details>
 <summary>How does the CLI tell I'm logged in?</summary>
 
-It looks (in order): `--api-key` flag → profile (the `--profile` flag if given, otherwise the active profile) → `FIBE_API_KEY` env var (only when no profile is configured) → fail with "no credentials". The domain resolves the same way: `--domain` flag → profile domain → `FIBE_DOMAIN` → `fibe.gg`. Run `fibe doctor` to see exactly what it picked.
+It looks (in order): `--api-key` flag → profile (the `--profile` flag if given, otherwise the active profile) → `FIBE_API_KEY` env var (only when no profile is configured) → fail with "no credentials". The domain resolves the same way: `--domain` flag → profile domain → `FIBE_DOMAIN` only when no profile is configured → `fibe.gg`. Run `fibe doctor` to see exactly what it picked.
 </details>
 
 ## Next step

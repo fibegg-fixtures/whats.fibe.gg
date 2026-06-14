@@ -82,7 +82,7 @@ See [`recipe-ports-to-expose`](/reference/recipe-ports-to-expose/).
 
 ### 4 — Drop incompatible keys
 
-Remove `container_name` and `hostname:` — Fibe takes care of those. Keep `depends_on`, `volumes`, `environment`, `healthcheck`, `networks`, and `restart` as-is.
+Remove `container_name` to avoid cross-Playground name collisions on the same Marquee. Fibe strips `hostname:` automatically. Keep `depends_on`, `volumes`, `environment`, `healthcheck`, `networks`, and `restart` as-is.
 
 Raw Compose `ports:` are no longer a launch blocker by default. Leave them when they make local development easier, or delete them for a cleaner template. Only opt into preserving raw host bindings with `x-fibe.gg.metadata.preserve_ports: true`; that advanced mode keeps host-port validation and still rejects reserved `80`/`443`.
 
@@ -116,13 +116,15 @@ x-fibe.gg:
       default: "demo"
       validation: "/^[a-z][a-z0-9-]*$/"
       path: services.web.labels.fibe.gg/subdomain
-    DB_PASSWORD:
-      name: "Database password"
-      required: true
-      random: true
-      secret: true
-      path: services.db.environment.POSTGRES_PASSWORD
+	  DB_PASSWORD:
+	    name: "Database password"
+	    required: true
+	    random: true
+	    secret: true
+	    path: services.db.environment.POSTGRES_PASSWORD
 ```
+
+For dotted label keys such as `services.web.labels.fibe.gg/subdomain`, predeclare the label on the service first, even with an empty placeholder value. The path editor matches an existing dotted label key; it does not invent one from dotted path segments.
 
 See [Launch variables](/authoring/variables/).
 
@@ -159,7 +161,7 @@ Then run a preview launch before publishing. Many issues only surface at compile
 A typical iteration loop:
 
 1. Edit the Template.
-2. Click Preview launch on a test Marquee.
+2. Click **Launch** (or **Launch this version**) targeting a test Marquee.
 3. Watch the build logs.
 4. Open the service URL.
 5. Repeat until it's clean.

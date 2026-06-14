@@ -9,7 +9,7 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-[MODE:BROWNFIELD] Read-only, idempotent. Tier: local.
+[MODE:BROWNFIELD] Read-only, idempotent. Tier: brownfield.
 
 Returns local Playground names, URLs, source mounts, or full metadata from the local Marquee filesystem. No Fibe API call.
 
@@ -25,8 +25,7 @@ Returns local Playground names, URLs, source mounts, or full metadata from the l
 | Field | Type | Required | Notes |
 |---|---|---|---|
 | `view` | string | yes | `names`, `urls`, `mounts`, or `details` |
-| `playground` | string | conditional | Local playground ID, name, compose project, playspec, or unique playspec prefix. Omit for `view:"names"` |
-| `playground_id` | number | conditional | Local numeric Playground ID. Omit for `view:"names"`. Pass either `playground` or `playground_id`, not both |
+| `id_or_name` | string | no | Local Playground ID, name, compose project, Playspec, or unique Playspec prefix. Omit for `view:"names"` |
 
 ## Output
 Native structured MCP data, not a CLI `stdout` envelope.

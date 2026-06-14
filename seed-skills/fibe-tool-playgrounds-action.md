@@ -9,7 +9,7 @@ description: Use when you need to run a single Playground lifecycle action — r
 
 Runs one async lifecycle action on a Playground through `POST /api/playgrounds/:id/action`. The SDK polls action status until terminal.
 
-Actions that use the target Marquee require it to be funded and fail with `MARQUEE_NOT_FUNDED` when unpaid. This includes `stop`.
+Actions that create, recreate, start, or otherwise need live runtime on the target Marquee require it to be funded and fail with `MARQUEE_NOT_FUNDED` when unpaid. `stop` is a cleanup action and does not require funding.
 
 ## When to use
 - Re-deploying after code changes (`rollout`).
@@ -21,8 +21,7 @@ Actions that use the target Marquee require it to be funded and fail with `MARQU
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `playground_id` | number | one of | Numeric ID |
-| `playground_identifier` | string | one of | Numeric ID or slug-safe name |
+| `id_or_name` | string | yes | Playground numeric ID or slug-safe name |
 | `action_type` | enum | yes | `rollout` \| `hard_restart` \| `stop` \| `start` \| `retry_compose` \| `enable_maintenance` \| `disable_maintenance` |
 | `force` | bool | no | Bypass eligible state guards when allowed |
 | `confirm` | bool | yes (unless `--yolo`) | Must be `true` |

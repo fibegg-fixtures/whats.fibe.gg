@@ -26,10 +26,11 @@ Default quotas per account:
 | Webhook endpoints | 20 |
 | Secrets | 100 |
 | Job ENV entries | 200 |
+| Scroll artefacts | 500 |
 
 Counts are how many you currently have (Trick runs count as Playgrounds). Marquee allowance is tracked separately from this table — by default 100 standard Marquees and 1 tutorial Marquee.
 
-Quotas are platform defaults that can be raised per account — contact support if you hit one. [Billing](/concepts/billing/) top-ups fund your wallet; they don't change these quotas. Only your Marquee allowance is tied to your subscription.
+Quotas are platform defaults that can be raised per account — contact support if you hit one. Platform support accounts may have nonstandard limits for support work. [Billing](/concepts/billing/) top-ups fund your wallet; they don't change these quotas. Only your Marquee allowance is tied to your subscription.
 
 ## Per-parent caps
 

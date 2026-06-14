@@ -14,7 +14,7 @@ Reads transient live state for one Agent conversation. Use it when you need proc
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `agent_id` | int or string | yes | Agent ID or name |
+| `id_or_name` | int or string | yes | Agent ID or name |
 | `conversation_id` | string | no | Specific conversation/thread ID |
 
 ## Output

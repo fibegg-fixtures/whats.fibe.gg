@@ -11,7 +11,7 @@ format: md
 
 [MODE:DIALOG] Read-only, idempotent. Tier: other.
 
-Aggregates repository search across every connected GitHub App installation for the authenticated Player through `GET /api/github_repos/search`, then deduplicates by `full_name`.
+Aggregates repository search across every connected GitHub App installation for the authenticated Player through `GET /api/github_repositories`, then deduplicates by `full_name`.
 
 ## When to use
 - "What repos can I deploy from?" without knowing which org/installation owns them.
@@ -20,7 +20,7 @@ Aggregates repository search across every connected GitHub App installation for 
 
 ## When NOT to use
 - You already know `<owner>/<repo>` — just `prop.attach`.
-- You need single-installation listing — use `fibe_call` with `fibe_installations_repos`.
+- You already know the installation/repo target — search with `q` here, then use the returned repository fields.
 
 ## Inputs
 | Field | Type | Default | Notes |

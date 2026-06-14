@@ -38,6 +38,12 @@ Fields:
 
 Signing secret generated at creation. Use it to verify deliveries.
 
+## URL safety
+
+Production webhook URLs must use HTTPS. Fibe checks the host when you save the endpoint and rejects localhost, loopback, and private-network destinations. A host that can't be reached yet does not block saving the endpoint; delivery failures are handled by the delivery model below.
+
+The destination is checked again at delivery time before the request is sent, so DNS changes can't turn a previously safe endpoint into a private-network callback.
+
 ## Event types (examples)
 
 - `playground.created`, `playground.creation.completed`, `playground.creation.failed`
@@ -52,10 +58,11 @@ You subscribe to exact event types (or `*` for everything); unknown event names 
 ## Delivery model
 
 - Each event produces one POST to your URL with a JSON body.
-- A non-2xx response counts as a failed delivery and is **not retried**. Network-level failures (timeouts, connection refused) are retried up to 3 attempts with increasing delays.
+- A non-2xx response counts as a failed delivery and is **not retried**. Network-level failures (timeouts, connection refused) are retried up to 3 attempts with `attempt^4 + 2` seconds of delay.
 - After 10 consecutive failures the endpoint is disabled automatically; one successful delivery resets the counter.
 - The signature is sent in the `X-Webhook-Signature` header as `sha256=<hex digest>`, an HMAC-SHA256 over the raw request body using your signing secret.
 - Each delivery also carries `X-Webhook-Event` (the event name) and `X-Webhook-Delivery` / `X-Idempotency-Key` (the unique delivery id — use it for idempotency).
+- Requests use `User-Agent: Fibe-Webhook/1.0` with a 5-second connect timeout and a 5-second read timeout. Very large receiver responses are truncated in delivery history.
 
 ## Verify signatures
 

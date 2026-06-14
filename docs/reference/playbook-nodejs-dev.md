@@ -41,8 +41,8 @@ services:
     environment:
       NODE_ENV: development
     labels:
-      fibe.gg/repo_url: $$var__REPO_URL
-      fibe.gg/branch: $$var__BRANCH
+      fibe.gg/repo_url: https://github.com/owner/repo
+      fibe.gg/branch: main
       fibe.gg/source_mount: /app
       fibe.gg/dockerfile: Dockerfile
       fibe.gg/env_file: .env.example
@@ -50,7 +50,7 @@ services:
       fibe.gg/port: 5173
       fibe.gg/visibility: external
       fibe.gg/production: "false"
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: dev
 
 volumes:
   app_node_modules:
@@ -61,15 +61,18 @@ x-fibe.gg:
       name: "Repository URL"
       required: true
       default: "https://github.com/owner/repo"
+      path: services.app.labels.fibe.gg/repo_url
     BRANCH:
       name: "Branch"
       required: true
       default: "main"
+      path: services.app.labels.fibe.gg/branch
     SUBDOMAIN:
       name: "Subdomain"
       required: true
       default: "dev"
       validation: "/^[a-z0-9][a-z0-9-]*[a-z0-9]$/"
+      path: services.app.labels.fibe.gg/subdomain
   metadata:
     description: "Node.js dev mode with live source mount and hot reload"
     category: "Development"
@@ -151,26 +154,29 @@ services:
   app:
     image: node:22
     labels:
-      fibe.gg/repo_url: $$var__REPO_URL
-      fibe.gg/branch: $$var__BRANCH
+      fibe.gg/repo_url: https://github.com/owner/repo
+      fibe.gg/branch: main
       fibe.gg/source_mount: /app
-      fibe.gg/start_command: $$var__START_COMMAND
-      fibe.gg/port: $$var__PORT
+      fibe.gg/start_command: npm run dev -- --host 0.0.0.0
+      fibe.gg/port: "5173"
       fibe.gg/visibility: external
-      fibe.gg/production: $$var__PRODUCTION
+      fibe.gg/production: "false"
 
 x-fibe.gg:
   variables:
     PRODUCTION:
       name: "Production mode (built image)"
       default: "false"
+      path: services.app.labels.fibe.gg/production
     PORT:
       name: "Container port"
       default: "5173"
       validation: "/^[0-9]+$/"
+      path: services.app.labels.fibe.gg/port
     START_COMMAND:
       name: "Start command"
       default: "npm run dev -- --host 0.0.0.0"
+      path: services.app.labels.fibe.gg/start_command
 ```
 
 Launcher picks dev vs production.

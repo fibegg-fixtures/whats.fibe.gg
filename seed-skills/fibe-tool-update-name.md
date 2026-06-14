@@ -7,7 +7,7 @@ description: Use when you need to update the current Agent's display name. Trigg
 
 [MODE:DIALOG] Tier: base. Not idempotent.
 
-Renames the current Agent through `PATCH /api/agents/:id` with `name` and an optional `rename_context` payload identifying the conversation that prompted the change.
+Renames the current Agent through `PATCH /api/agents/:id` with `name` and an optional `agent_rename_context` payload identifying the conversation that prompted the change.
 
 ## When to use
 - First non-trivial Player message — set a meaningful name reflecting current focus.
@@ -23,7 +23,7 @@ Renames the current Agent through `PATCH /api/agents/:id` with `name` and an opt
 |---|---|---|---|
 | `name` | string | yes | New display name |
 
-`agent_id` is read from `FIBE_AGENT_ID` env; `CONVERSATION_ID` env, when set, is forwarded as `rename_context.conversation_client_id` so Fibe can record which conversation triggered the rename.
+`agent_id` is read from `FIBE_AGENT_ID` env; `CONVERSATION_ID` env, when set, is forwarded as `agent_rename_context.conversation_client_id` so Fibe can record which conversation triggered the rename.
 
 ## Output
 The updated Agent's full JSON.
@@ -32,7 +32,7 @@ The updated Agent's full JSON.
 - `FIBE_AGENT_ID` env required; missing → fail-fast.
 - Name uniqueness is enforced server-side per Player; collisions return `VALIDATION_FAILED`.
 - Slug-safe characters preferred, but any non-empty string is accepted.
-- The `rename_context` is informational; it's stored to track who/what renamed the agent. Without `CONVERSATION_ID` env, just the bare rename happens.
+- The `agent_rename_context` is informational; it's stored to track who/what renamed the agent. Without `CONVERSATION_ID` env, just the bare rename happens.
 
 ## Related
 - `fibe_resource_mutate(resource:"agent", operation:"update")` — non-self updates and other field changes.

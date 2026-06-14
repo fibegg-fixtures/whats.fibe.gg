@@ -70,7 +70,7 @@ x-fibe.gg:
 
 Job-mode constraints (runtime-enforced):
 
-- **No `fibe.gg/port`** anywhere — job services are not user-facing.
+- `fibe.gg/port` and related routing labels are stripped before launch — job services are not user-facing.
 - Watched services must **exit** (not run a dev server / sleep loop).
 - Unwatched services (DB, queue, cache) just need to start; they get torn down when all watched services finish.
 - Fibe **forces** `restart: "no"` and `deploy.replicas: 1` on every service in a job-mode template.
@@ -127,9 +127,9 @@ See [mode-trigger-vcs](mode-trigger-vcs.md).
 | Template shape | Can have `fibe.gg/port`? | Must have `job_watch` somewhere? | `restart` honored? | Replicas honored? |
 |---|---|---|---|---|
 | Long-running HTTP | yes | no | yes | yes |
-| Job-mode | no | yes | forced to `no` | forced to `1` |
-| Scheduled | no | yes | forced to `no` | forced to `1` |
-| Triggered | no | yes | forced to `no` | forced to `1` |
+| Job-mode | stripped before launch (no error) | yes | forced to `no` | forced to `1` |
+| Scheduled | stripped before launch (no error) | yes | forced to `no` | forced to `1` |
+| Triggered | stripped before launch (no error) | yes | forced to `no` | forced to `1` |
 
 ## Pitfalls
 

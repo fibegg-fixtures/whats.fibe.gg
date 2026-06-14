@@ -18,7 +18,7 @@ What the message means, and the smallest change that resolves it.
 | **`source_mount` without a `repo_url`** | Same fix; live mount needs to know where the source is. |
 | **Zero-downtime services must have `fibe.gg/port` set** | Rolling updates are for routed services; add `fibe.gg/port`. |
 | **Zero-downtime services cannot have `ports:` or `container_name`** | Replicas can't share a pinned name or publish the same host port. Drop them. |
-| **Invalid repo URL** | Use an HTTPS GitHub or Gitea URL, or a full `ssh://` URL. The short `git@host:path` form isn't accepted. |
+| **Invalid repo URL** | Use `https://github.com/<owner>/<repo>`, a full `ssh://` URL, or a URL on a configured Gitea host. The short `git@host:path` form and arbitrary GitHub-like HTTPS hosts aren't accepted. |
 | **Invalid exposure visibility** | Only the lowercase strings `internal` and `external` work. `External:3000` (uppercase E) is wrong. |
 | **Invalid exposure port** | Must be a real port between 1 and 65535. |
 | **Invalid subdomain** | Lowercase letters, digits, hyphens; no leading or trailing hyphen; or the special `@` for the root domain. |
@@ -53,7 +53,7 @@ What the message means, and the smallest change that resolves it.
 | --- | --- |
 | **Compose `${VAR}` left in the output** | Fibe doesn't fill these from the launcher. Convert to `$$var__VAR` and declare it. Exception: in Trick runs, `${VAR}` *is* filled from your Job ENV entries and the built-in `FIBE_*` run variables — if that's what you meant, define the Job ENV entry instead of converting. |
 | **Trick runs forever** | Your watched service started a dev server, an idle loop, or a long-poll. Replace it with a command that exits when the work is done. |
-| **Job timed out waiting for watched services to complete** | The run hit the 4-hour ceiling (the default) without the watched service exiting. Same root cause as a run that never exits: make the watched command finish when the work is done, or split the work into shorter runs. |
+| **Job timed out waiting for watched services to complete** | The run hit the 4-hour ceiling without the watched service exiting. Fibe checks watched services every 10 seconds by default, up to 1,440 checks; operators can change those defaults. On timeout, the job errors and its containers are torn down. Same root cause as a run that never exits: make the watched command finish when the work is done, or split the work into shorter runs. |
 | **Build timed out: stuck in building state for over 45 minutes** | Builds have a 45-minute ceiling. Usually a slow base-image pull or a heavy build on a slow network — switch to a smaller base image, trim the build context, then relaunch. |
 | **Long-running app reset to one replica and never restarting** | You accidentally set `job_mode: true` on something that should stay up. Remove it. |
 | **502 from the public URL but works inside the container** | Your app is binding to `localhost`. Switch to `0.0.0.0`. See the table below. |

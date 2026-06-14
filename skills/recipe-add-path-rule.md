@@ -15,17 +15,17 @@ ONLY these three Traefik matchers, in any boolean combination with `&&` and `||`
 - `` PathPrefix(`/prefix`) ``
 - `` PathRegexp(`/users/[0-9]+`) ``
 
-Schema check: value must contain `\b(?:Path|PathPrefix|PathRegexp)\s*\(`.
+Schema precheck: value must contain `\b(?:Path|PathPrefix|PathRegexp)\s*\(` before the runtime parser does the stricter matcher validation.
 
 ## Forbidden matchers
 
-Fibe owns the **Host** rule, so these matchers are explicitly rejected by both schema and runtime:
+Fibe owns the **Host** rule, so these matchers are explicitly rejected by the runtime label parser:
 
 - `Host(...)`, `HostRegexp(...)`, `HostSNI(...)`, `HostSNIRegexp(...)`
 - `Headers(...)`, `HeadersRegexp(...)`
 - `Method(...)`, `Query(...)`, `ClientIP(...)`
 
-Schema check fails with: `must only contain path matchers, not Host/Headers/Method/Query/ClientIP`.
+The runtime label parser rejects forbidden matchers with: `must only contain path matchers, not Host/Headers/Method/Query/ClientIP`.
 
 ## Examples
 
@@ -114,15 +114,23 @@ services:
     labels:
       fibe.gg/port: 3000
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: app
       # no path_rule
 
   ws:                                   # specific
     labels:
       fibe.gg/port: 8081
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: app
       fibe.gg/path_rule: Path(`/cable`) || Path(`/health`)
+x-fibe.gg:
+  variables:
+    SUBDOMAIN:
+      name: Subdomain
+      default: app
+      paths:
+        - services.web.labels.fibe.gg/subdomain
+        - services.ws.labels.fibe.gg/subdomain
 ```
 
 Traefik's matchers prefer the more specific rule, so `ws` wins on `/cable` and `/health`; `web` wins elsewhere.

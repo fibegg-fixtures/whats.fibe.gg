@@ -9,7 +9,7 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-[MODE:OVERSEER] Tier: overseer. Not idempotent from the caller perspective, but safe to retry for the same `conversation_id`.
+[MODE:SIDEEFFECTS] Tier: overseer. Not idempotent from the caller perspective, but safe to retry for the same `conversation_id`.
 
 Creates or upserts a conversation for an Agent before sending messages to it.
 

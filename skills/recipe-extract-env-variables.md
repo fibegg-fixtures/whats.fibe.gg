@@ -7,20 +7,20 @@ description: Use to lift `${VAR}` / `${VAR:-default}` Compose interpolations int
 
 Compose supports environment-variable interpolation: `${VAR}`, `${VAR:-default}`, `${VAR:?error}`. On a developer laptop, these come from a local `.env` file. On Fibe, launch-time variables replace them — but through template compilation (`$$var__` markers or `path:` bindings), not through Compose's env interpolation.
 
-The conversion is mostly mechanical: for every `${VAR...}` in the input compose, declare a corresponding entry in `x-fibe.gg.variables`, then either rewrite the occurrence as `$$var__VAR` (Fibe-template-style) or keep the `${VAR}` form for local compatibility and add a `path:`/`paths:` binding so the launch value overwrites that node at compile time.
+The conversion is mostly mechanical: for every `${VAR...}` in the input compose, declare a corresponding entry in `x-fibe.gg.variables`. Prefer keeping a concrete local placeholder and adding a `path:`/`paths:` binding so the launch value overwrites that whole node at compile time. Rewrite to `$$var__VAR` only when the value is a fragment inside a larger string.
 
 ## Two forms
 
 | Style | Where the substitution happens | When to use |
 |---|---|---|
 | `${VAR:-default}` | Docker Compose engine at start — launch variables are NOT in that environment | Only for local `docker compose up` compatibility, and only together with a `path:`/`paths:` binding |
-| `$$var__VAR` | Fibe template compiler before Compose sees it | Cleaner; integrates with `x-fibe.gg` validation; the form to use in Fibe templates |
+| `$$var__VAR` | Fibe template compiler before Compose sees it | Fragment-only last resort; integrates with `x-fibe.gg` validation but breaks local Compose parity when used as the whole value |
 
-Launch variables are NOT passed to Compose's `${VAR}` interpolation. On Fibe, `${VAR:-default}` resolves to the literal default (or empty) at deploy. If you keep `${VAR}` placeholders so the same file also runs cleanly with plain `docker compose up`, you must also add a `path:`/`paths:` binding so the launch value overwrites that node at compile time — or rewrite the occurrence as `$$var__VAR`.
+Launch variables are NOT passed to Compose's `${VAR}` interpolation. On Fibe, `${VAR:-default}` resolves to the literal default (or empty) at deploy. If you keep `${VAR}` placeholders so the same file also runs cleanly with plain `docker compose up`, you must also add a `path:`/`paths:` binding so the launch value overwrites that node at compile time.
 
 ## Mapping table
 
-| Compose | Fibe variable declaration | Inline (option B) |
+| Compose | Fibe variable declaration | Inline only when it is a fragment |
 |---|---|---|
 | `${PORT}` | `PORT: { name: Port, required: true }` | `$$var__PORT` |
 | `${PORT:-3000}` | `PORT: { name: Port, default: "3000" }` | `$$var__PORT` |
@@ -36,8 +36,8 @@ Launch variables are NOT passed to Compose's `${VAR}` interpolation. On Fibe, `$
    - **Is it sensitive?**
 3. For each "yes", add an entry to `x-fibe.gg.variables`.
 4. Choose binding style:
-   - If the value is the whole node (an env var, a label value, a replica count) → use `path:` / `paths:` (more reviewable).
-   - If the value is part of a larger string (URL composition, label fragment) → use inline `$$var__NAME`.
+   - If the value is the whole node (an env var, a label value, a replica count, a public URL) → use `path:` / `paths:` (primary route).
+   - If the value is part of a larger string (image tag, connection string, path-rule fragment) → use inline `$$var__NAME`.
 5. Keep / rewrite the original occurrences according to style chosen.
 
 ## Whole-node `path` binding (preferred)
@@ -105,7 +105,7 @@ x-fibe.gg:
       random: true
 ```
 
-Inline is required here because `DATABASE_URL` is built from multiple parts, and `image:` has the tag embedded in a colon-separated value.
+Inline is required here because `DATABASE_URL` is built from multiple parts, and `image:` has the tag embedded in a colon-separated value. For whole values, use `path`/`paths` even when it requires duplicate variables for slightly different labels and env nodes.
 
 ## Mixed style
 
@@ -175,6 +175,7 @@ Just hardcode these.
 - **Declaring but never using** — declared without `path`/`paths` and never referenced inline → `unused_var`.
 - **Variable name mismatched between inline and `paths`** — they don't auto-link by spelling, but they MUST resolve through the same declared key.
 - **Compose-style default `${VAR:-default}`** + Fibe variable declared with a different default → confusion. Pick one source.
+- **Nested Fibe defaults** — `default: "$$var__OTHER.$$root_domain"` is invalid. Defaults are literals; use explicit path-bound variables for derived public values.
 
 ## Related skills
 

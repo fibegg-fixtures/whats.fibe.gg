@@ -138,7 +138,7 @@ Use Tricks for tasks that finish. Do not use Tricks for web apps, dashboards, de
 
 Constraints and limits:
 
-- Job-mode services run one replica with no automatic restart, and cannot be publicly exposed (`fibe.gg/port` is forbidden).
+- Job-mode services run one replica with no automatic restart. Public exposure does not happen because `fibe.gg/port` and other routing labels are stripped before launch.
 - A Trick has a maximum runtime of about 4 hours; if the watched service has not exited by then, the run is marked failed (timed out) and cleaned up.
 - Logs and the result are kept on the Trick after success, failure, or timeout. Log capture keeps the last 5000 lines per service by default, and the result survives after the run's environment expires (1 hour by default) or is destroyed.
 

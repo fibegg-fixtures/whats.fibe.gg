@@ -7,7 +7,7 @@ description: Use when you need to list Agent-produced events (messages, activiti
 
 [MODE:OVERSEER] Read-only, idempotent. Tier: overseer.
 
-Returns a paginated event feed across one or more Agents through `GET /api/monitor`. Requires API key scope `monitor:read`.
+Returns a paginated event feed across one or more Agents through `GET /api/events`. Requires API key scope `monitor:read`.
 
 ## When to use
 - Compiling an Agent's recent activity into a report.
@@ -23,7 +23,7 @@ Returns a paginated event feed across one or more Agents through `GET /api/monit
 |---|---|---|---|
 | `agent` | string | empty (= all accessible) | Comma-separated Agent IDs/names |
 | `type` | string | empty (= all) | Comma-separated: `message`, `activity`, `mutter`, `artefact` |
-| `since` | ISO 8601 string | — | Lower bound for `created_at` |
+| `since` | ISO 8601 string | — | Lower bound for `occurred_at` |
 | `q` | string | — | Full-text search across event content |
 | `page` | int | 1 | 1-based |
 | `per_page` | int | 25 | Max 100 |
@@ -37,7 +37,7 @@ Returns a paginated event feed across one or more Agents through `GET /api/monit
       "type": "mutter" | "message" | "activity" | "artefact",
       "agent_id": 42,
       "item_id": "...",
-      "created_at": "...",
+      "occurred_at": "...",
       "payload": { ... }   // shape varies per type
     }
   ],

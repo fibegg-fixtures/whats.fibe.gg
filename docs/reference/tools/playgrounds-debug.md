@@ -25,8 +25,7 @@ Returns the unified Playground diagnostic envelope through `GET /api/playgrounds
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `playground_id` | number | one of | Numeric ID |
-| `playground_identifier` | string | one of | Numeric ID or slug-safe name |
+| `id_or_name` | string | yes | Playground numeric ID or slug-safe name |
 | `mode` | enum | no | `summary` (default) or `full` — `full` includes raw compose / volumes / network details |
 | `refresh` | bool | no | Default `true`. Set `false` for cached read. |
 | `service` | string | no | Restrict diagnostics to one Compose service |
@@ -78,12 +77,12 @@ Cached read (`refresh:false`) skips the job and computes diagnostics synchronous
 - Cached debug is per-Playground, single-slot — frequent `refresh:false` calls return identical payloads until someone refreshes.
 
 ## Recipe
-1. `fibe_playgrounds_debug({ playground_id, mode:"summary" })` — first.
+1. `fibe_playgrounds_debug({ id_or_name, mode:"summary" })` — first.
 2. If a service shows `container_status:"exited"` with non-zero exit code → `fibe_playgrounds_logs(service:"<name>", tail:200)`.
 3. If still unclear → `fibe_playgrounds_debug({ ..., mode:"full", service:"<name>", logs_tail:200 })`.
 
 ## Related
 - `fibe_playgrounds_logs` — single-service logs.
-- `fibe_playgrounds_logs_follow` — stream until pattern.
+- `fibe_logs_follow` — stream until pattern.
 - `fibe_playgrounds_wait` — wait for state transitions.
 - `fibe-debug` skill — broader debugging playbook.

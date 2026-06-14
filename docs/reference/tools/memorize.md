@@ -11,7 +11,7 @@ format: md
 
 [MODE:SIDEEFFECTS] Tier: base. Idempotent (per `memory_key` or content hash).
 
-Persists one Memory after attaching the latest local conversation snapshot through `POST /api/memories/memorize`.
+Persists one Memory after attaching the latest local conversation snapshot through async `POST /api/memories`.
 
 The flow:
 1. Read the local conversation by `conversation_id` (Codex/Claude Code/Claude Desktop transcript).
@@ -34,7 +34,7 @@ The flow:
 | `content` | string | yes | The memory body |
 | `tags` | array of string | no | Lowercase slug-like tags |
 | `confidence` | number | no | 0.0–1.0 |
-| `agent_id` | int or string | no | Defaults to `FIBE_AGENT_ID` env |
+| `agent_id_or_name` | int or string | no | Defaults to `FIBE_AGENT_ID` env |
 | `memory_key` | string | no | Explicit idempotency key; otherwise auto-computed |
 | `metadata` | object | no | Free-form |
 | `groundings` | array | no | Proof references — see below |
@@ -68,7 +68,7 @@ The created/updated Memory record + grounding records.
 - `conversation_id` MUST be a stable local UUID. The SDK reads the local conversation first; failure means the conversation isn't on this machine.
 - Quote text is truncated to 2000 chars server-side.
 - Tags are normalized lowercase + slug-like; non-conforming tags get coerced.
-- `agent_id` falls back to env; passing your own overrides env. Mismatch with `FIBE_AGENT_ID` may break association policies.
+- `agent_id_or_name` falls back to `FIBE_AGENT_ID`; passing your own value overrides env. Mismatch with `FIBE_AGENT_ID` may break association policies.
 - Memory search/get/delete go through `fibe_resource_*` with `resource:"memory"`.
 - Local conversation files are ephemeral on a remote MCP transport — the SDK likely fails outside local mode for unfamiliar transcripts.
 

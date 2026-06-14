@@ -121,16 +121,18 @@ You can parameterize description text:
 ```yaml
 x-fibe.gg:
   metadata:
-    description: $$var__DESCRIPTION
-    category: $$var__CATEGORY
+    description: My app
+    category: Web
 
   variables:
     DESCRIPTION:
       name: "Description"
       default: "My app"
+      path: x-fibe.gg.metadata.description
     CATEGORY:
       name: "Category"
       default: "Web"
+      path: x-fibe.gg.metadata.category
 ```
 
 Rarely useful — these are usually fixed by the template author. But the schema allows it.

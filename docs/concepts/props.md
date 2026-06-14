@@ -18,7 +18,7 @@ Without a Prop, a Template can still be a static `image:` recipe. With one, the 
 | **Branch discovery** | Every branch listed for launchers to pick. |
 | **Source for builds** | Templates that say `fibe.gg/repo_url: <this prop>` clone at launch. |
 | **Live source mount** | Dev services mount the working tree. Edits show up live. |
-| **Compose detection** | On connect, Fibe notices a `docker-compose.yml` (or `docker-compose.yaml`) at the repo root and `.env.example`. Candidates for new Templates. |
+| **Compose detection** | On connect, Fibe notices `fibe.yml`, `fibe.yaml`, `docker-compose.yml`, or `docker-compose.yaml` at the repo root and `.env.example`. Candidates for new Templates. |
 | **Push notifications** | Refresh branch list, fire source-linked Templates that track changed files, trigger listening Tricks. |
 | **In-browser git** | Stage, commit, push from the Playground terminal. |
 | **Per-commit history** | What landed and when. |
@@ -83,7 +83,7 @@ The moment your Player is created, a background job runs:
 
 1. Creates a Gitea user matching your Fibe username.
 2. Generates a random password and saves it to your profile's Gitea account card.
-3. Mints a Gitea access token with `read/write:repository` and `read/write:user` scopes.
+3. Mints a Gitea access token with repository read/write plus user access scopes.
 
 You don't take any action. When the job finishes you'll see a toast: *"Your Gitea account has been provisioned. Check your profile for credentials."*
 
@@ -104,7 +104,7 @@ If you lose the password or want to rotate:
 
 1. Profile → **Reset credentials** on the Gitea card.
 2. 2FA confirmation required.
-3. Fibe generates a new password and a new access token for your Gitea account; the new password appears on the card, and all your Gitea Props pick up the new token automatically. (A token you pasted into a specific Prop's Credentials field is not touched.)
+3. Fibe generates a new password and a new access token for your Gitea account; reset tokens carry `write:repository`, `read:repository`, `write:user`, and `read:user` access. The new password appears on the card, and all your Gitea Props pick up the new token automatically. (A token you pasted into a specific Prop's Credentials field is not touched.)
 
 ### Creating a Gitea repo
 
@@ -126,7 +126,7 @@ Whatever the provider and auth path, on creation Fibe:
 
 1. Resolves the repo URL. Validates the format.
 2. Discovers branches.
-3. Notes useful files (`docker-compose.yml` or `docker-compose.yaml` at the repo root, `.env.example`) as candidates for new Templates.
+3. Notes useful files (`fibe.yml`, `fibe.yaml`, `docker-compose.yml`, `docker-compose.yaml`, and `.env.example`) as candidates for new Templates.
 4. Wires up push notifications where possible — automatic when Fibe creates the repository for you (built-in Gitea). For GitHub, push events are delivered through the Fibe GitHub App — install the App on the repo to get branch refresh and push-triggered Tricks. A Prop connected with only a Personal Access Token does not receive push events.
 
 ## Pushes

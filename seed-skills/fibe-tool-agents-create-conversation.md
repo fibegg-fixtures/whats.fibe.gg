@@ -5,7 +5,7 @@ description: Use when you need to create or upsert a deterministic Agent convers
 
 # fibe_agents_create_conversation
 
-[MODE:OVERSEER] Tier: overseer. Not idempotent from the caller perspective, but safe to retry for the same `conversation_id`.
+[MODE:SIDEEFFECTS] Tier: overseer. Not idempotent from the caller perspective, but safe to retry for the same `conversation_id`.
 
 Creates or upserts a conversation for an Agent before sending messages to it.
 

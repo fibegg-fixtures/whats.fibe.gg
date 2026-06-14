@@ -57,13 +57,14 @@ labels:
 ```yaml
 # variable-driven
 labels:
-  fibe.gg/env_file: $$var__ENV_FILE
+  fibe.gg/env_file: .env.example
 
 x-fibe.gg:
   variables:
     ENV_FILE:
       name: "Env example file"
       default: ".env.example"
+      path: labels.fibe.gg/env_file
 ```
 
 ## What Fibe does with the file

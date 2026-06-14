@@ -96,7 +96,7 @@ services:
     labels:
       fibe.gg/port: 3000
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: wiki
 
 volumes:
   db_data:
@@ -108,6 +108,7 @@ x-fibe.gg:
       required: true
       default: "wiki"
       validation: "/^[a-z0-9][a-z0-9-]*[a-z0-9]$/"
+      path: services.wiki.labels.fibe.gg/subdomain
     DB_PASSWORD:
       name: "Database password"
       required: true
@@ -132,7 +133,7 @@ x-fibe.gg:
 | `depends_on: - db` (short form) | `depends_on: db: { condition: service_healthy }` + `healthcheck:` on db | App waits until DB accepts connections |
 | `volumes: - db-data:...` (hyphen) | `db_data` (underscore) | YAML safety; both work but `_` is conventional |
 | No metadata | `x-fibe.gg.metadata.{description,category}` | Pantry/launcher card |
-| No subdomain | `fibe.gg/subdomain: $$var__SUBDOMAIN` | Launcher chooses |
+| No subdomain | `fibe.gg/subdomain: wiki` + `SUBDOMAIN.path` | Launcher chooses while local Compose keeps a concrete label |
 
 ## Optional enhancements
 
@@ -148,7 +149,7 @@ services:
     labels:
       fibe.gg/port: 3000
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: wiki
       fibe.gg/zerodowntime: "true"
       fibe.gg/healthcheck_path: /healthz
       fibe.gg/healthcheck_interval: 10s
@@ -183,26 +184,30 @@ services:
   wiki:
     environment:
       UPLOADS_STORAGE: s3
-      S3_ENDPOINT: $$var__S3_ENDPOINT
-      S3_ACCESS_KEY_ID: $$var__S3_KEY
-      S3_SECRET_ACCESS_KEY: $$var__S3_SECRET
-      S3_BUCKET: $$var__S3_BUCKET
+      S3_ENDPOINT: https://s3.example.com
+      S3_ACCESS_KEY_ID: key-id
+      S3_SECRET_ACCESS_KEY: placeholder
+      S3_BUCKET: wiki-uploads
 
 x-fibe.gg:
   variables:
     S3_ENDPOINT:
       name: "S3 endpoint URL"
       required: false
+      path: services.wiki.environment.S3_ENDPOINT
     S3_KEY:
       name: "S3 access key"
       secret: true
+      path: services.wiki.environment.S3_ACCESS_KEY_ID
     S3_SECRET:
       name: "S3 secret"
       secret: true
       sensitive: true
+      path: services.wiki.environment.S3_SECRET_ACCESS_KEY
     S3_BUCKET:
       name: "S3 bucket"
       default: "wiki-uploads"
+      path: services.wiki.environment.S3_BUCKET
 ```
 
 ## Validate
@@ -217,7 +222,7 @@ fibe_schema(
 )
 ```
 
-Schema passes. Runtime validation accepts. Launch via `fibe_templates_launch`.
+Schema passes. Runtime validation accepts. Launch via `fibe_launch`.
 
 ## Related skills
 

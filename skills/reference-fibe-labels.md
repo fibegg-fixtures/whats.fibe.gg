@@ -11,7 +11,7 @@ The label prefix is `fibe.gg/` (the prefix can be changed in self-hosted install
 
 | Label | Value | Default | Required when |
 |---|---|---|---|
-| `fibe.gg/repo_url` | URL (https://) to GitHub or Gitea repo, or `$$var__NAME` | — | service is dynamic (has `build:`, `source_mount`, or is source-backed) |
+| `fibe.gg/repo_url` | GitHub HTTPS URL, full `ssh://` URL, configured Gitea URL, or `$$var__NAME` | — | service is dynamic (has `build:`, `source_mount`, or is source-backed) |
 | `fibe.gg/source_mount` | Path inside the container (`^[A-Za-z0-9_./-]+$`) | `/app` | source-backed live-mount |
 | `fibe.gg/dockerfile` | Path relative to repo root | `Dockerfile` | non-default Dockerfile location |
 | `fibe.gg/branch` | Git ref name | repo default branch | pin to non-default branch |
@@ -32,7 +32,7 @@ The label prefix is `fibe.gg/` (the prefix can be changed in self-hosted install
 | `fibe.gg/build_args` | comma-separated `KEY=value` pairs | unset | build needs `--build-arg` |
 | `fibe.gg/job_watch` | `true` / `false` | `false` | watched-exit job-mode service |
 
-Any of the above values may also be a `$$var__NAME` interpolation (whole or partial) — runtime substitutes before final compose generation. See [reference-template-variables](reference-template-variables.md).
+Any of the above values may contain a `$$var__NAME` interpolation, but use inline syntax only for fragments. If the whole label value is launch-time variable driven, keep a concrete local placeholder and bind the variable through `x-fibe.gg.variables.<NAME>.path`. See [reference-template-variables](reference-template-variables.md).
 
 ## Value rules
 
@@ -53,7 +53,7 @@ Only the literal value `true` (string or YAML boolean) is treated as true; anyth
 Schema allows the empty string, a numeric string/integer, or `$$var__NAME`. Runtime requires `1 ≤ PORT ≤ 65535`.
 
 - `3000` — route traffic to container port 3000.
-- `$$var__PORT` — use the launch-time variable as the routed container port.
+- Variable-driven port — keep a local placeholder such as `3000` and bind `x-fibe.gg.variables.PORT.path: services.web.labels.fibe.gg/port`.
 
 ### `fibe.gg/visibility`
 
@@ -68,7 +68,7 @@ Allowed values:
 - `@` — bind the route at the root of the Marquee domain.
 - lowercase alnum/hyphen, no leading/trailing hyphen: `^[a-z0-9]([a-z0-9-]*[a-z0-9])?$`.
 - empty string — fall back to the default (service name).
-- `$$var__NAME` interpolation.
+- Variable-driven subdomain via `path`/`paths` binding.
 
 Scalar values are coerced to strings before validation (`true`/`false`/integer become `"true"`/`"false"`/`"123"`), then validated by the slug regex.
 
@@ -84,8 +84,8 @@ services:
       fibe.gg/subdomain: api
       fibe.gg/subdomain: "@"
       fibe.gg/subdomain: ""   # fallback to service name
-      # string templates:
-      fibe.gg/subdomain: "$$var__SUBDOMAIN"
+      # variable-driven values should use path-bound placeholders:
+      fibe.gg/subdomain: demo
       # invalid in runtime validation:
       fibe.gg/subdomain: 42
       fibe.gg/subdomain: true
@@ -126,7 +126,7 @@ Parsed into a key→value map.
 
 ### `fibe.gg/repo_url`
 
-Must start with `https://` and point at a GitHub or Gitea repository; other hosts and SSH URLs are rejected. Inline `$$var__NAME` interpolation is allowed and bypasses validation until compile time.
+Accepted forms are GitHub HTTPS URLs, full `ssh://` URLs, and URLs under configured Gitea hosts. The short scp-style SSH form (`git@host:owner/repo.git`) is not accepted. Inline `$$var__NAME` interpolation is allowed and bypasses validation until compile time.
 
 ## Two forms accepted
 
@@ -170,17 +170,28 @@ These are enforced by the **runtime parser**, not the JSON Schema:
 
 ## Inline variable interpolation
 
-Any of the labels above may contain `$$var__NAME` inline. The schema's `templatedFibeLabelString` pattern accepts it. The label value is template-substituted at compile time:
+Any of the labels above may contain `$$var__NAME` inline. The schema's `templatedFibeLabelString` pattern accepts it, but inline label variables should be a last resort for fragments. Whole-label variable values should use `path`/`paths`:
 
 ```yaml
-labels:
-  fibe.gg/port: $$var__PORT
-  fibe.gg/visibility: external
-  fibe.gg/subdomain: $$var__SUBDOMAIN
-  fibe.gg/repo_url: $$var__REPO_URL
+services:
+  web:
+    labels:
+      fibe.gg/port: "3000"
+      fibe.gg/visibility: external
+      fibe.gg/subdomain: demo
+x-fibe.gg:
+  variables:
+    PORT:
+      name: Port
+      default: "3000"
+      path: services.web.labels.fibe.gg/port
+    SUBDOMAIN:
+      name: Subdomain
+      default: demo
+      path: services.web.labels.fibe.gg/subdomain
 ```
 
-The variable must be declared in `x-fibe.gg.variables`. See [recipe-inline-variables](recipe-inline-variables.md).
+Inline remains appropriate for fragments, for example `fibe.gg/path_rule: PathPrefix(\`/$$var__PATH_PREFIX\`)`. The variable must be declared in `x-fibe.gg.variables`. See [recipe-inline-variables](recipe-inline-variables.md).
 
 ## Defaults applied at runtime
 

@@ -1,13 +1,13 @@
 ---
 name: fibe-tool-github-repos-create
-description: Use when you need to create a new GitHub repository under the Player's OAuth-connected GitHub account and register it as a Fibe Prop.
+description: Use when you need to create a new GitHub repository under the Player's OAuth-connected GitHub account.
 ---
 
 # fibe_github_repos_create
 
-[MODE:GREENFIELD] Tier: other. Not idempotent.
+[MODE:GREENFIELD] Tier: greenfield. Not idempotent.
 
-Creates a fresh GitHub repository on the Player's OAuth-linked GitHub account and registers a corresponding Prop through `POST /api/github_repos`.
+Creates a fresh GitHub repository on the Player's OAuth-linked GitHub account through `POST /api/github_repositories`. It does not create the Prop record automatically.
 
 ## When to use
 - Greenfield flows that explicitly want code stored on GitHub (not Gitea).
@@ -16,7 +16,7 @@ Creates a fresh GitHub repository on the Player's OAuth-linked GitHub account an
 
 ## When NOT to use
 - Player has no GitHub OAuth connection — fail fast with a redirect message.
-- You only need to deploy something — `fibe_templates_launch` doesn't need a repo.
+- You only need to deploy something — `fibe_launch` doesn't need a repo.
 - Existing repo — use the `prop.attach` operation via `fibe_resource_mutate`.
 
 ## Inputs

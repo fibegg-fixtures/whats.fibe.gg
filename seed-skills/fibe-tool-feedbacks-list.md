@@ -42,7 +42,7 @@ Standard paginated envelope:
       "comment": "Player comment...",
       "line_text": "...",
       "context": "...",
-      "playground_id": 42,
+      "playground_id_or_name": 42,
       "player_id": 11,
       "created_at": "...",
       "updated_at": "..."

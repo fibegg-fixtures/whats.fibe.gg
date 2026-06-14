@@ -13,7 +13,7 @@ The complete set of `fibe.gg/*` labels you can add under `labels:` on a service.
 
 | Label | Purpose |
 | --- | --- |
-| `fibe.gg/repo_url` | HTTPS GitHub or Gitea URL the service comes from. Required for built services and source-mounted services. |
+| `fibe.gg/repo_url` | GitHub HTTPS URL, full `ssh://` URL, or configured Gitea URL the service comes from. Required for built services and source-mounted services. |
 | `fibe.gg/branch` | Pin to a non-default branch. |
 | `fibe.gg/dockerfile` | Dockerfile path relative to the repo root (defaults to `Dockerfile`). |
 | `fibe.gg/build_target` | Name of the stage when using a multi-stage build. |
@@ -66,10 +66,11 @@ The runtime enforces these consistency rules:
 
 - A Compose `build:` block **requires** `fibe.gg/repo_url`.
 - `fibe.gg/source_mount` **requires** `fibe.gg/repo_url`.
+- `fibe.gg/visibility` **requires** `fibe.gg/port`.
 - `fibe.gg/zerodowntime: "true"` **requires** `fibe.gg/port`, and the service **must not** declare `container_name`. Compose `ports:` are stripped by default, but if `x-fibe.gg.metadata.preserve_ports: true` is set, zero-downtime services must not declare `ports:` either.
 - Any label value can be a variable reference using `$$var__NAME`.
 
-## A example
+## An example
 
 A Rails dev-mode service with source mount, dev server command, healthcheck, and rolling updates disabled (since Rails dev mode is single-process):
 

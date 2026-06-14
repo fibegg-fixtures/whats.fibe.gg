@@ -26,7 +26,6 @@ Endpoint: `GET /api/status`. Counts match what the authenticated Player can actu
   "playspecs": 11,
   "marquees": 2,
   "secrets": 5,
-  "teams": 1,
   "api_keys": 3,
   "subscription": { "plan": "single", "playground_limit": 50 },
   "resource_quotas": { ... },     // only when authenticated via API key

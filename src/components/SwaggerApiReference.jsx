@@ -5,7 +5,6 @@ import styles from './SwaggerApiReference.module.css';
 
 const SERVERS = [
   {url: 'https://fibe.gg', description: 'Production'},
-  {url: 'https://next.fibe.live', description: 'Staging'},
 ];
 
 function methodsFor(endpoint) {
@@ -131,7 +130,7 @@ export default function SwaggerApiReference({sections}) {
   return (
     <div className={styles.root}>
       <div className={styles.instructions}>
-        <strong>Test against Fibe:</strong> choose Production or Staging in the server selector, click <strong>Authorize</strong>, paste your <code>FIBE_API_KEY</code>, then use <strong>Try it out</strong> on any endpoint. Swagger UI also generates the equivalent curl command for terminal use.
+        <strong>Test against Fibe:</strong> choose Production in the server selector, click <strong>Authorize</strong>, paste your <code>FIBE_API_KEY</code>, then use <strong>Try it out</strong> on any endpoint. Swagger UI also generates the equivalent curl command for terminal use.
       </div>
       <SwaggerUI
         spec={spec}

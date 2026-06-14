@@ -39,7 +39,7 @@ Executes an ordered list of tool steps in one MCP request. Each step's output is
   "as": "pg",
   "steps": [
     { "id": "rollout", "tool": "fibe_playgrounds_action",
-      "args": { "playground_id": "$.pg.id", "action_type": "rollout", "confirm": true } }
+      "args": { "id_or_name": "$.pg.id", "action_type": "rollout", "confirm": true } }
   ],
   "collect": "$.rollout"
 }
@@ -112,7 +112,7 @@ With pipeline-level `idempotency_key`, every step ID gets `sha256("<key>:<step_i
     { "id": "gf",   "tool": "fibe_greenfield_create",
       "args": { "name": "demo", "wait_timeout": "10m" } },
     { "id": "urls", "tool": "fibe_local_playgrounds_info",
-      "args": { "view": "urls", "playground_id": "$.gf.playground.id" } }
+      "args": { "view": "urls", "id_or_name": "$.gf.playground.id" } }
   ],
   "return": "$.urls"
 }
@@ -126,7 +126,7 @@ With pipeline-level `idempotency_key`, every step ID gets `sha256("<key>:<step_i
       "args": { "resource":"playground", "params":{"marquee_id":42,"status":"running"} } },
     { "id": "rolls", "for_each":"$.list.data", "as":"pg",
       "steps":[{"id":"r","tool":"fibe_playgrounds_action",
-                 "args":{"playground_id":"$.pg.id","action_type":"rollout","confirm":true}}],
+                 "args":{"id_or_name":"$.pg.id","action_type":"rollout","confirm":true}}],
       "collect": "$.r"
     }
   ]

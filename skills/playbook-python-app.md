@@ -52,20 +52,20 @@ services:
       db:
         condition: service_healthy
     labels:
-      fibe.gg/repo_url: $$var__REPO_URL
-      fibe.gg/branch: $$var__BRANCH
+      fibe.gg/repo_url: https://github.com/owner/repo
+      fibe.gg/branch: main
       fibe.gg/source_mount: /app
       fibe.gg/dockerfile: Dockerfile
       fibe.gg/start_command: sh -c "pip install -r requirements.txt && uvicorn app:main --host 0.0.0.0 --reload"
       fibe.gg/port: 8000
       fibe.gg/visibility: external
       fibe.gg/production: "false"
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: py-app
 
   db:
     image: postgres:17.5
     environment:
-      POSTGRES_DB: $$var__DB_NAME
+      POSTGRES_DB: app
       POSTGRES_USER: app
       POSTGRES_PASSWORD: placeholder
     volumes:
@@ -86,19 +86,23 @@ x-fibe.gg:
     REPO_URL:
       name: "Repository URL"
       required: true
+      path: services.app.labels.fibe.gg/repo_url
     BRANCH:
       name: "Branch"
       required: true
       default: "main"
+      path: services.app.labels.fibe.gg/branch
     SUBDOMAIN:
       name: "Subdomain"
       required: true
       default: "py-app"
       validation: "/^[a-z0-9][a-z0-9-]*[a-z0-9]$/"
+      path: services.app.labels.fibe.gg/subdomain
     DB_NAME:
       name: "Database name"
       required: true
       default: "app"
+      path: services.db.environment.POSTGRES_DB
     DB_PASS:
       name: "Postgres password"
       required: true
@@ -145,11 +149,11 @@ services:
       db:
         condition: service_healthy
     deploy:
-      replicas: $$var__APP_REPLICAS
+      replicas: 2
     labels:
       fibe.gg/port: 8000
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: py-app
       fibe.gg/zerodowntime: "true"
       fibe.gg/healthcheck_path: /healthz
       fibe.gg/healthcheck_interval: 10s

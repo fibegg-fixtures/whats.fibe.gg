@@ -13,7 +13,7 @@ GitHub App installations. Used for private repo access, CI triggers, and direct 
 - **Repo cloning** — Props use the installation to clone private repositories. Fibe mints a short-lived installation token at clone time, reuses it for up to 50 minutes, then refreshes it automatically — nothing to rotate.
 - **Webhooks** — push and pull-request events flow into Fibe to fire Tricks, refresh Template versions, and post [commit notifications](/advanced/notifications/).
 
-Public repositories don't need an installation — they clone without one. Private repositories need either an installation that covers them or a [Personal Access Token](/concepts/props/#3-paste-a-personal-access-token-per-prop) on the Prop; Fibe refuses to save a private Prop that has neither.
+Public repositories don't need an installation — they clone without one. Private repositories need one valid credential path: a GitHub App installation that covers the repo, a [Personal Access Token](/concepts/props/#3-paste-a-personal-access-token-per-prop) on the Prop, or the matching Gitea connection token for Gitea-backed Props. Fibe refuses to save a private Prop that has none of those.
 
 Fibe doesn't write back to GitHub today — no commit statuses, no PR comments. Trick results live in Fibe and can reach you via [webhooks](/advanced/webhooks/) and notifications.
 
@@ -34,7 +34,7 @@ Each installation appears as a card showing the GitHub account or organization i
 
 ## Revoking
 
-Remove from Fibe or uninstall from GitHub — either side disconnects the installation and deletes it from your account. On Props that depended on it:
+Remove from Fibe or uninstall from GitHub — either side disconnects the installation and deletes it from your account. If you uninstall from GitHub, Fibe removes every connection for that installation and clears it as the default installation for affected accounts. On Props that depended on it:
 
 - Token minting stops immediately. Clones and syncs of private repos fail with an authentication error.
 - Push and pull-request events stop arriving — no branch refresh, no push-triggered Tricks, no commit notifications.

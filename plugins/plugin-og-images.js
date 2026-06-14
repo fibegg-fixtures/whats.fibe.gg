@@ -27,7 +27,7 @@ const ACCENT = '#a78bfa';
 const FG = '#f9fafb';
 const MUTED = '#c5c9d4';
 
-const CATEGORIES = ['.', 'concepts', 'agents', 'security', 'authoring', 'operate', 'sdk', 'reference', 'reference/tools'];
+const CATEGORIES = ['.', 'concepts', 'advanced', 'authoring', 'operate', 'sdk', 'api', 'reference', 'reference/tools'];
 
 function parseFrontmatter(source) {
   const m = source.match(/^---\n([\s\S]*?)\n---\n?/);

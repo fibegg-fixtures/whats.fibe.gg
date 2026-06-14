@@ -30,7 +30,7 @@ npm run build      # production build into ./build/
 npm run serve      # preview the built site at http://localhost:3000
 ```
 
-`npm run build` is strict: broken internal links cause a build failure (`onBrokenLinks: 'throw'`). Run it locally before opening a PR.
+`npm run build` currently warns on broken internal links (`onBrokenLinks: 'warn'`) and still must be run locally before opening a PR so link warnings, generated references, OG cards, and build output are visible.
 
 ## Deploy
 
@@ -48,7 +48,7 @@ fibe-skills/
 │   ├── agents/            # Genies, Bridge, Build in Public, Artefacts
 │   ├── security/          # 2FA, API keys, Secret Vault & Job ENV, Webhooks, Audit log
 │   ├── authoring/         # Compose → Fibe authoring guides
-│   ├── operate/           # Common problems, publishing
+│   ├── operate/           # Common problems, automatic recovery, cleanup/cascades, publishing
 │   └── reference/         # All 50+ machine-readable skill files
 ├── skills/                # Canonical skill sources (mirrored into docs/reference/)
 ├── plugins/

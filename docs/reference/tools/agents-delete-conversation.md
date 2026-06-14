@@ -9,14 +9,14 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-[MODE:OVERSEER] Tier: overseer. Destructive.
+[MODE:SIDEEFFECTS] Tier: overseer. Destructive.
 
 Deletes one conversation for an Agent. Use during project/user cleanup flows after any needed exports or archives have completed.
 
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `agent_id` | int or string | yes | Agent ID or name |
+| `id_or_name` | int or string | yes | Agent ID or name |
 | `conversation_id` | string | yes | Runtime conversation/thread ID |
 
 ## Gotchas

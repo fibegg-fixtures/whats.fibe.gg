@@ -44,20 +44,21 @@ Values can contain `$$var__NAME`:
 ```yaml
 labels:
   fibe.gg/build_args: "NODE_VERSION=$$var__NODE_VERSION,RAILS_ENV=$$var__RAILS_ENV"
-  fibe.gg/build_target: $$var__BUILD_TARGET
+  fibe.gg/build_target: production
 ```
 
 The whole label value can also be a variable (less common; usually you want a hardcoded list):
 
 ```yaml
 labels:
-  fibe.gg/build_args: $$var__BUILD_ARGS
+  fibe.gg/build_args: NODE_VERSION=20
 
 x-fibe.gg:
   variables:
     BUILD_ARGS:
       name: "Build args (KEY=value,...)"
       default: "NODE_VERSION=20"
+      path: labels.fibe.gg/build_args
 ```
 
 ## Mapping from Compose

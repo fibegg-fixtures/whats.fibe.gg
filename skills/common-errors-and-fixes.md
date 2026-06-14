@@ -71,7 +71,7 @@ Container names must be unique; replicas duplicate them.
 
 The URL isn't HTTPS / isn't a supported provider.
 
-**Fix:** Use `https://github.com/owner/repo` or your Gitea host. SSH URLs (`git@...`) fail. See [recipe-build-to-repo-url](recipe-build-to-repo-url.md).
+**Fix:** Use `https://github.com/owner/repo`, a configured Gitea URL, or a full `ssh://` URL. The short `git@host:path` form fails. See [recipe-build-to-repo-url](recipe-build-to-repo-url.md).
 
 ### `Service '<n>': invalid exposure visibility '<v>' — must be 'internal' or 'external'`
 
@@ -250,7 +250,7 @@ App accepts the request before DB/cache/external deps are ready. Rolling updates
 
 ### Schema passes but runtime fails
 
-The schema is a first pass. Compile and runtime layers catch additional issues. Preview compilation with `fibe_templates_change(mode: "preview", ...)` (or validate with the schema validate call) before launching for real with `fibe_templates_launch`.
+The schema is a first pass. Compile and runtime layers catch additional issues. Preview compilation with `fibe_templates_change(mode: "preview", ...)` (or validate with the schema validate call) before launching for real with `fibe_launch`.
 
 See [reference-validation-pipeline](reference-validation-pipeline.md).
 

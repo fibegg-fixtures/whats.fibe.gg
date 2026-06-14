@@ -82,8 +82,8 @@ For exposed HTTP services that can scale horizontally and respond to a health en
 ### Step 6 — Extract launch-time variables
 
 Anything the launcher should set (subdomain, image tag, replica counts, credentials defaults) becomes a `x-fibe.gg.variables.<NAME>` entry. Two interpolation idioms:
-- whole-node value: `path:` / `paths:` → [recipe-whole-node-paths](recipe-whole-node-paths.md)
-- inline-string fragment: `$$var__NAME` inside a Compose string → [recipe-inline-variables](recipe-inline-variables.md)
+- whole-node value: `path:` / `paths:` (primary route; preserves local Compose placeholders) → [recipe-whole-node-paths](recipe-whole-node-paths.md)
+- inline-string fragment: `$$var__NAME` inside a larger Compose string (last resort only) → [recipe-inline-variables](recipe-inline-variables.md)
 
 Sources of variables to extract:
 - `${ENV_VAR}` references already in the input compose → [recipe-extract-env-variables](recipe-extract-env-variables.md)
@@ -110,7 +110,7 @@ If long-running HTTP → done. Otherwise:
 1. YAML parses.
 2. Root has `services:`.
 3. JSON Schema passes — no unknown `fibe.gg/*` labels, all values match label regexes, variable names match `^[A-Za-z0-9_]+$`, paths match `^[A-Za-z0-9_./\[\]-]+$`.
-4. Runtime API (`fibe_schema(resource: "compose", operation: "validate", payload: {...})`) passes — declared-vs-referenced variables match, prop/marquee/repo URLs resolvable.
+4. Runtime API (`fibe_schema(resource: "compose", operation: "validate", payload: {...})`) passes — declared-vs-referenced variables match, defaults are literal, path bindings target existing service roots, whole-node inline warnings are reviewed, and prop/marquee/repo URLs are resolvable.
 
 → Load [reference-validation-pipeline](reference-validation-pipeline.md), then [templates-publish-checklist](templates-publish-checklist.md) if publishing.
 
@@ -139,7 +139,7 @@ That gives you a public HTTP route under the Marquee root domain at subdomain `w
 | Live-edit dev mode | `fibe.gg/repo_url`, `fibe.gg/source_mount: /app`, `fibe.gg/start_command`, `fibe.gg/production: "false"` |
 | Zero-downtime rollouts | `fibe.gg/zerodowntime: "true"` on an exposed HTTP service, with optional `fibe.gg/healthcheck_*` overrides when defaults do not match the app; forbids `container_name` and forbids raw `ports:` only when `preserve_ports: true` |
 | One-shot job that defines success | `fibe.gg/job_watch: "true"` on the watched service + `x-fibe.gg.metadata.job_mode: true` |
-| Pick subdomain at launch | `fibe.gg/subdomain: $$var__SUBDOMAIN` + variable declared in `x-fibe.gg.variables` |
+| Pick subdomain at launch | `fibe.gg/subdomain: demo` placeholder + `x-fibe.gg.variables.SUBDOMAIN.path: services.web.labels.fibe.gg/subdomain` |
 | Pick image tag at launch | `image: ghcr.io/owner/repo:$$var__TAG` + variable declared |
 
 → For exact value rules of any label above, load [reference-fibe-labels](reference-fibe-labels.md).
@@ -164,7 +164,7 @@ If the input compose matches one of these shapes, jump straight to the matching 
 ## After conversion
 
 - Run `fibe_schema(resource: "compose", operation: "validate", payload: {"compose_yaml": "..."})` from MCP. Always validate authored YAML this way — never infer labels from old playgrounds or remembered examples; unknown `fibe.gg/*` labels fail.
-- Then `fibe_templates_launch` for a test launch, or `fibe_resource_mutate(resource: "playspec", operation: "create", ...)` to import.
+- Then `fibe_launch` for a test launch, or `fibe_resource_mutate(resource: "playspec", operation: "create", ...)` to import.
 - Watch for errors against [common-errors-and-fixes](common-errors-and-fixes.md).
 
 ## What this skill is NOT

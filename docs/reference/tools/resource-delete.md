@@ -23,14 +23,15 @@ Generic delete. Routes to the matching `DELETE /api/<plural>/:id` endpoint. Rela
 |---|---|---|---|
 | `resource` | string (enum) | yes | Canonical or alias |
 | `id` | number | one of | Numeric ID |
-| `identifier` | string | one of | Numeric ID or slug-safe name (named resources) |
+| `id_or_name` | string | one of | Numeric ID or name for named resources |
+| `id_or_key` | string | one of | Numeric ID or key for secrets |
 | `confirm` | bool | yes (unless `--yolo`) | Must be `true` |
 
 ## Output
 ```json
 {
   "resource": "playground",
-  "identifier": "my-app",
+  "id_or_name": "my-app",
   "id": 42,
   "deleted": true
 }
@@ -55,7 +56,7 @@ If the playground is already in `destroying`, the call is idempotent — no seco
 
 ## Gotchas
 - `confirm:true` is enforced server-side (in the SDK) when not in `--yolo`. Without it you get a `confirmRequiredError` and no API call is made.
-- Named-identifier deletion of an in-flight Playground may race with `destroying` transition; you'll see `INVALID_STATE` if you retry against an already-destroying record.
+- Named-resource deletion of an in-flight Playground may race with `destroying` transition; you'll see `INVALID_STATE` if you retry against an already-destroying record.
 - Fibe returns 202/204 on success; the SDK normalizes to a `deleted: true` envelope.
 - Deletion is **not** reversible. There is no soft-delete restore for Playgrounds, Props, Secrets.
 - `secret` deletion does NOT remove the Secret from running Playground envs that already mounted it; rolling out a new compose is required to fully evict.

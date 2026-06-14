@@ -25,6 +25,9 @@ Endpoint: `GET /api/me`. Auth uses bearer token from `FIBE_API_KEY` (or session-
 ```json
 {
   "domain": "https://fibe.gg",
+  "profile": "default",
+  "auth_source": "profile",
+  "domain_source": "profile",
   "version": "<sdk semver>",
   "authenticated": true,
   "user_id": 42,
@@ -47,8 +50,8 @@ Endpoint: `GET /api/me`. Auth uses bearer token from `FIBE_API_KEY` (or session-
 ```
 
 ## Gotchas
-- `domain` reflects the Fibe Client's resolved base URL, including any `fibe_auth_set` override. If that surprises you, your session has a tenant override.
-- `api_key_scopes` is empty for legacy keys without explicit scopes; missing scopes mean broad access, not zero access.
+- `domain` reflects the Fibe Client's resolved base URL, including any `fibe_auth_set` override. `profile`, `auth_source`, and `domain_source` explain where that target came from.
+- `api_key_scopes` is omitted for legacy keys without explicit scopes; missing scopes mean broad access, not zero access.
 - `version` is the SDK build, not the server version.
 - This tool requires no inputs — passing args is silently ignored.
 

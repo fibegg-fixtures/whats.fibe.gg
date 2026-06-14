@@ -18,9 +18,9 @@ Polls `GET /api/playgrounds/:id/status` on a fixed interval until it reaches the
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `playground_id` | number | one of | Numeric ID |
-| `playground_identifier` | string | one of | Numeric ID or slug-safe name |
+| `id_or_name` | string | yes | Playground numeric ID or slug-safe name |
 | `status` | string | yes | Target status; `running`, `stopped`, `has_changes`, `completed`, `destroyed`, etc. |
+| `readiness` | string | no | `services` waits for reported service readiness when target status is `running`; `lifecycle` waits only for the top-level status. Defaults to `services` for `running` and `lifecycle` otherwise. |
 | `timeout` | string | no | Go duration; default `10m` |
 | `interval` | string | no | Go duration; default `3s` |
 
@@ -56,9 +56,9 @@ Polls `GET /api/playgrounds/:id/status` on a fixed interval until it reaches the
 {
   "steps": [
     { "id":"act", "tool":"fibe_playgrounds_action",
-      "args":{ "playground_id":42, "action_type":"rollout", "confirm":true } },
+      "args":{ "id_or_name":"42", "action_type":"rollout", "confirm":true } },
     { "id":"wait", "tool":"fibe_playgrounds_wait",
-      "args":{ "playground_id":42, "status":"running", "timeout":"5m" } }
+      "args":{ "id_or_name":"42", "status":"running", "readiness":"services", "timeout":"5m" } }
   ]
 }
 ```
@@ -66,4 +66,4 @@ Polls `GET /api/playgrounds/:id/status` on a fixed interval until it reaches the
 ## Related
 - `fibe_playgrounds_action` — the producer of state transitions.
 - `fibe_playgrounds_debug` — diagnose why wait timed out.
-- `fibe_playgrounds_logs_follow` — alternative for log-based readiness signals.
+- `fibe_logs_follow` — alternative for log-based readiness signals.

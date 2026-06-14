@@ -104,13 +104,13 @@ services:
   backup:
     image: postgres:17
     environment:
-      PGHOST: $$var__PG_HOST
-      PGUSER: $$var__PG_USER
-      PGPASSWORD: $$var__PG_PASS
-      PGDATABASE: $$var__PG_DB
-      S3_BUCKET: $$var__S3_BUCKET
-      S3_KEY_ID: $$var__S3_KEY_ID
-      S3_SECRET: $$var__S3_SECRET
+      PGHOST: db.example.internal
+      PGUSER: postgres
+      PGPASSWORD: placeholder
+      PGDATABASE: app
+      S3_BUCKET: backups
+      S3_KEY_ID: key-id
+      S3_SECRET: placeholder
     command:
       - /bin/bash
       - -ec
@@ -138,30 +138,37 @@ x-fibe.gg:
     PG_HOST:
       name: "Postgres host"
       required: true
+      path: services.backup.environment.PGHOST
     PG_USER:
       name: "Postgres user"
       required: true
       default: "postgres"
+      path: services.backup.environment.PGUSER
     PG_PASS:
       name: "Postgres password"
       required: true
       secret: true
       sensitive: true
+      path: services.backup.environment.PGPASSWORD
     PG_DB:
       name: "Postgres database"
       required: true
+      path: services.backup.environment.PGDATABASE
     S3_BUCKET:
       name: "S3 bucket"
       required: true
+      path: services.backup.environment.S3_BUCKET
     S3_KEY_ID:
       name: "S3 access key ID"
       required: true
       secret: true
+      path: services.backup.environment.S3_KEY_ID
     S3_SECRET:
       name: "S3 secret access key"
       required: true
       secret: true
       sensitive: true
+      path: services.backup.environment.S3_SECRET
 ```
 
 ## Pitfalls

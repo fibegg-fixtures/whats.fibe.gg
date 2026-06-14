@@ -11,7 +11,7 @@ format: md
 
 [MODE:SIDEEFFECTS] Tier: base. Not idempotent.
 
-Creates an Artefact with attached file content for the current Agent through a multipart `POST /api/agents/:agent_id/artefacts`.
+Creates an Artefact with attached content for the current or selected Agent through a multipart `POST /api/agents/:agent_id/artefacts`.
 
 When `FIBE_WORKSPACE_PATH` is set, the same content is also written into that directory under `<workspace>/<filename>` so the Player can see it in their local workspace.
 
@@ -30,18 +30,24 @@ When `FIBE_WORKSPACE_PATH` is set, the same content is also written into that di
 | `name` | string | yes | Display name (alias `title`); also used as filename fallback |
 | `filename` | string | no | Target filename; defaults to `name` |
 | `description` | string | no | Human description |
-| `content_base64` | string | one of | Base64 file bytes (alias `content`) |
-| `content_path` | string | one of | Absolute local FS path (local MCP only) |
+| `content_base64` | string | no | Base64 file bytes (alias `content`) |
+| `content_path` | string | no | Absolute local FS path (local MCP only) |
+| `body` | string | no | Inline text/body content |
+| `content_text` | string | no | Alias for inline text/body content |
+| `agent_id_or_name` | int or string | no | Target Agent override; defaults to `FIBE_AGENT_ID` |
+| `playground_id_or_name` | int or string | no | Optional Playground tag |
+| `skill` | string | no | Optional skill/source label |
+| `skill_enabled` | bool | no | Whether this artefact should be exposed as skill material |
 
-`agent_id` comes from `FIBE_AGENT_ID` env.
+`name` is the only required field. File bytes can come from `content_base64`, `content_path`, `body`, or `content_text`; when no explicit content is provided, the upload is created with the available metadata/body fallback. `agent_id_or_name` takes precedence over `FIBE_AGENT_ID`.
 
 ## Output
 The created Artefact JSON, including its `id`, attached file URL hint, content type, and `agent_id`.
 
 ## Behavior
-1. Resolves `FIBE_AGENT_ID`.
+1. Resolves `agent_id_or_name` or falls back to `FIBE_AGENT_ID`.
 2. Picks `filename` (explicit > `name`).
-3. Decodes file source (base64 → bytes; or reads `content_path`).
+3. Decodes file source (base64 → bytes, `content_path`, or inline `body`/`content_text`).
 4. If `FIBE_WORKSPACE_PATH` set:
    - Cleans filename (rejects path traversal / absolute paths).
    - Writes content to `<workspace>/<filename>`.
@@ -54,11 +60,12 @@ The created Artefact JSON, including its `id`, attached file URL hint, content t
 - Subdirectories OK (`reports/2026-q1.md` writes under `<workspace>/reports/...`).
 
 ## Output download
-To later read the file content, use `fibe_resource_get(resource:"artefact_attachment", id:<artefact_id>)` — returns base64.
+To later read the file content, use `fibe_resource_get(resource:"artefact_attachment", id_or_name:<artefact_id>)` — returns base64.
 
 ## Gotchas
-- `FIBE_AGENT_ID` env is required; missing → fails immediately.
+- `FIBE_AGENT_ID` env is required only when `agent_id_or_name` is omitted; missing identity then fails immediately.
 - `content_base64` and `content_path` are mutually exclusive in practice (only one is read; base64 wins if both set).
+- `body`/`content_text` are useful for report-style artefacts where there is no local file to read.
 - Without explicit `filename`, the artefact's filename equals `name` — make `name` filesystem-safe if you rely on this.
 - `content_path` only works on local MCP transport — fails on remote-served MCP.
 - Workspace writes use `0644`/`0755` permissions; existing files are overwritten silently.

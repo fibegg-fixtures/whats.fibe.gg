@@ -155,7 +155,7 @@ const marqueeBody = {
   marquee: {
     name: 'staging-runner',
     host: 'captain.example.com',
-    username: 'ubuntu',
+    user: 'ubuntu',
     port: 22,
   },
 };
@@ -164,15 +164,15 @@ const propBody = {
   prop: {
     name: 'web-app',
     repo_url: 'https://github.com/example/web-app',
-    branch: 'main',
+    default_branch: 'main',
   },
 };
 
 const playspecBody = {
   playspec: {
     name: 'web-app',
-    compose_yaml: 'services:\n  web:\n    image: nginx:alpine',
-    prop_id: 123,
+    base_compose_yaml: 'services:\n  web:\n    image: nginx:alpine',
+    persist_volumes: true,
   },
 };
 
@@ -188,36 +188,43 @@ const importTemplateBody = {
   import_template: {
     name: 'Rails starter',
     description: 'Production-ready Rails template',
-    source_url: 'https://github.com/example/template',
+    category_id: 123,
   },
 };
 
 const agentBody = {
   agent: {
     name: 'Builder',
-    playground_id: 123,
-    instructions: 'Work on the app and report changes.',
+    provider: 'claude-code',
+    prompt: 'Work on the app and report changes.',
+    build_in_public_playground_id: 123,
   },
 };
 
 const artefactBody = {
   artefact: {
     name: 'report.md',
-    content_type: 'text/markdown',
     body: '# Report',
+    plain_text: true,
   },
 };
 
 const feedbackBody = {
-  feedback: {
-    rating: 'positive',
-    body: 'Useful result',
-  },
+  source_type: 'message',
+  source_id: 'msg_123',
+  selection_start: 0,
+  selection_end: 18,
+  selected_text: 'Deployment failed.',
+  comment: 'This needs follow-up.',
+  line_text: 'Deployment failed.',
+  context: 'Agent output',
 };
 
 const pokeBody = {
-  poke: {
-    body: 'Please check the deployment logs.',
+  agent_poke: {
+    schedule: '0 9 * * *',
+    prompt: 'Check the deployment logs.',
+    enabled: true,
   },
 };
 
@@ -349,13 +356,13 @@ export const platformSections = [
       endpoint({
         method: 'POST',
         path: '/api/props/attachments',
-        title: 'Attach prop',
+        title: 'Attach GitHub repository',
         description: [
-          'Attaches an existing prop to another Fibe resource such as a playspec or playground.',
-          'Use this when source ownership already exists and the target only needs a relationship.',
-          'The request identifies both the prop and the target resource to attach it to.',
+          'Creates or returns a Prop for a GitHub repository available through your connected GitHub App installation.',
+          'Use this when a repo already exists on GitHub and Fibe should register it as a source Prop.',
+          'The request identifies the GitHub repository by full name, such as `owner/repo`.',
         ],
-        requestBody: body('Prop attachment request.', {prop_id: 123, target_type: 'Playground', target_id: 123}),
+        requestBody: body('GitHub repository attachment request.', {repo_full_name: 'owner/repo'}),
         responses: createResponses,
       }),
       endpoint({
@@ -363,12 +370,17 @@ export const platformSections = [
         path: '/api/props/mirrors',
         title: 'Mirror prop source',
         description: [
-          'Creates or refreshes a mirrored copy of a prop source.',
+          'Creates a new Fibe-managed mirror from a GitHub repository URL, or returns the existing mirror when one already exists.',
           'Use it when Fibe needs its own repository mirror before agents or jobs can work safely.',
           'Mirroring can involve remote repository access and may return an async status.',
         ],
-        requestBody: body('Mirror request.', {prop_id: 123}),
-        responses: acceptedResponses,
+        requestBody: body('Mirror request.', {source_url: 'https://github.com/owner/repo', name: 'repo-mirror'}),
+        responses: [
+          {status: '201', description: 'Creates the mirrored Prop and starts mirroring work.'},
+          {status: '200', description: 'Returns an existing mirror when the source was already mirrored.'},
+          {status: '400', description: 'The source URL is not a valid GitHub URL.'},
+          {status: '422', description: 'Validation failed.'},
+        ],
       }),
       endpoint({
         method: 'POST',
@@ -413,8 +425,8 @@ export const platformSections = [
     description: 'Prop mutations track source edits that Fibe or agents apply to repositories.',
     endpoints: [
       listEndpoint('/api/props/:prop_id/mutations', 'prop mutations', {parameters: [pathParam('prop_id', 'Parent prop id.')]}),
-      createEndpoint('/api/props/:prop_id/mutations', 'prop mutation', {mutation: {title: 'Add env file', patch: 'diff --git ...'}}, {parameters: [pathParam('prop_id', 'Parent prop id.')]}),
-      updateEndpoint('/api/props/:prop_id/mutations/:id', 'prop mutation', {mutation: {title: 'Updated mutation title'}}, [pathParam('prop_id', 'Parent prop id.'), pathParam()]),
+      createEndpoint('/api/props/:prop_id/mutations', 'prop mutation', {git_diff: 'diff --git ...', commit_sha: 'abc123', branch: 'main'}, {parameters: [pathParam('prop_id', 'Parent prop id.')]}),
+      updateEndpoint('/api/props/:prop_id/mutations/:id', 'prop mutation', {status: 'cured', cured_commit_sha: 'def456'}, [pathParam('prop_id', 'Parent prop id.'), pathParam()]),
     ],
   },
   {
@@ -563,7 +575,7 @@ export const platformSections = [
           'The response is read-only and does not mutate the playspec.',
         ],
         parameters: [pathParam()],
-        requestBody: body('Template switch preview request.', {version_id: 123}),
+        requestBody: body('Template switch preview request.', {target_template_version_id: 123, rollout_mode: 'all', confirm_warnings: false}),
         responses: [{status: '200', description: 'Returns the preview result.'}, {status: '422', description: 'The switch cannot be previewed.'}],
       }),
       endpoint({
@@ -571,13 +583,13 @@ export const platformSections = [
         path: '/api/playspecs/:id/template_switches',
         title: 'Apply template switch',
         description: [
-          'Applies a template version switch to the playspec.',
+          'Queues a template version switch for the playspec.',
           'Use it after reviewing the preview and accepting any migration implications.',
-          'The response returns the updated playspec or validation errors.',
+          'The response is an async operation envelope; poll the returned status URL for the final result.',
         ],
         parameters: [pathParam()],
-        requestBody: body('Template switch request.', {version_id: 123}),
-        responses: updateResponses,
+        requestBody: body('Template switch request.', {target_template_version_id: 123, rollout_mode: 'all', confirm_warnings: true}),
+        responses: acceptedResponses,
       }),
       endpoint({
         method: ['POST', 'PATCH', 'DELETE'],
@@ -589,7 +601,7 @@ export const platformSections = [
           'The method controls whether the mount is created, changed, or removed.',
         ],
         parameters: [pathParam()],
-        requestBody: body('Mount mutation request.', {mount: {path: '/app/.env', content: 'KEY=value'}}),
+        requestBody: body('Mount mutation request.', {file: 'KEY=value', filename: '.env', mount_path: '/app/.env', target_services: ['web'], readonly: true}),
         responses: updateResponses,
       }),
       endpoint({
@@ -602,7 +614,7 @@ export const platformSections = [
           'Credential values should be treated as secrets and rotated when no longer needed.',
         ],
         parameters: [pathParam()],
-        requestBody: body('Registry credential request.', {registry: 'ghcr.io', username: 'octocat', password: 'token'}),
+        requestBody: body('Registry credential request.', {registry_type: 'custom', registry_url: 'ghcr.io', username: 'octocat', secret: 'token'}),
         responses: updateResponses,
       }),
     ],
@@ -625,7 +637,7 @@ export const platformSections = [
         responses: showResponses,
       }),
       listEndpoint('/api/import_templates/:id/versions', 'template versions', {parameters: [pathParam()]}),
-      createEndpoint('/api/import_templates/:id/versions', 'template version', {version: {name: 'v1', notes: 'Initial version'}}, {parameters: [pathParam()]}),
+      createEndpoint('/api/import_templates/:id/versions', 'template version', {template_body: 'services:\n  web:\n    image: nginx:alpine', public: false, changelog: 'Initial version'}, {parameters: [pathParam()]}),
       deleteEndpoint('/api/import_templates/:id/versions/:version_id', 'template version', [pathParam(), pathParam('version_id', 'Template version id.')]),
       endpoint({
         method: 'POST',
@@ -681,14 +693,13 @@ export const platformSections = [
       endpoint({
         method: 'PATCH',
         path: '/api/import_templates/:id/versions/:version_id/publication',
-        title: 'Update version publication',
+        title: 'Toggle version publication',
         description: [
-          'Changes whether a template version is publicly visible or otherwise published.',
+          'Toggles whether a template version is publicly visible.',
           'Use it after validating source, generated images, and launch behavior.',
-          'Publication state controls how the template appears in catalog and launch flows.',
+          'The request body is ignored; this is not an idempotent "set public" endpoint. Calling it again flips the state back.',
         ],
         parameters: [pathParam(), pathParam('version_id', 'Template version id.')],
-        requestBody: body('Publication request.', {public: true}),
         responses: updateResponses,
       }),
       endpoint({
@@ -761,7 +772,7 @@ export const agentsSections = [
           'The method selects whether the mount is created, changed, or removed.',
         ],
         parameters: [pathParam()],
-        requestBody: body('Agent mount mutation request.', {mount: {path: '/workspace/notes.md', content: 'Context'}}),
+        requestBody: body('Agent mount mutation request.', {filename: 'notes.md', content_base64: 'Q29udGV4dA==', mount_path: '/workspace/notes.md', target_services: ['web'], readonly: true}),
         responses: updateResponses,
       }),
       endpoint({
@@ -774,8 +785,20 @@ export const agentsSections = [
           'Credentials should be scoped narrowly and rotated after use.',
         ],
         parameters: [pathParam()],
-        requestBody: body('Agent auth request.', {provider: 'github', token: 'ghp_...'}),
+        requestBody: body('Agent auth request.', {token: '<provider API key>'}),
         responses: updateResponses,
+      }),
+      endpoint({
+        method: 'POST',
+        path: '/api/agents/:id/revocations',
+        title: 'Revoke agent authentication',
+        description: [
+          'Revokes the stored provider authentication for an agent.',
+          'Use it when a provider credential was rotated, leaked, or should no longer be available to the agent runtime.',
+          'The endpoint does not require a request body.',
+        ],
+        parameters: [pathParam()],
+        responses: acceptedResponses,
       }),
       endpoint({
         method: 'POST',
@@ -898,9 +921,40 @@ export const agentsSections = [
     title: 'Agent defaults',
     description: 'Defaults apply to newly created agents for the authenticated player.',
     endpoints: [
-      showEndpoint('/api/agent_defaults', 'agent defaults', []),
-      updateEndpoint('/api/agent_defaults', 'agent defaults', {agent_defaults: {model: 'default', instructions: 'Be concise.'}}, []),
-      deleteEndpoint('/api/agent_defaults', 'agent defaults', []),
+      endpoint({
+        method: 'GET',
+        path: '/api/agent_defaults',
+        title: 'Read agent defaults',
+        description: [
+          'Returns the current player agent defaults blob.',
+          'Requires an API key with `agents:read` scope.',
+          'Use it before creating agents that should inherit player-level model, prompt, runtime, or provider preferences.',
+        ],
+        responses: showResponses,
+      }),
+      endpoint({
+        method: ['PATCH', 'PUT'],
+        path: '/api/agent_defaults',
+        title: 'Update agent defaults',
+        description: [
+          'Replaces the current player agent defaults blob after normalizing supported settings.',
+          'Requires an API key with `agents:write` scope.',
+          'The response returns the normalized defaults payload.',
+        ],
+        requestBody: body('Agent defaults payload.', {agent_defaults: {model: 'default', instructions: 'Be concise.'}}),
+        responses: updateResponses,
+      }),
+      endpoint({
+        method: 'DELETE',
+        path: '/api/agent_defaults',
+        title: 'Clear agent defaults',
+        description: [
+          'Clears the current player agent defaults blob.',
+          'Requires an API key with `agents:write` scope.',
+          'The response is `200 OK` with the cleared defaults payload, not an empty `204` response.',
+        ],
+        responses: updateResponses,
+      }),
     ],
   },
   {
@@ -1015,7 +1069,7 @@ export const agentsSections = [
     title: 'Agent subresources',
     description: 'Subresources hang off a specific agent and represent artefacts, feedback, pokes, and mutter entries.',
     endpoints: [
-      ...crud('/api/agents/:agent_id/artefacts', 'agent artefact', 'agent artefacts', artefactBody).map((item) => ({
+      ...crud('/api/agents/:agent_id/artefacts', 'agent artefact', 'agent artefacts', artefactBody).filter((item) => item.method !== 'DELETE').map((item) => ({
         ...item,
         parameters: [pathParam('agent_id', 'Parent agent id.'), ...(item.parameters || []).filter((param) => param.name !== 'page' && param.name !== 'per_page' && param.name !== 'agent_id')],
       })),
@@ -1129,7 +1183,11 @@ export const agentsSections = [
           'Memory content should avoid secrets and short-lived operational noise.',
         ],
         requestBody: body('Memory creation payload.', {content: 'Production deploys run from GitHub Actions.'}),
-        responses: createResponses,
+        responses: [
+          {status: '200', description: 'Stores memory synchronously and returns the memorize service result.'},
+          {status: '202', description: 'Queues large or explicitly async memory payloads and returns an async request envelope.'},
+          {status: '422', description: 'Validation failed. The response includes the shared error envelope.'},
+        ],
       }),
     ],
   },
@@ -1151,8 +1209,8 @@ export const integrationsSections = [
         ],
         responses: showResponses,
       }),
-      listEndpoint('/api/api_keys', 'API keys', {parameters: [query('q', 'string', 'Search API keys by label.'), query('sort', 'string', 'Sort by supported fields such as label or created_at.')] }),
-      createEndpoint('/api/api_keys', 'API key', {api_key: {label: 'CI token', expires_at: '2026-12-31T23:59:59Z', agent_accessible: false, scopes: ['monitor:read'], granular_scopes: {agents: [123]}}}),
+      listEndpoint('/api/api_keys', 'API keys', {parameters: [query('q', 'string', 'Search API keys by label.'), query('sort', 'string', 'Sort by created_at.')] }),
+      createEndpoint('/api/api_keys', 'API key', {api_key: {label: 'CI token', expires_at: '2026-12-31T23:59:59Z', agent_accessible: false, scopes: ['monitor:read'], granular_scopes: {'monitor:read': [123]}}}),
       deleteEndpoint('/api/api_keys/:id', 'API key'),
     ],
   },
@@ -1160,7 +1218,7 @@ export const integrationsSections = [
     title: 'Secrets and job environment',
     description: 'Secrets and job environment endpoints manage values injected into jobs and playgrounds.',
     endpoints: [
-      ...crud('/api/secrets', 'secret', 'secrets', {secret: {name: 'DATABASE_PASSWORD', value: 'change-me', scope: 'playground'}}),
+      ...crud('/api/secrets', 'secret', 'secrets', {secret: {key: 'DATABASE_PASSWORD', value: 'change-me', description: 'Database password'}}),
       ...crud('/api/job_env', 'job environment variable', 'job environment variables', {job_env: {key: 'RAILS_ENV', value: 'production'}}),
     ],
   },
@@ -1171,18 +1229,40 @@ export const integrationsSections = [
       endpoint({
         method: 'POST',
         path: '/api/repo_status_checks',
-        title: 'Update repository status check',
+        title: 'Check repository access',
         description: [
-          'Creates or updates a repository status check for a commit or branch.',
-          'Use it from automation that reports Fibe validation, deploy, or template status back to source control.',
-          'The request identifies the repository target and the status payload to publish.',
+          'Checks reachability and access status for up to 50 GitHub repository URLs.',
+          'Use it before creating Props or launching from repositories to see whether the caller can access each repo.',
+          'The endpoint returns repository status data and does not write commit statuses or comments back to source control.',
         ],
-        requestBody: body('Repository status check payload.', {repository: 'fibegg/app', sha: 'abc123', state: 'success', description: 'Fibe validation passed'}),
-        responses: createResponses,
+        requestBody: body('Repository status check payload.', {github_urls: ['https://github.com/owner/repo', 'https://github.com/owner/other-repo']}),
+        responses: [{status: '200', description: 'Returns `{ repos: [...] }` with per-repository status.'}, ...listResponses.slice(1)],
       }),
       listEndpoint('/api/github_repositories', 'GitHub repositories', {parameters: [query('q', 'string', 'Search repository names.')] }),
-      createEndpoint('/api/github_repositories', 'GitHub repository', {github_repository: {full_name: 'example/app', installation_id: 123}}),
-      createEndpoint('/api/gitea_repositories', 'Gitea repository', {gitea_repository: {name: 'app', owner: 'fibe'}}),
+      endpoint({
+        method: 'POST',
+        path: '/api/github_repositories',
+        title: 'Create GitHub repository',
+        description: [
+          "Creates a repository in the caller's OAuth-connected GitHub account.",
+          'Use it when automation needs a new GitHub repo before registering a Prop or launching a project.',
+          'The request fields are top-level JSON keys, not wrapped in a `github_repository` object.',
+        ],
+        requestBody: body('GitHub repository creation request.', {name: 'app', private: true, auto_init: true, description: 'New app repository'}),
+        responses: createResponses,
+      }),
+      endpoint({
+        method: 'POST',
+        path: '/api/gitea_repositories',
+        title: 'Create Gitea repository',
+        description: [
+          "Creates a repository through the caller's connected Gitea account and registers it as a Prop.",
+          'Use top-level JSON fields; the server does not read a `gitea_repository` wrapper.',
+          'The response includes the Gitea repo summary and the linked Fibe Prop.',
+        ],
+        requestBody: body('Gitea repository creation request.', {name: 'app', private: true, auto_init: true, description: 'New app repository'}),
+        responses: createResponses,
+      }),
       endpoint({
         method: 'GET',
         path: '/api/github_apps/connect',
@@ -1236,7 +1316,7 @@ export const integrationsSections = [
     title: 'Webhook endpoints',
     description: 'Webhook endpoint records describe outbound webhook subscriptions managed through the API.',
     endpoints: [
-      ...crud('/api/webhook_endpoints', 'webhook endpoint', 'webhook endpoints', {webhook_endpoint: {url: 'https://example.com/fibe-webhook', event_types: ['playground.updated'], enabled: true}}),
+      ...crud('/api/webhook_endpoints', 'webhook endpoint', 'webhook endpoints', {webhook_endpoint: {url: 'https://example.com/fibe-webhook', events: ['playground.updated'], description: 'Deploy notifications'}}),
       endpoint({
         method: 'GET',
         path: '/api/webhook_endpoints/:webhook_endpoint_id/deliveries',

@@ -143,24 +143,27 @@ services:
   web:
     image: node:24
     labels:
-      fibe.gg/repo_url: $$var__REPO_URL
+      fibe.gg/repo_url: https://github.com/owner/repo
       fibe.gg/source_mount: /app
-      fibe.gg/start_command: $$var__START_COMMAND
+      fibe.gg/start_command: npm run dev
       fibe.gg/port: 3000
       fibe.gg/visibility: external
-      fibe.gg/production: $$var__PRODUCTION
+      fibe.gg/production: "false"
 
 x-fibe.gg:
   variables:
     REPO_URL:
       name: "Repository URL"
       required: true
+      path: services.web.labels.fibe.gg/repo_url
     START_COMMAND:
       name: "Start command"
       default: "npm run dev"
+      path: services.web.labels.fibe.gg/start_command
     PRODUCTION:
       name: "Production mode (built image)"
       default: "false"
+      path: services.web.labels.fibe.gg/production
 ```
 
 ## Pitfalls

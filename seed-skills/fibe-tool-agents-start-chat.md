@@ -7,7 +7,7 @@ description: Use when you need to start (or reconnect) an Agent chat session on 
 
 [MODE:SIDEEFFECTS] Tier: overseer. Not idempotent.
 
-Starts an Agent chat container on the Marquee through `POST /api/agents/:id/start_chat`.
+Starts an Agent chat container on the Marquee through `POST /api/agents/:id/chats`.
 
 The Marquee must be funded. Unpaid Marquees return `MARQUEE_NOT_FUNDED`.
 
@@ -19,7 +19,7 @@ The Marquee must be funded. Unpaid Marquees return `MARQUEE_NOT_FUNDED`.
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `agent_id` | int or string | yes | Agent ID or name |
+| `id_or_name` | int or string | yes | Agent ID or name |
 
 `marquee_id` is read from `FIBE_MARQUEE_ID` env — failing fast if unset.
 

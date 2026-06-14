@@ -20,9 +20,10 @@ Generic single-record fetch. Routes to the typed per-resource lookup, hitting `G
 |---|---|---|
 | `resource` | string (enum), required | Canonical or alias |
 | `id` | number | Numeric ID (preferred for ID-only resources) |
-| `identifier` | string | Numeric ID OR slug-safe name (named resources only) |
+| `id_or_name` | string | Numeric ID or name for named resources |
+| `id_or_key` | string | Numeric ID or key for secrets |
 
-Pass exactly one of `id` / `identifier`. Named-resolved resources (`playground`, `trick`, `playspec`, `prop`, `marquee`, `agent`) accept either.
+Pass exactly one of `id`, `id_or_name`, or `id_or_key` depending on the resource. Named resources (`playground`, `trick`, `playspec`, `prop`, `marquee`, `agent`) accept `id_or_name`.
 
 ## Output
 The resource's detailed JSON serialization. Nested includes vary per resource:
@@ -43,7 +44,7 @@ returns
 ```json
 {
   "resource": "artefact_attachment",
-  "artefact_id": 123,
+  "id_or_name": 123,
   "filename": "report.pdf",
   "content_type": "application/pdf",
   "content_base64": "<...>",
@@ -58,7 +59,7 @@ Use this for the actual file bytes; `resource:"artefact"` returns metadata only.
 
 ## Gotchas
 - Named lookup is case-sensitive (slug-style). For ambiguous text use list + filter.
-- Numeric strings work for `identifier` ("123" parses as ID 123).
+- Numeric strings work for `id_or_name` ("123" parses as ID 123).
 - Passing `reveal` returns an error — secrets cannot be unmasked through this tool.
 - `artefact` get without `attachment` keyword returns metadata; you must explicitly use `artefact_attachment` for the file.
 - For audit_log / memory the `delete` op exists in schema but is allowlist-restricted; `get` is unrestricted within accessibility.

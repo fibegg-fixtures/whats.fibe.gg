@@ -46,7 +46,7 @@ x-fibe.gg:
 - **Removes routing/exposure labels** — no public routes are created for job services; platform bookkeeping labels remain on the containers. The platform has already used the source labels to set up clones and mounts.
 - **Forces `restart: "no"`** on every service. Restarts would fight job lifecycle.
 - **Forces `deploy.replicas: 1`** on every service. Replicas would multiply work.
-- **Forbids `fibe.gg/port`** anywhere. Job services aren't user-facing.
+- **Strips `fibe.gg/port`, visibility, subdomain, expose, and Traefik routing labels** before launch. Job services aren't user-facing.
 - **Completes when all watched services exit.** Unwatched services (DB, queue) are torn down with the job.
 - **Fails the run** if any watched service exits non-zero.
 
@@ -116,7 +116,7 @@ Every job service automatically receives env vars describing the run: `FIBE_REPO
 
 - Long-running HTTP services. Use long-running templates.
 - Scheduled HTTP work — use a long-running service that does work internally. Job mode means "exit when done".
-- Services that need exposed ports. Job mode forbids `fibe.gg/port`.
+- Services that need exposed ports. Job mode strips routing labels, so they won't get public URLs.
 
 ## Triggering a Trick
 
@@ -181,7 +181,7 @@ services:
     environment:
       PGHOST: db.prod.internal
       PGUSER: backup_role
-      PGPASSWORD: $$var__BACKUP_PASS
+      PGPASSWORD: placeholder
     command: >
       pg_dump --no-owner | gzip | aws s3 cp - s3://my-backups/db.gz
     labels:
@@ -192,7 +192,7 @@ services:
 
 - **Setting only one of `job_mode: true` / `job_watch`** — `job_watch` without `job_mode`: the label is ignored and the template runs long-running. `job_mode` without any watched service: validation rejects — unless a service is source-backed, in which case source-backed services are watched by default in job mode (set `fibe.gg/job_watch: "false"` to opt one out).
 - **Watched service that doesn't exit** (e.g. starts a dev server) — job never finishes. Watched services MUST exit.
-- **Setting `fibe.gg/port` on a job service** — runtime rejects.
+- **Setting `fibe.gg/port` on a job service** — no public route is created; the label is stripped before launch. Remove it for clarity.
 - **`container_name:`, `ports:`, `restart: always`** — silently overridden, but misleading. Remove for clarity.
 - **No `setup`/`migrate` waiting** — if the test service runs before migrations finish, you get false-fail. Use `depends_on: service_completed_successfully`.
 

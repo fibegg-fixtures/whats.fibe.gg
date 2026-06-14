@@ -104,7 +104,7 @@ services:
     labels:
       fibe.gg/port: 3000
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: app
       fibe.gg/zerodowntime: "true"
       fibe.gg/healthcheck_path: /up
       fibe.gg/healthcheck_interval: 10s

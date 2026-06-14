@@ -140,7 +140,7 @@ services:
   web:
     image: ghcr.io/owner/app:latest
     labels:
-      fibe.gg/port: $$var__PORT
+      fibe.gg/port: "3000"
       fibe.gg/visibility: external
 
 x-fibe.gg:
@@ -150,9 +150,10 @@ x-fibe.gg:
       required: true
       default: "3000"
       validation: "/^[0-9]+$/"
+      path: services.web.labels.fibe.gg/port
 ```
 
-See [recipe-inline-variables](recipe-inline-variables.md).
+See [recipe-whole-node-paths](recipe-whole-node-paths.md).
 
 ## Pitfalls
 

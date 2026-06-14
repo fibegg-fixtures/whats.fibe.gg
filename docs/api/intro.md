@@ -19,7 +19,6 @@ Use the environment host plus the `/api` namespace:
 | Environment | Base URL |
 | --- | --- |
 | Production | `https://fibe.gg/api` |
-| Staging | `https://next.fibe.live/api` |
 
 ## Authentication
 
@@ -123,4 +122,4 @@ Some write endpoints support `Idempotency-Key` for safe retries. A successful re
 | [Agents and knowledge](./agents-and-knowledge.mdx) | Agents, conversations, artefacts, feedback, events, memory, uploads, and conversation synchronization. |
 | [Integrations](./integrations.mdx) | API keys, secrets, job environment, GitHub and Gitea repositories, installations, webhooks, and audit logs. |
 
-Each endpoint group is rendered from an OpenAPI 3.1 definition. Click **Authorize** on a group page, paste your `FIBE_API_KEY`, choose Production or Staging, and use **Try it out** to exercise an endpoint directly from the docs.
+Each endpoint group is rendered from an OpenAPI 3.1 definition. Click **Authorize** on a group page, paste your `FIBE_API_KEY`, choose Production, and use **Try it out** to exercise an endpoint directly from the docs.

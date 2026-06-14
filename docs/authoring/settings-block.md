@@ -101,12 +101,14 @@ x-fibe.gg:
       paths:
         - services.wiki.environment.DB_PASS
         - services.db.environment.POSTGRES_PASSWORD
-  metadata:
-    description: "Wiki.js with Postgres, ready to launch with one click"
-    category: "Productivity"
-    source_defaults: false
-    preserve_ports: false
+	  metadata:
+	    description: "Wiki.js with Postgres, ready to launch with one click"
+	    category: "Productivity"
+	    source_defaults: false
+	    preserve_ports: false
 ```
+
+If a variable path targets `services.wiki.labels.fibe.gg/subdomain`, the `wiki` service must predeclare the `fibe.gg/subdomain` label in its `labels:` block. The path editor only treats dotted label keys as a single key when that key already exists.
 
 ## Related
 

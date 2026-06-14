@@ -15,6 +15,12 @@ The goal is to make sure that someone clicking your Template in the Bazaar gets 
 Each version has its own **Make public** toggle: drafts stay private next to published versions, and unpublishing one version leaves the rest alone. A public version is live for everyone immediately — no review queue — which is why this checklist comes first. Details: [Publish to the Bazaar](/concepts/bazaar/#publish-to-the-bazaar).
 :::
 
+## Personal vs Fibe-maintained listings
+
+For a Template you own, publishing a version means setting that version public. The public version is visible to you and launchable by others immediately.
+
+Fibe-maintained catalog entries have an extra gate: the version must be public, approved, and backed by source mirrors that are ready to launch. When Fibe staff approve a player-owned Template for the maintained catalog, that approved version becomes a Fibe-maintained listing instead of staying attached to the original player account.
+
 ## The basics
 
 - The YAML parses cleanly.

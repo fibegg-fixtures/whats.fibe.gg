@@ -13,7 +13,7 @@ A VCS-triggered template runs each time the configured VCS event fires (push to 
 2. At least one service with `fibe.gg/job_watch: "true"`.
 3. `x-fibe.gg.metadata.trigger_config` with:
    - `enabled` (bool)
-   - `event_type` enum (`push` | `pull_request`) — optional, defaults to `push`; pull requests from forks do not trigger runs
+   - `event_type` enum (`push` | `pull_request`) — optional, defaults to `push`; pull-request triggers match the PR source/head branch
    - `repo_url` (string) or `prop_id` (positive integer or string form) — provide either; `repo_url` is resolved to your repository connection at import
    - `branch` (string)
    - `marquee_id` (positive integer or string form)
@@ -39,7 +39,7 @@ x-fibe.gg:
 
 Enum: `push` (commits pushed to `branch`) or `pull_request` (PR opened/synchronized/reopened whose source/head branch is `branch`).
 
-Optional — defaults to `push`. Pull requests from forks do not trigger runs.
+Optional — defaults to `push`. Pull-request triggers run for opened, synchronized, and reopened PRs when the PR source/head branch matches the configured branch.
 
 Schema enforces: `enum: ["push", "pull_request"]`. Other values rejected.
 
@@ -89,8 +89,8 @@ services:
     image: node:22
     working_dir: /app
     labels:
-      fibe.gg/repo_url: $$var__REPO_URL
-      fibe.gg/branch: $$var__BRANCH
+      fibe.gg/repo_url: https://github.com/owner/repo
+      fibe.gg/branch: main
       fibe.gg/source_mount: /app
       fibe.gg/start_command: npm ci && npm test
       fibe.gg/job_watch: "true"
@@ -101,10 +101,12 @@ x-fibe.gg:
     REPO_URL:
       name: "Repository URL"
       required: true
+      path: services.test.labels.fibe.gg/repo_url
     BRANCH:
       name: "Branch"
       required: true
       default: "main"
+      path: services.test.labels.fibe.gg/branch
 
   metadata:
     description: "Run npm test on every PR opened from develop"

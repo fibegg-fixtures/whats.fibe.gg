@@ -48,7 +48,7 @@ There is no `fibe.gg/type` label; do not invent one. The classifier derives type
 | Runtime command | `fibe.gg/start_command: bundle exec rails server -b 0.0.0.0` |
 | Dev mode (mounted) | `fibe.gg/production: "false"` |
 | Production mode (built image) | `fibe.gg/production: "true"` |
-| Env example | `fibe.gg/env_file: env.example` |
+| Env example | `fibe.gg/env_file: .env.example` |
 | Build target | `fibe.gg/build_target: production` |
 | Build args | `fibe.gg/build_args: "RAILS_ENV=production,NODE_VERSION=24"` |
 

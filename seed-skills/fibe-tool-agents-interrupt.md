@@ -5,7 +5,7 @@ description: Use when you need to stop a running Agent turn. Overseer-only.
 
 # fibe_agents_interrupt
 
-[MODE:OVERSEER] Tier: overseer. Not idempotent.
+[MODE:SIDEEFFECTS] Tier: overseer. Not idempotent.
 
 Interrupting a live Genie requires the chat Marquee to be funded. Stop and cleanup flows that touch the Marquee also require funding.
 
@@ -14,7 +14,7 @@ Requests the runtime to interrupt the currently running Agent turn. Use this onl
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `agent_id` | int or string | yes | Agent ID or name |
+| `id_or_name` | int or string | yes | Agent ID or name |
 | `conversation_id` | string | no | Specific conversation/thread ID |
 
 ## Gotchas

@@ -1,15 +1,19 @@
 ---
-name: fibe-tool-playgrounds-logs-follow
-description: Use when you need to stream a Playground service's live logs as MCP progress notifications until duration elapses or max_lines reached. For waiting on a specific log pattern.
+title: "Logs Follow"
+description: "Use when you need to stream a Playground service's live logs as MCP progress notifications until duration elapses or max_lines reached. For waiting on a specific log pattern."
+slug: /reference/tools/logs-follow
+sidebar_label: "Logs Follow"
+image: /img/og/reference-tools-logs-follow.png
+keywords: ["Fibe", "Tool", "fibe", "tool", "logs", "follow"]
+tags: ["reference", "tool", "tool"]
+format: md
 ---
 
-# fibe_playgrounds_logs_follow
-
-[MODE:SIDEEFFECTS] Tier: brownfield. Read-only API but emits progress events.
+[MODE:BROWNFIELD] Tier: brownfield. Read-only API but emits progress events.
 
 Following live logs requires a funded Marquee and returns `MARQUEE_NOT_FUNDED` when unpaid.
 
-Streams service logs line-by-line as MCP progress notifications, returning a final aggregate when bounded by duration/max_lines. Uses `/api/playgrounds/:id/logs/:service?follow=true`.
+Streams service logs line-by-line as MCP progress notifications, returning a final aggregate when bounded by duration/max_lines. It can follow either playground or trick logs.
 
 ## When to use
 - "Wait until I see 'listening on :8080'."
@@ -23,8 +27,9 @@ Streams service logs line-by-line as MCP progress notifications, returning a fin
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `playground_id` | number | yes | Numeric ID only (no name resolution here) |
-| `service` | string | yes | Compose service name |
+| `id_or_name` | string/number | yes | Playground or trick ID/name |
+| `target` | string | no | `playground` or `trick`; defaults to `playground` |
+| `service` | string | no | Compose service name; omit for all services |
 | `tail` | number | no | Initial lines from history (default 50) |
 | `duration` | string | no | Go duration; default `30s`, max constrained by transport timeout |
 | `max_lines` | number | no | Stop after N new lines (default 500) |
@@ -32,17 +37,20 @@ Streams service logs line-by-line as MCP progress notifications, returning a fin
 ## Output (final)
 ```json
 {
-  "playground_id": 42,
+  "id_or_name": 42,
+  "target": "playground",
   "service": "web",
+  "events": [ ... ],
   "lines": [
-    { "text": "...", "source": "stdout|stderr" },
+    { "text": "...", "source": "stdout|stderr", "service": "web" },
     ...
   ],
-  "count": 257
+  "line_count": 257,
+  "count": 260
 }
 ```
 
-While streaming, each line is also delivered as an MCP `notifications/progress` event tagged with the request's `progressToken` (when the client provided one). Hosts that surface progress (Claude Desktop, etc.) display lines in real time.
+`count` is the total number of returned events, including non-log status events. `line_count` is the number of log lines. While streaming, each line is also delivered as an MCP `notifications/progress` event tagged with the request's `progressToken` (when the client provided one). Hosts that surface progress (Claude Desktop, etc.) display lines in real time.
 
 ## Bounds
 The stream stops when:
@@ -54,7 +62,7 @@ The stream stops when:
 Whichever comes first.
 
 ## Gotchas
-- Only `playground_id` (numeric) is accepted; named identifiers are not supported.
+- Named identifiers are accepted through `id_or_name`.
 - `duration` strings: `"30s"`, `"5m"`. Bare integers are interpreted as seconds.
 - Some MCP clients drop progress notifications between request and final result — even then you still get the aggregated `lines` array at the end.
 - If the underlying Marquee SSH connection drops, the stream just stops; reconnect and re-call to resume.

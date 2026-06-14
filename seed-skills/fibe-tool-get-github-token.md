@@ -27,7 +27,7 @@ Returns a fresh GitHub App **installation** token scoped to the installation tha
 ```json
 {
   "token": "ghs_...",
-  "expires_in": 3600   // seconds; token is valid this long
+  "expires_in": 3000   // seconds; Fibe caches installation tokens for 50 minutes
 }
 ```
 

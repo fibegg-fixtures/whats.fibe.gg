@@ -56,13 +56,13 @@ services:
     labels:
       fibe.gg/port: 3000
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: app
       # no path_rule → catch-all
   ws:
     labels:
       fibe.gg/port: 8081
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: app
       fibe.gg/path_rule: Path(`/cable`) || Path(`/health`)
 
 x-fibe.gg:
@@ -70,9 +70,12 @@ x-fibe.gg:
     SUBDOMAIN:
       name: "Subdomain"
       default: "next"
+      paths:
+        - services.web.labels.fibe.gg/subdomain
+        - services.ws.labels.fibe.gg/subdomain
 ```
 
-Both services must use the same subdomain value — the `$$var__SUBDOMAIN` form (declared in `x-fibe.gg.variables`) or a literal subdomain. Compose-style `${VAR:-default}` is not valid inside `fibe.gg/*` labels.
+Both services must use the same subdomain value. Use one `SUBDOMAIN` variable with `paths:` to update both labels. Compose-style `${VAR:-default}` is not valid inside `fibe.gg/*` labels, and inline `$$var__SUBDOMAIN` should not be used for whole-label values.
 
 Path rule allowed matchers only: `Path`, `PathPrefix`, `PathRegexp`. Forbidden: Host, HostRegexp, HostSNI, HostSNIRegexp, Headers, HeadersRegexp, Method, Query, ClientIP — Fibe owns those.
 
@@ -95,9 +98,7 @@ fibe.gg/port: 8000    # python
 fibe.gg/visibility: external
 fibe.gg/port: 9000    # admin console
 fibe.gg/visibility: internal
-fibe.gg/port: $$var__PORT      # variable
-fibe.gg/visibility: internal
-fibe.gg/port: $$var__PORT  # template uses launcher's port choice
+fibe.gg/port: "8080"  # template uses launcher's port choice via path binding
 fibe.gg/visibility: external
 ```
 

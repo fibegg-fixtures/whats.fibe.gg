@@ -23,7 +23,7 @@ services:
     labels:
       fibe.gg/port: <APP_PORT>
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: app
 
   db:
     image: postgres:17.5
@@ -52,6 +52,7 @@ x-fibe.gg:
       required: true
       default: "app"
       validation: "/^[a-z0-9][a-z0-9-]*[a-z0-9]$/"
+      path: services.app.labels.fibe.gg/subdomain
     DB_PASS:
       name: "Database password"
       required: true

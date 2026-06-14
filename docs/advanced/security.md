@@ -36,7 +36,7 @@ A set of 10 single-use codes generated in advance. **Save them somewhere safe.**
 
 ## Re-authentication for sensitive actions
 
-Some operations require re-confirmation of the second factor: managing API keys, secrets, webhooks, security keys, revoking all sessions.
+Some operations require re-confirmation of the second factor: managing API keys, creating/deleting/revealing webhook secrets, managing secrets and security keys, and revoking all sessions. Editing an existing webhook's non-secret fields does not re-prompt.
 
 The confirmation lasts 15 minutes. Subsequent sensitive actions inside the window go through without re-prompting.
 

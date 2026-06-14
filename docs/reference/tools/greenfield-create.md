@@ -23,17 +23,17 @@ It can start from an existing template selector, inline `template_body`, or a Gi
 - After deciding template/git_provider/marquee in Greenfield mode (see `system.md`).
 
 ## When NOT to use
-- Player is iterating on an existing app — use `fibe_playgrounds_transform` (Brownfield).
-- Just need a Playground from an existing Template — use `fibe_templates_launch` (no repo creation).
-- Player wants to **change the stack of an already-deployed playground** while preserving its id (e.g., "rebuild this playground with FastAPI + AngularJS instead") — use `fibe_playgrounds_transform`. That tool is the brownfield analog of this one and provisions Gitea-backed private Props on the fly the same way.
+- Player is iterating on an existing app — use `fibe_playgrounds_switch_template` (Brownfield).
+- Just need a Playground from an existing Template — use `fibe_launch` (no repo creation).
+- Player wants to **change the stack of an already-deployed playground** while preserving its id (e.g., "rebuild this playground with FastAPI + AngularJS instead") — use `fibe_playgrounds_switch_template`. That tool is the brownfield analog of this one and provisions Gitea-backed private Props on the fly the same way.
 
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
 | `name` | string | no | Repository/app name; inferred from `repository_url` basename when omitted |
-| `template_id` | number | no | Template to base on; defaults to platform base template |
-| `version` | string | no | Template version tag (e.g. `v1`); requires `template_id` |
-| `template_body` | string | no | Inline YAML; mutually exclusive with `template_id`/`version` |
+| `template_id_or_name` | string | no | Template to base on; defaults to platform base template |
+| `version` | string | no | Template version tag (e.g. `v1`); applies to `template_id_or_name` |
+| `template_body` | string | no | Inline YAML; mutually exclusive with `template_id_or_name`/`version` |
 | `template_body_path` | string | no | Local FS path to YAML file (local MCP only) |
 | `repository_url` | string | no | GitHub repo as `owner/repo`, `owner/repo@ref`, or `https://github.com/owner/repo`; mutually exclusive with template inputs |
 | `config_path` | string | no | Config file path inside the repo. If omitted, Fibe tries `fibe.yml`, `fibe.yaml`, `docker-compose.yml`, `docker-compose.yaml` |
@@ -87,8 +87,8 @@ The platform's base template uses `{{var__app_name}}`-style placeholders compile
 ## Gotchas
 - Before writing inline `template_body`, load `fibe-labels` and `fibe-services`; never infer `fibe.gg/*` labels from old playgrounds or memory. Validate the final YAML with `fibe_schema(resource:"compose", operation:"validate", payload:{compose_yaml: ..., target_type:"playspec"})`.
 - Expose services with `fibe.gg/port`; never use `fibe.gg/expose`. Compose `ports:` may remain for local-only development, but Fibe strips them unless `x-fibe.gg.metadata.preserve_ports: true`.
-- `template_body` and `template_id`/`version` are mutually exclusive — error if both set.
-- `repository_url` is mutually exclusive with `template_body`, `template_body_path`, `template_id`, `template_version_id`, and `version`.
+- `template_body` and `template_id_or_name`/`version` are mutually exclusive — error if both set.
+- `repository_url` is mutually exclusive with `template_body`, `template_body_path`, `template_id_or_name`, `template_version_id`, and `version`.
 - Repository snapshot mode does not auto-convert plain Compose or inject missing Fibe labels. The fetched file must already be a valid Fibe template/source.
 - GitHub App installation is required even for public repos. If no installation exists, run `fibe github apps connect`; if more than one exists, pass `github_account` or `github_installation_id`.
 - `owner/repo@ref` shorthand is accepted for `repository_url`; full GitHub URLs must use `github_ref`.
@@ -102,6 +102,6 @@ The platform's base template uses `{{var__app_name}}`-style placeholders compile
 
 ## Related
 - `fibe_templates_search` — find a fitting template *first*.
-- `fibe_templates_launch` — Playground from an existing Template (no new repo).
-- `fibe_playgrounds_transform` — iterate after landing.
+- `fibe_launch` — Playground from an existing Template (no new repo).
+- `fibe_playgrounds_switch_template` — iterate after landing.
 - `fibe_local_playgrounds_link` — re-link if `/app/playground` symlinks went stale.

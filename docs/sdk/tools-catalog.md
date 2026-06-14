@@ -31,7 +31,7 @@ The thin tools that bootstrap the rest. Every agent calls one or two of these at
 | [`fibe_tools_catalog`](/reference/tools/tools-catalog/) | This catalog, but as a tool the agent can call. |
 | [`fibe_call`](/reference/tools/call/) | Dynamic invocation of hidden tools (escape hatch). |
 | [`fibe_run`](/reference/tools/run/) | Run any CLI command (last-resort escape hatch). |
-| [`fibe_update_name`](/reference/tools/update-name/) | Rename a resource. |
+| [`fibe_update_name`](/reference/tools/update-name/) | Rename your own Agent. |
 
 ## Resource CRUD
 
@@ -53,10 +53,10 @@ Long-running environments — the brownfield half of the platform.
 | --- | --- |
 | [`fibe_playgrounds_wait`](/reference/tools/playgrounds-wait/) | Block until a Playground reaches a status. |
 | [`fibe_playgrounds_logs`](/reference/tools/playgrounds-logs/) | Consolidated log dump. |
-| [`fibe_playgrounds_logs_follow`](/reference/tools/playgrounds-logs-follow/) | Stream live logs with progress notifications. |
+| [`fibe_logs_follow`](/reference/tools/logs-follow/) | Stream live logs with progress notifications. |
 | [`fibe_playgrounds_action`](/reference/tools/playgrounds-action/) | Rollout, hard-restart, stop, start, retry, maintenance on/off. Actions that use the Marquee require funding. |
 | [`fibe_playgrounds_debug`](/reference/tools/playgrounds-debug/) | Comprehensive diagnostics for a stuck Playground. |
-| [`fibe_playgrounds_transform`](/reference/tools/playgrounds-transform/) | One-call brownfield transform — swap template, provision repos, rollout, wait. Preserves the Playground ID. |
+| [`fibe_playgrounds_switch_template`](/reference/tools/playgrounds-switch-template/) | Switch a Playground to another template, provision repos, rollout, wait. Preserves the Playground ID. |
 
 ## Agents (Genies)
 
@@ -84,9 +84,8 @@ For "I have nothing yet; build me the whole thing".
 
 | Tool | Purpose |
 | --- | --- |
-| [`fibe_launch_create`](/reference/tools/launch-create/) | Launch inline Compose, a local config file, or a GitHub repo config. |
+| [`fibe_launch`](/reference/tools/launch/) | Launch inline Compose, a local config file, a GitHub repo config, a Playspec, or a template. |
 | [`fibe_greenfield_create`](/reference/tools/greenfield-create/) | Repos → template version → Playspec → Playground → running. Single call. |
-| [`fibe_templates_launch`](/reference/tools/templates-launch/) | Bootstrap a Playground from an existing import-template. |
 | [`fibe_templates_search`](/reference/tools/templates-search/) | Search the template catalog. |
 | [`fibe_templates_change`](/reference/tools/templates-change/) | Patch / overwrite a template, optionally rollout. Advanced/hidden — not advertised in the native tool list; invoke it via `fibe_call`. |
 | [`fibe_github_repos_create`](/reference/tools/github-repos-create/) | Provision a new GitHub repo (uses your GitHub App). |
@@ -100,7 +99,6 @@ The trail your work leaves and the live event stream that surfaces it.
 | --- | --- |
 | [`fibe_monitor_list`](/reference/tools/monitor-list/) | List recent events. |
 | [`fibe_monitor_follow`](/reference/tools/monitor-follow/) | Stream events live. |
-| `fibe_monitor_logs_follow` | Stream playground or trick logs (`fibe_playgrounds_logs_follow` is its compatibility alias). (No detail page yet.) |
 | [`fibe_memorize`](/reference/tools/memorize/) | Save a memory for later runs. |
 | [`fibe_mutter`](/reference/tools/mutter/) | Post a mutter (progress / evidence / blocker note). |
 | [`fibe_mutters_get`](/reference/tools/mutters-get/) | Read mutters for a resource. |

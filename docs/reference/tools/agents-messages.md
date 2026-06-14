@@ -16,7 +16,7 @@ Reads persisted Agent messages. Use `conversation_id` whenever the Agent is reus
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `agent_id` | int or string | yes | Agent ID or name |
+| `id_or_name` | int or string | yes | Agent ID or name |
 | `conversation_id` | string | no | Specific conversation/thread ID |
 
 ## Gotchas

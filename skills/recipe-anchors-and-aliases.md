@@ -113,11 +113,11 @@ services:
 
 ## Anchors and `$$var__`
 
-`$$var__NAME` is string substitution, so it works inside anchored values too:
+`$$var__NAME` is string substitution, so it works inside anchored string fragments too:
 
 ```yaml
 x-app-environment: &app-environment
-  APP_NAME: $$var__APP_NAME
+  APP_BANNER: "Serving $$var__APP_NAME"
   DATABASE_URL: postgres://postgres:$$var__DB_PASSWORD@db:5432/app
 
 services:
@@ -127,7 +127,7 @@ services:
     environment: *app-environment
 ```
 
-When `$$var__APP_NAME` is substituted, both services get the same value.
+When `$$var__APP_NAME` is substituted inside the fragment, both services get the same value.
 
 ## Anchors and `path:` bindings
 
@@ -153,8 +153,8 @@ You can anchor a labels block too:
 
 ```yaml
 x-fibe-app-labels: &fibe-app-labels
-  fibe.gg/repo_url: $$var__REPO_URL
-  fibe.gg/branch: $$var__BRANCH
+  fibe.gg/repo_url: https://github.com/owner/repo
+  fibe.gg/branch: main
   fibe.gg/dockerfile: Dockerfile
   fibe.gg/source_mount: /app
 
@@ -164,11 +164,17 @@ services:
       <<: *fibe-app-labels
       fibe.gg/port: 3000
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: app
   jobs:
     labels:
       <<: *fibe-app-labels
       fibe.gg/start_command: bin/jobs
+x-fibe.gg:
+  variables:
+    SUBDOMAIN:
+      name: Subdomain
+      default: app
+      path: services.web.labels.fibe.gg/subdomain
 ```
 
 Use this when several roles build from the same repository but expose different commands or routes.

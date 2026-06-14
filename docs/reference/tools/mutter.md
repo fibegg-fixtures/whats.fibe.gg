@@ -1,6 +1,6 @@
 ---
 title: "Mutter"
-description: "Use when you need to post one short progress/proof/blocker/problem/milestone note as the current Agent. The dedicated Agent progress channel."
+description: "Use when you need to post one short progress/info/warning/error/success note as the current Agent. The dedicated Agent progress channel."
 slug: /reference/tools/mutter
 sidebar_label: "Mutter"
 image: /img/og/reference-tools-mutter.png
@@ -15,24 +15,24 @@ Appends one item to the current Agent's mutter stream through `POST /api/agents/
 
 ## When to use
 - Continuous progress signals (every meaningful step in `system.md`).
-- Reporting verified outcomes (`type:"proof"`).
-- Surfacing unexpected issues (`type:"problem"`).
-- Hard stop, need Player input (`type:"blocker"`).
-- Milestones (`type:"milestone"`).
+- Reporting verified outcomes (`type:"success"`).
+- Surfacing unexpected issues (`type:"warning"` or `type:"error"`).
+- Hard stop, need Player input (`type:"error"`).
+- General milestones or progress (`type:"info"`).
 
 This is the canonical agent-progress channel. Players see mutters in the UI; they can leave Feedback on them.
 
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `type` | string | yes | `proof`, `problem`, `blocker`, `milestone`, `info`, ... — extensible |
+| `type` | string | yes | Common values: `info`, `warning`, `error`, `success`; extensible |
 | `body` | string | yes | The note's body text |
-| `playground_id` | int or string | no | Tag to a specific Playground/Trick (auto-resolved from name) |
+| `playground_id_or_name` | int or string | no | Tag to a specific Playground/Trick (auto-resolved from name) |
 
 `agent_id` is **NOT** an input — read from `FIBE_AGENT_ID` env. Without it, the tool errors before sending a request.
 
 ## Output
-The full mutter JSON envelope, including the new item appended to `content.items`. Status `:created` on first item, `:ok` on subsequent appends.
+The full mutter JSON envelope, including the new item appended to `content.items`. Successful creates return HTTP `201 Created`.
 
 ## Behavior
 1. Resolves `agent_id` from env.
@@ -42,15 +42,15 @@ The full mutter JSON envelope, including the new item appended to `content.items
 5. Saves with idempotency-key middleware — same key replays cached prior response.
 
 ## Gotchas
-- `playground_id` resolves names too; an unknown playground returns the standard `RESOURCE_NOT_FOUND`.
+- `playground_id_or_name` resolves names too; an unknown playground returns the standard `RESOURCE_NOT_FOUND`.
 - The mutter record is JSONB; very long histories get expensive to read — paginate with `fibe_mutters_get`.
 - The body is whatever string you send; no markdown rendering on the API side, but UIs typically render it.
-- `type` is free-form, but UIs render known types specially. Stick to the documented set unless you have a reason.
+- `type` is free-form, but UIs render known types specially. Stick to `info`, `warning`, `error`, or `success` unless you have a reason.
 - Items persist until the mutter record is destroyed (i.e., never, in normal operation).
 
 ## Recipes
-- Verified deployment: `{ "type":"proof", "body":"Deploy success: https://demo-app.fibe.live", "playground_id":42 }`.
-- Hard block: `{ "type":"blocker", "body":"Need Player to authorize webhook secret rotation." }`.
+- Verified deployment: `{ "type":"success", "body":"Deploy success: https://demo-app.fibe.live", "playground_id_or_name":42 }`.
+- Hard block: `{ "type":"error", "body":"Need Player to authorize webhook secret rotation." }`.
 - Tracking step: `{ "type":"info", "body":"Investigating slow query in /products endpoint." }`.
 
 ## Related

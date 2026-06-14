@@ -14,8 +14,8 @@ Validation runs in **layers**. Each layer is authoritative for its scope. Higher
 [2] Compose shape       ← root must be a mapping with `services:`
 [3] Template schema     ← public Fibe Compose schema
 [4] Label semantics     ← cross-label rules
-[5] Template variables  ← declared-vs-referenced, regex, name
-[6] Template compiler   ← required-but-missing, validation patterns
+[5] Template variables  ← declared-vs-referenced, regex, name, defaults, path roots, warnings
+[6] Template compiler   ← required-but-missing, validation patterns, path-write failures
 [7] Runtime API         ← resource existence, repo URL provider, trigger permissions
 ```
 
@@ -57,7 +57,7 @@ The public Fibe Compose schema catches:
 - `trigger_config.event_type` not in `["push","pull_request"]`.
 - `schedule_config.marquee_id` / `trigger_config.prop_id|marquee_id` not a positive integer (or string form).
 
-Does NOT catch: declared-vs-used variables, repo URL provider validity, resource existence, runtime cross-label rules.
+Does NOT catch: repo URL provider validity, resource existence, runtime cross-label rules.
 
 Drive from MCP: `fibe_schema(resource: "compose", operation: "validate", payload: { "compose_yaml": "..." })`.
 
@@ -70,7 +70,7 @@ Catches cross-label rules the shape schema cannot express:
 - `fibe.gg/zerodowntime: "true"` without `fibe.gg/port` → `Service '<n>': zerodowntime services must have 'fibe.gg/port' set`.
 - `fibe.gg/zerodowntime: "true"` with Compose `ports:` and `x-fibe.gg.metadata.preserve_ports: true` → `Service '<n>': zerodowntime services cannot have 'ports'`.
 - `fibe.gg/zerodowntime: "true"` with `container_name:` → `Service '<n>': zerodowntime services cannot have 'container_name'`.
-- Invalid `repo_url` URL (not GitHub/Gitea, not HTTPS).
+- Invalid `repo_url` URL (not GitHub HTTPS, not `ssh://`, and not a configured Gitea host).
 - Static service with no `image:` → warning, not error.
 
 Also produces warnings when a static service has no image and no build, and when raw Compose `ports:` will be stripped by default.
@@ -84,6 +84,9 @@ Catches:
 - `missing_name` — variable has no/empty `name`.
 - `invalid_regex_format` — `validation` not wrapped in `/.../`.
 - `invalid_regex` — body inside `/.../` is not a valid validation pattern.
+- `template_token_in_default` — `default` contains `$$var__*`, `$$random__*`, or `$$root_domain`; defaults must be literals.
+- `invalid_path_service` — `path`/`paths` targets a missing `services.<name>` root. Missing leaves under existing services are allowed.
+- Warning `whole_node_inline_var` — a whole YAML node is exactly `$$var__NAME`; use `path`/`paths` instead.
 
 ## [6] Template compiler
 
@@ -91,6 +94,7 @@ Catches at compile time:
 
 - `Variable '<key>' is required` — required, no value, no default, not random.
 - `Variable '<key>' fails validation pattern <pattern>` — supplied value doesn't match the variable's regex.
+- `Variable '<key>' path '<path>' could not be written` — path binding reached a non-traversable scalar/array shape.
 
 The compiler also performs the substitution work — it is the layer that actually produces the final compose YAML.
 
@@ -108,12 +112,14 @@ Drive through MCP, CLI, API, or UI launch/preview. Catches:
 | Layer | MCP / Tool |
 |---|---|
 | 1-5 (everything but compile + runtime) | `fibe_schema(resource: "compose", operation: "validate", payload: { "compose_yaml": "..." })` |
-| 6 (compile / preview) | `fibe_templates_change(mode: "preview", ...)`. `fibe_templates_launch` has no dry-run — calling it launches for real; validate first with `fibe_schema(resource: "compose", operation: "validate", ...)` |
-| 7 (runtime) | `fibe_templates_launch` for real, or `fibe_resource_mutate(resource: "playspec", operation: "create", ...)` for import |
+| 6 (compile / preview) | `fibe_templates_change(mode: "preview", ...)`. `fibe_launch` has no dry-run — calling it launches for real; validate first with `fibe_schema(resource: "compose", operation: "validate", ...)` |
+| 7 (runtime) | `fibe_launch` for real, or `fibe_resource_mutate(resource: "playspec", operation: "create", ...)` for import |
 
 ## Common confusion
 
 - A schema-valid template can still fail compile. Example: declared `required: true`, no default, no random — only the compiler catches this.
+- `$$var__NAME` works in whole-label values for old templates, but validation warns because `path`/`paths` preserves local Compose parity and is the primary contract.
+- Defaults are not templates. `default: "api-$$var__SUBDOMAIN"` is invalid; create explicit path-bound variables for derived public values.
 - The schema **does not** prove the template compiles to runnable Compose. Always run a preview/launch.
 - Quoting matters: YAML 1.1 treats `yes`/`no`/`on`/`off` as booleans. Boolean Fibe labels accept only `true`/`false`. Quote your boolean strings.
 

@@ -17,8 +17,7 @@ Creates symlinks from `/opt/fibe/playgrounds/<name>/...` (or `MARQUEE_ROOT`) int
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `playground` | string | conditional | Local playground ID, name, compose project, playspec, or unique playspec prefix |
-| `playground_id` | number | conditional | Local numeric Playground ID. Pass either `playground` or `playground_id`, not both |
+| `id_or_name` | string | no | Local Playground ID, name, compose project, Playspec, or unique Playspec prefix |
 | `link_dir` | string | no | Target directory; default `/app/playground` |
 
 ## Output

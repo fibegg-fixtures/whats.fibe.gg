@@ -67,4 +67,4 @@ Wait for the next artefact from a specific Agent:
 ## Related
 - `fibe_monitor_list` — paginated snapshot.
 - `fibe_mutters_get` — focused mutter stream.
-- `fibe_playgrounds_logs_follow` — log-level streaming.
+- `fibe_logs_follow` — log-level streaming.

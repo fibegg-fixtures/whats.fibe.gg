@@ -272,8 +272,8 @@ services:
     deploy:
       replicas: 2
     labels:
-      fibe.gg/repo_url: $$var__REPO_URL
-      fibe.gg/branch: $$var__BRANCH
+      fibe.gg/repo_url: https://github.com/owner/repo
+      fibe.gg/branch: main
       fibe.gg/dockerfile: Dockerfile
       fibe.gg/start_command: bin/rails server -b 0.0.0.0
       # no fibe.gg/port — private to AnyCable
@@ -294,7 +294,7 @@ services:
     labels:
       fibe.gg/port: 8081
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN        # SAME subdomain as web
+      fibe.gg/subdomain: app                     # SAME subdomain as web; add this path to SUBDOMAIN.paths if included
       fibe.gg/path_rule: Path(`/cable`) || Path(`/health`)
 ```
 

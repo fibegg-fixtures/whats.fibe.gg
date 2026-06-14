@@ -18,7 +18,7 @@ const config = {
   url: 'https://whats.fibe.gg',
   baseUrl: '/',
   organizationName: 'fibegg',
-  projectName: 'fibe-skills',
+  projectName: 'whats.fibe.gg',
   trailingSlash: true,
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
@@ -46,12 +46,6 @@ const config = {
     {tagName: 'meta', attributes: {property: 'og:site_name', content: 'Fibe'}},
     {tagName: 'meta', attributes: {property: 'og:type', content: 'website'}},
     {tagName: 'meta', attributes: {name: 'twitter:card', content: 'summary_large_image'}},
-    // Google Search Console verification.
-    //
-    // Replace the placeholder token below with the real one issued at:
-    //   https://search.google.com/search-console
-    // Then redeploy — Google will detect the meta tag and verify the domain.
-    {tagName: 'meta', attributes: {name: 'google-site-verification', content: 'REPLACE_WITH_GSC_TOKEN'}},
     {
       tagName: 'script',
       attributes: {type: 'application/ld+json'},
@@ -137,7 +131,6 @@ const config = {
         },
         items: [
           {href: 'https://fibe.gg', label: 'fibe.gg', position: 'right'},
-          {href: 'https://github.com/fibegg/fibe-skills', label: 'GitHub', position: 'right'},
         ],
       },
       footer: {

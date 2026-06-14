@@ -61,7 +61,7 @@ services:
     labels:
       fibe.gg/port: 80
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: blog
 
   db:
     image: mariadb:$$var__MARIADB_VERSION
@@ -91,6 +91,7 @@ x-fibe.gg:
       required: true
       default: "blog"
       validation: "/^[a-z0-9][a-z0-9-]*[a-z0-9]$/"
+      path: services.wordpress.labels.fibe.gg/subdomain
     WP_VERSION:
       name: "WordPress image tag"
       default: "latest"

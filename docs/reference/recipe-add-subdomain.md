@@ -19,7 +19,7 @@ The public URL of an exposed service is `https://<subdomain>.<marquee-root-domai
 | `<name>` | Use `<name>` as subdomain | Lowercase alnum + hyphens, no leading/trailing hyphen |
 | `@` | Bind the route at the **root** of the Marquee | `<root>` |
 | empty string | Treated as default | Same as omitting |
-| `$$var__NAME` | Variable interpolation | Resolved at launch |
+| variable-driven | Bind with `x-fibe.gg.variables.<NAME>.path` | Keeps a local placeholder and resolves at launch |
 | integer | Numeric string | E.g. `1234` |
 
 Regex (schema): `^(?:|@|[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$`. Single-character labels `a` through `z` and `0` through `9` are allowed.
@@ -63,7 +63,7 @@ services:
     labels:
       fibe.gg/port: 3000
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: demo
 
 x-fibe.gg:
   variables:
@@ -72,9 +72,10 @@ x-fibe.gg:
       required: true
       default: "demo"
       validation: "/^[a-z0-9][a-z0-9-]*[a-z0-9]$/"
+      path: services.web.labels.fibe.gg/subdomain
 ```
 
-Inline `$$var__SUBDOMAIN` works because the schema's `subdomainLabel` permits `templatedString` alongside the literal regex. Whole-node `path: services.web.labels.fibe.gg/subdomain` also works — see [recipe-whole-node-paths](recipe-whole-node-paths.md).
+Inline `$$var__SUBDOMAIN` is accepted by the schema, but do not use it for the whole subdomain label in new templates. Whole-label values should use `path: services.web.labels.fibe.gg/subdomain` so the same Compose file still has a concrete local value. See [recipe-whole-node-paths](recipe-whole-node-paths.md).
 
 ## When to use `@`
 
@@ -105,15 +106,23 @@ services:
     labels:
       fibe.gg/port: 3000
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: demo
       # catch-all — no path_rule
 
   ws:
     labels:
       fibe.gg/port: 8081
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: demo
       fibe.gg/path_rule: Path(`/cable`) || Path(`/health`)
+x-fibe.gg:
+  variables:
+    SUBDOMAIN:
+      name: Subdomain
+      default: demo
+      paths:
+        - services.web.labels.fibe.gg/subdomain
+        - services.ws.labels.fibe.gg/subdomain
 ```
 
 Same subdomain, different paths.
@@ -135,7 +144,7 @@ See [reference-fibe-labels](reference-fibe-labels.md) for the schema rules.
 - **Uppercase subdomain** — `MyApp` fails the regex. Use lowercase.
 - **Leading/trailing hyphen** — `-staging` or `staging-` fails. Use `staging`.
 - **Underscore** — not allowed in DNS labels. Use hyphens.
-- **Subdomain longer than DNS label limit** — 63 chars. Don't get clever.
+- **Subdomain longer than DNS label limit** — DNS labels should stay within 63 characters. Fibe's current template validation does not flag this length for you, so keep it short yourself.
 - **Same subdomain on multiple services without `path_rule`** — Traefik routes only one (first match). Add `path_rule` to disambiguate.
 - **`@` without quoting** — YAML may misparse. Always quote: `fibe.gg/subdomain: "@"`.
 

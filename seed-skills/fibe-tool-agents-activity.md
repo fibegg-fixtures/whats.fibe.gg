@@ -12,7 +12,7 @@ Reads persisted Agent activity. Use this to inspect tool calls, steps, and outco
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `agent_id` | int or string | yes | Agent ID or name |
+| `id_or_name` | int or string | yes | Agent ID or name |
 | `conversation_id` | string | no | Specific conversation/thread ID |
 
 ## Gotchas

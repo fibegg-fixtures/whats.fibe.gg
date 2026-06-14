@@ -9,7 +9,7 @@ tags: ["reference", "recipe"]
 format: md
 ---
 
-Use a `path:` (or `paths:`) binding when the **entire value** at a YAML node should be a variable. The compiler writes the typed value after inline substitution has run, replacing whatever was there.
+Use a `path:` (or `paths:`) binding when the **entire value** at a YAML node should be a variable. This is the primary Fibe template-variable mechanism because the source Compose file keeps concrete local placeholders. The compiler writes the typed value after inline substitution has run, replacing whatever was there.
 
 ## Single path
 
@@ -145,7 +145,7 @@ DESCRIPTION:
 COMMAND_ARG:
   name: "Command arg"
   default: "--verbose"
-  path: services.web.command[1]
+  path: services.web.command.[1]
 ```
 
 Use sparingly — fragile if command structure changes.
@@ -184,12 +184,12 @@ x-fibe.gg:
 services:
   web:
     labels:
-      fibe.gg/port: $$var__PORT
+      fibe.gg/port: "3000"
       fibe.gg/visibility: external
       fibe.gg/subdomain: web
 ```
 
-In this pattern, `services.web.labels.fibe.gg/port` is finally set to `PORT` from the path step, so inline is effectively ignored at that node.
+Do not write `fibe.gg/port: $$var__PORT` for the same whole node. Validation warns for whole-node inline usage; keep a concrete placeholder and let the path step own that node.
 
 ### When to avoid path-binding
 
@@ -197,7 +197,7 @@ In this pattern, `services.web.labels.fibe.gg/port` is finally set to `PORT` fro
 - You can’t use `path:` to inject nested structures (arrays/maps); use inline string templates for those.
 ## When the destination exists
 
-The default behavior is `create_missing: true` — intermediate hashes are created. So even if `services.web.environment` doesn't exist statically, the path write creates it.
+The default behavior is `create_missing: true` — intermediate hashes are created under existing services. So even if `services.web.environment` doesn't exist statically, the path write creates it. Runtime validation rejects paths aimed at missing `services.<name>` roots because those usually mean a typo.
 
 For arrays, the array must already exist; `path` does not create new array slots.
 

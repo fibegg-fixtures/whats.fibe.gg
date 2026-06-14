@@ -61,7 +61,7 @@ fibe playgrounds debug <id>                # comprehensive diagnostics
 
 The shorthand `pg` works wherever `playgrounds` does: `fibe pg list`.
 
-For create, `--playspec` is an alias for `--playspec-id`, and `--marquee` is an alias for `--marquee-id`. `--service SERVICE.FIELD=VALUE` can be repeated to patch launch-time service configuration without writing a JSON file:
+For create, `--playspec` and `--marquee` accept IDs or names. `--service SERVICE.FIELD=VALUE` can be repeated to patch launch-time service configuration without writing a JSON file:
 
 ```sh
 fibe pg create --name demo --playspec starter --marquee next \
@@ -79,12 +79,13 @@ One-shot jobs.
 
 ```sh
 fibe tricks list
-fibe tricks trigger --playspec-id 12 [--marquee-id <id>] [--name nightly-run]
+fibe tricks trigger --playspec 12 [--marquee <id-or-name>] [--name nightly-run] [--env-overrides KEY=value]
 fibe tricks get <id>
 fibe tricks logs <id>
+fibe tricks rerun <id-or-name>
 ```
 
-`fibe tricks trigger` takes `--playspec-id` (required), `--marquee-id`, and `--name`. The trick's behavior comes from the job-mode Playspec; job credentials come from Job ENV. Use `--explain-errors` if a trigger fails — the error typically points at a missing variable or an unreachable repo.
+`fibe tricks trigger` takes `--playspec` (required), `--marquee`, `--name`, `--env-overrides`, `--only-service`, and `--except-service`. The trick's behavior comes from the job-mode Playspec; job credentials come from Job ENV. Use `--explain-errors` if a trigger fails — the error typically points at a missing variable or an unreachable repo.
 
 ## Agents (Genies)
 
@@ -110,8 +111,8 @@ fibe agents download-attachment <id> <name> --to ./context.zip
 
 fibe agents add-mounted-file <id> --file ./style.md --mount-path docs/style.md
                                              # or --artefact-id <id> to snapshot an artefact
-fibe agents update-mounted-file <id> <file-id> -f patch.json
-fibe agents remove-mounted-file <id> <file-id>
+fibe agents update-mounted-file <id> --filename style.md --mount-path docs/style.md
+fibe agents remove-mounted-file <id> --filename style.md
 
 fibe agents pokes list <id>                  # list pokes attached
 fibe agents messages <id>                    # message history
@@ -144,13 +145,13 @@ fibe marquees update <id> -f patch.json
 fibe templates list
 fibe templates get <id>
 fibe templates search --query "Rails"
-fibe templates launch <id|name> --marquee-id <id> [--name my-playground] [--version 3]
+fibe launch --template <id|name> --marquee <id-or-name> [--name my-playground] [--version 3]
 fibe templates update <id> -f patch.json     # update template metadata
 fibe templates versions create <id>          # publish a new template version
-fibe playspecs switch-version <id>           # move a Playspec to another version
+fibe playspecs switch-template <id>          # move a Playspec to another template version
 ```
 
-`fibe launch` is the one-shot path from raw Compose YAML or a repo's config file to a Playspec (and optionally a running Playground). To launch from a catalog template, use `fibe templates launch`.
+`fibe launch` is the one-shot path from raw Compose YAML, a repo config file, an existing Playspec, or a catalog template to a running Playground.
 
 Template launch, greenfield, tricks, agent chat, and playground commands all require the selected Marquee to be funded.
 
@@ -164,7 +165,7 @@ fibe gitea-repos create  --name new-repo [--private]
 
 fibe github apps connect                     # print the GitHub App install URL
 fibe installations list                      # GitHub Apps installed on your account
-fibe repo-status <repo-url>                  # is this URL reachable / private / fork
+fibe repo-status check --url <repo-url>      # repeat --url to check many repos
 ```
 
 There's no `--owner` flag — the repo owner is determined by your connected GitHub App installation (or your Gitea account). Use `fibe installations list` to see which installations you have.
@@ -180,7 +181,7 @@ fibe secrets update <id> -f patch.json
 fibe secrets delete <id>
 
 fibe job-env list
-fibe job-env set DEPLOY_KEY="$(pbpaste)" [--prop-id my-repo] [--secret]   # global scope is the default
+fibe job-env set DEPLOY_KEY="$(pbpaste)" [--prop my-repo] [--secret]   # global scope is the default
 
 fibe api-keys list
 fibe api-keys create --label "ci-deploy" --scope launch:write --expires-at 2026-01-01T00:00:00Z
@@ -204,7 +205,7 @@ fibe artefacts get <id>                     # show artefact metadata
 fibe artefacts download <agent> <artefact> --to ./report.pdf   # download (use --to - for stdout)
 
 fibe mutters get <agent>                    # read an agent's mutters
-fibe mutters create <agent> --type observation --playground-id 12 \
+fibe mutters create <agent> --type observation --playground 12 \
     --body "Healthcheck flapping; investigating."
 
 fibe feedbacks list
@@ -216,7 +217,7 @@ fibe feedbacks get <id>
 ```sh
 fibe monitor follow                         # stream agent events live (filter with --agent, --type, -q)
 fibe monitor list                           # one-shot page of recent events
-fibe monitor logs                           # stream playground or trick logs
+fibe monitor logs <playground-or-trick>     # stream playground or trick logs
 
 fibe audit-logs list                        # filterable; there is no per-entry get
 
@@ -233,10 +234,10 @@ Launch an existing repo config, or use a repo config as a greenfield snapshot te
 ```sh
 fibe github apps connect
 
-fibe launch owner/repo --marquee-id 12
+fibe launch owner/repo --marquee 12
 fibe launch https://github.com/owner/repo --ref main --file deploy/fibe.yml
 
-fibe greenfield owner/repo --marquee-id 12
+fibe greenfield owner/repo --marquee 12
 fibe greenfield owner/repo@feature/foo --name custom-name
 ```
 

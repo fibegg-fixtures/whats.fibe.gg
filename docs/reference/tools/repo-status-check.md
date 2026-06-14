@@ -1,6 +1,6 @@
 ---
 title: "Repo Status Check"
-description: "Use when you need to verify Fibe's view of multiple GitHub repository URLs in one call — accessibility, App installation status, default branch, etc."
+description: "Use when you need to verify Fibe's current accessibility status for multiple GitHub repository URLs in one call."
 slug: /reference/tools/repo-status-check
 sidebar_label: "Repo Status Check"
 image: /img/og/reference-tools-repo-status-check.png
@@ -15,7 +15,7 @@ Bulk repository status query. Up to 50 GitHub URLs at once through `POST /api/re
 
 ## When to use
 - Pre-flight before `prop.attach` for a list of repos.
-- Diagnosing why a Prop sync fails (App not installed? repo private? renamed?).
+- Diagnosing why a Prop sync fails (repo inaccessible, invalid URL, or installation no longer covers it).
 - Bulk audit: "do I still have access to all my Props' repos?"
 
 ## Inputs
@@ -28,21 +28,21 @@ Bulk repository status query. Up to 50 GitHub URLs at once through `POST /api/re
 {
   "repos": [
     {
-      "url": "...",
-      "accessible": true | false,
-      "installation_id": 12345,
-      "default_branch": "main",
-      "private": false,
-      "found": true,
-      "error": null | "..."
+      "url": "https://github.com/org/repo",
+      "status": "invalid | ready | attachable | needs_fork | mirrorable | not_accessible",
+      "error": "optional reason when status is invalid or not_accessible"
     }
   ]
 }
 ```
 
 ## Behavior
-- Validates each URL, looks up the player's installation that has access to it, checks the repo through the GitHub API.
-- Inaccessible repos return `accessible:false` with an `error` reason instead of 404.
+- Validates each URL, checks existing Props and GitHub App access, and reports a compact status per input URL.
+- `ready` means the repo already maps to one of the player's Props.
+- `attachable` means the player's GitHub App installation can access the repo and it can be attached.
+- `mirrorable` means no installation is available, but the source repo is public and can be mirrored.
+- `needs_fork` means an installation exists but does not currently cover the source; inspect `fork_url` and `mirrorable`.
+- `invalid` and `not_accessible` are not usable until the URL or access problem is fixed; inspect `error` when present.
 
 ## Gotchas
 - Maximum 50 URLs — extras are dropped silently. Pre-chunk if you have more.

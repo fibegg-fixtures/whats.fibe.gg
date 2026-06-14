@@ -134,7 +134,7 @@ services:
     labels:
       fibe.gg/port: 80
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: site
 
 x-fibe.gg:
   variables:
@@ -143,6 +143,7 @@ x-fibe.gg:
       required: true
       default: "site"
       validation: "/^[a-z0-9][a-z0-9-]*[a-z0-9]$/"
+      path: services.web.labels.fibe.gg/subdomain
   metadata:
     description: "Static nginx — pick your subdomain"
     category: "Web"

@@ -32,7 +32,7 @@ Also runs side-effect-free Compose YAML validation when called with `resource:"c
 ```json
 {
   "resources": [
-    { "canonical": "playground", "aliases": ["playgrounds"], "operations": ["list","get","create","update","delete","action"] },
+    { "name": "playground", "aliases": ["playgrounds"], "operations": ["list","get","create","update","delete","action"] },
     ...
   ]
 }
@@ -42,7 +42,7 @@ Also runs side-effect-free Compose YAML validation when called with `resource:"c
 
 **`resource:"<name>", operation:"<op>"`** — single JSON Schema for that op's payload.
 
-**`resource:"compose", operation:"validate"`** — calls `POST /api/playspecs/validate_compose`; returns Compose validation result + errors.
+**`resource:"compose", operation:"validate"`** — calls `POST /api/compose_validations`; returns Compose validation result + errors.
 
 ## Compose validate payload
 ```json
@@ -59,7 +59,7 @@ Also runs side-effect-free Compose YAML validation when called with `resource:"c
 Inline `compose_yaml` OR `compose_path` (local filesystem only).
 
 ## Gotchas
-- Canonical names are singular, snake_case: `playground`, not `Playgrounds`. Aliases (`playgrounds`, `playground-id`) are accepted but the registry normalizes internally.
+- Canonical names are singular, snake_case: `playground`, not `Playgrounds`. Aliases such as `playgrounds` are accepted but the registry normalizes internally.
 - `fibe_resource_mutate` validates against this same schema **locally** before any HTTP call — failures are reported with the same field names.
 - The schema is the source of truth even when other docs disagree. SDK schema is authoritative because the SDK validates with it.
 

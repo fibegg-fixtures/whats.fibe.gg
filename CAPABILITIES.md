@@ -25,7 +25,7 @@ An agent can explain or guide a user through:
 - Connecting GitHub or built-in Git repositories as Props, selecting branches, detecting Compose files, and tracking code changes.
 - Creating reusable Templates and immutable Template Versions.
 - Launching Templates into Playspecs and Playgrounds.
-- Publishing, discovering, forking, and launching community Templates through Fleet, Bazaar, or Pantry-style flows.
+- Publishing, discovering, forking, and launching community Templates through the Bazaar.
 - Running long-lived Playgrounds with logs, service URLs, debug terminals, rollout, hard restart, stop, retry, and expiration controls.
 - Running one-shot Tricks for tests, migrations, backups, CI repair, scheduled tasks, VCS-triggered tasks, and mutation-testing repair loops.
 - Creating AI Genies, authenticating providers, starting standalone chats, attaching Genies to Playgrounds, and using mounted files.
@@ -144,4 +144,4 @@ An agent can explain or configure:
 | `playbook-cron-scheduled` | Build scheduled backup, cleanup, or sync jobs. |
 | `playbook-test-runner` | Build CI-style test runner jobs. |
 | `common-errors-and-fixes` | Diagnose common validation, compile, and launch failures. |
-| `pantry-publish-checklist` | Final-check reusable templates before publishing. |
+| `templates-publish-checklist` | Final-check reusable templates before publishing. |

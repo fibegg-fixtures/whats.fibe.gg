@@ -11,7 +11,7 @@ format: md
 
 [MODE:SIDEEFFECTS] Tier: base. Not idempotent (last write wins).
 
-Replaces (not merges) the Player's `agent_defaults` JSON through `PUT /api/agent_defaults`. Requires API key scope `agents:write`. Concurrent updates are serialized by the server.
+Replaces (not merges) the Player's `agent_defaults` JSON through `PATCH /api/agent_defaults`. Requires API key scope `agents:write`. Concurrent updates are serialized by the server.
 
 ## When to use
 - Setting platform-wide LLM provider/model preference.

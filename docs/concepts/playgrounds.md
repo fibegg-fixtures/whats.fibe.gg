@@ -11,6 +11,8 @@ A **Playground** is the running environment launched from a [Playspec](/concepts
 
 Starting, changing, stopping, or destroying a Playground runtime requires its Marquee to be funded. If billing has expired, these actions return `MARQUEE_NOT_FUNDED`. The Marquee's own state gates these actions too — a Marquee that is disabled, in error, or still being provisioned can't launch or change Playgrounds until it's active again.
 
+Launching also requires the selected Marquee to have working SSH details and a root domain configured. Tutorial Marquees must have completed provisioning. If those checks fail, launch/chat preflight returns a validation failure explaining that the Marquee is not ready until the Marquee is active again.
+
 ## Lifecycle states
 
 | State | Meaning |
@@ -85,7 +87,7 @@ Until you stop it, destroy it, or its expiration passes. By default a Playground
 <details>
 <summary>Can I have many Playgrounds at once?</summary>
 
-Yes. Limited by Marquee capacity. A small Marquee runs a handful; a bigger one runs many.
+Yes. Limited by Marquee capacity and your account quota. The default account-level quota is high (1,000 Playgrounds and 1,000 Playspecs), so host capacity is usually what you hit first.
 
 If the Marquee is shared with a [team](/concepts/teams/), the Playgrounds running on it are visible to — and can be managed by — your teammates.
 </details>

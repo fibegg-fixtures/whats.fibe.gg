@@ -1,17 +1,17 @@
 ---
 title: Launch variables
-description: Two ways to weave a variable's value into the template — inline inside a string, or as a whole-node replacement at a specific location.
+description: Use path/paths for whole-node launch variables and inline $$var__ only as a last-resort fragment tool.
 slug: /authoring/variables
 sidebar_position: 5
 image: /img/og/authoring-variables.png
 keywords: [variables, $$var__, path, paths, random, default, validation, secret]
 ---
 
-Two ways to weave a variable's value into the template — **inline** inside a string, or as a **whole-node replacement** at a specific location.
+Use **`path`/`paths` whole-node replacement** as the normal route for launch variables. Use **inline `$$var__NAME`** only when the variable must be a fragment inside a larger string.
 
 ## Inline: `$$var__NAME`
 
-Use it anywhere inside a string — an image tag, a URL, an environment value, a label value.
+Use it inside a larger string, such as an image tag or connection string. Do not use it as the whole value of an env entry or label value.
 
 ```yaml
 services:
@@ -19,14 +19,14 @@ services:
     image: ghcr.io/acme/app:$$var__TAG
     environment:
       DATABASE_URL: "postgres://user:$$var__DB_PASSWORD@db:5432/app"
-      PUBLIC_URL: "https://$$var__SUBDOMAIN.$$root_domain"
     labels:
-      fibe.gg/port: $$var__PORT
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/path_rule: PathPrefix(`/$$var__PATH_PREFIX`)
 ```
 
 `$$root_domain` is special — Fibe always replaces it with the launching Marquee's root domain. You don't need to declare it.
+
+Every declared variable must be used. Either reference it inline with `$$var__NAME`, or bind it with `path:` / `paths:`. A variable declared for later but not used anywhere fails validation with `unused_var` ("declared but never used").
 
 ## Whole-node: `path:` / `paths:`
 
@@ -54,8 +54,8 @@ See [Variable placement](/authoring/variable-placement/) for the path syntax.
 | Usage | Best form |
 | --- | --- |
 | Whole scalar value (env entry, replica count, label value) | `path:` / `paths:` |
-| Fragment inside a larger string (URL, tag prefix) | `$$var__NAME` |
-| Replacing an existing Compose `${VAR}` reference | `$$var__` |
+| Fragment inside a larger string (image tag, connection string, path prefix) | `$$var__NAME` |
+| Replacing an existing Compose `${VAR}` whole-node reference | Concrete placeholder plus `path:` / `paths:` |
 | Same value in many places | `paths:` with an array |
 
 ## Defaulting
@@ -65,6 +65,8 @@ When the launcher doesn't supply a value, Fibe uses:
 1. The variable's `default`, if set.
 2. A generated value if `random: true`.
 3. Otherwise, an error if the variable is `required: true`.
+
+Defaults are literal values only. Do not put `$$var__*`, `$$random__*`, or `$$root_domain` inside `default`; validation rejects nested defaults. For derived public URLs, create explicit variables and bind them through `path`/`paths`.
 
 ## Random values
 
@@ -84,7 +86,7 @@ validation: "/^[A-Za-z0-9_.-]+$/"      # image tag
 
 Leave it empty or omit it when any value is fine.
 
-## A example
+## An example
 
 ```yaml
 x-fibe.gg:
@@ -98,11 +100,11 @@ x-fibe.gg:
         - services.web.environment.APP_NAME
         - services.worker.environment.APP_NAME
 
-    SUBDOMAIN:
-      name: "Subdomain"
-      default: "demo"
-      validation: "/^[a-z][a-z0-9-]*$/"
-      path: services.web.labels.fibe.gg/subdomain
+	    SUBDOMAIN:
+	      name: "Subdomain"
+	      default: "demo"
+	      validation: "/^[a-z][a-z0-9-]*$/"
+	      path: services.web.labels.fibe.gg/subdomain
 
     DB_PASSWORD:
       name: "Database password"
@@ -118,12 +120,14 @@ x-fibe.gg:
       default: 2
       path: services.web.deploy.replicas
 
-    DEBUG:
-      name: "Debug mode"
-      default: false
-      paths:
-        - services.web.environment.DEBUG
+	    DEBUG:
+	      name: "Debug mode"
+	      default: false
+	      paths:
+	        - services.web.environment.DEBUG
 ```
+
+When a `path:` targets a dotted label key such as `services.web.labels.fibe.gg/subdomain`, keep that label key in the Compose file with a concrete local placeholder. Runtime validation rejects paths aimed at missing `services.<name>` roots, while missing leaves under an existing service can be created. See [Variable placement](/authoring/variable-placement/).
 
 ## Related
 

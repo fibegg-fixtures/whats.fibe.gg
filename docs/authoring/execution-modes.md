@@ -18,14 +18,15 @@ The default. Just expose your services with `fibe.gg/port` and they stay up unti
 Required pieces:
 
 - `x-fibe.gg.metadata.job_mode: true`
-- `fibe.gg/job_watch: "true"` on at least one service.
+- A watched service. Dynamic source-backed services are watched by default in job mode unless they set `fibe.gg/job_watch: "false"`; static services need `fibe.gg/job_watch: "true"`.
 
 Trick rules Fibe enforces for you:
 
-- No service may be exposed — a Trick isn't there to serve traffic.
+- Routing labels such as `fibe.gg/port`, `fibe.gg/visibility`, and `fibe.gg/subdomain` are stripped before launch — a Trick isn't there to serve traffic.
 - Every service is forced to one replica and not to restart.
 - Watched services must actually exit (don't run a dev server or sleep loop).
 - The Trick succeeds when every watched service exits with status zero; non-zero on any watched service fails the run.
+- A Trick with no watched service, or with watched services that never exit, fails by timing out rather than at template validation time.
 
 ```yaml
 services:

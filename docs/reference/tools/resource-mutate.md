@@ -49,8 +49,8 @@ Payload shapes differ wildly per resource. `fibe_schema(resource:"<r>", operatio
 Creates a new Fibe Platform Agent record. It does not inherit provider auth from another Agent and does not start a runtime by itself. If you need a sibling Agent with existing auth material, use `fibe_agents_duplicate`. For a brand-new Agent, provide the intended provider auth through Secrets/provider-key flow (`provider_api_key_mode`/`api_key_id` where applicable) before starting chat. Do not use `fibe-mana` unless the environment explicitly reports that it is configured.
 
 ### `playground.create`
-- Required: `playspec_id` (or playspec name via named resolution).
-- `marquee_id` falls back to `FIBE_MARQUEE_ID` env if omitted.
+- Required: `playspec_id_or_name` (numeric ID or playspec name).
+- `marquee_id_or_name` falls back to `FIBE_MARQUEE_ID` env if omitted.
 - Returns the created Playground with status `creating`.
 
 ### `playground.action`
@@ -102,7 +102,7 @@ Operation-specific. Most return the affected resource's JSON. Long-running mutat
 ```
 
 ## Gotchas
-- **Named resource references are normalized.** Pass `playspec_id:"my-app-spec"` and the SDK resolves to the numeric ID. Same for `marquee_id`, `prop_id`, `playground_id`, `agent_id`.
+- **Named resource references are normalized through `*_id_or_name` fields.** Pass `playspec_id_or_name:"my-app-spec"` and the SDK resolves to the numeric ID. Same pattern applies to `marquee_id_or_name`, `prop_id_or_name`, `playground_id_or_name`, and `agent_id_or_name` where the target schema exposes them.
 - `playground.action` requires `confirm:true`; the dispatcher errors with `confirmRequiredError` otherwise.
 - `template_body_path` is local-only — fails when the MCP server runs remotely.
 - `secret.create/update` accepts plaintext in payload; the value is hashed/encrypted server-side and never returned plaintext again.
@@ -114,4 +114,4 @@ Operation-specific. Most return the affected resource's JSON. Long-running mutat
 - `fibe_schema(resource:..., operation:...)` — required reference.
 - `fibe_pipeline` — chain mutate → wait → get in one round-trip.
 - `fibe_resource_get` / `fibe_resource_list` / `fibe_resource_delete`.
-- Domain shortcuts: `fibe_artefact_upload`, `fibe_memorize`, `fibe_mutter`, `fibe_playgrounds_action`, `fibe_templates_launch`.
+- Domain shortcuts: `fibe_artefact_upload`, `fibe_memorize`, `fibe_mutter`, `fibe_playgrounds_action`, `fibe_launch`.

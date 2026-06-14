@@ -24,7 +24,7 @@ Only delete `build:` when the template is Fibe-only or when the service is sourc
 
 ## Step-by-step
 
-1. **Identify the repo** (`https://github.com/owner/repo` or your Gitea instance — `https://...`).
+1. **Identify the repo** (`https://github.com/owner/repo`, a configured Gitea URL, or a full `ssh://` URL).
 2. **Add `fibe.gg/repo_url`** with that URL. If the launcher should choose, use `$$var__REPO_URL` and declare the variable.
 3. **Pin Dockerfile** if it isn't at repo root: `fibe.gg/dockerfile: <path>`.
 4. **Pin branch** if you don't want the default: `fibe.gg/branch: <ref>`. Default branch is the repo default.
@@ -95,8 +95,8 @@ services:
 services:
   web:
     labels:
-      fibe.gg/repo_url: $$var__REPO_URL
-      fibe.gg/branch: $$var__BRANCH
+      fibe.gg/repo_url: https://github.com/owner/repo
+      fibe.gg/branch: main
       fibe.gg/dockerfile: Dockerfile
       fibe.gg/port: 3000
       fibe.gg/visibility: external
@@ -107,10 +107,12 @@ x-fibe.gg:
       name: "Repository URL"
       required: true
       default: "https://github.com/owner/repo"
+      path: services.web.labels.fibe.gg/repo_url
     BRANCH:
       name: "Branch"
       required: true
       default: "main"
+      path: services.web.labels.fibe.gg/branch
 ```
 
 Use this pattern when the launcher should choose the repository and branch.
@@ -146,7 +148,7 @@ services:
 ## Pitfalls
 
 - **Forgetting `fibe.gg/repo_url`** — schema/runtime hard error: `Service '<n>' has a build directive but lacks a fibe.gg/repo_url label`.
-- **Using a non-HTTPS repo URL** — use `https://github.com/...` or the HTTPS URL for a connected built-in repository. SSH URLs (`git@github.com:owner/repo.git`) fail.
+- **Using scp-style SSH** — `git@github.com:owner/repo.git` fails. Use `https://github.com/...`, a configured Gitea URL, or a full `ssh://` URL.
 - **Pointing Dockerfile outside the repo** — paths are interpreted relative to the cloned repo root.
 - **Trying to build from a local directory** — not supported. Fibe is not `docker compose build`; the source must be a remote VCS URL the platform can clone.
 

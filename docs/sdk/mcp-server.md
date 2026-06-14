@@ -10,7 +10,7 @@ keywords: [MCP, Model Context Protocol, Claude Code, Cursor, AI agent, fibe mcp 
 
 The `fibe` binary doubles as an **MCP server** — exposing the same resource surface as the CLI and library, but as **typed tools** an AI agent can call directly. No subprocess overhead, no shell parsing, no string-matching the help text. Your agent gets a real tool API.
 
-60+ tools across 9 families. Each one is documented individually under [Reference → Tools](/reference/tools/playgrounds-transform/). The [Tools catalog](/sdk/tools-catalog/) page is the table-of-contents.
+60+ tools across 9 families. Each one is documented individually under [Reference → Tools](/reference/tools/playgrounds-switch-template/). The [Tools catalog](/sdk/tools-catalog/) page is the table-of-contents.
 
 ## Run the server
 
@@ -82,9 +82,9 @@ Each family has its own group on the [Tools catalog](/sdk/tools-catalog/) page, 
 | --- | --- |
 | **Auth & Meta** | `fibe_auth_set`, `fibe_doctor`, `fibe_status`, `fibe_schema`, `fibe_help`, `fibe_tools_catalog`, `fibe_call`, `fibe_run` |
 | **Resource CRUD** | `fibe_resource_list`, `_get`, `_mutate`, `_delete`, `_watch` |
-| **Playgrounds** | `fibe_playgrounds_wait`, `_logs`, `_logs_follow`, `_action`, `_debug`, `_transform` |
+| **Playgrounds** | `fibe_playgrounds_wait`, `_logs`, `fibe_logs_follow`, `_action`, `_debug`, `_switch_template` |
 | **Agents** | `fibe_agents_duplicate`, `_runtime_status`, `_send_message`, `_start_chat` |
-| **Greenfield** | `fibe_launch_create`, `fibe_greenfield_create`, `fibe_templates_launch`, `_search`, `_change`, `fibe_github_repos_create`, `fibe_gitea_repos_create` |
+| **Greenfield** | `fibe_launch`, `fibe_greenfield_create`, `fibe_templates_search`, `fibe_templates_change`, `fibe_github_repos_create`, `fibe_gitea_repos_create` |
 | **Monitoring** | `fibe_monitor_list`, `_follow`, `fibe_mutter`, `_mutters_get`, `_feedbacks_*` |
 | **Local dev** | `fibe_local_playgrounds_info`, `_link` |
 | **Pipelines** | `fibe_pipeline`, `_pipeline_result` (multi-step composition) |
@@ -114,7 +114,7 @@ With that env var set, the server refuses any request that doesn't carry credent
 
 ## The "yolo" flag
 
-By default, destructive tools (delete, rollout, transform) require a `confirm: true` argument. A call without it returns a `CONFIRM_REQUIRED` error, so the agent must deliberately re-call with `confirm: true`. For known-good automation, you can disable the gate:
+By default, destructive tools (delete, rollout, switch-template apply) require a `confirm: true` argument. A call without it returns a `CONFIRM_REQUIRED` error, so the agent must deliberately re-call with `confirm: true`. For known-good automation, you can disable the gate:
 
 ```sh
 FIBE_MCP_YOLO=1 fibe mcp serve   # or pass --yolo
@@ -124,7 +124,7 @@ Use this sparingly. The confirm step exists because LLM agents occasionally requ
 
 ## Progress notifications
 
-Long-running tools (`fibe_playgrounds_logs_follow` / `fibe_monitor_logs_follow`, `fibe_monitor_follow`, `fibe_playgrounds_wait`, `fibe_resource_watch`) emit MCP-protocol progress events while they work. Compatible clients (Claude Code, Cursor) render these as a streaming status indicator in the chat. (`fibe_pipeline` returns one result when the whole plan finishes.)
+Long-running tools (`fibe_logs_follow`, `fibe_monitor_follow`, `fibe_playgrounds_wait`, `fibe_resource_watch`) emit MCP-protocol progress events while they work. Compatible clients (Claude Code, Cursor) render these as a streaming status indicator in the chat. (`fibe_pipeline` returns one result when the whole plan finishes.)
 
 The agent gets a "still going, here's what I've seen so far" experience instead of a long silent wait.
 

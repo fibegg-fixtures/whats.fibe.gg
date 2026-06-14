@@ -19,7 +19,7 @@ Lists every tool registered on the Fibe MCP server, including ones not advertise
 | Field | Type | Default | Notes |
 |---|---|---|---|
 | `tier` | enum | `all` | `meta`, `base`, `greenfield`, `brownfield`, `overseer`, `local`, `other`, `core` (= meta+base+greenfield+brownfield), `full`/`all` |
-| `name_pattern` | string | empty | Case-insensitive substring match on tool name |
+| `name_pattern` | string | empty | Case-insensitive substring match on tool name or description |
 | `include_schema` | bool | `false` | Attach each tool's JSON input schema (large payload) |
 
 ## Output shape

@@ -25,6 +25,7 @@ The runtime returns a `recommended_tool` warning when it detects a CLI path that
 |---|---|---|---|
 | `args` | array of scalars | yes | CLI tokens after `fibe`, e.g. `["playgrounds","list","--limit","5"]`. String/number/bool only. |
 | `timeout_ms` | integer | no | Per-call timeout in milliseconds. Strongly recommended. |
+| `confirm` | bool | no | Required for destructive CLI paths such as delete/destroy/remove unless the server was started with yolo semantics. |
 
 ## Output
 ```json
@@ -47,6 +48,7 @@ Capture buffer is 1MB per stream. When truncated, `total_bytes` shows the real s
 
 ## Gotchas
 - Args are JSON scalars — pass `["--limit","5"]`, not `["--limit",5]` mixed with quoting concerns. Numbers/bools auto-stringify.
+- Pass `confirm:true` for destructive CLI paths; otherwise the dispatcher rejects the call before running the command.
 - `--output json` is prepended; do not pass it yourself.
 - stdout/stderr are buffered to memory for the entire run, then returned at once. Long-running CLI commands block until they exit (or `timeout_ms` fires).
 - The CLI's output is also recommended to be JSON; non-JSON stdout is returned as-is.

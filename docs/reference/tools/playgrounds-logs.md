@@ -13,7 +13,7 @@ format: md
 
 Live log collection requires a funded Marquee and returns `MARQUEE_NOT_FUNDED` when unpaid.
 
-One-shot service log fetch through `GET /api/playgrounds/:id/logs/:service`; the SDK polls the resulting request_id and returns the final payload.
+One-shot service log fetch through async `POST /api/playgrounds/:id/logs`; the SDK sends `service` in the request body, polls the resulting request_id, and returns the final payload.
 
 ## When to use
 - Debug a specific service's startup error.
@@ -21,21 +21,20 @@ One-shot service log fetch through `GET /api/playgrounds/:id/logs/:service`; the
 - Pair with `fibe_playgrounds_debug` for full context (debug surfaces names; logs surface causes).
 
 ## When NOT to use
-- Need to wait for a pattern to appear — use `fibe_playgrounds_logs_follow`.
+- Need to wait for a pattern to appear — use `fibe_logs_follow`.
 - Need debug summary, not raw logs — use `fibe_playgrounds_debug`.
 
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `playground_id` | number | one of | Numeric ID |
-| `playground_identifier` | string | one of | Numeric ID or slug-safe name |
-| `service` | string | yes | Compose service name (must exist in the Playspec) |
+| `id_or_name` | string | yes | Playground numeric ID or slug-safe name |
+| `service` | string | no | Compose service name. Omit to return all services |
 | `tail` | number | no | Lines to fetch; default 50, clamped to a server-side maximum |
 
 ## Output
 ```json
 {
-  "playground_id": 42,
+  "id_or_name": "42",
   "service": "web",
   "tail": 200,
   "logs": "...",          // raw mixed stdout+stderr
@@ -61,5 +60,5 @@ Schema varies slightly by Marquee Docker version; the `logs` field is always pop
 
 ## Related
 - `fibe_playgrounds_debug` — names + ports + per-service status.
-- `fibe_playgrounds_logs_follow` — live streaming with pattern matching.
+- `fibe_logs_follow` — live streaming with pattern matching.
 - `fibe-debug` skill — broader troubleshooting recipes.

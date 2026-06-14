@@ -9,20 +9,20 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-[MODE:GREENFIELD] Tier: other. Not idempotent.
+[MODE:GREENFIELD] Tier: greenfield. Not idempotent.
 
-Creates a Gitea repository AND a Prop pointing at it through `POST /api/gitea_repos`. Default greenfield git provider (used by `fibe_greenfield_create` when `git_provider` is unset).
+Creates a Gitea repository AND a Prop pointing at it through `POST /api/gitea_repositories`. Default greenfield git provider (used by `fibe_greenfield_create` when `git_provider` is unset).
 
 ## When to use
 - Default flow for Greenfield: GitHub OAuth not required.
 - Player wants a repo on the platform's managed Gitea.
 - Need a fresh Prop bound to that repo immediately (vs `fibe_github_repos_create` which leaves Prop creation to a follow-up).
-- Brownfield transforms where a new source-mounted service needs real files before first rollout. For multiple new services, call this through `fibe_pipeline` so repos are created in one round-trip, then seed/commit/push all new repos before `fibe_playgrounds_transform`.
+- Brownfield switch-template flows where a new source-mounted service needs real files before first rollout. For multiple new services, call this through `fibe_pipeline` so repos are created in one round-trip, then seed/commit/push all new repos before `fibe_playgrounds_switch_template`.
 
 ## When NOT to use
 - Player explicitly wants GitHub — use `fibe_github_repos_create` + `prop.attach`.
 - Already have an external repo — use `prop.mirror` or `prop.attach`.
-- You only need empty repos for a transform and do not need to write source before rollout — let `fibe_playgrounds_transform` provision missing Gitea Props with `provision_inputs` instead.
+- You only need empty repos for switch-template and do not need to write source before rollout — let `fibe_playgrounds_switch_template` provision missing Gitea Props with `provision_inputs` instead.
 
 ## Inputs
 | Field | Type | Required | Notes |

@@ -17,7 +17,18 @@ First-level scoping: by **family** and **action**. An API key reads or manages a
 - **delete** — remove.
 - **narrow scope** (e.g. `launch:write`) — single action across a family.
 
-Some families (e.g. Marquees, Secrets, Job ENV) also offer a combined **manage** scope equal to read + write + delete. Pick the narrowest scope that gets the job done.
+Some families also offer a combined **manage** scope equal to read + write + delete. Templates have `import_templates:read` and `import_templates:write`; deletion is covered by the write scope rather than a separate delete scope. Pick the narrowest scope that gets the job done.
+
+Available scope families:
+
+| Area | Scopes |
+| --- | --- |
+| Hosts and runtime | `marquees:read/write/delete/manage`, `playgrounds:read/write/delete`, `launch:write` |
+| Source and blueprints | `props:read/write/delete`, `playspecs:read/write/delete`, `import_templates:read/write`, `mutations:read/write` |
+| Genies and activity | `agents:read/write/delete`, `conversations:read/write/delete/manage`, `memories:read/write/delete/manage`, `monitor:read`, `artefacts:read/write/delete`, `mutters:read/write`, `feedbacks:read/write/delete` |
+| Credentials and integrations | `keys:manage`, `webhooks:read/write/delete`, `secrets:read/write/delete/manage`, `job_env:read/write/delete/manage` |
+
+The wildcard `*` scope is reserved for administrators. Team-bound keys can only be created for a team you belong to.
 
 ## Granular resource restriction
 
@@ -27,11 +38,13 @@ Safe to hand to a single integration: that integration sees exactly the resource
 
 Resource ownership is validated at save time. You can't grant a key access to resources you don't own.
 
+Granular restriction only applies to resource-backed families such as Marquees, Props, Playspecs, Playgrounds, Genies, Secrets, Webhooks, conversations, memories, and monitor events. Broad action scopes that don't map to an owned resource, such as `launch:write`, are not per-resource restricted.
+
 ### Example: CI key
 
-- CI launches one specific Playspec.
-- Scope: `launch:write` restricted to `[playspec-id-42]`.
-- The key launches Playspec 42. Cannot launch anything else. Cannot read other Playspecs.
+- CI needs to launch environments from automation.
+- Scope: `launch:write`.
+- Add only the resource-backed read/write scopes the automation also needs, and restrict those by ID where possible. Don't model `launch:write` as "launch only Playspec 42" — that scope is not granular.
 
 ## Create a key
 
@@ -43,7 +56,7 @@ Fields:
 - **Restrict to specific resources** — optional granular restriction.
 - **For agents (unencrypted)** — store unencrypted for direct Genie access. Only check if a Genie needs to read the token at runtime.
 
-For regular keys the secret is shown **once** at creation — copy immediately; it cannot be retrieved later. Keys marked "For agents (unencrypted)" are the exception: their secret stays viewable from the key card via **Reveal** (after re-confirming your second factor).
+For regular keys the secret is shown **once** at creation — copy immediately; it cannot be retrieved later. After that, Fibe only shows the masked token with its first 14 characters. Keys marked "For agents (unencrypted)" are the exception: their secret stays viewable from the key card via **Reveal** (after re-confirming your second factor).
 
 ## Manage existing keys
 
@@ -73,7 +86,7 @@ Treat agent keys as more sensitive. Rotate aggressively. Combine with granular r
 - API calls are rate-limited — by default 5,000 requests per hour per account, shared across all your keys. The limit can be raised per account via support.
 - Set an expiration so old keys age out.
 - Revoke at any time; future calls fail immediately.
-- Managing API keys requires [2FA re-authentication](/advanced/security/).
+- Creating, deleting, rotating, revealing, and Gateway Mana lock/unlock actions require [2FA re-authentication](/advanced/security/). Expiring or editing a key does not trigger the sudo challenge.
 
 ## FAQ
 
@@ -86,7 +99,7 @@ Deleting your account revokes every key it owns immediately.
 <details>
 <summary>Token format?</summary>
 
-Long opaque string. Treat like a password. Don't log, commit, or paste into chat.
+API keys start with `fibe_live_` or `fibe_test_` and are sent as `Authorization: Bearer <token>`. Treat them like passwords. Don't log, commit, or paste them into chat.
 </details>
 
 <details>

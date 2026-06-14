@@ -20,6 +20,7 @@ The settings cascade for a Genie is: per-Genie → per-provider default → gene
 | **CLI version** | Pin a provider CLI version (e.g. `v0.12.3`). Blank = latest. |
 | **Image tag** | Docker image tag. Blank = provider default. |
 | **CPU limit** | Container CPU (e.g. `1.5` or `2`). |
+| **Memory limit** | Container memory limit for new Genies. |
 | **Build in public** | Default visibility on new Genies. |
 | **June1815 (PTY-wrapped Claude)** | Route Claude through a PTY-driven TUI wrapper. Feature-parity transparent. |
 | **MCP JSON** | Custom MCP server configuration. Merged with admin defaults. |

@@ -9,9 +9,9 @@ tags: ["reference", "recipe"]
 format: md
 ---
 
-`$$var__NAME` is **string-level** variable substitution that runs **before** the Compose YAML is reparsed by the runtime. Use it when:
+`$$var__NAME` is **string-level** variable substitution that runs **before** the Compose YAML is reparsed by the runtime. It is a last-resort fragment tool. Use `path:`/`paths:` for whole YAML nodes, including labels and env values. Use inline only when:
 
-- The value is a **fragment** of a larger string (URL, label value with prefix/suffix, image tag).
+- The value is a **fragment** of a larger string (image tag, URL component, label value with prefix/suffix).
 - The whole node form (`path:`) would be ugly because the surrounding context is part of the contract.
 
 ## Pattern
@@ -25,8 +25,8 @@ Where `NAME` matches `[A-Za-z0-9_]+` and is declared in `x-fibe.gg.variables`. A
 ## Where you can put it
 
 - **Compose string values:** image tags, environment values, command strings, volume mount paths, healthcheck commands.
-- **Known `fibe.gg/*` label values:** the schema's `templatedFibeLabelString` permits `$$var__NAME` inline.
-- **`x-fibe.gg.variables.*.default`**: technically a string, but referencing other variables here is not supported by the compiler.
+- **Known `fibe.gg/*` label values:** the schema's `templatedFibeLabelString` permits `$$var__NAME` inline, but whole-label values should use `path:`/`paths:`.
+- **`x-fibe.gg.variables.*.default`**: NO — defaults must be literals. Validation rejects `$$var__*`, `$$random__*`, and `$$root_domain` inside defaults.
 - **Variable path targets** (`path:`/`paths:`): NO — paths are dotted identifiers, not template strings.
 
 ## Examples
@@ -53,10 +53,10 @@ services:
   app:
     environment:
       DATABASE_URL: "postgres://user:$$var__DB_PASSWORD@db:5432/$$var__DB_NAME"
-      PUBLIC_URL: "https://$$var__SUBDOMAIN.$$root_domain"
+      CALLBACK_URL: "https://api.$$root_domain/callback"
 ```
 
-`$$root_domain` is special — always replaced with the Marquee root domain.
+`$$root_domain` is special — always replaced with the Marquee root domain. Prefer explicit public URL variables with literal defaults and `path`/`paths` when the whole env value is a URL.
 
 ### Label fragment
 
@@ -64,9 +64,7 @@ services:
 services:
   web:
     labels:
-      fibe.gg/port: $$var__PORT
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
       fibe.gg/path_rule: PathPrefix(`/$$var__PATH_PREFIX`)
 ```
 
@@ -118,7 +116,7 @@ Inline substitution happens before YAML structure is finalized. So `$$var__NAME`
 services:
   web:
     environment:
-      EXTERNAL_PORT: "$$var__EXT_PORT"
+      START_FLAGS: "--external-port=$$var__EXT_PORT"
 
 x-fibe.gg:
   variables:
@@ -127,7 +125,7 @@ x-fibe.gg:
       default: "08080"
 ```
 
-`EXT_PORT` is stringy in inline usage, so `08080` stays as text.
+`EXT_PORT` is stringy inside the inline fragment, so `08080` stays as text.
 
 #### Mixed inline + path (path wins)
 
@@ -173,11 +171,11 @@ With no default/user value, `fibe.gg/path_rule` becomes empty string.
 |---|---|
 | `services.web.environment.RAILS_ENV` should be the variable | `path:` (whole node, cleaner) |
 | `services.web.image: gcr.io/x/y:$$var__TAG` | inline (fragment) |
-| `services.web.labels.fibe.gg/port: $$var__PORT` | either; `path:` cleaner for a whole port value |
-| `services.web.labels.fibe.gg/subdomain` is exactly the variable | either; `path:` cleaner |
+| `services.web.labels.fibe.gg/port` is exactly the variable | `path:` |
+| `services.web.labels.fibe.gg/subdomain` is exactly the variable | `path:` |
 | `services.web.deploy.replicas` should be a typed integer | `path:` (the binding writes integer, not string) |
 
-Use `path:` for whole-node bindings such as replica counts, passwords, port labels, and environment names. Use inline variables for fragments such as image tags.
+Use `path:` for whole-node bindings such as replica counts, passwords, port labels, subdomains, public URLs, and environment names. Use inline variables for fragments such as image tags.
 
 ## Why inline over `${VAR:-default}` Compose substitution
 
@@ -199,6 +197,8 @@ If you need an actual `$$` in a final Compose value (e.g. in a shell command), w
 
 - **Lowercase / mixed-case variable names** — allowed by regex (`[A-Za-z0-9_]+`) but inconsistent with most templates' uppercase convention.
 - **`$$var__` without declaration** — `undeclared_var` runtime error.
+- **Whole-node inline values** — validation warns for values such as `fibe.gg/subdomain: $$var__SUBDOMAIN`; replace with concrete placeholders plus `path`/`paths`.
+- **Nested defaults** — `default: "https://$$var__SUBDOMAIN.$$root_domain"` is invalid. Defaults are literal values only.
 - **Splitting `$$var__NAME` across YAML lines via line-continuation** — the literal text must appear unbroken; YAML folded scalars (`>`) might collapse the marker — quote the value.
 - **Using `$VAR` instead of `$$var__VAR`** — `$VAR` is Compose substitution from the host env; Fibe ignores it.
 - **Variable used inline only AND template imported across Marquees with different defaults** — be deliberate about defaults; they live in the template, not the launcher.

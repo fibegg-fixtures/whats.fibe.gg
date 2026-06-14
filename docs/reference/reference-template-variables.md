@@ -1,6 +1,6 @@
 ---
 title: "Template Variables"
-description: "Use as the definitive reference for Fibe template variable mechanics - declaration shape, `$$var__NAME` / `$$root_domain` interpolation, validation regex, defaults, and random secret generation."
+description: "Use as the definitive reference for Fibe template variable mechanics - declaration shape, `path`/`paths` whole-node binding, last-resort `$$var__NAME` / `$$root_domain` interpolation, validation regex, literal defaults, and random secret generation."
 slug: /reference/reference-template-variables
 sidebar_label: "Template Variables"
 image: /img/og/reference-reference-template-variables.png
@@ -12,7 +12,7 @@ format: md
 Fibe templates ship parameterizable. The two participating pieces:
 
 1. **Declaration** under `x-fibe.gg.variables.<NAME>`.
-2. **Reference** somewhere in the document via `$$var__NAME` inline OR via a `path:`/`paths:` whole-node binding.
+2. **Reference** through `path:`/`paths:` whole-node binding, or as a last-resort `$$var__NAME` inline fragment.
 
 Fibe substitutes references with launch-time values; missing required variables fail compilation.
 
@@ -27,11 +27,13 @@ x-fibe.gg:
       random: false
       default: "demo"
       validation: "/^[a-z0-9-]+$/"
-      path: services.web.environment.APP_NAME
-      paths:
-        - services.web.labels.fibe.gg/subdomain
-        - services.worker.environment.APP_NAME
+	      path: services.web.environment.APP_NAME
+	      paths:
+	        - services.web.labels.fibe.gg/subdomain
+	        - services.worker.environment.APP_NAME
 ```
+
+For whole-node paths into dotted label keys such as `services.web.labels.fibe.gg/subdomain`, keep a concrete placeholder label value in the Compose file for local parity. Runtime validation rejects paths aimed at missing `services.<name>` roots, while missing leaves under existing services can be created.
 
 Variable name regex: `^[A-Za-z0-9_]+$`. Reuse the same name for `$$var__` interpolation everywhere it appears.
 
@@ -42,7 +44,7 @@ Field semantics:
 | `name` | If null/empty: validation error `missing_name`. |
 | `required: true` | If no user value AND no default AND no random: compile fails with `Variable '<key>' is required`. |
 | `random: true` | If no user value is supplied at compile time: generated as a stable 32-character hex value. |
-| `default: <value>` | Used when no user value. Stringified for interpolation. Can be null/empty string. |
+| `default: <value>` | Used when no user value. Must be a literal; `$$var__*`, `$$random__*`, and `$$root_domain` are invalid inside defaults. |
 | `validation: "/regex/"` | Pattern must be wrapped in `/.../`. Empty string is allowed (no validation). Compile fails with `fails validation pattern` if value doesn't match. |
 | `path` / `paths` | Whole-node replacement after string substitution. See [reference-yaml-paths](reference-yaml-paths.md). |
 
@@ -50,7 +52,7 @@ Field semantics:
 
 ### 1. Inline `$$var__NAME`
 
-Pattern: `$$var__([A-Za-z0-9_]+)`. Substituted as plain text before any YAML reparsing. Always write `$$var__NAME`. `$$random__NAME` is only recognized by the declared/unused validation for older templates — it is NOT substituted at compile time, so never author it; the literal text would remain in the compiled file.
+Pattern: `$$var__([A-Za-z0-9_]+)`. Substituted as plain text before any YAML reparsing. Use it only for fragments inside larger strings. Always write `$$var__NAME`. `$$random__NAME` is only recognized by the declared/unused validation for older templates — it is NOT substituted at compile time, so never author it; the literal text would remain in the compiled file.
 
 ```yaml
 services:
@@ -58,11 +60,9 @@ services:
     image: ghcr.io/acme/app:$$var__TAG
     environment:
       DATABASE_URL: "postgres://user:$$var__DB_PASSWORD@db:5432/app"
-      PUBLIC_URL: "https://$$var__SUBDOMAIN.$$root_domain"
     labels:
-      fibe.gg/port: $$var__PORT
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/path_rule: PathPrefix(`/$$var__PATH_PREFIX`)
 ```
 
 Behavior:
@@ -71,7 +71,7 @@ Behavior:
 
 ### 2. Whole-node `path:` / `paths:`
 
-Replaces an entire YAML node (string, number, boolean) at the named dotted path **after** inline substitution. Use for label values, replica counts, environment scalars where the whole value is the variable.
+Replaces an entire YAML node (string, number, boolean) at the named dotted path **after** inline substitution. This is the primary Fibe variable mechanism. Use it for label values, public URLs, replica counts, environment scalars, booleans, integers, and any whole-node replacement.
 
 ```yaml
 x-fibe.gg:
@@ -86,6 +86,10 @@ x-fibe.gg:
       paths:
         - services.web.environment.DEBUG
         - services.worker.environment.DEBUG
+    SUBDOMAIN:
+      name: "Subdomain"
+      default: app
+      path: services.web.labels.fibe.gg/subdomain
 ```
 
 Resulting compiled YAML has `services.web.deploy.replicas: 2` and `services.web.environment.DEBUG: false` (typed as integer/bool, not string, when the source value matches `^[0-9]+$` or `^(?i)(true|false)$`).
@@ -99,8 +103,8 @@ Use this as a quick map during conversion:
 | Variable usage pattern | Best form | Example |
 |---|---|---|
 | Full scalar value (env var, label value, replica count, path destination) | `path:` / `paths:` | `fibe.gg/port` via `paths: services.web.labels.fibe.gg/port` |
-| Part of a larger value (URL, tag, combined command string, prefix/suffix) | `$$var__NAME` inline | `image: registry/app:$$var__TAG` |
-| Existing `${VAR}` from input compose and launcher should control it | Convert to `$$var__` | `DATABASE_URL: postgres://...$$var__PASSWORD...` |
+| Part of a larger value (tag, combined command string, prefix/suffix) | `$$var__NAME` inline | `image: registry/app:$$var__TAG` |
+| Existing `${VAR}` from input compose and launcher should control the whole node | Keep a local placeholder and add `path:` / `paths:` | `RAILS_ENV: development` + `path: services.web.environment.RAILS_ENV` |
 | Mixed fragments in the same logical token | Inline | `PathPrefix('/$$var__PATH_PREFIX')` |
 
 ## `$$var__` behavior matrix
@@ -127,12 +131,18 @@ x-fibe.gg:
       name: Subdomain
       required: true
       random: true
+      path: services.web.labels.fibe.gg/subdomain
     PATH_PREFIX:
       name: URL path prefix
       default: ""
     APP_PORT:
       name: App port
       default: "3000"
+      path: services.web.labels.fibe.gg/port
+    PUBLIC_URL:
+      name: Public URL
+      default: https://app.example.com
+      path: services.web.environment.PUBLIC_URL
     REPLICAS:
       name: Web replicas
       required: false
@@ -142,14 +152,14 @@ services:
   web:
     image: ghcr.io/acme/app:$$var__TAG
     environment:
-      PUBLIC_URL: "https://$$var__SUBDOMAIN.$$root_domain/$$var__PATH_PREFIX"
-      APP_PORT: "$$var__APP_PORT"
+      PUBLIC_URL: https://app.example.com
+      APP_PORT: "3000"
     deploy:
       replicas: 1
     labels:
       fibe.gg/port: 3000
       fibe.gg/visibility: external
-      fibe.gg/subdomain: $$var__SUBDOMAIN
+      fibe.gg/subdomain: app
       fibe.gg/path_rule: PathPrefix(`/$$var__PATH_PREFIX`)
 ```
 
@@ -185,12 +195,15 @@ Using both inline + path for the same variable is valid, but path writes are the
 
 ## `$$root_domain`
 
-Special, **not** declared in `variables`. Always replaced at compile time with the launching Marquee's `root_domain` (e.g. `next.fibe.live`). Use anywhere a fully-qualified public host is needed:
+Special, **not** declared in `variables`. Always replaced at compile time with the launching Marquee's `root_domain` (e.g. `next.fibe.live`). Use it only as an inline fragment where a fully-qualified public host cannot be represented with explicit `path`/`paths` variables. Prefer explicit public URL variables with literal defaults for app ENV:
 
 ```yaml
-environment:
-  PUBLIC_URL: "https://$$var__SUBDOMAIN.$$root_domain"
-  CALLBACK_URL: "https://api.$$root_domain/callback"
+x-fibe.gg:
+  variables:
+    PUBLIC_URL:
+      name: Public URL
+      default: https://app.example.com
+      path: services.web.environment.PUBLIC_URL
 ```
 
 ## Random values
@@ -233,6 +246,10 @@ validation: "/^(?=.*\\d).{10,}$/"             # 10+ chars with a digit
 ```
 
 Validation runs **after** default/random resolution. An empty/blank value skips validation.
+
+## Default literals only
+
+Defaults are not recursively expanded. Do not write `default: "api-$$var__SUBDOMAIN"` or `default: "https://$$root_domain"`. Validation rejects `$$var__*`, `$$random__*`, and `$$root_domain` inside defaults. Use separate explicit variables with `path`/`paths` for derived public URLs or related label/env values, even when that creates duplicate-looking launch inputs.
 
 ## Unused-variable rule
 

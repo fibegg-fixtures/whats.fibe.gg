@@ -14,14 +14,14 @@ services:
   backup:
     image: postgres:17-alpine
     environment:
-      PGHOST: $$var__PG_HOST
-      PGUSER: $$var__PG_USER
-      PGPASSWORD: $$var__PG_PASS
-      PGDATABASE: $$var__PG_DB
-      AWS_ACCESS_KEY_ID: $$var__AWS_KEY_ID
-      AWS_SECRET_ACCESS_KEY: $$var__AWS_SECRET
-      AWS_DEFAULT_REGION: $$var__AWS_REGION
-      S3_BUCKET: $$var__S3_BUCKET
+      PGHOST: db.example.internal
+      PGUSER: backup_role
+      PGPASSWORD: placeholder
+      PGDATABASE: app
+      AWS_ACCESS_KEY_ID: key-id
+      AWS_SECRET_ACCESS_KEY: placeholder
+      AWS_DEFAULT_REGION: us-east-1
+      S3_BUCKET: backups
     command:
       - /bin/bash
       - -ec
@@ -52,34 +52,42 @@ x-fibe.gg:
     PG_HOST:
       name: "Postgres host (production DB endpoint)"
       required: true
+      path: services.backup.environment.PGHOST
     PG_USER:
       name: "Postgres user"
       required: true
       default: "backup_role"
+      path: services.backup.environment.PGUSER
     PG_PASS:
       name: "Postgres password"
       required: true
       secret: true
       sensitive: true
+      path: services.backup.environment.PGPASSWORD
     PG_DB:
       name: "Postgres database"
       required: true
+      path: services.backup.environment.PGDATABASE
     AWS_KEY_ID:
       name: "AWS access key ID"
       required: true
       secret: true
+      path: services.backup.environment.AWS_ACCESS_KEY_ID
     AWS_SECRET:
       name: "AWS secret access key"
       required: true
       secret: true
       sensitive: true
+      path: services.backup.environment.AWS_SECRET_ACCESS_KEY
     AWS_REGION:
       name: "AWS region"
       required: true
       default: "us-east-1"
+      path: services.backup.environment.AWS_DEFAULT_REGION
     S3_BUCKET:
       name: "S3 bucket name"
       required: true
+      path: services.backup.environment.S3_BUCKET
 ```
 
 ## What this does
@@ -94,7 +102,7 @@ x-fibe.gg:
 
 | Decision | Reason |
 |---|---|
-| No `fibe.gg/port` | Job-mode forbids exposed services |
+| No `fibe.gg/port` | Job-mode strips exposure labels before launch |
 | `fibe.gg/job_watch: "true"` | One watched service decides success/failure |
 | `restart: "no"` | Required behavior; runtime forces it anyway |
 | `command:` inline shell | Self-contained — no Dockerfile build needed |
@@ -116,7 +124,7 @@ services:
         curl -fSL -X POST -H "Authorization: Bearer $$API_TOKEN" \
           "https://api.example.com/internal/cleanup-old?days=30"
     environment:
-      API_TOKEN: $$var__API_TOKEN
+      API_TOKEN: placeholder
     labels:
       fibe.gg/job_watch: "true"
     restart: "no"
@@ -128,6 +136,7 @@ x-fibe.gg:
       required: true
       secret: true
       sensitive: true
+      path: services.cleanup.environment.API_TOKEN
   metadata:
     description: "Weekly cleanup — calls internal endpoint to purge data older than 30 days"
     category: "Operations"

@@ -19,7 +19,7 @@ Pulls the combined chat envelope and live status for an Agent through `GET /api/
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `agent_id` | int or string | yes | Agent ID or name |
+| `id_or_name` | int or string | yes | Agent ID or name |
 
 ## Output
 Without an active chat:

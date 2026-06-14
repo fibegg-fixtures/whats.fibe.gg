@@ -3,8 +3,8 @@
 //
 // Top-level sections (in order):
 //   - Welcome
-//   - Concepts (Agents nested as a sub-category)
-//   - Security
+//   - Concepts
+//   - Advanced Settings
 //   - Fibe Templates (Operate nested as a sub-category)
 //   - SDK, CLI & MCP
 //   - Reference: API
@@ -81,6 +81,7 @@ const sidebars = {
             'operate/cleanup-and-cascades',
             'operate/automatic-recovery',
             'operate/publishing',
+            'operate/job-configuration',
           ],
         },
       ],
@@ -146,10 +147,10 @@ const sidebars = {
             // Playgrounds
             'reference/tools/playgrounds-wait',
             'reference/tools/playgrounds-logs',
-            'reference/tools/playgrounds-logs-follow',
+            'reference/tools/logs-follow',
             'reference/tools/playgrounds-action',
             'reference/tools/playgrounds-debug',
-            'reference/tools/playgrounds-transform',
+            'reference/tools/playgrounds-switch-template',
             // Agents
             'reference/tools/agents-duplicate',
             'reference/tools/agents-runtime-status',
@@ -165,9 +166,8 @@ const sidebars = {
             'reference/tools/agent-defaults-update',
             'reference/tools/agent-defaults-reset',
             // Greenfield / Templates / Repos
-            'reference/tools/launch-create',
+            'reference/tools/launch',
             'reference/tools/greenfield-create',
-            'reference/tools/templates-launch',
             'reference/tools/templates-search',
             'reference/tools/templates-change',
             'reference/tools/github-repos-create',
@@ -205,6 +205,7 @@ const sidebars = {
                 'reference/fibe-product-map',
                 'reference/fibe-feature-surface',
                 'reference/fibe-resource-lifecycles',
+                'reference/platform-behavior-contracts',
                 'reference/fibe-agents-and-automation',
                 'reference/fibe-security-access-and-integrations',
                 'reference/glossary',

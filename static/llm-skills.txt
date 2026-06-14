@@ -196,7 +196,7 @@ reference-runtime-implied-semantics: Use when you need to know what behavior Fib
   web:   https://whats.fibe.gg/skills/reference-runtime-implied-semantics.md
   local: ./skills/reference-runtime-implied-semantics.md
 
-reference-template-variables: Use as the definitive reference for Fibe template variable mechanics - declaration shape, `$$var__NAME` / `$$root_domain` interpolation, validation regex, defaults, and random secret generation.
+reference-template-variables: Use as the definitive reference for Fibe template variable mechanics - declaration shape, `path`/`paths` whole-node binding, last-resort `$$var__NAME` / `$$root_domain` interpolation, validation regex, literal defaults, and random secret generation.
   web:   https://whats.fibe.gg/skills/reference-template-variables.md
   local: ./skills/reference-template-variables.md
 
@@ -216,7 +216,7 @@ templates-publish-checklist: Use as the final gate before publishing or submitti
   web:   https://whats.fibe.gg/skills/templates-publish-checklist.md
   local: ./skills/templates-publish-checklist.md
 
-## Tools (54)
+## Tools (53)
 
 fibe-tool-agent-defaults-get: Use when reading the current Player's Agent default overrides (LLM provider, settings, etc.) — the JSON shape used by the profile UI.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-agent-defaults-get.md
@@ -242,7 +242,7 @@ fibe-tool-agents-delete-conversation: Use when you need to delete a specific Age
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-agents-delete-conversation.md
   local: ./seed-skills/fibe-tool-agents-delete-conversation.md
 
-fibe-tool-agents-duplicate: Use when you need to duplicate an existing Agent's configuration (settings, mounted files, defaults). Overseer tool — operates on managed Agents.
+fibe-tool-agents-duplicate: Use when you need to duplicate an existing Agent's provider, auth material, and runtime settings. Overseer tool — operates on managed Agents.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-agents-duplicate.md
   local: ./seed-skills/fibe-tool-agents-duplicate.md
 
@@ -306,7 +306,7 @@ fibe-tool-gitea-repos-create: Use when you need to create a new repo on the Play
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-gitea-repos-create.md
   local: ./seed-skills/fibe-tool-gitea-repos-create.md
 
-fibe-tool-github-repos-create: Use when you need to create a new GitHub repository under the Player's OAuth-connected GitHub account and register it as a Fibe Prop.
+fibe-tool-github-repos-create: Use when you need to create a new GitHub repository under the Player's OAuth-connected GitHub account.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-github-repos-create.md
   local: ./seed-skills/fibe-tool-github-repos-create.md
 
@@ -318,9 +318,9 @@ fibe-tool-help: Use when you need to read the CLI long help for any fibe subcomm
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-help.md
   local: ./seed-skills/fibe-tool-help.md
 
-fibe-tool-launch-create: Use when deploying an existing Fibe-compatible Compose config from inline YAML, a local file, or a GitHub repository config file without creating new source repos first.
-  web:   https://whats.fibe.gg/seed-skills/fibe-tool-launch-create.md
-  local: ./seed-skills/fibe-tool-launch-create.md
+fibe-tool-launch: Use when deploying an existing Fibe-compatible Compose config from inline YAML, a local file, or a GitHub repository config file without creating new source repos first.
+  web:   https://whats.fibe.gg/seed-skills/fibe-tool-launch.md
+  local: ./seed-skills/fibe-tool-launch.md
 
 fibe-tool-local-playgrounds-info: Use when you need to get filesystem-level info about one local Playground (name, path, playspec, mounts) without an API call.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-local-playgrounds-info.md
@@ -329,6 +329,10 @@ fibe-tool-local-playgrounds-info: Use when you need to get filesystem-level info
 fibe-tool-local-playgrounds-link: Use when you need to symlink a local Playground's mounts into a working directory (default /app/playground) so the Agent has direct file access. Brownfield handshake.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-local-playgrounds-link.md
   local: ./seed-skills/fibe-tool-local-playgrounds-link.md
+
+fibe-tool-logs-follow: Use when you need to stream a Playground service's live logs as MCP progress notifications until duration elapses or max_lines reached. For waiting on a specific log pattern.
+  web:   https://whats.fibe.gg/seed-skills/fibe-tool-logs-follow.md
+  local: ./seed-skills/fibe-tool-logs-follow.md
 
 fibe-tool-memorize: Use when you need to create or update one Memory grounded in a local source conversation. Persistent agent memory tied to evidence (groundings + conversation snapshot).
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-memorize.md
@@ -342,11 +346,11 @@ fibe-tool-monitor-list: Use when you need to list Agent-produced events (message
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-monitor-list.md
   local: ./seed-skills/fibe-tool-monitor-list.md
 
-fibe-tool-mutter: Use when you need to post one short progress/proof/blocker/problem/milestone note as the current Agent. The dedicated Agent progress channel.
+fibe-tool-mutter: Use when you need to post one short progress/info/warning/error/success note as the current Agent. The dedicated Agent progress channel.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-mutter.md
   local: ./seed-skills/fibe-tool-mutter.md
 
-fibe-tool-mutters-get: Use when you need to retrieve one Agent's mutter stream — the "thinking out loud" feed of progress, proof, problem, and blocker notes — with optional query/status/severity/playground filters.
+fibe-tool-mutters-get: Use when you need to retrieve one Agent's mutter stream — the "thinking out loud" feed of progress, info, warning, error, and success notes — with optional query/status/severity/playground filters.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-mutters-get.md
   local: ./seed-skills/fibe-tool-mutters-get.md
 
@@ -370,19 +374,15 @@ fibe-tool-playgrounds-logs: Use when you need to fetch a bounded log snapshot fo
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-playgrounds-logs.md
   local: ./seed-skills/fibe-tool-playgrounds-logs.md
 
-fibe-tool-playgrounds-logs-follow: Use when you need to stream a Playground service's live logs as MCP progress notifications until duration elapses or max_lines reached. For waiting on a specific log pattern.
-  web:   https://whats.fibe.gg/seed-skills/fibe-tool-playgrounds-logs-follow.md
-  local: ./seed-skills/fibe-tool-playgrounds-logs-follow.md
-
-fibe-tool-playgrounds-transform: Use when an existing deployed playground needs to be transformed end-to-end to a different stack, service shape, source layout, or prop set while preserving its id. Single-call brownfield analog of fibe_greenfield_create. Authors a new template inline if needed and provisions Gitea-backed private Props on the fly for new repos.
-  web:   https://whats.fibe.gg/seed-skills/fibe-tool-playgrounds-transform.md
-  local: ./seed-skills/fibe-tool-playgrounds-transform.md
+fibe-tool-playgrounds-switch-template: Use when an existing deployed playground needs to be switched end-to-end to a different stack, service shape, source layout, or prop set while preserving its id. Single-call brownfield analog of fibe_greenfield_create. Authors a new template inline if needed and provisions Gitea-backed private Props on the fly for new repos.
+  web:   https://whats.fibe.gg/seed-skills/fibe-tool-playgrounds-switch-template.md
+  local: ./seed-skills/fibe-tool-playgrounds-switch-template.md
 
 fibe-tool-playgrounds-wait: Use when you need to block-and-poll until a Playground reaches a target status (running, stopped, has_changes, destroyed, etc.). Required after rollout/start/restart/job triggers.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-playgrounds-wait.md
   local: ./seed-skills/fibe-tool-playgrounds-wait.md
 
-fibe-tool-repo-status-check: Use when you need to verify Fibe's view of multiple GitHub repository URLs in one call — accessibility, App installation status, default branch, etc.
+fibe-tool-repo-status-check: Use when you need to verify Fibe's current accessibility status for multiple GitHub repository URLs in one call.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-repo-status-check.md
   local: ./seed-skills/fibe-tool-repo-status-check.md
 
@@ -417,10 +417,6 @@ fibe-tool-status: Use when you need to dashboard the current player's resource c
 fibe-tool-templates-change: Use when an advanced template-author or admin workflow needs the hidden lower-level primitive for patching, overwriting, or switching template versions, including Trick reruns and global template promotion.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-templates-change.md
   local: ./seed-skills/fibe-tool-templates-change.md
-
-fibe-tool-templates-launch: Use when you need to bootstrap and launch a Playground directly from an existing import template, without creating a new repo. Greenfield-lite.
-  web:   https://whats.fibe.gg/seed-skills/fibe-tool-templates-launch.md
-  local: ./seed-skills/fibe-tool-templates-launch.md
 
 fibe-tool-templates-search: Use when you need to search the Fibe Import Template catalog (own + public + team) by full-text or PostgreSQL regex before greenfield/launch.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-templates-search.md

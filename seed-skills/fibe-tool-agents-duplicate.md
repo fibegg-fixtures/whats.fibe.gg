@@ -1,13 +1,13 @@
 ---
 name: fibe-tool-agents-duplicate
-description: Use when you need to duplicate an existing Agent's configuration (settings, mounted files, defaults). Overseer tool — operates on managed Agents.
+description: Use when you need to duplicate an existing Agent's provider, auth material, and runtime settings. Overseer tool — operates on managed Agents.
 ---
 
 # fibe_agents_duplicate
 
 [MODE:OVERSEER] Idempotent. Tier: overseer.
 
-Creates a copy of an Agent's configuration through `POST /api/agents/:id/duplicate`.
+Creates a copy of an Agent's configuration through `POST /api/agents/:id/copies`.
 
 ## When to use
 - Cloning a tuned Agent for parallel evaluation.
@@ -19,18 +19,18 @@ Creates a copy of an Agent's configuration through `POST /api/agents/:id/duplica
 | `id_or_name` | int or string | yes | Agent ID or name |
 
 ## Output
-The new Agent's full JSON, including a fresh `id`/`name` (suffixed) and copied settings/mounts.
+The new Agent's full JSON, including a fresh `id`/`name` and copied provider/auth/settings data.
 
 ## Behavior
-- Copies: agent settings, agent_defaults, mounted_files, default playground reference (`build_in_public_playground_id`), provider config, and stored provider auth material/API key reference.
-- Does NOT copy: chat history, mutters, artefacts, feedbacks, or active chat sessions.
+- Copies provider, status, credentials, Fibe API key reference, and settings, including mounted-file metadata stored in settings, after removing generated agent password and syscheck state.
+- Does NOT copy build-in-public column state, build-in-public Playground links, agent-default cascade state, chat history, mutters, artefacts, feedbacks, or active chat sessions.
 - New Agent has inherited auth material from the source Agent, but no running runtime session.
 
 ## Gotchas
 - The new Agent has no `agent_chats` — `start_chat` first if you want runtime interaction.
-- Mounted file *contents* are copied; their volume mounts are re-created on first chat.
+- Runtime files represented in copied settings are applied on first chat; verify any referenced uploaded artefacts are still accessible before relying on them.
 - Quota counted: counts against the player's max-agents quota.
-- The duplicate's name is auto-suffixed when needed.
+- The duplicate starts from the generic `Untitled` name; rename it after creation if you need a specific label.
 
 ## Related
 - `fibe_agents_start_chat` — bring the duplicate online.

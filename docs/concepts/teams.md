@@ -9,22 +9,25 @@ keywords: [Team, Marquee sharing, invitations, members, owner, collaboration, sh
 
 A **Team** lets you share a [Marquee](/concepts/marquees/) with other people. The owner shares a host; accepted members launch on it as if it were their own.
 
-Team management is **web-only** today — create and manage teams from the Teams page in the app. There is no API, CLI, or MCP surface.
+Team management is **web-only** today — create and manage teams from the Teams page in the app. There is no public API, CLI, or MCP surface for managing teams themselves, but accepted team Marquee access is honored by the existing Marquee and Playground surfaces.
 
 Creating teams may need collaboration enabled on your account first — see [Feature Preferences](/advanced/features/#teams-collaboration). Accepting an invitation and using a Marquee shared with you work without it.
 
 ## Roles
 
-- **Owner** — creates the team, invites and removes members, transfers leadership, shares and unshares Marquees.
-- **Member** — accepts the invitation, uses shared Marquees, can leave the team.
+- **Owner** — creates the team, invites and removes members, changes member roles, transfers leadership, shares and unshares Marquees.
+- **Admin** — uses shared Marquees and can leave the team. Admin is a role value today, not a membership-management grant.
+- **Member** — accepts the invitation, uses shared Marquees, and can leave the team. Members can't invite people or change team membership.
 
 Only the owner can share resources into the team.
 
-The creator is the owner, and the owner cannot leave the team — transfer leadership to another accepted member first, which makes them the new owner. A team can be deleted only after every other member has left or been removed.
+The creator is the owner, and ownership only moves through **Transfer leadership**. Transfer leadership to another accepted member before leaving; the new owner is promoted and the previous owner becomes an Admin. A team can be deleted only after every other member has left or been removed.
+
+The owner can assign Member or Admin. Owner is never assigned by invite or role edit — only leadership transfer changes the owner.
 
 ## Invitations
 
-The owner invites people by **username or GitHub handle**. An invitation stays **pending** until the person accepts or declines it. You can invite someone who hasn't signed up yet — the invitation attaches to their account when they register. If someone declines, you can invite them again — a declined invitation doesn't block a new one.
+The owner invites people by **username or GitHub handle**. An invitation stays **pending** until the person accepts or declines it; pending invites don't expire automatically. You can invite someone who hasn't signed up yet — the invitation attaches to their account when they register with that username. If someone declines, you can invite them again — a declined invitation doesn't block a new one.
 
 ## What sharing a Marquee means
 

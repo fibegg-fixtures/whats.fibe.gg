@@ -41,7 +41,7 @@ fibe doctor               # check connectivity + auth
 fibe playgrounds list
 fibe agent chat my-genie "Hello"
 fibe pg create --name demo --playspec starter --marquee next --service web.subdomain=demo
-fibe tricks trigger --playspec-id 42
+fibe tricks trigger --playspec 42
 
 # Run an MCP server for your AI agent
 fibe mcp serve
@@ -89,7 +89,7 @@ fibe mcp serve --http :4400          # SSE over HTTP, multi-tenant
 fibe mcp install --client claude-code
 ```
 
-The same Go binary doubles as an MCP server. AI agents call `fibe_*` tools (60+ of them across resource CRUD, playground actions, agent control, greenfield setup, multi-step pipelines, monitoring, repo management, and a few escape hatches). The catalog is in [Tools catalog](/sdk/tools-catalog/) and each tool has its own detail page under [Reference → Tools](/reference/tools/playgrounds-transform/).
+The same Go binary doubles as an MCP server. AI agents call `fibe_*` tools (60+ of them across resource CRUD, playground actions, agent control, greenfield setup, multi-step pipelines, monitoring, repo management, and a few escape hatches). The catalog is in [Tools catalog](/sdk/tools-catalog/) and each tool has its own detail page under [Reference → Tools](/reference/tools/playgrounds-switch-template/).
 
 Read on: [MCP server](/sdk/mcp-server/), [Tools catalog](/sdk/tools-catalog/).
 

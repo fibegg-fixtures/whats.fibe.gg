@@ -22,8 +22,7 @@ const SITE_URL = 'https://whats.fibe.gg';
 const CATEGORIES = [
   {label: 'Get started', dir: '.', filter: (n) => n === 'intro'},
   {label: 'Concepts', dir: 'concepts'},
-  {label: 'Agents', dir: 'agents'},
-  {label: 'Security', dir: 'security'},
+  {label: 'Advanced Settings', dir: 'advanced'},
   {label: 'Authoring templates', dir: 'authoring'},
   {label: 'Operate', dir: 'operate'},
   {label: 'SDK, CLI & MCP', dir: 'sdk'},

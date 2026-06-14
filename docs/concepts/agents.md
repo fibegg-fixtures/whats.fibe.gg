@@ -26,6 +26,28 @@ Two ways to use one:
 - **Post-init script** — runs once on environment setup. Use for `npm install`, dependency setup, anything pre-work.
 - **Agent password** — every Genie's chat URL is password-protected; Fibe generates one automatically, and you can set your own passphrase. Set it before the chat's first start on a Marquee: a chat keeps the password it was first created with there, and changing the passphrase later doesn't update an existing chat's URL. To get a fresh password, start the chat on a different Marquee (or duplicate the Genie).
 
+## Credentials and status
+
+A Genie can authenticate in three ways:
+
+- **OAuth / device flow** — connect through the provider's browser flow when supported.
+- **Provider API key or credential bundle** — paste provider credentials for that Genie.
+- **Fibe Mana** — Fibe runs the provider connection and bills usage through your Mana. This mode is not available for Cursor or Antigravity.
+
+If a linked Fibe API key stops working but provider credentials are still stored on the Genie, Fibe falls back to those provider credentials. If neither path works, the Genie needs re-authentication before it can run.
+
+Genies move through five authentication statuses:
+
+| Status | Meaning |
+| --- | --- |
+| **pending** | Created but not authenticated yet. |
+| **authenticated** | Ready to run, as long as any expiration time is still in the future. |
+| **expired** | Credential expired; re-authenticate before starting work. |
+| **revoked** | Credentials and linked API key were cleared. |
+| **deleting** | Cleanup is in progress. |
+
+A Genie is usable only when it is **authenticated** and not expired.
+
 ## Settings cascade
 
 Resolution order (most specific to most generic):
@@ -100,6 +122,8 @@ Each Poke has:
 Minimum interval: **five minutes**. Pause/resume from the Genie's settings. If the target Conversation is deleted, the Poke keeps its schedule but every run is recorded as failed (target missing) until you pause it or point it at another Conversation.
 
 Scheduled Pokes claim and reschedule normally, but delivery to a Genie is blocked when the backing Marquee is unpaid.
+
+Each account has a Poke limit (20 by default). Creating a Poke past the limit fails with a clear quota error.
 
 ## Notifications on activity
 

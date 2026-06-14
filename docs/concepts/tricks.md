@@ -44,7 +44,7 @@ services:
   db:
     image: postgres:17
     environment:
-      POSTGRES_PASSWORD: $$var__DB_PASSWORD
+      POSTGRES_PASSWORD: placeholder
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 2s
@@ -76,7 +76,7 @@ Fibe applies one-shot rules. You don't write these:
 - Every service set to **one replica**.
 - Every service set to `restart: no`.
 - Routing and exposure labels removed — a Trick never gets a URL. Fibe's own bookkeeping labels stay on the containers as run metadata.
-- `fibe.gg/port` is forbidden — a Trick isn't there to serve traffic.
+- Routing labels such as `fibe.gg/port` are stripped before launch — a Trick isn't there to serve traffic.
 
 What you write:
 
@@ -125,7 +125,7 @@ services:
   backup:
     image: my-org/backup-tool:1.4
     environment:
-      DB_URL: $$var__DB_URL
+      DB_URL: postgres://user:pass@db.example.com:5432/app
       S3_BUCKET: backups.example.com
     command: ["./backup-now.sh"]
     labels:
@@ -133,7 +133,7 @@ services:
 
 x-fibe.gg:
   variables:
-    DB_URL: {name: "Database URL", required: true}
+    DB_URL: {name: "Database URL", required: true, path: services.backup.environment.DB_URL}
   metadata:
     job_mode: true
     description: "Nightly database backup to S3"
