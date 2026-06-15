@@ -231,6 +231,7 @@ const sidebars = {
                 'reference/reference-x-fibe-gg-namespace',
                 'reference/reference-template-variables',
                 'reference/reference-yaml-paths',
+                'reference/reference-fibe-managed-env',
                 'reference/reference-runtime-implied-semantics',
                 'reference/reference-validation-pipeline',
               ],

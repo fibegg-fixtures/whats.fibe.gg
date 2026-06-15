@@ -157,7 +157,7 @@ trigger_config:
   marquee_id: 1
 ```
 
-The trigger's `branch` must equal the PR's **source (head) branch** — a PR merely targeting that branch does not fire the trigger. The checked-out source is the service's configured branch (`fibe.gg/branch`, or the repo default), not the PR head. If the test must run the exact commit that triggered the run, have the test command check it out using the run's built-in environment values (`FIBE_BRANCH` / `FIBE_COMMIT_SHA`).
+The trigger's `branch` must equal the PR's **source (head) branch** — a PR merely targeting that branch does not fire the trigger. The checked-out source is the service's configured branch (`fibe.gg/branch`, or the repo default), not the PR head. If the test must run the exact commit that triggered the run, have the test command use the managed run-context variables described in [reference-fibe-managed-env](reference-fibe-managed-env.md).
 
 For push triggers:
 

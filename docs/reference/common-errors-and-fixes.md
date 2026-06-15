@@ -181,6 +181,24 @@ The supplied value doesn't match the variable's regex.
 
 **Fix:** Either correct the value, loosen the regex, or remove the regex.
 
+### `Variable '<name>' default must be a literal`
+
+The variable default contains a nested Fibe template token such as `$$var__OTHER`, `$$random__OTHER`, or `$$root_domain`. Defaults are not recursively expanded.
+
+**Fix:** Create an explicit variable with a literal default and bind it with `path:` / `paths:`. For derived public URLs, use a separate URL variable instead of composing one default from another variable.
+
+### Whole-node inline variable warning
+
+Validation warns when a value is only `$$var__NAME`, for example `fibe.gg/subdomain: $$var__SUBDOMAIN` or `MY_ENV: $$var__VALUE`.
+
+**Fix:** Keep a concrete local placeholder in the Compose file and bind the variable with `path:` / `paths:`. Inline `$$var__NAME` is for fragments inside a larger string.
+
+### Path target under a missing service root
+
+Validation rejects `path:` / `paths:` entries that target `services.<name>...` when `<name>` is not a service in the Compose file.
+
+**Fix:** Correct the service name. Missing leaf nodes under an existing service can still be created, but missing service roots are almost always typos.
+
 ## Runtime errors
 
 ### `trigger_config.prop_id <N> not found`
@@ -260,4 +278,4 @@ See [reference-validation-pipeline](reference-validation-pipeline.md).
 
 ## Related skills
 
-[reference-validation-pipeline](reference-validation-pipeline.md), [templates-publish-checklist](templates-publish-checklist.md), [reference-fibe-labels](reference-fibe-labels.md), [reference-template-variables](reference-template-variables.md), [decide-zero-downtime](decide-zero-downtime.md). Platform skills `fibe-debug`, `fibe-traefik`, `fibe-live-reload` for runtime debugging.
+[reference-validation-pipeline](reference-validation-pipeline.md), [templates-publish-checklist](templates-publish-checklist.md), [reference-fibe-labels](reference-fibe-labels.md), [reference-template-variables](reference-template-variables.md), [reference-fibe-managed-env](reference-fibe-managed-env.md), [decide-zero-downtime](decide-zero-downtime.md). Platform skills `fibe-debug`, `fibe-traefik`, `fibe-live-reload` for runtime debugging.

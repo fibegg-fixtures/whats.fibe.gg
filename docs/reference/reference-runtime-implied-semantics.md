@@ -122,6 +122,10 @@ Template interpolation happens in order:
 1. `$$var__` replacement on raw YAML text
 2. `path`/`paths` rewrite into parsed nodes
 
+## Fibe-managed env is platform-owned
+
+Some runtime and build context is provided through Fibe-managed env or build args. Do not create template variables that write known platform-owned `FIBE_*` keys into service `environment:`. Use [reference-fibe-managed-env](reference-fibe-managed-env.md) for the complete list and scopes.
+
 So if the same variable is declared both inline and with `path`, the path write is the last write.
 
 ```yaml

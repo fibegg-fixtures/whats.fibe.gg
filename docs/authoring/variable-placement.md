@@ -55,7 +55,7 @@ If you need a literal `"3"`, supply the value with quotes via a different mechan
 
 - **Path writes happen after any inline substitution.** If both target the same value, the path write wins.
 - **Missing intermediate maps are created for you**, but they are ordinary nested maps. They don't invent new dotted label keys under `labels:`.
-- **A path that doesn't match the document's shape never fails the compile** — but it may write the value under an unexpected literal key instead of where you intended. Always double-check paths against the template's actual YAML structure.
+- **Missing leaf nodes under existing services can be created.** A path that targets a missing `services.<name>` root is rejected during validation, and path-write failures are returned as compile errors. Always double-check paths against the template's actual YAML structure.
 
 ## Related
 

@@ -79,6 +79,8 @@ const FAMILY_LINKS = [
   {name: 'where',   tag: 'in the stack', href: 'https://where.fibe.gg/'},
   {name: 'when',    tag: 'early access', href: 'https://when.fibe.gg/'},
   {name: 'whats',   tag: 'user guide',  href: 'https://whats.fibe.gg/', current: true},
+  {name: 'faq',     tag: 'questions',   href: 'https://faq.fibe.gg/'},
+  {name: 'blog',    tag: 'updates',     href: 'https://blog.fibe.gg/'},
 ];
 
 export default function Footer() {

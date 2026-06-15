@@ -106,7 +106,7 @@ Entries marked secret are NOT injected into runs triggered by `pull_request` eve
 
 ### Built-in run-context variables
 
-Every job service automatically receives env vars describing the run: `FIBE_REPOSITORY_URL`, `FIBE_REPOSITORY_OWNER`, `FIBE_REPOSITORY_NAME`, `FIBE_BRANCH`, `FIBE_COMMIT_SHA`, `FIBE_TRIGGER_EVENT`, `FIBE_PROP_ID`, `FIBE_PLAYSPEC_ID`, `FIBE_PLAYGROUND_ID`. Each source-backed service's clone path is also available to Compose interpolation as `FIBE_SERVICES_<SERVICE_TOKEN>_PATH`, where the token is the service name uppercased with non-alphanumerics replaced by `_`. This source-path variable is not guaranteed to be present inside containers as a runtime env var. The built-in runtime variables are how CI scripts get the triggering commit.
+Job services receive Fibe-managed run context env, and source-backed service paths are available to Compose interpolation. Use [reference-fibe-managed-env](reference-fibe-managed-env.md) for the complete variable list, scope, and ownership rules before adding any platform-looking `FIBE_*` key to a template.
 
 ## When NOT to use job mode
 

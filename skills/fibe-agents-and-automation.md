@@ -102,7 +102,7 @@ Scopes:
 
 Prefer Job ENV over template variables when a credential should be reused across many job runs and should not be supplied at every launch.
 
-Every Trick also receives built-in variables describing the run: `FIBE_REPOSITORY_URL`, `FIBE_REPOSITORY_OWNER`, `FIBE_REPOSITORY_NAME`, `FIBE_BRANCH`, `FIBE_COMMIT_SHA`, `FIBE_TRIGGER_EVENT`, `FIBE_PROP_ID`, `FIBE_PLAYSPEC_ID`, `FIBE_PLAYGROUND_ID`. For each source-backed service, Compose interpolation can also use `FIBE_SERVICES_<SERVICE_TOKEN>_PATH`, where the token is the service name uppercased with non-alphanumerics replaced by `_`; do not assume that source-path value is present inside containers as runtime env.
+Every Trick also receives Fibe-managed run-context variables, and source-backed service paths are available to Compose interpolation. See [reference-fibe-managed-env](reference-fibe-managed-env.md) for the complete variable list, scope, and ownership rules; do not add platform-looking `FIBE_*` keys to templates without checking that reference.
 
 ## Related skills
 

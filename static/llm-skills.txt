@@ -10,7 +10,7 @@
 > For the linked index of full docs pages, see /llms.txt.
 > For the concatenated full content, see /llms-full.txt.
 
-## Skills (51)
+## Skills (52)
 
 common-errors-and-fixes: Use as a diagnostic table for typical errors when converting docker-compose to Fibe templates - unknown labels, bad regex matches, missing repo_url, zerodowntime conflicts, undeclared/unused variables, and trigger/schedule issues.
   web:   https://whats.fibe.gg/skills/common-errors-and-fixes.md
@@ -191,6 +191,10 @@ recipe-zero-downtime-healthcheck: Use to tune the five optional `fibe.gg/healthc
 reference-fibe-labels: Use as the definitive reference for every supported `fibe.gg/*` Docker Compose label - exact value regexes, defaults, required-when rules, and what runtime/schema each enforces.
   web:   https://whats.fibe.gg/skills/reference-fibe-labels.md
   local: ./skills/reference-fibe-labels.md
+
+reference-fibe-managed-env: Use when deciding whether a Fibe-looking environment variable is platform-managed, app-owned, Compose-only, runtime-only, build-only, SDK/MCP-only, or agent-runtime-only.
+  web:   https://whats.fibe.gg/skills/reference-fibe-managed-env.md
+  local: ./skills/reference-fibe-managed-env.md
 
 reference-runtime-implied-semantics: Use when you need to know what behavior Fibe infers from Compose YAML/labels at runtime (forced lifecycle fields, hidden constraints, stripped keys, and required co-conditions).
   web:   https://whats.fibe.gg/skills/reference-runtime-implied-semantics.md

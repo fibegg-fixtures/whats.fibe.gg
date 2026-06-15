@@ -15,6 +15,7 @@ Validation runs in **layers**. Each layer is authoritative for its scope. Higher
 [3] Template schema     ← public Fibe Compose schema
 [4] Label semantics     ← cross-label rules
 [5] Template variables  ← declared-vs-referenced, regex, name, defaults, path roots, warnings
+[5b] Managed env        ← warnings for shadowing Fibe-managed env keys
 [6] Template compiler   ← required-but-missing, validation patterns, path-write failures
 [7] Runtime API         ← resource existence, repo URL provider, trigger permissions
 ```
@@ -88,6 +89,10 @@ Catches:
 - `invalid_path_service` — `path`/`paths` targets a missing `services.<name>` root. Missing leaves under existing services are allowed.
 - Warning `whole_node_inline_var` — a whole YAML node is exactly `$$var__NAME`; use `path`/`paths` instead.
 
+## [5b] Managed env warnings
+
+Compose validation warns when a service `environment:` defines known Fibe-managed keys or `FIBE_SERVICES_*_PATH`. It does not warn on arbitrary app-owned names such as `FIBE_DB_PASS`. Use [reference-fibe-managed-env](reference-fibe-managed-env.md) before adding any platform-looking `FIBE_*` key to a template.
+
 ## [6] Template compiler
 
 Catches at compile time:
@@ -125,4 +130,4 @@ Drive through MCP, CLI, API, or UI launch/preview. Catches:
 
 ## Related skills
 
-[reference-fibe-labels](reference-fibe-labels.md), [reference-x-fibe-gg-namespace](reference-x-fibe-gg-namespace.md), [reference-template-variables](reference-template-variables.md), [common-errors-and-fixes](common-errors-and-fixes.md), [templates-publish-checklist](templates-publish-checklist.md).
+[reference-fibe-labels](reference-fibe-labels.md), [reference-x-fibe-gg-namespace](reference-x-fibe-gg-namespace.md), [reference-template-variables](reference-template-variables.md), [reference-fibe-managed-env](reference-fibe-managed-env.md), [common-errors-and-fixes](common-errors-and-fixes.md), [templates-publish-checklist](templates-publish-checklist.md).
