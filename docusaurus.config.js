@@ -130,7 +130,15 @@ const config = {
           height: 28,
         },
         items: [
-          {href: 'https://fibe.gg', label: 'fibe.gg', position: 'right'},
+          // GitHub + fibe.gg now live in the footer; the navbar keeps only the
+          // search box and a gold "fibe →" CTA to its right.
+          {type: 'search', position: 'right'},
+          {
+            href: 'https://fibe.gg/',
+            label: 'fibe →',
+            position: 'right',
+            className: 'navbar__fibe-cta',
+          },
         ],
       },
       footer: {
