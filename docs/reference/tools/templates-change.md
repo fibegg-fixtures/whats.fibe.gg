@@ -56,7 +56,7 @@ The lower-level template change primitive. Combines: pick a target → patch, ov
 | `switch_variables` | object | New variable values. |
 | `regenerate_variables` | array of string | Variable names to regenerate from defaults. |
 | `confirm_warnings` | bool | Required `true` to proceed when preview reports switch warnings. |
-| `provision_missing_props` | enum | `off` \| `gitea` \| `github`. When the new template references repos the player doesn't yet own a Prop for, automatically provision a fresh git repo (in the player's connected Gitea or GitHub account) and create a Prop for each. Defaults to `off` (today's behaviour: public repos auto-create Props, private repos fail with a manual-creation hint). |
+| `provision_missing_props` | enum | `off` \| `gitea` \| `github`. When the new template references repos the player doesn't yet own as runtime-writable Props, automatically provision a fresh git repo (in the player's connected Gitea or GitHub account) and create a writable Prop for each. Defaults to `off`: missing or read-only repos fail early with fork/provision guidance. |
 | `provision_private` | bool | Whether the freshly provisioned repos should be private. Defaults to `true`. |
 | `provision_inputs` | array | Per-URL overrides: `[{source_repo_url, name_override?, default_branch?, description?, auto_init?}]`. Each `source_repo_url` must match a URL declared by the new template. |
 

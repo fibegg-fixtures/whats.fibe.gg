@@ -7,7 +7,7 @@ description: Use when you need to verify Fibe's current accessibility status for
 
 [MODE:DIALOG] Read-only, idempotent. Tier: other.
 
-Bulk repository status query. Up to 50 GitHub URLs at once through `POST /api/repo_status`.
+Bulk repository status query. Up to 50 GitHub URLs at once through `POST /api/repo_status_checks`.
 
 ## When to use
 - Pre-flight before `prop.attach` for a list of repos.
@@ -26,19 +26,24 @@ Bulk repository status query. Up to 50 GitHub URLs at once through `POST /api/re
     {
       "url": "https://github.com/org/repo",
       "status": "invalid | ready | attachable | needs_fork | mirrorable | not_accessible",
-      "error": "optional reason when status is invalid or not_accessible"
+      "error": "optional reason when status is invalid or not_accessible",
+      "runtime_writable": true,
+      "runtime_access_source": "github_app | gitea_connection | stored_github_credentials | none",
+      "runtime_access_message": "human-readable readiness guidance",
+      "requires_fork": false,
+      "fork_url": "optional GitHub fork URL"
     }
   ]
 }
 ```
 
 ## Behavior
-- Validates each URL, checks existing Props and GitHub App access, and reports a compact status per input URL.
-- `ready` means the repo already maps to one of the player's Props.
+- Validates each URL, checks existing Props, Player OAuth visibility, GitHub App installation access, and runtime push access, then reports a compact status per input URL.
+- `ready` means the repo already maps to one of the player's runtime-writable Props. If `runtime_writable:false` ever appears, treat it as a stale/invalid attachment that must be repaired before launch.
 - `attachable` means the player's GitHub App installation can access the repo and it can be attached.
-- `mirrorable` means no installation is available, but the source repo is public and can be mirrored.
-- `needs_fork` means an installation exists but does not currently cover the source; inspect `fork_url` and `mirrorable`.
+- `needs_fork` means Fibe can read the source but cannot attach it as runtime-writable yet; inspect `fork_url` and `mirrorable`, then attach a writable fork or install the GitHub App on a writable repo.
 - `invalid` and `not_accessible` are not usable until the URL or access problem is fixed; inspect `error` when present.
+- `requires_fork:true` means a public source should be forked or mirrored before creating a runtime-writable Playspec/Prop from it. Do not launch with read-only public Props.
 
 ## Gotchas
 - Maximum 50 URLs — extras are dropped silently. Pre-chunk if you have more.

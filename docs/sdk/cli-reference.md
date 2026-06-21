@@ -146,12 +146,16 @@ fibe templates list
 fibe templates get <id>
 fibe templates search --query "Rails"
 fibe launch --template <id|name> --marquee <id-or-name> [--name my-playground] [--version 3]
+fibe launch --template-version <id> --name branch-a --marquee <id-or-name>
+fibe launch --playspec <id|name> --name demo --marquee <id-or-name>
+fibe launch --compose @docker-compose.yml --name demo --marquee <id-or-name>
+fibe launch owner/repo@main --name demo --marquee <id-or-name>
 fibe templates update <id> -f patch.json     # update template metadata
 fibe templates versions create <id>          # publish a new template version
 fibe playspecs switch-template <id>          # move a Playspec to another template version
 ```
 
-`fibe launch` is the one-shot path from raw Compose YAML, a repo config file, an existing Playspec, or a catalog template to a running Playground.
+`fibe launch` is the one-shot path from one existing source: a catalog template, exact template version, existing Playspec, raw Compose YAML, or GitHub repo config. Bare positional sources resolve as repositories when they look like `owner/repo`, a URL, or `.git`; otherwise the CLI looks for a template or Playspec by name. Use explicit flags for numeric IDs because a bare number is ambiguous.
 
 Template launch, greenfield, tricks, agent chat, and playground commands all require the selected Marquee to be funded.
 
@@ -229,11 +233,14 @@ fibe wait trick 99 --status completed --timeout 1h
 
 ## Greenfield & launch shortcuts
 
-Launch an existing repo config, or use a repo config as a greenfield snapshot template.
+Launch one existing source, or use a repo config as a greenfield snapshot template.
 
 ```sh
 fibe github apps connect
 
+fibe launch --template billing-app --version 3 --name billing-staging --marquee next
+fibe launch --playspec starter --name demo --marquee next
+fibe launch --compose @docker-compose.yml --name demo --marquee next
 fibe launch owner/repo --marquee 12
 fibe launch https://github.com/owner/repo --ref main --file deploy/fibe.yml
 
@@ -241,7 +248,9 @@ fibe greenfield owner/repo --marquee 12
 fibe greenfield owner/repo@feature/foo --name custom-name
 ```
 
-Both commands discover config files in this order: `fibe.yml`, `fibe.yaml`, `docker-compose.yml`, `docker-compose.yaml`. `--name` is optional and inferred from the repo basename after slug normalization; pass it explicitly when you want a stable custom name. If your account has multiple GitHub App installations, add `--github-account <owner>` or `--github-installation-id <id>`.
+For repo sources, both commands discover config files in this order: `fibe.yml`, `fibe.yaml`, `docker-compose.yml`, `docker-compose.yaml`. `--name` is optional and inferred from the repo basename after slug normalization; pass it explicitly when you want a stable custom name. If your account has multiple GitHub App installations, add `--github-account <owner>` or `--github-installation-id <id>`.
+
+When `--marquee` is omitted, launch and greenfield use `FIBE_MARQUEE_ID` or infer the only launchable Marquee. Compose/repo launch can force a Playspec-only import with `--no-create-playground`; volume persistence defaults on when the compiled Compose declares named volumes and can be overridden with `--persist-volumes=false`.
 
 ## Local playground inspection
 

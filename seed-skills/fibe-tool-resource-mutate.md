@@ -25,7 +25,7 @@ Payload shapes differ wildly per resource. `fibe_schema(resource:"<r>", operatio
 
 ## Supported (resource, operation) matrix
 
-**Agents**: `create`, `update`, `restart_chat`
+**Agents**: `create`, `update`, `restart_chat` (`restart_chat` marks the chat `pending` and redeploys with the latest configured image)
 **API keys**: `create`
 **Marquees**: `create`, `update`, `autoconnect_token`, `generate_ssh_key`, `test_connection`
 **Playgrounds**: `create`, `update`, `action` (lifecycle)

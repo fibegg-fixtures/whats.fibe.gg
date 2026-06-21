@@ -34,16 +34,17 @@ HTTP 202 envelope describing the chat session (`pending` initially, transitions 
 1. Validates the Agent and its target Marquee.
 2. Refuses if Marquee is not `chat_launchable` (returns `MARQUEE_NOT_READY`).
 3. Reuses an existing chat record where possible (idempotent reconnect for the same Marquee).
-4. Prepares the chat environment if needed.
+4. Enqueues background deployment when the chat is `pending`.
+5. Deployment recreates the runtime with `--pull always`, so starts and restarts pick up the latest configured Agent image.
 
 ## Gotchas
 - `FIBE_MARQUEE_ID` is **required** in the Agent's environment — without it the SDK errors before sending a request.
 - Marquee not `running` → `MARQUEE_NOT_READY`. Unpaid Marquee → `MARQUEE_NOT_FUNDED`. Bring the Marquee up and fund it first (`fibe_resource_mutate(resource:"marquee", operation:"test_connection")` then status check).
 - Existing chats on a different Marquee are preserved; new deployment goes on the requested Marquee.
-- Status flips async — call `fibe_agents_runtime_status` to confirm `running`.
+- Status flips async — expect `pending` during start/restart and call `fibe_agents_runtime_status` to confirm `running`.
 - Authentication state is separate; the Agent may need `authenticate` before processing messages even when chat is `running`.
 
 ## Related
 - `fibe_agents_runtime_status` — health check after start.
 - `fibe_agents_send_message` — first-message after bring-up.
-- `fibe_resource_mutate(resource:"agent", operation:"restart_chat")` — equivalent flow for an existing chat.
+- `fibe_resource_mutate(resource:"agent", operation:"restart_chat")` — marks an existing chat `pending`, redeploys it, and replaces the old runtime when healthy.

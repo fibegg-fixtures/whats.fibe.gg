@@ -87,9 +87,9 @@ This is the brownfield analog of `fibe_greenfield_create`. Routes through `/api/
 - When the new services need custom source files before startup, pre-create all new Gitea repos in one `fibe_pipeline` batch, seed/commit/push their source, reference those real repo URLs in `template_body`, and then apply the switch. Use `provision_missing_props:"off"` when every referenced repo already has a Prop, so missing repos fail early instead of being silently replaced.
 - When the new services can start from generated/default source, skip manual repo creation and let this tool provision missing Props. Provide a unique `source_repo_url` per service and matching `provision_inputs` with `auto_init:true` so the tool creates empty initialized repos instead of trying to clone placeholder URLs.
 - For every exposed service, design the root path `/` as a Player-visible contract: frontend roots render UI; API/admin roots return useful JSON, status, or docs. Do not leave exposed roots as framework 404s.
-- Props the new template references that the player **already owns** (matched by `repository_url` or fork) are reused — no new provisioning.
-- Props the new template references that point to **public** repos auto-create a Prop pointing at the public URL (today's default behaviour; unaffected by `provision_missing_props`).
-- Props for **private** repos the player doesn't own are handled by `provision_missing_props`:
+- Props the new template references that the player **already owns** (matched by `repository_url` or fork) are reused only when the Prop is runtime-writable.
+- Props the new template references that point to public GitHub repos are not auto-attached as read-only Props. They require a writable PAT/OAuth token, a writable GitHub App installation/fork, or provisioning through `provision_missing_props`.
+- Props for repos the player doesn't own or cannot write are handled by `provision_missing_props`:
   - `"gitea"` (this tool's default): provision a fresh private Gitea repo + Prop; seed from the template's `source_repo_url` if present, else auto-init.
   - `"github"`: same, in the player's connected GitHub account.
   - `"off"`: fail with `PROP_RESOLUTION_FAILED`. Use this only if you've pre-created the Props and want the switch to honour them strictly.
@@ -102,11 +102,11 @@ This is the brownfield analog of `fibe_greenfield_create`. Routes through `/api/
 ```json
 {
   "prop_resolution_preview": {
-    "existing": [{ "url": "...", "prop_id": 42 }],
+    "existing": [{ "url": "...", "prop_id": 42, "runtime_writable": true }],
     "existing_forks": [],
-    "would_create_public": [{ "url": "https://github.com/some/public-repo" }],
+    "would_create_public": [{ "url": "https://github.com/some/public-repo", "runtime_writable": true }],
     "would_provision": [{ "url": "...", "service_name": "api", "provision_provider": "gitea" }],
-    "missing_private": []
+    "missing_private": [{ "url": "...", "runtime_writable": false, "requires_fork": true }]
   },
   "warnings": [...],
   "diff": {...},
@@ -116,7 +116,7 @@ This is the brownfield analog of `fibe_greenfield_create`. Routes through `/api/
 
 `would_provision` is populated only when `provision_missing_props != "off"` and surfaces what the apply will create. If you want to opt out for some URLs, pass `provision_inputs` overrides or pre-create the Props yourself.
 
-`missing_private` (populated only when `provision_missing_props = "off"`) is the list of URLs that will fail apply.
+`missing_private` (populated only when `provision_missing_props = "off"`) is the list of URLs that will fail apply because no runtime-writable Prop can be resolved.
 
 ## Output (apply)
 

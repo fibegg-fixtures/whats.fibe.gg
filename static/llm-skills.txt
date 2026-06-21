@@ -322,7 +322,7 @@ fibe-tool-help: Use when you need to read the CLI long help for any fibe subcomm
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-help.md
   local: ./seed-skills/fibe-tool-help.md
 
-fibe-tool-launch: Use when deploying an existing Fibe-compatible Compose config from inline YAML, a local file, or a GitHub repository config file without creating new source repos first.
+fibe-tool-launch: Use when launching from exactly one existing source - template, template version, playspec, Fibe-compatible Compose YAML, local YAML file, or GitHub repository config - without creating new source repos first.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-launch.md
   local: ./seed-skills/fibe-tool-launch.md
 

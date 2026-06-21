@@ -51,7 +51,8 @@ With a chat:
 - `queue_count` — pending messages waiting for the Agent.
 
 ## Gotchas
-- `runtime_reachable:false` despite `status:"running"` usually means the Agent is still starting or has failed; check `fibe_playgrounds_debug` on the chat's Playground.
+- `status:"pending"` is the normal start/restart deployment state; poll until `status:"running"` and `runtime_reachable:true`.
+- `runtime_reachable:false` despite `status:"running"` usually means the runtime is unreachable or recovery is being queued while Fibe preserves a potentially healthy session.
 - "missing" status means no chat ever started — call `fibe_agents_start_chat`.
 - Returns immediately; does not poll.
 

@@ -1,6 +1,6 @@
 ---
 title: Common workflows
-description: Repo-backed launch, greenfield setup, switch-template workflows, multi-step pipelines, live monitoring, CI integration. The end-to-end stories you'll actually use.
+description: Existing-source launch, greenfield setup, switch-template workflows, multi-step pipelines, live monitoring, CI integration. The end-to-end stories you'll actually use.
 slug: /sdk/workflows
 sidebar_position: 8
 sidebar_label: Common workflows
@@ -10,20 +10,27 @@ keywords: [launch, greenfield, switch-template, pipeline, monitor, CI, GitHub Ac
 
 End-to-end stories using the [CLI](/sdk/cli-reference/), [Go library](/sdk/go-library/), and [MCP tools](/sdk/tools-catalog/). Pick the workflow that matches what you're doing.
 
-## Launch: existing repo to running Playground
+## Launch: existing source to running Playground
 
-Use this when a GitHub repo already contains a Fibe-compatible `fibe.yml`, `fibe.yaml`, `docker-compose.yml`, or `docker-compose.yaml`.
+Use this when you already have a template, Playspec, Compose file, or GitHub repo config. `fibe launch` starts from exactly one source; use `fibe_greenfield_create` only when Fibe should create new app-owned repo destinations from a snapshot.
 
 ### Via the CLI
 
 ```sh
 fibe github apps connect
 
+fibe launch --template billing-app --name billing-staging --marquee next --version 3
+fibe launch --playspec starter --name demo --marquee next
+fibe launch --compose @docker-compose.yml --name demo --marquee next
 fibe launch owner/repo --marquee 1
 fibe launch https://github.com/owner/repo --ref main --file deploy/fibe.yml
 ```
 
+Bare positional sources resolve as repositories when they look like `owner/repo`, a full URL, or `.git`; otherwise the CLI looks for a template or Playspec by name. Bare numeric sources are ambiguous, so use `--template`, `--playspec`, or `--template-version`.
+
 The GitHub App connection is required even for public repos because Fibe fetches the config server-side. `--ref` selects only the config-file revision; service branch behavior still comes from the template itself. If the repo basename is not the name you want, add `--name`.
+
+When `--marquee` is omitted, the CLI uses `FIBE_MARQUEE_ID` or the only launchable Marquee. Compose/repo launches default `persist_volumes` from named volumes; pass `--persist-volumes=false` to force stateless behavior.
 
 ### Via MCP
 

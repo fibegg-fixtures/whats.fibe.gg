@@ -1,6 +1,6 @@
 ---
 title: "Launch"
-description: "Use when deploying an existing Fibe-compatible Compose config from inline YAML, a local file, or a GitHub repository config file without creating new source repos first."
+description: "Use when launching from exactly one existing source - template, template version, playspec, Fibe-compatible Compose YAML, local YAML file, or GitHub repository config - without creating new source repos first."
 slug: /reference/tools/launch
 sidebar_label: "Launch"
 image: /img/og/reference-tools-launch.png
@@ -15,7 +15,7 @@ Creates a Playspec and optionally deploys a Playground from exactly one source: 
 
 If the call deploys a Playground or Trick, the target Marquee must be funded. Unpaid Marquees fail with `MARQUEE_NOT_FUNDED` before deployment starts.
 
-Use this for existing repositories or existing Compose bodies. Use `fibe_greenfield_create` when the caller wants Fibe to create new app-owned repository/Prop destinations from a snapshot template.
+Use this for existing templates, Playspecs, repositories, or Compose bodies. Use `fibe_greenfield_create` when the caller wants Fibe to create new app-owned repository/Prop destinations from a snapshot template.
 
 ## When to use
 - Player says "launch this template", "launch this playspec", "launch this repo", or gives `owner/repo` / `https://github.com/owner/repo`.
@@ -31,6 +31,7 @@ Use this for existing repositories or existing Compose bodies. Use `fibe_greenfi
 | Field | Type | Required | Notes |
 |---|---|---|---|
 | `template_id_or_name` | string/number | no | Existing Import Template selector; mutually exclusive with other source fields. Uses latest version when `version` is omitted |
+| `version` | number | no | Template version number for `template_id_or_name`; omitted means latest. CLI flag: `--version` |
 | `template_version_id` | number | no | Exact Import Template version ID; mutually exclusive with other source fields |
 | `playspec_id_or_name` | string/number | no | Existing Playspec selector; creates a Playground directly |
 | `name` | string | no | Launch/Playspec name. Required for inline YAML, inferred from `repository_url` basename when omitted |
@@ -51,6 +52,28 @@ Use this for existing repositories or existing Compose bodies. Use `fibe_greenfi
 | `services` | object | no | Per-service runtime Playground configuration |
 | `prop_mappings` | object | no | Map private repository URLs to Prop ids or names |
 
+## CLI source selection
+The CLI accepts either one explicit source flag or one bare positional source:
+
+```sh
+fibe launch --template billing-app --marquee next
+fibe launch --template-version 912 --name branch-a --marquee next
+fibe launch --playspec starter --name demo --marquee next
+fibe launch --compose @docker-compose.yml --name demo --marquee next
+fibe launch owner/repo@main --name demo --marquee next
+```
+
+Bare sources resolve as follows:
+
+- `owner/repo`, full `http(s)` URLs, and `.git`-looking values are repository sources.
+- Non-numeric names are looked up as a template name and as a Playspec name. If both match, use `--template` or `--playspec`.
+- Bare numeric sources are rejected as ambiguous; use `--template 42`, `--playspec 42`, or `--template-version 42`.
+- `--template`, `--template-version`, `--playspec`, `--compose`, and `--repo` are mutually exclusive.
+
+When `--marquee` is omitted, the CLI uses `FIBE_MARQUEE_ID` or infers the only launchable Marquee. If multiple launchable Marquees exist, pass `--marquee`.
+
+Use `--service SERVICE.FIELD=VALUE`, `--env KEY=VALUE`, and `--subdomain SERVICE=SUBDOMAIN` for launch-time runtime overrides. They affect the created Playground config; they do not edit the stored Compose YAML, TemplateVersion, or Playspec.
+
 ## Repository config behavior
 - GitHub App installation is required even for public repositories because Fibe fetches files server-side.
 - If exactly one installation is connected, Fibe uses it.
@@ -59,8 +82,17 @@ Use this for existing repositories or existing Compose bodies. Use `fibe_greenfi
 - `owner/repo@ref` shorthand is accepted only for short repo syntax. For full URLs, pass `github_ref`.
 - `github_ref` selects only the config file revision. Branches/commits for individual services must be declared inside the YAML.
 
+## Deployment and compilation behavior
+- For Compose/repo API calls, `create_playground` defaults to true when a Marquee is supplied and false when no Marquee is supplied.
+- For Compose/repo CLI calls, `--create-playground` and `--no-create-playground` force the same API choice.
+- The SDK CLI/MCP wrappers may resolve the Marquee from `--marquee` / `marquee_id_or_name`, `FIBE_MARQUEE_ID`, or the only launchable Marquee before calling the API.
+- Template variables, declared defaults, `$$var__*`, and `$$root_domain` are compiled before import. Compilation needs a Marquee because the root domain comes from the selected Marquee.
+- `persist_volumes` is optional. If omitted, Fibe enables volume persistence when the compiled Compose declares named volumes; pass `false` / `--persist-volumes=false` to force stateless behavior.
+
 ## Output
-Returns the launch result, usually including:
+The response shape depends on the selected source:
+
+- Template, Compose, and repository launches usually return IDs:
 
 ```json
 {
@@ -71,6 +103,9 @@ Returns the launch result, usually including:
 ```
 
 `playground_id` is `0` when no Marquee was supplied or `create_playground:false` skipped deployment.
+
+- Exact `template_version_id` launches return the richer greenfield-style result with `template`, `playspec`, `playground`, `props`, and `service_urls`.
+- Existing `playspec_id_or_name` launches return the created Playground object.
 
 ## Gotchas
 - Plain Compose is not auto-converted. Services with `build:` or `fibe.gg/source_mount` must already include the required Fibe labels/metadata.
