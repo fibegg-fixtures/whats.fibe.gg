@@ -11,7 +11,7 @@ Fibe reserves specific env vars for platform wiring. Do not write these keys fro
 
 | Variable | Where available | Owner | How to use |
 |---|---|---|---|
-| `FIBE_SERVICES_<SERVICE_TOKEN>_PATH` | Compose interpolation for job-mode templates | Fibe | Use only when a Compose value needs the absolute clone path of a source-backed service. Token is the service name uppercased with non-alphanumerics replaced by `_`. Not guaranteed inside containers. |
+| `FIBE_SERVICES_<SERVICE_TOKEN>_PATH` | Compose interpolation for source-backed Playground services | Fibe | Use only when a Compose value needs the absolute clone path of a source-backed service. Token is the service name uppercased with non-alphanumerics replaced by `_`. Not guaranteed inside containers. |
 | `FIBE_REPOSITORY_URL` | Job/trick runtime env | Fibe | CI scripts can read it for the resolved Prop URL. |
 | `FIBE_REPOSITORY_OWNER` | Job/trick runtime env | Fibe | Parsed owner from repository URL. |
 | `FIBE_REPOSITORY_NAME` | Job/trick runtime env | Fibe | Parsed repository name. |
@@ -40,7 +40,7 @@ Template variables should not target these keys with `path`/`paths`. Use app-own
 | `FIBE_DOMAIN` | Agent containers and built-in Fibe MCP env | Fibe | Fibe API host. |
 | `FIBE_MARQUEE_ID` | Agent containers | Fibe | Hosting Marquee id. |
 | `FIBE_WORKSPACE_PATH` | Agent containers when workspace mirroring is enabled | Fibe | Player-visible workspace path for artefact mirroring. |
-| `FIBE_SETTINGS_JSON` | fibe-agent settings bridge | Fibe/operator | Rails normally writes `fibe.yml`; legacy/generated agent Compose may use this JSON settings bridge. Do not use it in app templates. |
+| `FIBE_SETTINGS_JSON` | fibe-agent settings bridge | Fibe/operator | Fibe normally writes `fibe.yml`; legacy/generated agent Compose may use this JSON settings bridge. Do not use it in app templates. |
 | `MCP_CONFIG_JSON` | fibe-agent process env after settings promotion | Fibe/operator | MCP server config consumed by fibe-agent. Usually generated from Fibe settings. |
 
 ## SDK, CLI, and MCP operator env

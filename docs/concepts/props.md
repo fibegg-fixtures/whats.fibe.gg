@@ -137,6 +137,7 @@ On commit, Fibe:
 2. Auto-publishes new Template versions for any source-linked Template tracking a changed file.
 3. Fires Tricks configured for that push or PR.
 4. Posts a commit notification to your inbox — gated by the Prop's **Notifications** toggle, on by default. See [Inbox Notifications](/advanced/notifications/).
+5. Updates running environments. For any running Playground (not a one-off job run) that mounts this Prop at the pushed branch, Fibe pulls the new commit straight into its live source mount — so a `git push` shows up in the running environment without a rollout. Uncommitted work in that environment is preserved: if pulling the commit would overwrite local changes, Fibe skips the update for that service instead of overwriting it. This update only runs while the Marquee is funded.
 
 Push delivery is managed automatically — through the built-in Gitea's webhook or the Fibe GitHub App.
 

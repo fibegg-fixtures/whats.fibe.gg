@@ -72,6 +72,8 @@ These fields require `fibe.gg/repo_url` together with a source-friendly label:
 
 If either appears without `fibe.gg/repo_url`, preview/compile fails.
 
+Conversely, a `fibe.gg/repo_url` (or bare `repo_url`) label on its own marks a service as dynamic (source-backed), even when it specifies an `image:` and has no `build:` context or `source_mount` — `repo_url` is the dynamic signal.
+
 ```yaml
 services:
   web:

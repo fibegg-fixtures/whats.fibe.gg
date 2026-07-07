@@ -1,1 +1,15 @@
-/Users/vvsk/.gemini/config/projects/c7f57859-1fda-4988-98a1-572ad226c97a.json
+{
+  "id":  "c7f57859-1fda-4988-98a1-572ad226c97a",
+  "name":  "/Users/vvsk/play/fibe-skills",
+  "projectResources":  {
+    "resources":  [
+      {
+        "gitFolder":  {
+          "folderUri":  "file:///Users/vvsk/play/fibe-skills",
+          "defaultBranch":  "main",
+          "allowWrite":  true
+        }
+      }
+    ]
+  }
+}

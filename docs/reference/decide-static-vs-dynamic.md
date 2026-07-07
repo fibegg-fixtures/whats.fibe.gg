@@ -13,7 +13,7 @@ Every service in a Fibe template is one of two kinds. Successful classification 
 
 ## The dividing line
 
-**Dynamic** when `fibe.gg/repo_url` is set and resolves to a Prop.
+**Dynamic** when `fibe.gg/repo_url` is set on the service. The label alone makes the service source-backed — even when it also names an `image:` and has no Compose `build:` block. (The repository the label points to is checked against your connected repositories in a later validation step. A `repo_url` that can't be resolved fails that check, not the static/dynamic classification.)
 
 These signals require `fibe.gg/repo_url` and are errors without it:
 

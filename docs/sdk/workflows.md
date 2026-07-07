@@ -28,7 +28,7 @@ fibe launch https://github.com/owner/repo --ref main --file deploy/fibe.yml
 
 Bare positional sources resolve as repositories when they look like `owner/repo`, a full URL, or `.git`; otherwise the CLI looks for a template or Playspec by name. Bare numeric sources are ambiguous, so use `--template`, `--playspec`, or `--template-version`.
 
-The GitHub App connection is required even for public repos because Fibe fetches the config server-side. `--ref` selects only the config-file revision; service branch behavior still comes from the template itself. If the repo basename is not the name you want, add `--name`.
+A connected GitHub credential is required because Fibe fetches the config server-side — either a GitHub App installation that covers the repo, or a connected GitHub OAuth/PAT connection (which works even for public repos without an App installation). `--ref` selects only the config-file revision; service branch behavior still comes from the template itself. If the repo basename is not the name you want, add `--name`.
 
 When `--marquee` is omitted, the CLI uses `FIBE_MARQUEE_ID` or the only launchable Marquee. Compose/repo launches default `persist_volumes` from named volumes; pass `--persist-volumes=false` to force stateless behavior.
 

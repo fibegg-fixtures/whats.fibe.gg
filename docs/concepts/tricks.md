@@ -114,7 +114,7 @@ Prefer Job ENV over template variables when a credential is reused across many r
 Runs triggered by a pull request get only **non-secret** Job ENV values — PR code is untrusted, so secret entries are withheld. Push-triggered, scheduled, and manual runs receive both.
 :::
 
-Besides your Job ENV entries, every Trick run gets **built-in variables** describing the run: `FIBE_REPOSITORY_URL` / `FIBE_REPOSITORY_OWNER` / `FIBE_REPOSITORY_NAME`, `FIBE_BRANCH`, `FIBE_COMMIT_SHA`, `FIBE_TRIGGER_EVENT`, and ids for the Prop, Template, and run. For each source-connected service, Compose interpolation can also use `FIBE_SERVICES_<SERVICE_TOKEN>_PATH` — the on-host path of that service's checkout, where the token is the service name uppercased with non-alphanumerics replaced by `_`. Use it in the compose file (for example in a `volumes:` entry), but don't assume it is set as an environment variable inside containers.
+Besides your Job ENV entries, every Trick run gets **built-in variables** describing the run: `FIBE_REPOSITORY_URL` / `FIBE_REPOSITORY_OWNER` / `FIBE_REPOSITORY_NAME`, `FIBE_BRANCH`, `FIBE_COMMIT_SHA`, `FIBE_TRIGGER_EVENT`, and ids for the Prop, the Playspec, and the run. For each source-connected service, Compose interpolation can also use `FIBE_SERVICES_<SERVICE_TOKEN>_PATH` — the on-host path of that service's checkout, where the token is the service name uppercased with non-alphanumerics replaced by `_`. Use it in the compose file (for example in a `volumes:` entry), but don't assume it is set as an environment variable inside containers.
 
 ## Example: nightly backup
 

@@ -76,7 +76,7 @@ metadata:
 
 Boolean. `true` marks the template as job-mode (one-shot). At least one service must have `fibe.gg/job_watch: "true"`. Job-mode templates:
 
-- Routing labels such as `fibe.gg/port`, `fibe.gg/visibility`, `fibe.gg/subdomain`, `fibe.gg/expose`, and `traefik.*` are stripped before launch, so job-mode services are not exposed publicly.
+- Routing labels such as `fibe.gg/port`, `fibe.gg/visibility`, `fibe.gg/subdomain`, and `traefik.*` are stripped before launch, so job-mode services are not exposed publicly.
 - Get `restart: "no"` forced and `deploy.replicas: 1` forced on every service at runtime.
 - Complete when all watched services exit. Non-zero exit on any watched service fails the run.
 

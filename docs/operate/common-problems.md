@@ -17,7 +17,8 @@ What the message means, and the smallest change that resolves it.
 | **Service has a build directive but no `fibe.gg/repo_url`** | Add the repo URL, or remove the Compose `build:` block. |
 | **`source_mount` without a `repo_url`** | Same fix; live mount needs to know where the source is. |
 | **Zero-downtime services must have `fibe.gg/port` set** | Rolling updates are for routed services; add `fibe.gg/port`. |
-| **Zero-downtime services cannot have `ports:` or `container_name`** | Replicas can't share a pinned name or publish the same host port. Drop them. |
+| **Zero-downtime service has a `container_name`** | A pinned container name blocks scaling to multiple replicas, so it's always rejected. Drop `container_name`. |
+| **Zero-downtime service keeps published `ports:`** | Raw host `ports:` are normally stripped automatically; the explicit rejection only fires when the template opts to preserve published ports. Route public HTTP through `fibe.gg/port` instead of raw `ports:`. |
 | **Invalid repo URL** | Use `https://github.com/<owner>/<repo>`, a full `ssh://` URL, or a URL on a configured Gitea host. The short `git@host:path` form and arbitrary GitHub-like HTTPS hosts aren't accepted. |
 | **Invalid exposure visibility** | Only the lowercase strings `internal` and `external` work. `External:3000` (uppercase E) is wrong. |
 | **Invalid exposure port** | Must be a real port between 1 and 65535. |
@@ -37,6 +38,7 @@ What the message means, and the smallest change that resolves it.
 | **Validation pattern doesn't parse** | Fix the expression itself; the pattern is invalid regex. |
 | **Required variable is missing** | Supply a value at launch, add a default, or set `random: true`. |
 | **Value fails the validation pattern** | Fix the value, loosen the pattern, or remove it. |
+| **Variable default must be a literal value** | A variable's `default:` contains template syntax like `$$var__OTHER`, `$$random__OTHER`, or `$$root_domain`. Defaults aren't expanded recursively. Put a literal value in `default:`; for a value derived from another variable, declare a separate `path:`/`paths:`-bound variable instead. |
 
 ## Triggers & schedules
 
