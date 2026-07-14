@@ -49,8 +49,14 @@ Use this for existing templates, Playspecs, repositories, or Compose bodies. Use
 | `variables` | object | no | Template variables for Fibe template compilation |
 | `env_overrides` | object | no | Runtime Playground environment overrides |
 | `service_subdomains` | object | no | Service-to-subdomain runtime overrides |
-| `services` | object | no | Per-service runtime Playground configuration |
+| `services` | object | no | Sparse per-service Playground overrides; omitted fields inherit from the Playspec |
 | `prop_mappings` | object | no | Map private repository URLs to Prop ids or names |
+
+The `services` object records instance-specific intent, not a replacement
+Compose file. Fibe applies it over the selected Playspec whenever runtime
+Compose is generated. The generated Compose includes platform routing, resolved
+environment, build images, and host paths and is therefore an output, not an
+accepted source configuration.
 
 ## CLI source selection
 The CLI accepts either one explicit source flag or one bare positional source:

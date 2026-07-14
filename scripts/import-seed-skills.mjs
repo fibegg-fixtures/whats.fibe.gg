@@ -2,7 +2,7 @@
 /**
  * Import the upstream fibe Rails seed skills into seed-skills/.
  *
- * The Rails app at /Users/vvsk/play/fibe loads these into the `fibe_skills`
+ * The Rails app at /Users/vvsk/know/fibe loads these into the `fibe_skills`
  * table on every `db:seed` and distributes them to running Agent containers.
  * This script copies the current contents into the docs repo so the build
  * doesn't need access to the Rails source tree.

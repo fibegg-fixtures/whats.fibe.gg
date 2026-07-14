@@ -78,7 +78,7 @@ fibe-skills/
 - **Per-section guide pages** live under `docs/<area>/<page>.md`. They use Docusaurus frontmatter (`title`, `description`, `sidebar_position`, `keywords`) and Markdown / MDX with admonitions (`:::tip`, `:::caution`, `:::info`, `:::details`).
 - **Skill reference pages** live under `docs/reference/` and `docs/reference/tools/`. The canonical sources are:
   - `skills/` — the **docs-only** authoring source (recipes, playbooks, decision guides, foundations).
-  - `seed-skills/` — a **mirror of the upstream Rails seed dir** (`/Users/vvsk/play/fibe/db/seeds/fibe_skills/`). These files describe the skills an Agent container is given at runtime. Do **not** edit them here; edit the source in the fibe repo and re-run `npm run import-seed-skills`.
+  - `seed-skills/` — a **mirror of the upstream Rails seed dir** (`/Users/vvsk/know/fibe/db/seeds/fibe_skills/`). These files describe the skills an Agent container is given at runtime. Do **not** edit them here; edit the source in the fibe repo and re-run `npm run import-seed-skills`.
 - **Open Graph card images** are generated automatically at build time from the page title + description. No need to author them by hand.
 - **llms.txt** and **llms-full.txt** are also generated at build time from the same content. No manual upkeep.
 
