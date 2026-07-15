@@ -24,36 +24,6 @@ format: md
 
 - "Healthcheck flapping. start period is probably too short."
 
-## fibe agent defaults update — Input Schema
-
-code example
-
-code example
-
-## fibe agents activity — Input Schema
-
-code example
-
-code example
-
-## fibe agents create conversation — Input Schema
-
-code example
-
-code example
-
-## fibe agents delete conversation — Input Schema
-
-code example
-
-code example
-
-## fibe agents send message — Input Schema
-
-code example
-
-code example
-
 ## API reference — Authentication
 
 code example
@@ -71,48 +41,6 @@ code example
 code example
 
 code example
-
-## fibe agent defaults get — Description
-
-[MODE:DIALOG] Read the authenticated player's agent default overrides.
-
-[MODE:DIALOG] Read the authenticated player's agent default overrides.
-
-## fibe agent defaults reset — Description
-
-[MODE:SIDEEFFECTS] Clear all player agent default overrides so admin defaults apply.
-
-[MODE:SIDEEFFECTS] Clear all player agent default overrides so admin defaults apply.
-
-## fibe agent defaults update — Description
-
-[MODE:SIDEEFFECTS] Replace the authenticated player's agent default overrides.
-
-[MODE:SIDEEFFECTS] Replace the authenticated player's agent default overrides. Use the same agent defaults JSON shape as the profile UI.
-
-## fibe agents live state — Description
-
-[MODE:OVERSEER] Check conversation-scoped agent live stream state.
-
-[MODE:OVERSEER] Check conversation-scoped agent live stream state.
-
-## fibe agents messages — Description
-
-[MODE:OVERSEER] Read agent messages, optionally scoped to a conversation.
-
-[MODE:OVERSEER] Read agent messages, optionally scoped to a conversation.
-
-## fibe auth set — Description
-
-[MODE:SIDEEFFECTS] Configure session-scoped authentication credentials for multi-tenant setups in case you have to work with multiple FIBE API KEY+FIBE DOMAIN combinations
-
-[MODE:SIDEEFFECTS] Configure session-scoped authentication credentials for multi-tenant setups in case you have to work with multiple FIBE API KEY+FIBE DOMAIN combinations
-
-## fibe resource get — Description
-
-[MODE:DIALOG] Get a supported Fibe resource by ID, name, or key where supported.
-
-[MODE:DIALOG] Get a supported Fibe resource by ID, name, or key where supported. Playground reads include service urls and service runtime status. Use artefact attachment or agent attachment to download attached runtime file content.
 
 ## Description
 

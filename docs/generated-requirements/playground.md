@@ -180,18 +180,6 @@ When a template runs as a job ( x-fibe.gg.metadata.job mode: true and at least o
 
 When a template runs as a job ( x-fibe.gg.metadata.job mode: true and at least one fibe.gg/job watch: "true" service), Fibe treats the run as one-shot and applies runtime overrides:
 
-## MCP Server — Pipeline composition
-
-code example
-
-code example
-
-## Global flags — Reading commands from a file
-
-code example
-
-code example
-
 ## Reference: template signals that imply runtime behavior — One-off setup services (migrations/tests/maintenance)
 
 code example
@@ -222,12 +210,6 @@ code example
 
 code example
 
-## Fibe MCP Tools Table
-
-Tool Name Tier Advertised in full Description fibe playgrounds action brownfield yes [MODE:SIDEEFFECTS] Run one playground lifecycle action: rollout, hard restart, stop, start, retry compose, enable maintenance, or disable maintenance.
-
-Tool Name Tier Advertised in full Description fibe playgrounds action brownfield yes [MODE:SIDEEFFECTS] Run one playground lifecycle action: rollout, hard restart, stop, start, retry compose, enable maintenance, or disable maintenance. Actions that use the Marquee fail with MARQUEE NOT FUNDED when unpaid; stop cleanup remains allowed.
-
 ## Lifecycle states
 
 State Meaning in progress Images pulling, containers starting, healthchecks settling.
@@ -239,12 +221,6 @@ State Meaning in progress Images pulling, containers starting, healthchecks sett
 The Tricks list view uses page-size limit of 20.
 
 The Tricks list view uses page-size limit of 20. Jobs are sorted by created at descending, showing newest first. No API flag to change page size for UI views.
-
-## Global flags — Playgrounds
-
-Supported service fields are subdomain , exposure port , exposure visibility , path rule , start command , image , dockerfile path , env file path , healthcheck path , env vars.KEY , git config.branch name , git config.base branch name , and git config.create branch .
-
-Supported service fields are subdomain , exposure port , exposure visibility , path rule , start command , image , dockerfile path , env file path , healthcheck path , env vars.KEY , git config.branch name , git config.base branch name , and git config.create branch . Service names with dots and port mappings are not supported in this flag; use -f JSON/YAML for those. When both -f and --service are present, service flags win.
 
 ## Fibe resource lifecycles — Playground lifecycle
 
