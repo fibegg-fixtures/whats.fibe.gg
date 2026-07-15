@@ -66,22 +66,6 @@ Setting a literal container name: blocks replicas, breaks rolling updates, and p
 
 - healthcheck: (Compose-level; used for depends on ordering)
 
-## Conversion steps — Step 1 — Classify every service
-
-The signal is the fibe.gg/repo url label.
-
-The signal is the fibe.gg/repo url label. A Compose build: block requires fibe.gg/repo url . So does fibe.gg/source mount .
-
-## Description
-
-Use to know which Compose keys to delete or rewrite when converting to a Fibe template - ports , container name , hostname , host-path bind mounts, and Compose-only directives that conflict with Fibe routing/scaling.
-
-## Keys that need adjustment — build
-
-If present, also add fibe.gg/repo url .
-
-If present, also add fibe.gg/repo url . Fibe replaces runtime build context with the cloned source path for that repo. Optionally remove build: entirely and use only labels:
-
 ## The nine steps — 3 — Route HTTP with fibe.gg/port
 
 code example
@@ -101,6 +85,22 @@ code example
 ## Recipe: strip Compose keys Fibe owns or rewrites — Worked example
 
 code example
+
+## Conversion steps — Step 1 — Classify every service
+
+The signal is the fibe.gg/repo url label.
+
+The signal is the fibe.gg/repo url label. A Compose build: block requires fibe.gg/repo url . So does fibe.gg/source mount .
+
+## Description
+
+Use to know which Compose keys to delete or rewrite when converting to a Fibe template - ports , container name , hostname , host-path bind mounts, and Compose-only directives that conflict with Fibe routing/scaling.
+
+## Keys that need adjustment — build
+
+If present, also add fibe.gg/repo url .
+
+If present, also add fibe.gg/repo url . Fibe replaces runtime build context with the cloned source path for that repo. Optionally remove build: entirely and use only labels:
 
 ## The nine steps — 3 — Route HTTP with fibe.gg/port
 

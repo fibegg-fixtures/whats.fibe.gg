@@ -6,6 +6,14 @@ format: md
 
 <!-- GENERATED FROM fibe/requirements; DO NOT EDIT -->
 
+## API reference — Authentication
+
+code example
+
+## API reference — Response shapes
+
+code example
+
 ## Per-provider defaults — apply to new Genies of a specific provider (C…
 
 - Per-provider defaults — apply to new Genies of a specific provider (Claude, Gemini, OpenCode, etc.) and override the general default.
@@ -19,14 +27,6 @@ format: md
 - "Healthcheck flapping.
 
 - "Healthcheck flapping. start period is probably too short."
-
-## API reference — Authentication
-
-code example
-
-## API reference — Response shapes
-
-code example
 
 ## Description
 

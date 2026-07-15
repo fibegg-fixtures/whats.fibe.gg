@@ -28,18 +28,6 @@ Fix: Remove job mode: true from x-fibe.gg.metadata , and from any root-level mir
 
 - Keep it when the same file should run locally with docker compose up ; Fibe strips it by default.
 
-## Recipe: fibe.gg/path rule — Pitfalls
-
-- Two services with same path rule — only one wins; you'll see flapping.
-
-- Two services with same path rule — only one wins; you'll see flapping. Make the rules disjoint.
-
-## Recipe: fibe.gg/subdomain — Pitfalls
-
-- Same subdomain on multiple services without path rule — Traefik routes only one (first match).
-
-- Same subdomain on multiple services without path rule — Traefik routes only one (first match). Add path rule to disambiguate.
-
 ## What a Marquee gives you — Routing &amp; URLs
 
 code example
@@ -75,6 +63,18 @@ code example
 ## Examples — Label fragment
 
 code example
+
+## Recipe: fibe.gg/path rule — Pitfalls
+
+- Two services with same path rule — only one wins; you'll see flapping.
+
+- Two services with same path rule — only one wins; you'll see flapping. Make the rules disjoint.
+
+## Recipe: fibe.gg/subdomain — Pitfalls
+
+- Same subdomain on multiple services without path rule — Traefik routes only one (first match).
+
+- Same subdomain on multiple services without path rule — Traefik routes only one (first match). Add path rule to disambiguate.
 
 ## What a Marquee gives you — Marquee types
 

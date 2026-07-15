@@ -104,18 +104,6 @@ Use to fill in x-fibe.gg.metadata.description , category , source defaults , and
 
 - Complete when all watched services exit. Non-zero exit on any watched service fails the run.
 
-## Mode: job-mode templates (Tricks) — Pitfalls
-
-- Setting only one of job mode: true / job watch — job watch without job mode : the label is ignored and the template runs long-running.
-
-- Setting only one of job mode: true / job watch — job watch without job mode : the label is ignored and the template runs long-running. job mode without any watched service: validation rejects — unless a service is source-backed, in which case source-backed services are watched by default in job mode (set fibe.gg/job watch: "false" to opt one out).
-
-## Recipe: x-fibe.gg.metadata — Pitfalls
-
-- Root-only job mode / schedule / trigger config — may validate but not launch/import as intended.
-
-- Root-only job mode / schedule / trigger config — may validate but not launch/import as intended. Put execution settings in metadata .
-
 ## Long-running HTTP — Scheduled (cron)
 
 code example
@@ -155,6 +143,18 @@ code example
 ## Reference: x-fibe.gg top-level namespace — schedule config
 
 code example
+
+## Mode: job-mode templates (Tricks) — Pitfalls
+
+- Setting only one of job mode: true / job watch — job watch without job mode : the label is ignored and the template runs long-running.
+
+- Setting only one of job mode: true / job watch — job watch without job mode : the label is ignored and the template runs long-running. job mode without any watched service: validation rejects — unless a service is source-backed, in which case source-backed services are watched by default in job mode (set fibe.gg/job watch: "false" to opt one out).
+
+## Recipe: x-fibe.gg.metadata — Pitfalls
+
+- Root-only job mode / schedule / trigger config — may validate but not launch/import as intended.
+
+- Root-only job mode / schedule / trigger config — may validate but not launch/import as intended. Put execution settings in metadata .
 
 ## Long-running HTTP — Scheduled (cron)
 

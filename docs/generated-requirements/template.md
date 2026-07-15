@@ -48,12 +48,6 @@ Any $$var NAME / $$random NAME occurrence whose NAME does not appear in x-fibe.g
 
 - Missing user value AND missing default AND missing random → string substitution falls back to the literal placeholder (compiler still flags is required if required: true ).
 
-## Reference: Template variables — $$root domain
-
-Special, not declared in variables .
-
-Special, not declared in variables . Always replaced at compile time with the launching Marquee's root domain (e.g. next.fibe.live ). Use it only as an inline fragment where a fully-qualified public host cannot be represented with explicit path / paths variables. Prefer explicit public URL variables with literal defaults for app ENV:
-
 ## Typical paths
 
 code example
@@ -65,6 +59,12 @@ code example
 ## Playbook: Wiki.js — Validate
 
 code example
+
+## Reference: Template variables — $$root domain
+
+Special, not declared in variables .
+
+Special, not declared in variables . Always replaced at compile time with the launching Marquee's root domain (e.g. next.fibe.live ). Use it only as an inline fragment where a fully-qualified public host cannot be represented with explicit path / paths variables. Prefer explicit public URL variables with literal defaults for app ENV:
 
 ## Description
 

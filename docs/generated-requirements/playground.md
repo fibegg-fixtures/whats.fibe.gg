@@ -14,6 +14,18 @@ format: md
 
 - FIBE ROOT DOMAIN : defaults to localhost .
 
+## Fibe Core — Development
+
+code example
+
+## Fibe Core — Development
+
+code example
+
+## Ruby Logic Pack — Public Contract
+
+code example
+
 ## Fibe resource lifecycles — Playground lifecycle
 
 - A temporary Playground can have an expiration.
@@ -126,6 +138,26 @@ If fibe.gg/source mount is set but fibe.gg/repo url is missing, the validator re
 
 Conversely, a fibe.gg/repo url (or bare repo url ) label on its own marks a service as dynamic (source-backed), even when it specifies an image: and has no build: context or source mount — repo url is the dynamic signal.
 
+## Recipe: depends on for startup ordering — Three conditions
+
+code example
+
+## Recipe: depends on for startup ordering — DRY with anchors
+
+code example
+
+## Reference: template signals that imply runtime behavior — One-off setup services (migrations/tests/maintenance)
+
+code example
+
+## Reference: template signals that imply runtime behavior — Dynamic source/build mode is inferred and validated
+
+code example
+
+## Practical paths you will write — Environment scalar
+
+code example
+
 ## Source &amp; build — Cross-label rules
 
 - fibe.gg/zerodowntime: "true" requires fibe.gg/port , and the service must not declare container name .
@@ -171,38 +203,6 @@ When a template runs as a job ( x-fibe.gg.metadata.job mode: true and at least o
 - Service-level ports: lines are removed from compiled output by default.
 
 - Service-level ports: lines are removed from compiled output by default. Add them for local docker compose up if useful; they survive only when x-fibe.gg.metadata.preserve ports: true .
-
-## Fibe Core — Development
-
-code example
-
-## Fibe Core — Development
-
-code example
-
-## Ruby Logic Pack — Public Contract
-
-code example
-
-## Recipe: depends on for startup ordering — Three conditions
-
-code example
-
-## Recipe: depends on for startup ordering — DRY with anchors
-
-code example
-
-## Reference: template signals that imply runtime behavior — One-off setup services (migrations/tests/maintenance)
-
-code example
-
-## Reference: template signals that imply runtime behavior — Dynamic source/build mode is inferred and validated
-
-code example
-
-## Practical paths you will write — Environment scalar
-
-code example
 
 ## [FIBE-CORE-OPERATIONS] 00 Self-Hosted OCI Runtime Contract
 
