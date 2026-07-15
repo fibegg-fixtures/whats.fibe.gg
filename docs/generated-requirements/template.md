@@ -20,10 +20,6 @@ format: md
 
 4. Launch a Playground from a Playspec. Open the URL.
 
-## Playbook: Wiki.js — Conversion steps
-
-8. No fibe.gg/repo url anywhere — no source backing.
-
 ## Reference: Template variables — Random values
 
 - For values with random: true AND required: true , the random generation runs before the required check, so missing inputs do not error.
