@@ -14,15 +14,11 @@ format: md
 
 ## The shortest path
 
-4.
+2. Connect a Prop. A Git repo.
+
+## The shortest path
 
 4. Launch a Playground from a Playspec. Open the URL.
-
-## Description
-
-Use as the definitive reference for Fibe template variable mechanics - declaration shape, path / paths whole-node binding, last-resort $$var NAME / $$root domain interpolation, validation regex, literal defaults, and random secret generation.
-
-Use as the definitive reference for Fibe template variable mechanics - declaration shape, path / paths whole-node binding, last-resort $$var NAME / $$root domain interpolation, validation regex, literal defaults, and random secret generation.
 
 ## Two ways variables are written into the document — 1. Inline $$var NAME
 
@@ -46,11 +42,7 @@ Runtime emits unused var for these. So either reference inline, bind via path, o
 
 Any $$var NAME / $$random NAME occurrence whose NAME does not appear in x-fibe.gg.variables is undeclared var .
 
-Any $$var NAME / $$random NAME occurrence whose NAME does not appear in x-fibe.gg.variables is undeclared var .
-
 ## Reference: Template variables — Defaulting and override order
-
-4.
 
 4. (If none and required: true ) → compile error.
 
@@ -64,17 +56,15 @@ Special, not declared in variables . Always replaced at compile time with the la
 
 code example
 
-code example
-
 ## Optional enhancements — Add zero-downtime for the wiki service
 
 code example
 
+## Playbook: Wiki.js — Validate
+
 code example
 
 ## Description
-
-Use YAML anchors ( &amp;name ) and aliases ( name ) to share depends on , environment , build , healthcheck, or label blocks across multiple Fibe services without copy-paste.
 
 Use YAML anchors ( &amp;name ) and aliases ( name ) to share depends on , environment , build , healthcheck, or label blocks across multiple Fibe services without copy-paste.
 

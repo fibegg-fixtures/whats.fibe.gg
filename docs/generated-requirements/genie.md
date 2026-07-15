@@ -10,13 +10,13 @@ format: md
 
 - Per-provider defaults — apply to new Genies of a specific provider (Claude, Gemini, OpenCode, etc.) and override the general default.
 
-- Per-provider defaults — apply to new Genies of a specific provider (Claude, Gemini, OpenCode, etc.) and override the general default.
-
 ## Configure a Genie
 
 - Provider — Gemini, Antigravity, Claude Code, OpenAI Codex, Cursor, OpenCode.
 
-- Provider — Gemini, Antigravity, Claude Code, OpenAI Codex, Cursor, OpenCode.
+## Build in Public — Typical setup
+
+2. Run a dev Playground with a public URL.
 
 ## Artefacts, mutters, feedback — Mutter
 
@@ -28,17 +28,11 @@ format: md
 
 code example
 
-code example
-
 ## API reference — Response shapes
 
 code example
 
-code example
-
 ## API reference — Response shapes
-
-code example
 
 code example
 
@@ -46,11 +40,7 @@ code example
 
 Account-wide defaults for new Genies — CLI version, system prompt, environment, MCP servers, mounted files, post-init.
 
-Account-wide defaults for new Genies — CLI version, system prompt, environment, MCP servers, mounted files, post-init.
-
 ## API reference — Authentication
-
-GET /api/me returns the current API identity and the scopes attached to the token.
 
 GET /api/me returns the current API identity and the scopes attached to the token.
 
@@ -58,7 +48,9 @@ GET /api/me returns the current API identity and the scopes attached to the toke
 
 Parameter Default Maximum Notes per page 25 100 Page size.
 
-Parameter Default Maximum Notes per page 25 100 Page size.
+## API reference — Response shapes
+
+Common codes include VALIDATION FAILED , UNAUTHORIZED , FORBIDDEN , RESOURCE NOT FOUND , RATE LIMITED , and MARQUEE NOT FUNDED (402 — the selected Marquee isn't funded).
 
 ## API reference — Response shapes
 
@@ -70,10 +62,6 @@ Conversation, live-state, and queued-turn endpoints that talk to a live Genie re
 
 Sending a chat message to a Genie fails with 422 and code AGENT COMMUNICATION FAILED ; the message text gives the reason — AGENT BUSY means the Genie is mid-turn (retry later, or resend with the queue busy policy to add it as a queued turn), NEED AUTH means the Genie's provider credentials need re-authentication.
 
-Sending a chat message to a Genie fails with 422 and code AGENT COMMUNICATION FAILED ; the message text gives the reason — AGENT BUSY means the Genie is mid-turn (retry later, or resend with the queue busy policy to add it as a queued turn), NEED AUTH means the Genie's provider credentials need re-authentication.
-
 ## Configure a Genie — Credentials and status
-
-- Provider API key or credential bundle — paste provider credentials for that Genie.
 
 - Provider API key or credential bundle — paste provider credentials for that Genie.

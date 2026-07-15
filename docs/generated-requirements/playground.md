@@ -10,14 +10,6 @@ format: md
 
 - packs/builds : complete Core-owned BuildRecord persistence, planning, identity, execution, lifecycle, recovery, events, retention, and cleanup.
 
-- packs/builds : complete Core-owned BuildRecord persistence, planning, identity, execution, lifecycle, recovery, events, retention, and cleanup.
-
-## Fibe resource lifecycles — Playground lifecycle
-
-- Default expiration is 8 hours for a regular Playground and 1 hour for a job-mode run; both defaults can be configured.
-
-- Default expiration is 8 hours for a regular Playground and 1 hour for a job-mode run; both defaults can be configured.
-
 ## Fibe resource lifecycles — Playground lifecycle
 
 - A temporary Playground can have an expiration.
@@ -28,17 +20,11 @@ format: md
 
 - Stuck launches are recovered automatically — a launch still in progress after 30 minutes is reset and retried — and a temporary infrastructure blip (network or host connectivity) is retried rather than treated as a hard failure.
 
-- Stuck launches are recovered automatically — a launch still in progress after 30 minutes is reset and retried — and a temporary infrastructure blip (network or host connectivity) is retried rather than treated as a hard failure.
-
 ## Recipe: fibe.gg/env file — Confusing twin: Compose env file
 
 Compose env file: loads a file into the container's environment at runtime:
 
-Compose env file: loads a file into the container's environment at runtime:
-
 ## Required settings — Result rules
-
-Fibe stores the per-service exit code, completion time, and log tail in the job result so you can inspect the run after runtime containers are cleaned up.
 
 Fibe stores the per-service exit code, completion time, and log tail in the job result so you can inspect the run after runtime containers are cleaned up.
 
@@ -76,8 +62,6 @@ Dynamic when fibe.gg/repo url is set on the service. The label alone makes the s
 
 - The image already contains the runtime command (or you override via Compose command: ).
 
-- The image already contains the runtime command (or you override via Compose command: ).
-
 ## Decide: static vs dynamic service — What about Compose build
 
 If the input compose has build: .
@@ -95,6 +79,12 @@ If the input compose has build: . or build: context: ..., dockerfile: ... , you 
 - Leaving Compose build: while also setting fibe.gg/repo url — fine, but the build.context is ignored.
 
 - Leaving Compose build: while also setting fibe.gg/repo url — fine, but the build.context is ignored. Either remove build: entirely or keep it as documentation.
+
+## Recipe: depends on for startup ordering
+
+depends on: controls the order Compose starts services.
+
+depends on: controls the order Compose starts services. Fibe passes it through unchanged. Use it to:
 
 ## Recipe: depends on for startup ordering — Setup/migration pattern
 
@@ -124,17 +114,11 @@ In job-mode templates, depends on works as in Compose. Watched services ( fibe.g
 
 If fibe.gg/source mount is set but fibe.gg/repo url is missing, the validator rejects: Service ' ' has source mount but no repo url .
 
-If fibe.gg/source mount is set but fibe.gg/repo url is missing, the validator rejects: Service ' ' has source mount but no repo url .
-
 ## Recipe: fibe.gg/source mount for live dev — Pitfalls
 
 - fibe.gg/source mount without fibe.gg/repo url — validator hard error.
 
-- fibe.gg/source mount without fibe.gg/repo url — validator hard error.
-
 ## Reference: template signals that imply runtime behavior — Dynamic source/build mode is inferred and validated
-
-Conversely, a fibe.gg/repo url (or bare repo url ) label on its own marks a service as dynamic (source-backed), even when it specifies an image: and has no build: context or source mount — repo url is the dynamic signal.
 
 Conversely, a fibe.gg/repo url (or bare repo url ) label on its own marks a service as dynamic (source-backed), even when it specifies an image: and has no build: context or source mount — repo url is the dynamic signal.
 
@@ -145,8 +129,6 @@ Standard Playgrounds have a default TTL of 8 hours.
 Standard Playgrounds have a default TTL of 8 hours. Trick/job-mode Playgrounds default to 1 hour, and operators can change that job default. Playgrounds in in progress status longer than 30 minutes are considered stale. All runtime actions (start, stop, destroy, extend) require the Marquee to be funded.
 
 ## Decide: static vs dynamic service — The dividing line
-
-These signals require fibe.gg/repo url and are errors without it:
 
 These signals require fibe.gg/repo url and are errors without it:
 
@@ -162,27 +144,33 @@ Do not add build: to this pattern just to make it "dynamic".
 
 Do not add build: to this pattern just to make it "dynamic". fibe.gg/repo url already makes it dynamic; build: changes the workflow to build and can make Fibe try to build a repository that is only meant to be mounted.
 
-## Recipe: depends on for startup ordering — depends on vs in-app retry
-
-App code still must retry connections — Compose start order isn't a hard guarantee.
-
-App code still must retry connections — Compose start order isn't a hard guarantee. depends on reduces transient errors at first start; the app must handle reconnection over its lifetime anyway.
-
 ## Recipe: depends on for startup ordering — Pitfalls
 
 - Depending on a static service from a dynamic service's build — depends on is runtime ordering only; build happens before any runtime services exist.
 
-- Depending on a static service from a dynamic service's build — depends on is runtime ordering only; build happens before any runtime services exist.
-
 ## Reference: template signals that imply runtime behavior — One-off setup services (migrations/tests/maintenance)
 
 When a template runs as a job ( x-fibe.gg.metadata.job mode: true and at least one fibe.gg/job watch: "true" service), Fibe treats the run as one-shot and applies runtime overrides:
 
-When a template runs as a job ( x-fibe.gg.metadata.job mode: true and at least one fibe.gg/job watch: "true" service), Fibe treats the run as one-shot and applies runtime overrides:
+## Reference: template signals that imply runtime behavior — Runtime-owned / stripped semantics
 
-## Reference: template signals that imply runtime behavior — One-off setup services (migrations/tests/maintenance)
+- Service-level ports: lines are removed from compiled output by default.
+
+- Service-level ports: lines are removed from compiled output by default. Add them for local docker compose up if useful; they survive only when x-fibe.gg.metadata.preserve ports: true .
+
+## Recipe: fibe.gg/env file — Confusing twin: Compose env file
 
 code example
+
+## Recipe: depends on for startup ordering — Three conditions
+
+code example
+
+## Recipe: depends on for startup ordering — DRY with anchors
+
+code example
+
+## Reference: template signals that imply runtime behavior — One-off setup services (migrations/tests/maintenance)
 
 code example
 
@@ -190,11 +178,7 @@ code example
 
 code example
 
-code example
-
 ## Practical paths you will write — Environment scalar
-
-code example
 
 code example
 
@@ -202,17 +186,7 @@ code example
 
 code example
 
-code example
-
-## Practical paths you will write — A nested configs block
-
-code example
-
-code example
-
 ## Lifecycle states
-
-State Meaning in progress Images pulling, containers starting, healthchecks settling.
 
 State Meaning in progress Images pulling, containers starting, healthchecks settling.
 
@@ -232,11 +206,7 @@ Status User-facing meaning in progress Fibe is preparing source, images, routing
 
 Status User-facing meaning has changes Linked source has changed and a rollout or restart may be needed.
 
-Status User-facing meaning has changes Linked source has changed and a rollout or restart may be needed.
-
 ## Fibe resource lifecycles — Agent lifecycle
-
-Status User-facing meaning authenticated Credentials are available and valid.
 
 Status User-facing meaning authenticated Credentials are available and valid.
 
@@ -244,17 +214,11 @@ Status User-facing meaning authenticated Credentials are available and valid.
 
 Concern Label Live source mount fibe.gg/source mount: /app (default)
 
-Concern Label Live source mount fibe.gg/source mount: /app (default)
-
 ## Recipe: depends on for startup ordering — Three conditions
 
 Condition Means service completed successfully The dependent service has exited with status 0 (one-shot jobs)
 
-Condition Means service completed successfully The dependent service has exited with status 0 (one-shot jobs)
-
 ## Recipe: fibe.gg/source mount for live dev — Required labels
-
-Label Value fibe.gg/repo url Git repo URL (required — source mount cannot exist without a repo)
 
 Label Value fibe.gg/repo url Git repo URL (required — source mount cannot exist without a repo)
 
@@ -268,10 +232,10 @@ Label Value fibe.gg/source mount absolute path inside the container, e.g. /app
 
 Label Value fibe.gg/start command the dev/watch command, NOT a production build
 
-Label Value fibe.gg/start command the dev/watch command, NOT a production build
-
 ## Recipe: fibe.gg/source mount for live dev — Framework cheatsheet
 
 Framework fibe.gg/start command Rails dev (plain) bin/rails server -b 0.0.0.0
 
-Framework fibe.gg/start command Rails dev (plain) bin/rails server -b 0.0.0.0
+## Reference: YAML path syntax for path / paths bindings — When the path does not exist
+
+To be safe, ensure every path's parent already exists in the static portion of your template (declare the env block as an empty object if you need: environment: ).

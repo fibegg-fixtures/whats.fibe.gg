@@ -9,5 +9,3 @@ format: md
 ## Roles — When sharing ends
 
 When the owner unshares the Marquee, you leave or are removed from the team, or the owner leaves:
-
-When the owner unshares the Marquee, you leave or are removed from the team, or the owner leaves:
