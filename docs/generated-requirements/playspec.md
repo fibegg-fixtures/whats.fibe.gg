@@ -66,12 +66,6 @@ Setting a literal container name: blocks replicas, breaks rolling updates, and p
 
 - healthcheck: (Compose-level; used for depends on ordering)
 
-## Keys that need adjustment — Host-path bind mounts ( ./local:/in/container )
-
-The exception is fibe.gg/source mount — Fibe injects the source-tree bind mount automatically when fibe.gg/repo url is set.
-
-The exception is fibe.gg/source mount — Fibe injects the source-tree bind mount automatically when fibe.gg/repo url is set. See recipe-source-mount.
-
 ## Conversion steps — Step 1 — Classify every service
 
 The signal is the fibe.gg/repo url label.
@@ -93,14 +87,6 @@ If present, also add fibe.gg/repo url . Fibe replaces runtime build context with
 code example
 
 ## Convert any docker-compose.yml into a Fibe Compose template — Minimum viable conversion
-
-code example
-
-## Recipe: fibe.gg/build args and fibe.gg/build target — fibe.gg/build args
-
-code example
-
-## Recipe: fibe.gg/build args and fibe.gg/build target — Variable interpolation
 
 code example
 
@@ -157,10 +143,6 @@ User-facing HTTP is always fibe.gg/port . Compose ports: may remain for local do
 That gives you a public HTTP route under the Marquee root domain at subdomain web (the default — service name).
 
 That gives you a public HTTP route under the Marquee root domain at subdomain web (the default — service name). Add fibe.gg/subdomain to override.
-
-## Convert any docker-compose.yml into a Fibe Compose template — "Just give me the labels I need" cheatsheet
-
-Intent Add these labels Build from my repo fibe.gg/repo url , optional fibe.gg/dockerfile , fibe.gg/branch
 
 ## Convert any docker-compose.yml into a Fibe Compose template — "Just give me the labels I need" cheatsheet
 

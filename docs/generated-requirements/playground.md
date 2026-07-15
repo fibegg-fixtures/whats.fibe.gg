@@ -6,9 +6,13 @@ format: md
 
 <!-- GENERATED FROM fibe/requirements; DO NOT EDIT -->
 
-## Fibe Core — Packs
+## Fibe Core — Configuration
 
-- packs/builds : complete Core-owned BuildRecord persistence, planning, identity, execution, lifecycle, recovery, events, retention, and cleanup.
+- FIBE API KEY : defaults to dev-token outside production.
+
+## Fibe Core — Configuration
+
+- FIBE ROOT DOMAIN : defaults to localhost .
 
 ## Fibe resource lifecycles — Playground lifecycle
 
@@ -122,6 +126,12 @@ If fibe.gg/source mount is set but fibe.gg/repo url is missing, the validator re
 
 Conversely, a fibe.gg/repo url (or bare repo url ) label on its own marks a service as dynamic (source-backed), even when it specifies an image: and has no build: context or source mount — repo url is the dynamic signal.
 
+## Source &amp; build — Cross-label rules
+
+- fibe.gg/zerodowntime: "true" requires fibe.gg/port , and the service must not declare container name .
+
+- fibe.gg/zerodowntime: "true" requires fibe.gg/port , and the service must not declare container name . Compose ports: are stripped by default, but if x-fibe.gg.metadata.preserve ports: true is set, zero-downtime services must not declare ports: either.
+
 ## Marquees, Networking, And Runtime Funding — Playground TTL defaults and job mode differences
 
 Standard Playgrounds have a default TTL of 8 hours.
@@ -152,13 +162,25 @@ Do not add build: to this pattern just to make it "dynamic". fibe.gg/repo url al
 
 When a template runs as a job ( x-fibe.gg.metadata.job mode: true and at least one fibe.gg/job watch: "true" service), Fibe treats the run as one-shot and applies runtime overrides:
 
+## Reference: template signals that imply runtime behavior — Zero-downtime service implies extra shape restrictions
+
+- service must be exposed: fibe.gg/port required
+
 ## Reference: template signals that imply runtime behavior — Runtime-owned / stripped semantics
 
 - Service-level ports: lines are removed from compiled output by default.
 
 - Service-level ports: lines are removed from compiled output by default. Add them for local docker compose up if useful; they survive only when x-fibe.gg.metadata.preserve ports: true .
 
-## Recipe: fibe.gg/env file — Confusing twin: Compose env file
+## Fibe Core — Development
+
+code example
+
+## Fibe Core — Development
+
+code example
+
+## Ruby Logic Pack — Public Contract
 
 code example
 
@@ -182,9 +204,13 @@ code example
 
 code example
 
-## Practical paths you will write — An array element
+## [FIBE-CORE-OPERATIONS] 00 Self-Hosted OCI Runtime Contract
 
-code example
+Status: v1 implementation contract API protocol: 1 Operator/state protocol: 1 Docker API proxy protocol: 1 Image: ghcr.io/fibegg/fibe-core:latest
+
+## Fibe Core — API Surface
+
+- Playground CRUD, status, async refresh, async logs, operations, expiration
 
 ## Lifecycle states
 
@@ -210,9 +236,9 @@ Status User-facing meaning has changes Linked source has changed and a rollout o
 
 Status User-facing meaning authenticated Credentials are available and valid.
 
-## Decide: static vs dynamic service — What labels to add to a dynamic service
+## Reference: fibe.gg/ labels — All 20 supported labels
 
-Concern Label Live source mount fibe.gg/source mount: /app (default)
+Label Value Default Required when fibe.gg/subdomain @ (root), or ^a-z0-9?$ service name non-default routing host
 
 ## Recipe: depends on for startup ordering — Three conditions
 

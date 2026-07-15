@@ -10,6 +10,12 @@ format: md
 
 - Execution modes — job mode , schedule, trigger settings.
 
+## Good for — How a Trick decides success
+
+Mark one service as the watched service with fibe.gg/job watch: "true" .
+
+Mark one service as the watched service with fibe.gg/job watch: "true" . Its exit defines the result. Zero = success. Non-zero = failure.
+
 ## Decide: long-running vs job-mode vs scheduled vs triggered — Scheduled (cron)
 
 Add schedule config under x-fibe.gg.metadata :
@@ -28,10 +34,6 @@ Add schedule config under x-fibe.gg.metadata :
 
 - Scheduled: combine with metadata.schedule config (mode-schedule-cron).
 
-## Mode: job-mode templates (Tricks) — Triggering a Trick
-
-- VCS-triggered: combine with metadata.trigger config (mode-trigger-vcs).
-
 ## Description
 
 Use to add x-fibe.gg.metadata.schedule config to a job-mode Fibe template - cron expression syntax, marquee id requirement, and the relationship with job mode: true .
@@ -49,10 +51,6 @@ Same template can fire on schedule AND on VCS triggers — declare both schedule
 ## Mode: scheduled (cron) job templates — Pitfalls
 
 - schedule config without job mode: true — schedule does nothing; long-running templates aren't fireable on schedule.
-
-## Mode: VCS-triggered job templates — Required pieces
-
-3. x-fibe.gg.metadata.trigger config with:
 
 ## Mode: VCS-triggered job templates — What runtime does on each event
 
@@ -106,12 +104,6 @@ Use to fill in x-fibe.gg.metadata.description , category , source defaults , and
 
 - Complete when all watched services exit. Non-zero exit on any watched service fails the run.
 
-## Mode: job-mode templates (Tricks) — Watched vs unwatched services
-
-Multiple watched services: all must exit, all must exit 0, for success.
-
-Multiple watched services: all must exit, all must exit 0, for success. If any fails, the run fails.
-
 ## Mode: job-mode templates (Tricks) — Pitfalls
 
 - Setting only one of job mode: true / job watch — job watch without job mode : the label is ignored and the template runs long-running.
@@ -140,7 +132,15 @@ code example
 
 code example
 
+## Decide: long-running vs job-mode vs scheduled vs triggered — Scheduled (cron)
+
+code example
+
 ## Mode: scheduled (cron) job templates — Required pieces
+
+code example
+
+## Mode: scheduled (cron) job templates — marquee id
 
 code example
 

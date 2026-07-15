@@ -16,15 +16,13 @@ Fix: Set enabled: true ; confirm the target Marquee is reachable and funded.
 
 ## Runtime errors — Long-running template gets restart: "no" and replicas: 1
 
+You accidentally set job mode: true on a long-running template.
+
+You accidentally set job mode: true on a long-running template. The runtime forces these on job-mode.
+
+## Runtime errors — Long-running template gets restart: "no" and replicas: 1
+
 Fix: Remove job mode: true from x-fibe.gg.metadata , and from any root-level mirror if present.
-
-## Playbook: nginx static site — Root subdomain
-
-URL becomes https:// / , no leftmost label.
-
-## Recipe: fibe.gg/subdomain — How the URL is generated (Traefik)
-
-3. HTTPS router websecure matches the same Host with ACME TLS.
 
 ## Recipe: ports: → fibe.gg/port — Step-by-step
 

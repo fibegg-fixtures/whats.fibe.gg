@@ -10,9 +10,15 @@ format: md
 
 - Repo URL — https://github.com/owner/repo (an ssh://… URL also works).
 
-## Fibe product map — Hints
+## Connect a built-in Gitea repository — Auto-provisioning
 
-- Props are source repositories; dynamic services point at Props or repository URLs.
+3. Mints a Gitea access token with repository read/write plus user access scopes.
+
+## Connect a built-in Gitea repository — Creating a Gitea repo
+
+- Click Create Repository .
+
+- Click Create Repository . Fibe creates the repo in Gitea and saves the Prop.
 
 ## Description
 

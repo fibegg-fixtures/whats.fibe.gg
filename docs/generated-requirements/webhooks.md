@@ -10,6 +10,10 @@ format: md
 
 - webhook.test
 
+## Subscribing to event families — Event types (examples)
+
+- playground.created , playground.creation.completed , playground.creation.failed
+
 ## Subscribing to event families — Delivery model
 
 - Each delivery also carries X-Webhook-Event (the event name) and X-Webhook-Delivery / X-Idempotency-Key (the unique delivery id — use it for idempotency).

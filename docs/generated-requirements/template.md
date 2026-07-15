@@ -20,11 +20,13 @@ format: md
 
 4. Launch a Playground from a Playspec. Open the URL.
 
-## Two ways variables are written into the document — 1. Inline $$var NAME
+## Playbook: Wiki.js — Conversion steps
 
-Behavior: - Missing user value AND missing default AND missing random → string substitution falls back to the literal placeholder (compiler still flags is required if required: true ).
+8. No fibe.gg/repo url anywhere — no source backing.
 
-Behavior: - Missing user value AND missing default AND missing random → string substitution falls back to the literal placeholder (compiler still flags is required if required: true ). - Multiple references to the same variable receive the same value. For random: true , the same 32-hex value is used everywhere in one compile pass.
+## Reference: Template variables — Random values
+
+- For values with random: true AND required: true , the random generation runs before the required check, so missing inputs do not error.
 
 ## Reference: Template variables — Validation regex
 
@@ -42,9 +44,9 @@ Runtime emits unused var for these. So either reference inline, bind via path, o
 
 Any $$var NAME / $$random NAME occurrence whose NAME does not appear in x-fibe.gg.variables is undeclared var .
 
-## Reference: Template variables — Defaulting and override order
+## Two ways variables are written into the document — 1. Inline $$var NAME
 
-4. (If none and required: true ) → compile error.
+- Missing user value AND missing default AND missing random → string substitution falls back to the literal placeholder (compiler still flags is required if required: true ).
 
 ## Reference: Template variables — $$root domain
 
@@ -67,6 +69,10 @@ code example
 ## Description
 
 Use YAML anchors ( &amp;name ) and aliases ( name ) to share depends on , environment , build , healthcheck, or label blocks across multiple Fibe services without copy-paste.
+
+## Reference: Template variables — Declaration shape
+
+Field Compile-time effect required: true If no user value AND no default AND no random: compile fails with Variable ' ' is required .
 
 ## Reference: Template variables — Declaration shape
 
