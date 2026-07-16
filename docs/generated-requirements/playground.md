@@ -204,6 +204,12 @@ When a template runs as a job ( x-fibe.gg.metadata.job mode: true and at least o
 
 - Service-level ports: lines are removed from compiled output by default. Add them for local docker compose up if useful; they survive only when x-fibe.gg.metadata.preserve ports: true .
 
+## Recipe: path: / paths: whole-node bindings — Typing
+
+If you need a literal string "3" and not integer 3 , you currently cannot force it via path: .
+
+If you need a literal string "3" and not integer 3 , you currently cannot force it via path: . Use inline $$var instead (string substitution preserves quote-friendliness).
+
 ## [FIBE-CORE-OPERATIONS] 00 Self-Hosted OCI Runtime Contract
 
 Status: v1 implementation contract API protocol: 1 Operator/state protocol: 1 Docker API proxy protocol: 1 Image: ghcr.io/fibegg/fibe-core:latest
