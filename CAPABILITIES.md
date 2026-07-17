@@ -106,6 +106,7 @@ An agent can explain or configure:
 | `decide-job-mode` | Choose long-running, one-shot, scheduled, or VCS-triggered execution. |
 | `decide-secrets-and-randoms` | Decide where credentials and generated values belong. |
 | `reference-fibe-labels` | Look up every supported `fibe.gg/*` label and its value rules. |
+| `reference-fibe-managed-env` | Distinguish platform-provided runtime variables from values a template author owns. |
 | `reference-x-fibe-gg-namespace` | Look up `x-fibe.gg` variables, metadata, job, schedule, trigger, and mutation-testing blocks. |
 | `reference-template-variables` | Author variable declarations and interpolation safely. |
 | `reference-yaml-paths` | Bind variables to whole YAML nodes with `path` and `paths`. |
@@ -115,7 +116,6 @@ An agent can explain or configure:
 | `recipe-add-subdomain` | Set service hostnames, including root-domain routing. |
 | `recipe-add-path-rule` | Share a hostname across services using allowed path matchers. |
 | `recipe-zero-downtime-healthcheck` | Tune optional zero-downtime healthcheck labels when defaults do not match the app. |
-| `recipe-replicas-and-scale` | Set or parameterize service replica counts. |
 | `recipe-build-to-repo-url` | Convert Compose builds into source-backed Fibe labels. |
 | `recipe-build-args-and-target` | Move build args and build targets into Fibe labels. |
 | `recipe-source-mount` | Configure live-edit development services. |

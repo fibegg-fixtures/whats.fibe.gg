@@ -160,17 +160,17 @@ Exported data files (backup/export function) are retained for 24 hours by defaul
 
 Signup confirmation tokens are encrypted and signed with a 24-hour expiration window. Users who don't confirm their email within this timeframe must restart the signup process. The token includes username, email, password digest, avatar URL, rune code, and locale.
 
-### Feature Flags: Hunks (Git History Analysis), Teams, Beta Access
+### Feature Flags: Teams and Beta Access
 
-Three feature flags exist for players: Hunks (account-wide git diff analysis, disabled by default), Teams (workspace collaboration, disabled by default), and Beta (early-access participation). Hunks must be enabled for hunk ingestion jobs to run. Teams enable team membership and shared resource management. 
+Teams enable team membership and shared resource management. Beta controls early-access participation. Both are selected per account by platform administrators.
 
 ### Password Reset Links Expire in 2 Hours
 
 Password reset tokens are valid for 2 hours from the time the reset email is sent. After 2 hours, users must request a new password reset link. The reset token is stored hashed.
 
-### Playground Default TTL: 8 Hours; Jobs: 1 Hour (Configurable)
+### Playground Expiration Is Optional; Fallback Durations Differ by Mode
 
-Interactive Playgrounds expire after 8 hours by default. Job Playgrounds (Tricks) expire after 1 hour by default. Operators can change the job-Playground default. Users can extend expiration before deadline or the playground auto-destroys.
+New Playgrounds default to never expire. If expiration is enabled without an explicit deadline, regular Playgrounds use an 8-hour fallback and job Playgrounds use an operator-configurable fallback (1 hour by default). Extending without an explicit duration uses the same mode-specific fallback.
 
 ### Session Timeouts: 24-Hour Idle + 30-Day Absolute
 
@@ -276,9 +276,9 @@ Marquee hosts must be reachable via SSH and have Docker installed and running. C
 
 Tutorial Marquees have two recovery rate limits: 10 fix-redeploy attempts per 4 hours, and 3 reboots per 1 hour. Both limits reset when their windows expire. Users see error messages with timing information when limits are reached. Fix-redeploys are only available after provisioning has either succeeded or failed.
 
-### Playground TTL defaults and job mode differences
+### Playground expiration and job mode differences
 
-Standard Playgrounds have a default TTL of 8 hours. Trick/job-mode Playgrounds default to 1 hour, and operators can change that job default. Playgrounds in `in_progress` status longer than 30 minutes are considered stale. All runtime actions (start, stop, destroy, extend) require the Marquee to be funded.
+Playgrounds have no expiration by default. When expiration is enabled without an explicit deadline, regular Playgrounds use an 8-hour fallback and Trick/job-mode Playgrounds use the operator-configurable job fallback (1 hour by default). Playgrounds in `in_progress` status longer than 30 minutes are considered stale. All runtime actions (start, stop, destroy, extend) require the Marquee to be funded.
 
 ### Tutorial provisioning timeout and steps
 
@@ -298,9 +298,9 @@ Tutorial Marquees cannot have SSH credentials, host, port, or user fields change
 
 ## Playground Lifecycle
 
-### Default expiration times differ by playground mode
+### Default expiration extension windows differ by playground mode
 
-Regular playgrounds expire after 8 hours by default. Job-mode (Trick) playgrounds expire after 1 hour by default. Operators can change the job-mode default TTL. These are the base TTLs used when extending expiration without specifying a duration.
+New Playgrounds default to never expire. When an expiration is enabled without a deadline, or an expiration is extended without a duration, Fibe uses 8 hours for regular Playgrounds and the operator-configurable job fallback for job-mode Playgrounds (1 hour by default).
 
 ### Stale playground creation auto-recovers after 30 minutes
 
@@ -312,7 +312,7 @@ When a playground expires and gets torn down, or when manually destroyed, volume
 
 ### Extend expiration uses maximum of current expiration or now
 
-When extending a playground's expiration, the system uses the maximum of the current expires_at timestamp or the current time as the base, then adds the duration. This means extending an already-expired playground adds the duration from now, not from when it expired. Default duration is 8 hours for regular playgrounds, 1 hour for job-mode playgrounds.
+When extending a playground's expiration, the system uses the maximum of the current expires_at timestamp or the current time as the base, then adds the duration. This means extending an already-expired playground adds the duration from now, not from when it expired. With no duration supplied, Fibe uses 8 hours for regular Playgrounds and the operator-configurable job fallback for job-mode Playgrounds (1 hour by default).
 
 ### Job completion captures last 5000 log lines per service
 
@@ -542,9 +542,9 @@ Templates can use YAML anchors and aliases for DRY composition. The source-file 
 
 Jobs poll watched services every 10 seconds by default. The default maximum is 1,440 polls, yielding a maximum 4-hour job runtime. When this limit is exceeded, the job is marked errored with message 'Job timed out waiting for watched services to complete' and containers are torn down.
 
-### Job expiration window defaults to 1 hour
+### Job expiration is optional and uses a configurable fallback
 
-Job-mode Playgrounds (Tricks) auto-expire after 1 hour by default. Non-job playgrounds default to 8 hours. Expired playgrounds are automatically cleaned up and their containers removed.
+Job-mode Playgrounds (Tricks) default to never expire. If expiration is enabled without an explicit deadline, the operator-configured job fallback is used (1 hour by default). An expired Trick is cleaned up and removed together with its saved result.
 
 ### Watched services determine job success/failure via exit codes
 
@@ -554,9 +554,9 @@ Services marked with job_watch: true (or fibe.gg/job_watch label) are watched. J
 
 Trigger playspecs can specify max_retries count (per push event). If max_retries=3, the trigger worker refuses to create playground on retry_count >= 3. Default (nil) means unlimited retries. Retries only happen via explicit webhook re-fires or manual job re-queuing—no automatic exponential backoff or retry scheduling built in.
 
-### Job results persisted indefinitely; playground destroyed after 1 hour
+### Job results persist with the Trick record after runtime cleanup
 
-A job result containing service exit codes and log tails is created once and never destroyed—it survives playground expiration and deletion. Playground itself is auto-deleted after 1 hour, but the associated job result remains accessible via API and UI indefinitely (no retention policy enforced).
+A job result containing service exit codes and log tails remains available after normal completion because completion tears down the runtime containers without deleting the Trick record. The result belongs to that record; deleting or expiring the Trick removes the result as well.
 
 ### Schedule syntax accepts cron and human-readable schedules
 

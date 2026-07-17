@@ -119,9 +119,9 @@ Data safety:
 
 Expiration:
 
-- Default expiration is 8 hours for a regular Playground and 1 hour for a job-mode run; both defaults can be configured.
+- New Playgrounds default to **never expire**. When expiration is enabled without an explicit deadline, Fibe uses an 8-hour fallback for a regular Playground and the operator-configured job fallback for a job-mode run (1 hour by default).
 - A temporary Playground can have an expiration. When it falls due, if the source has uncommitted changes the Playground is parked as `has_changes` and preserved; if it is clean, it is destroyed (containers, named volumes unless persistence is enabled, and the record).
-- Extend adds the duration to whichever is later — the current expiry or now — so extending an already-expired record counts from now. The default extension equals the mode's default expiration (8 hours regular, 1 hour job mode).
+- Extend adds the duration to whichever is later — the current expiry or now — so extending an already-expired record counts from now. With no duration supplied, the extension is 8 hours for a regular Playground and the configured job fallback for job mode (1 hour by default).
 - Expiration and automatic recovery only run while the Marquee is funded.
 
 ## Trick lifecycle
@@ -144,7 +144,7 @@ Constraints and limits:
 
 - Job-mode services run one replica with no automatic restart. Public exposure does not happen because `fibe.gg/port` and other routing labels are stripped before launch.
 - A Trick has a maximum runtime of about 4 hours; if the watched service has not exited by then, the run is marked failed (timed out) and cleaned up.
-- Logs and the result are kept on the Trick after success, failure, or timeout. Log capture keeps the last 5000 lines per service by default, and the result survives after the run's environment expires (1 hour by default) or is destroyed.
+- Logs and the result are kept on the Trick after success, failure, or timeout. Log capture keeps the last 5000 lines per service by default. Normal completion removes the runtime containers without deleting the Trick record; deleting or expiring the Trick removes its saved result with it.
 
 ## Agent lifecycle
 

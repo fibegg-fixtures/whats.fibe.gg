@@ -81,7 +81,7 @@ A hard restart can pull a fresh image. Pin tags (`postgres:17`, not `postgres:la
 <details>
 <summary>How long does a Playground stay alive?</summary>
 
-Until you stop it, destroy it, or its expiration passes. By default a Playground expires after 8 hours and a [Trick](/concepts/tricks/) run after 1 hour — both are defaults the operator can change. Expiration is surfaced prominently, and you can extend it at any time.
+Until you stop or destroy it. New Playgrounds default to **Never Expire**, but you can set and extend an expiration at any time. If expiration is enabled without a specific deadline, Fibe uses an 8-hour fallback for a regular Playground and the operator-configured job fallback for a [Trick](/concepts/tricks/) (1 hour by default).
 </details>
 
 <details>

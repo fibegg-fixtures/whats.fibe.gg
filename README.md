@@ -44,12 +44,13 @@ fibe-skills/
 ├── sidebars.js            # manual sidebar hierarchy
 ├── docs/                  # the user-facing guide content (Markdown)
 │   ├── intro.md
-│   ├── concepts/          # Marquees, Props, Templates, Playgrounds, Tricks, Wallet
-│   ├── agents/            # Genies, Bridge, Build in Public, Artefacts
-│   ├── security/          # 2FA, API keys, Secret Vault & Job ENV, Webhooks, Audit log
+│   ├── concepts/          # Product concepts: Marquees, Props, Playgrounds, Tricks, Genies, and more
+│   ├── advanced/          # Security, API keys, Secret Vault, webhooks, limits, and account settings
 │   ├── authoring/         # Compose → Fibe authoring guides
 │   ├── operate/           # Common problems, automatic recovery, cleanup/cascades, publishing
-│   └── reference/         # All 50+ machine-readable skill files
+│   ├── sdk/               # CLI, Go library, MCP server, and workflows
+│   ├── api/               # Public REST API reference
+│   └── reference/         # Generated skill/tool pages plus curated behavior references
 ├── skills/                # Canonical skill sources (mirrored into docs/reference/)
 ├── plugins/
 │   ├── plugin-llms-txt.js # Emits /llms.txt and /llms-full.txt at build
@@ -76,9 +77,10 @@ fibe-skills/
 ## Editing content
 
 - **Per-section guide pages** live under `docs/<area>/<page>.md`. They use Docusaurus frontmatter (`title`, `description`, `sidebar_position`, `keywords`) and Markdown / MDX with admonitions (`:::tip`, `:::caution`, `:::info`, `:::details`).
-- **Skill reference pages** live under `docs/reference/` and `docs/reference/tools/`. The canonical sources are:
+- **Skill reference pages** live under `docs/reference/` and `docs/reference/tools/`. Most are generated from these canonical sources:
   - `skills/` — the **docs-only** authoring source (recipes, playbooks, decision guides, foundations).
-  - `seed-skills/` — a **mirror of the upstream Rails seed dir** (`/Users/vvsk/know/fibe/db/seeds/fibe_skills/`). These files describe the skills an Agent container is given at runtime. Do **not** edit them here; edit the source in the fibe repo and re-run `npm run import-seed-skills`.
+  - `seed-skills/` — a **mirror of the public MCP tool guides** from the upstream Rails seed dir (`/Users/vvsk/know/fibe/db/seeds/fibe_skills/`). Do **not** edit them here; edit the source in the fibe repo and re-run `npm run import-seed-skills`.
+- Curated pages such as `docs/reference/intro.md`, `docs/reference/json-schema.md`, and `docs/reference/platform-behavior-contracts.md` are maintained directly and are not overwritten by the skill sync.
 - **Open Graph card images** are generated automatically at build time from the page title + description. No need to author them by hand.
 - **llms.txt** and **llms-full.txt** are also generated at build time from the same content. No manual upkeep.
 

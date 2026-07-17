@@ -37,7 +37,7 @@ Services connected to a repository are watched automatically in a Trick — you 
 
 Supporting services (databases, caches, queues) start alongside. When the watched service exits, Fibe stops them.
 
-The containers don't outlive the run, but the result does: status, per-service exit codes, and the last 5,000 log lines of each watched service stay in the run's history. A terminal run status means the lifecycle finished; the saved job result and watched-service exit codes determine whether the Trick passed. The run record itself expires after 1 hour by default — the saved result goes with it.
+The containers don't outlive the run, but the Trick record does: status, per-service exit codes, and the last 5,000 log lines of each watched service stay available after the runtime environment is cleaned up. A terminal run status means the lifecycle finished; the saved job result and watched-service exit codes determine whether the Trick passed. Removing or expiring the Trick removes that saved result too.
 
 ```yaml
 services:

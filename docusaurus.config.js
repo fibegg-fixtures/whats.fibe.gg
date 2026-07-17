@@ -21,7 +21,11 @@ const config = {
   projectName: 'whats.fibe.gg',
   trailingSlash: true,
   onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
 
   future: {v4: true},
 

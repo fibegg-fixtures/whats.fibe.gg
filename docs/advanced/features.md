@@ -3,16 +3,12 @@ title: Feature Preferences
 description: Account-wide preferences and per-browser interface tuning.
 slug: /advanced/features
 sidebar_position: 9
-keywords: [feature preferences, settings, animations, hunks, interface]
+keywords: [feature preferences, settings, animations, teams, beta, interface]
 ---
 
 Account-wide preferences and per-browser interface tuning.
 
 ## Account-wide preferences
-
-### Hunks (Git History Analysis)
-
-Enables automatic git diff analysis for your repositories; turning it off stops all background analysis. Unlike the visual-effects switch below, this applies to your whole account, not just the current browser.
 
 ### Teams (Collaboration)
 

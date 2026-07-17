@@ -43,9 +43,9 @@ Unwatched helper services can still support the watched service. For example, a 
 
 ## Lifetime
 
-Job Playgrounds have a shorter default lifetime than long-running Playgrounds. The current default is 1 hour unless the platform credentials override `job_playground_ttl_hours`.
+New Job Playgrounds default to **Never Expire**, just like regular Playgrounds. If a job expiration is enabled without an explicit deadline, Fibe uses the operator-configured `job_playground_ttl_hours` fallback (1 hour by default). The same fallback is used when extending a job without supplying a duration.
 
-This lifetime is for cleanup safety. It is separate from job completion: a successful job completes when all watched services exit `0`, and a failed job fails as soon as any watched service exits non-zero.
+Expiration is separate from job completion: a successful job completes when all watched services exit `0`, and a failed job fails as soon as any watched service exits non-zero. Completion cleans up the runtime containers while retaining the Trick record and its captured result; deleting or expiring the Trick removes that saved result.
 
 ## Minimal example
 

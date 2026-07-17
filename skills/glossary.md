@@ -109,7 +109,7 @@ The configured blueprint for a launch. A Playspec combines a Template Version, l
 
 ## Prop
 
-A connected Git repository. Props provide source code, branches, Compose files, environment defaults, webhook-triggered updates, build history, code hunks, and mutation targets.
+A connected Git repository. Props provide source code, branches, Compose files, environment defaults, webhook-triggered updates, build history, and mutation targets.
 
 ## Rune
 
