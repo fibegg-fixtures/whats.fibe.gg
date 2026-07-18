@@ -82,7 +82,7 @@ The platform's base template uses `{{var__app_name}}`-style placeholders compile
 
 ## Gotchas
 - Before writing inline `template_body`, load `fibe-labels` and `fibe-services`; never infer `fibe.gg/*` labels from old playgrounds or memory. Validate the final YAML with `fibe_schema(resource:"compose", operation:"validate", payload:{compose_yaml: ..., target_type:"playspec"})`.
-- Expose services with `fibe.gg/port`; never use `fibe.gg/expose`. Compose `ports:` may remain for local-only development, but Fibe strips them unless `x-fibe.gg.metadata.preserve_ports: true`.
+- Expose services with `fibe.gg/port`; never use `fibe.gg/expose`. Standalone Core preserves native Compose `ports:` alongside HTTPS routing, so publish a host port only when direct access is intentional.
 - `template_body` and `template_id_or_name`/`version` are mutually exclusive — error if both set.
 - `repository_url` is mutually exclusive with `template_body`, `template_body_path`, `template_id_or_name`, `template_version_id`, and `version`.
 - Repository snapshot mode does not auto-convert plain Compose or inject missing Fibe labels. The fetched file must already be a valid Fibe template/source.
