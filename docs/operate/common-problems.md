@@ -15,11 +15,11 @@ What the message means, and the smallest change that resolves it.
 | --- | --- |
 | **Unknown `fibe.gg/` label** | You typed something Fibe doesn't recognize. Remove it or fix the spelling. Labels not under the `fibe.gg/` prefix pass through untouched. |
 | **Service has a build directive but no `fibe.gg/repo_url`** | Add the repo URL, or remove the Compose `build:` block. |
-| **`source_mount` without a `repo_url`** | Same fix; live mount needs to know where the source is. |
+| **Repository-backed service has no absolute `working_dir`** | Add a service-level Compose `working_dir` such as `/app`; it is the runtime directory and source-bind target. |
 | **Zero-downtime services must have `fibe.gg/port` set** | Rolling updates are for routed services; add `fibe.gg/port`. |
 | **Zero-downtime service has a `container_name`** | A pinned container name blocks scaling to multiple replicas, so it's always rejected. Drop `container_name`. |
 | **Zero-downtime service keeps published `ports:`** | Raw host `ports:` are normally stripped automatically; the explicit rejection only fires when the template opts to preserve published ports. Route public HTTP through `fibe.gg/port` instead of raw `ports:`. |
-| **Invalid repo URL** | Use `https://github.com/<owner>/<repo>`, a full `ssh://` URL, or a URL on a configured Gitea host. The short `git@host:path` form and arbitrary GitHub-like HTTPS hosts aren't accepted. |
+| **Invalid repo URL** | Prefer valid HTTPS, full `ssh://`, or SCP-style SSH. Credential-free HTTP is accepted with a warning. |
 | **Invalid exposure visibility** | Only the lowercase strings `internal` and `external` work. `External:3000` (uppercase E) is wrong. |
 | **Invalid exposure port** | Must be a real port between 1 and 65535. |
 | **Invalid subdomain** | Lowercase letters, digits, hyphens; no leading or trailing hyphen; or the special `@` for the root domain. |

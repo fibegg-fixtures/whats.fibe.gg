@@ -48,7 +48,7 @@ The `volumes:` top-level block declares the named volumes; the per-service `volu
 | Named volume | `postgres_data:/var/lib/postgresql/data` | YES — Fibe manages the volume |
 | Anonymous volume | `/var/lib/postgresql/data` | OK — but loses naming, harder to manage |
 | Host bind | `./data:/var/lib/postgresql/data` | NO — Marquee filesystem doesn't have `./data` |
-| Source mount (Fibe-injected) | (via `fibe.gg/source_mount`) | YES — Fibe injects automatically |
+| Source mount (Fibe-injected) | (via `working_dir`) | YES — Fibe injects automatically |
 
 ## Read-only mounts
 
@@ -131,7 +131,7 @@ volumes:
   app_logs:
 ```
 
-If the app actually needs source files in `/usr/share/nginx/html`, that's a dynamic service — use `fibe.gg/source_mount` and `fibe.gg/repo_url`.
+If the app actually needs source files in `/usr/share/nginx/html`, that's a dynamic service — use `working_dir` and `fibe.gg/repo_url`.
 
 ## Variable-driven volume options
 
@@ -153,7 +153,7 @@ x-fibe.gg:
 ## Pitfalls
 
 - **Forgetting the top-level `volumes:` block** — Compose treats `postgres_data` in the service array as anonymous and creates a new random volume per launch. Always declare.
-- **Bind mounts assuming repo paths** — `./Dockerfile:/app/Dockerfile` works locally but a Marquee does not guarantee that relative host path. Use `fibe.gg/source_mount` when the service needs repository files.
+- **Bind mounts assuming repo paths** — `./Dockerfile:/app/Dockerfile` works locally but a Marquee does not guarantee that relative host path. Use `working_dir` when the service needs repository files.
 - **Mounting a volume into a path the image already populates** — the volume gets the image's first-write data only; subsequent image updates don't repopulate. For init data, copy from `/opt/init-data` to the volume on first start (entrypoint script pattern).
 - **Mounting a volume into multiple services with read-write** — possible but careful: Postgres specifically refuses to start if its data dir is owned by something else. Use `:ro` on the read-only consumers, leave RW only for the writer.
 

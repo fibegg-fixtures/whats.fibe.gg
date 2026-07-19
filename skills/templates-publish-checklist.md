@@ -22,7 +22,7 @@ Schema success alone is not enough. See [reference-validation-pipeline](referenc
 - [ ] Static services use `image:` only; no fake source backing.
 - [ ] Dynamic services declare `fibe.gg/repo_url`.
 - [ ] Compose `build:` services also declare `fibe.gg/repo_url`.
-- [ ] Source-mounted services have sensible `working_dir`, `fibe.gg/source_mount`.
+- [ ] Repository-backed services have a sensible absolute `working_dir`.
 - [ ] Databases / queues / caches use named volumes (not host bind mounts).
 - [ ] `depends_on:` exists where startup order matters; the app should still retry.
 - [ ] No `container_name:`, especially when `fibe.gg/zerodowntime: "true"`.

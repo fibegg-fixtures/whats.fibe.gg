@@ -29,7 +29,6 @@ services:
     labels:
       fibe.gg/repo_url: https://github.com/owner/repo
       fibe.gg/branch: main
-      fibe.gg/source_mount: /app
       fibe.gg/start_command: sh -c "npm ci && npm test"
       fibe.gg/job_watch: "true"
       fibe.gg/production: "false"
@@ -190,7 +189,7 @@ When this template is imported through a source-backed Prop, the runtime fills t
 
 ## Pitfalls
 
-- **`source_mount` + `production: "false"` not working** — the image provides the runtime (`node:22`, `python:3.12`); no Dockerfile is needed for image-based source-mounted services. Check that `fibe.gg/start_command` actually runs the watcher/tests.
+- **`working_dir` + `production: "false"` not working** — the image provides the runtime (`node:22`, `python:3.12`); no Dockerfile is needed for image-based source-mounted services. Check that `fibe.gg/start_command` actually runs the watcher/tests.
 - **`npm ci` failing because package-lock.json mismatch** — pin the lockfile in the repo. Always include `package-lock.json` in CI tests.
 - **Database fixtures not loading** — separate `migrate` service that runs before `test`:
   ```yaml

@@ -31,7 +31,7 @@ Some signals change behavior even when no explicit error is raised:
   Inline interpolation applies first, then `path`/`paths` rewrites. If both target the same value, path rewrite wins.
 
 - **Source mode is inferred from structure**
-  `build:` and `fibe.gg/source_mount` both require `fibe.gg/repo_url`. Missing either fails launch/preview.
+  `build:` requires `fibe.gg/repo_url`; a repository-backed service requires an absolute Compose `working_dir`.
 
 ## Schema and label-parser errors
 
@@ -47,11 +47,11 @@ Compose `build:` requires `fibe.gg/repo_url`.
 
 **Fix:** Add `fibe.gg/repo_url: <repo>` to the service's `labels`. See [recipe-build-to-repo-url](recipe-build-to-repo-url.md).
 
-### `Service '<n>' has source_mount but no repo_url`
+### `Service '<n>' must define an absolute working_dir for repository-backed source`
 
-`fibe.gg/source_mount` requires `fibe.gg/repo_url`.
+The service declares `fibe.gg/repo_url` but has no absolute Compose `working_dir`.
 
-**Fix:** Either add `fibe.gg/repo_url`, or remove `fibe.gg/source_mount`. See [recipe-source-mount](recipe-source-mount.md).
+**Fix:** Add an absolute service-level `working_dir` such as `/app`. See [recipe-source-mount](recipe-source-mount.md).
 
 ### `Service '<n>': zerodowntime services must have 'fibe.gg/port' set`
 
@@ -71,11 +71,11 @@ Container names must be unique; replicas duplicate them.
 
 **Fix:** Remove `container_name:`. See [recipe-strip-incompatible-keys](recipe-strip-incompatible-keys.md).
 
-### `Service '<n>': invalid repo_url '<v>' — must be a valid GitHub or Gitea repository URL`
+### `Service '<n>': repo_url must be a credential-free HTTP(S) or SSH repository URL`
 
 The URL isn't HTTPS / isn't a supported provider.
 
-**Fix:** Use `https://github.com/owner/repo`, a configured Gitea URL, or a full `ssh://` URL. The short `git@host:path` form fails. See [recipe-build-to-repo-url](recipe-build-to-repo-url.md).
+**Fix:** Prefer a valid HTTPS, full `ssh://`, or SCP-style SSH URL such as `git@host:owner/repo.git`. Credential-free HTTP is accepted for private development networks but produces an insecure-transport warning. See [recipe-build-to-repo-url](recipe-build-to-repo-url.md).
 
 ### `Service '<n>': invalid exposure visibility '<v>' — must be 'internal' or 'external'`
 

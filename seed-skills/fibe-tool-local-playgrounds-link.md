@@ -26,8 +26,9 @@ CLI-run envelope. `stdout` typically lists the created symlinks. The link comman
 ## Behavior
 1. Resolves the target Playground locally (discover candidates with `fibe_local_playgrounds_info(view:"names")`).
 2. Removes prior symlinks under `link_dir` that pointed to a different Playground.
-3. Creates fresh symlinks for each mount slot — typically the Prop checkout, optional secondary repos, and shared volumes.
-4. Writes `.current_playground.json` with Playground identity, URLs including scheme, mounts, and repo entries. Use it through `fibe_local_playgrounds_info(view:"current"|"repos"|"urls"|"mounts")`.
+3. Reads the rendered Compose bind sources under `/opt/fibe/playgrounds/<name>/props/...` and deduplicates services that point to the same physical checkout.
+4. Names a one-branch checkout after its repository/Prop; when the Playground uses more than one branch anywhere, every checkout name includes its branch. Ambiguous link names that point to different checkouts are rejected.
+5. Writes `.current_playground.json` with Playground identity, URLs including scheme, mounts, and repo entries. Use it through `fibe_local_playgrounds_info(view:"current"|"repos"|"urls"|"mounts")`.
 
 ## Gotchas
 - If the Playground was recreated, paths under `/opt/fibe/playgrounds/<name>` may have changed; re-link to refresh.
@@ -35,6 +36,7 @@ CLI-run envelope. `stdout` typically lists the created symlinks. The link comman
 - Files written through `link_dir` land in the real Marquee filesystem and become visible to the Playground's containers immediately (live-reload territory). Load the `fibe-live-reload` skill.
 - Linking a Playground that doesn't exist locally errors; pre-flight with `fibe_local_playgrounds_info(view:"names")`.
 - Multiple repos may be linked. Before git operations, call `fibe_local_playgrounds_info(view:"repos", link_dir:"/app/playground")`, choose the intended `repo_root`, then run normal shell git such as `git -C <repo_root> status`. Do not use guessed first-repo behavior.
+- The SDK consumes rendered Compose; it does not read Core control-plane state or calculate checkout locations.
 - Local development URLs may be HTTP or HTTPS depending on the Marquee/dev configuration. Use `view:"urls"` or `.current_playground.json`; do not rewrite schemes.
 
 ## Related

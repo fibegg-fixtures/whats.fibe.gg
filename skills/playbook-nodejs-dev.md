@@ -1,6 +1,6 @@
 ---
 name: playbook-nodejs-dev
-description: Use to convert a Node.js dev-mode docker-compose (live source mount + hot reload via Vite, Next.js, nodemon) into a Fibe template using `fibe.gg/source_mount` and `fibe.gg/production: false`.
+description: Use to convert a Node.js dev-mode docker-compose (live source mount + hot reload via Vite, Next.js, nodemon) into a Fibe template using `working_dir` and `fibe.gg/production: false`.
 ---
 
 # Playbook: Node.js dev mode with hot reload
@@ -39,7 +39,6 @@ services:
     labels:
       fibe.gg/repo_url: https://github.com/owner/repo
       fibe.gg/branch: main
-      fibe.gg/source_mount: /app
       fibe.gg/dockerfile: Dockerfile
       fibe.gg/env_file: .env.example
       fibe.gg/start_command: npm run dev -- --host 0.0.0.0
@@ -81,7 +80,7 @@ x-fibe.gg:
 |---|---|
 | `image: node:22` (not built) | Source-mounted dev — image just provides the runtime |
 | `volumes: app_node_modules:/app/node_modules` | Named volume layered on top of the source mount so `node_modules/` doesn't leak into the repo |
-| `fibe.gg/source_mount: /app` | Bind-mount cloned repo into `/app` |
+| `working_dir: /app` | Bind-mount cloned repo into `/app` |
 | `fibe.gg/start_command: npm run dev -- --host 0.0.0.0` | Dev server with watcher; binds 0.0.0.0 |
 | `fibe.gg/production: "false"` | Source-mounted mode (no built image) |
 | `fibe.gg/port: 5173` + `fibe.gg/visibility: external` | Vite's default; change for Next.js (3000), Express (8080), etc. |
@@ -149,10 +148,10 @@ services:
 services:
   app:
     image: node:22
+    working_dir: /app
     labels:
       fibe.gg/repo_url: https://github.com/owner/repo
       fibe.gg/branch: main
-      fibe.gg/source_mount: /app
       fibe.gg/start_command: npm run dev -- --host 0.0.0.0
       fibe.gg/port: "5173"
       fibe.gg/visibility: external
@@ -227,7 +226,7 @@ x-fibe.gg:
 - **No `0.0.0.0` bind** — container appears running, requests hang. Always add `--host 0.0.0.0` to dev command.
 - **Vite 6+ without `allowedHosts`** — 403 from Vite. Set `allowedHosts: true` in `vite.config.js`.
 - **Dockerfile not needed for image-based dev services** — a dev service that declares `image:` and has no `build:` section needs no Dockerfile: the image provides the runtime and the source is cloned and mounted. A Dockerfile is only needed if the service has a `build:` section (production build workflow).
-- **Production mode with source mount labels** — labels stay valid but source mount is unused. Use one or the other.
+- **Production mode with a development source bind** — production services preserve user-authored volumes but do not receive Core's generated `working_dir` bind. Use one mode or the other.
 - **`fibe.gg/start_command: npm start`** when `start` is a build, not a dev server — container exits. Use `npm run dev` or your actual watcher.
 
 ## Related skills

@@ -8,7 +8,6 @@
     "labels": [
       { "key": "dockerfile", "description_key": "desc_dockerfile", "example": "./deploy/Dockerfile", "value_key": "val_path", "required_key": "req_yes", "required_code": true },
       { "key": "repo_url", "description_key": "desc_github", "example": "https://github.com/user/repo", "value_key": "val_url", "required_key": "req_dynamic", "required_code": true },
-      { "key": "source_mount", "description_key": "desc_source_mount", "example": "/app", "value_key": "val_path", "required_key": "req_dynamic", "required_code": true },
       { "key": "subdomain", "description_key": "desc_subdomain", "example": "api", "value_key": "val_string", "required_key": "req_exposed", "required_code": true },
       { "key": "branch", "description_key": "desc_branch", "example": "main", "value_key": "val_string", "required_key": "req_dynamic", "required_code": true },
       { "key": "port", "description_key": "desc_port", "example": "3000", "value_key": "val_port", "required_key": "req_no", "required_code": false },
@@ -45,6 +44,9 @@
     "service": {
       "type": "object",
       "properties": {
+        "working_dir": {
+          "$ref": "#/$defs/absoluteContainerPath"
+        },
         "labels": {
           "$ref": "#/$defs/labels"
         }
@@ -71,9 +73,6 @@
       "properties": {
         "fibe.gg/repo_url": {
           "$ref": "#/$defs/optionalString"
-        },
-        "fibe.gg/source_mount": {
-          "$ref": "#/$defs/pathLabel"
         },
         "fibe.gg/job_watch": {
           "$ref": "#/$defs/booleanLabel"
@@ -156,7 +155,6 @@
         {
           "enum": [
             "fibe.gg/repo_url",
-            "fibe.gg/source_mount",
             "fibe.gg/job_watch",
             "fibe.gg/dockerfile",
             "fibe.gg/env_file",
@@ -193,7 +191,7 @@
           "pattern": "^fibe\\.gg/(?:repo_url|start_command|branch|build_target|build_args)(?:=[^\\r\\n]*)?$"
         },
         {
-          "pattern": "^fibe\\.gg/(?:source_mount|dockerfile|env_file)(?:=(?:|[A-Za-z0-9_./-]+))?$"
+          "pattern": "^fibe\\.gg/(?:dockerfile|env_file)(?:=(?:|[A-Za-z0-9_./-]+))?$"
         },
         {
           "pattern": "^fibe\\.gg/(?:job_watch|production|zerodowntime)(?:=(?:|true|false))?$"
@@ -232,7 +230,18 @@
     },
     "templatedFibeLabelString": {
       "type": "string",
-      "pattern": "^fibe\\.gg/(?:repo_url|source_mount|job_watch|dockerfile|env_file|start_command|port|visibility|production|zerodowntime|branch|subdomain|path_rule|build_target|build_args|healthcheck_path|healthcheck_interval|healthcheck_timeout|healthcheck_retries|healthcheck_start_period)(?:=[^\\r\\n]*\\$\\$var__[A-Za-z0-9_]+[^\\r\\n]*)$"
+      "pattern": "^fibe\\.gg/(?:repo_url|job_watch|dockerfile|env_file|start_command|port|visibility|production|zerodowntime|branch|subdomain|path_rule|build_target|build_args|healthcheck_path|healthcheck_interval|healthcheck_timeout|healthcheck_retries|healthcheck_start_period)(?:=[^\\r\\n]*\\$\\$var__[A-Za-z0-9_]+[^\\r\\n]*)$"
+    },
+    "absoluteContainerPath": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/templatedString"
+        },
+        {
+          "type": "string",
+          "pattern": "^/[^\\r\\n\\x00]*$"
+        }
+      ]
     },
     "templatedString": {
       "type": "string",
@@ -473,6 +482,9 @@
           "type": "string"
         },
         "source_defaults": {
+          "type": "boolean"
+        },
+        "preserve_ports": {
           "type": "boolean"
         },
         "job_mode": {

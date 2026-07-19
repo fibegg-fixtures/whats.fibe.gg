@@ -110,7 +110,7 @@ The response shape depends on the selected source:
 - Existing `playspec_id_or_name` launches return the created Playground object.
 
 ## Gotchas
-- Plain Compose is not auto-converted. Services with `build:` or `fibe.gg/source_mount` must already include the required Fibe labels/metadata.
+- Plain Compose is not auto-converted. A service with `build:` must already include `fibe.gg/repo_url` and an absolute Compose `working_dir`.
 - Provide exactly one source field.
 - `job_mode:true` requires `marquee_id_or_name`.
 - A duplicate `name` follows normal backend conflict/validation behavior. Pass `name` explicitly to override repo-name inference.

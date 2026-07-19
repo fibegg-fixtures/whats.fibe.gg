@@ -80,7 +80,7 @@ Avoid niche categories — broader matches discovery.
 
 Set when the template will be imported from a source Prop (a Git repo). When true, the runtime auto-fills:
 
-- `fibe.gg/repo_url` on services that have `build:`, `fibe.gg/source_mount`, or already declare `fibe.gg/repo_url`/`fibe.gg/branch` → with the source Prop's repo URL.
+- `fibe.gg/repo_url` on services that have `build:`, an explicit `working_dir`, or already declare `fibe.gg/repo_url`/`fibe.gg/branch` → with the source Prop's repo URL. Outside an explicitly tracked `source_defaults` template, `working_dir` remains ordinary Compose.
 - `fibe.gg/branch` similarly with the source ref.
 - `trigger_config.repo_url`/`branch` if the template has a `trigger_config` and `job_mode: true`.
 

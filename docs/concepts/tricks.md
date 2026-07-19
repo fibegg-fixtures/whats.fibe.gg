@@ -55,7 +55,6 @@ services:
     working_dir: /app
     labels:
       fibe.gg/repo_url: https://github.com/owner/repo
-      fibe.gg/source_mount: /app
       fibe.gg/start_command: npm test
       fibe.gg/job_watch: "true"   # ← Trick succeeds/fails based on this
     depends_on:

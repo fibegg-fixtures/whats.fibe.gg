@@ -52,7 +52,8 @@ The public Fibe Compose schema catches:
   - `visibility`: empty, `internal`, or `external`, or a `$$var__NAME` value
   - `subdomain`: empty, `@`, or `[a-z0-9]([a-z0-9-]*[a-z0-9])?`
   - `path_rule`: contains `Path|PathPrefix|PathRegexp(`, does not contain `Host|HostRegexp|HostSNI|HostSNIRegexp|Headers|HeadersRegexp|Method|Query|ClientIP(`
-  - `dockerfile|env_file|source_mount`: `^[A-Za-z0-9_./-]+$`
+  - `dockerfile|env_file`: `^[A-Za-z0-9_./-]+$`
+  - Compose `working_dir`: absolute container path or an explicit template value
   - durations: `^[0-9]+(ms|s|m)$`
   - boolean labels: `true` / `false`
   - positive int label: `[1-9][0-9]*`
@@ -71,11 +72,11 @@ Drive from MCP: `fibe_schema(resource: "compose", operation: "validate", payload
 Catches cross-label rules the shape schema cannot express:
 
 - Compose `build:` without `fibe.gg/repo_url` → `Service '<n>' has a build directive but lacks a fibe.gg/repo_url label`.
-- `fibe.gg/source_mount` without `fibe.gg/repo_url` → `Service '<n>' has source_mount but no repo_url`.
+- `fibe.gg/repo_url` without an absolute Compose `working_dir` → `Service '<n>' must define an absolute working_dir for repository-backed source`.
 - `fibe.gg/zerodowntime: "true"` without `fibe.gg/port` → `Service '<n>': zerodowntime services must have 'fibe.gg/port' set`.
 - `fibe.gg/zerodowntime: "true"` with Compose `ports:` and `x-fibe.gg.metadata.preserve_ports: true` → `Service '<n>': zerodowntime services cannot have 'ports'`.
 - `fibe.gg/zerodowntime: "true"` with `container_name:` → `Service '<n>': zerodowntime services cannot have 'container_name'`.
-- Invalid `repo_url` URL (not GitHub HTTPS, not `ssh://`, and not a configured Gitea host).
+- Invalid `repo_url` URL (not a valid credential-free HTTP(S), `ssh://`, or SCP-style SSH repository URL). Plain HTTP is accepted with an insecure-transport warning.
 - Static service with no `image:` → warning, not error.
 
 Also produces warnings when a static service has no image and no build, and when raw Compose `ports:` will be stripped by default.

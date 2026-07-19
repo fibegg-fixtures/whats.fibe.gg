@@ -7,12 +7,11 @@ description: Use as the definitive reference for every supported `fibe.gg/*` Doc
 
 The label prefix is `fibe.gg/` (the prefix can be changed in self-hosted installations, but `fibe.gg/` is what every public template uses). Unknown `fibe.gg/*` labels FAIL parsing. Non-`fibe.gg/` labels pass through to Docker.
 
-## All 20 supported labels
+## All 19 supported labels
 
 | Label | Value | Default | Required when |
 |---|---|---|---|
-| `fibe.gg/repo_url` | GitHub HTTPS URL, full `ssh://` URL, configured Gitea URL, or `$$var__NAME` | — | service is dynamic (has `build:`, `source_mount`, or is source-backed) |
-| `fibe.gg/source_mount` | Path inside the container (`^[A-Za-z0-9_./-]+$`) | `/app` | source-backed live-mount |
+| `fibe.gg/repo_url` | HTTP(S) URL, full `ssh://` URL, SCP-style SSH URL, or `$$var__NAME` | — | service is dynamic/source-backed; plain HTTP warns |
 | `fibe.gg/dockerfile` | Path relative to repo root | `Dockerfile` | non-default Dockerfile location |
 | `fibe.gg/branch` | Git ref name | repo default branch | pin to non-default branch |
 | `fibe.gg/start_command` | shell command string | image `CMD` | overriding runtime command |
@@ -33,6 +32,12 @@ The label prefix is `fibe.gg/` (the prefix can be changed in self-hosted install
 | `fibe.gg/job_watch` | `true` / `false` | `false` | watched-exit job-mode service |
 
 Any of the above values may contain a `$$var__NAME` interpolation, but use inline syntax only for fragments. If the whole label value is launch-time variable driven, keep a concrete local placeholder and bind the variable through `x-fibe.gg.variables.<NAME>.path`. See [reference-template-variables](reference-template-variables.md).
+
+Repository-backed services also require the standard service-level Compose
+`working_dir` field with an absolute container path. It is not a Fibe label and
+does not make a service dynamic by itself. Core uses it as the generated
+non-production source-bind target; production keeps the field but receives no
+generated bind.
 
 ## Value rules
 
@@ -126,7 +131,7 @@ Parsed into a key→value map.
 
 ### `fibe.gg/repo_url`
 
-Accepted forms are GitHub HTTPS URLs, full `ssh://` URLs, and URLs under configured Gitea hosts. The short scp-style SSH form (`git@host:owner/repo.git`) is not accepted. Inline `$$var__NAME` interpolation is allowed and bypasses validation until compile time.
+Core accepts HTTPS URLs, full `ssh://` URLs, and scp-style SSH URLs such as `git@host:owner/repo.git`. Equivalent transport spellings normalize to one repository identity. Enterprise may additionally require that the repository can be resolved to an accessible Prop/provider. Inline `$$var__NAME` interpolation is allowed and bypasses validation until compile time.
 
 ## Two forms accepted
 
@@ -159,7 +164,7 @@ In array form each item is `<name>=<value>`. The schema applies the same `fibeLa
 These are enforced by the **runtime parser**, not the JSON Schema:
 
 - Compose `build:` requires `fibe.gg/repo_url`.
-- `fibe.gg/source_mount` requires `fibe.gg/repo_url`.
+- A service with `fibe.gg/repo_url` requires an absolute Compose `working_dir`; `working_dir` without the label is ordinary Compose.
 - `fibe.gg/visibility` requires `fibe.gg/port` — setting visibility on a service without a port fails parsing. With a port and no visibility, the route defaults to `external`.
 - `fibe.gg/zerodowntime: "true"` requires:
   - `fibe.gg/port` set,
@@ -199,14 +204,17 @@ If unset, the runtime fills:
 
 - `fibe.gg/dockerfile` → `Dockerfile`
 - `fibe.gg/env_file` → `.env.example`
-- `fibe.gg/source_mount` → `/app` (only for dynamic services; never invented for static ones)
 - `fibe.gg/branch` → repo default branch
+
+`working_dir` is deliberately absent from that list. It has no default:
+omitting it creates no generated bind. Repository-backed builds still use the
+Core source checkout as their build context.
 
 ## Source defaults (auto-fill for source-backed templates)
 
 When a template imports from a source Prop and `x-fibe.gg.metadata.source_defaults: true`, the runtime fills:
 
-- `fibe.gg/repo_url` on services that have `build:`, `source_mount`, or already declare `repo_url`/`branch` — with the source Prop's URL.
+- `fibe.gg/repo_url` on services that have `build:`, an explicit `working_dir`, or already declare repository/branch metadata — with the source Prop's URL. Outside an explicitly tracked `source_defaults` template, `working_dir` remains ordinary Compose.
 - `fibe.gg/branch` similarly with the source ref.
 - `trigger_config.repo_url` / `branch` if the template is `job_mode: true` and a `trigger_config` exists.
 

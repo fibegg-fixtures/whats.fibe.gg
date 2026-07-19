@@ -114,7 +114,7 @@ volumes:
   app_uploads:
 ```
 
-The exception is `fibe.gg/source_mount` — Fibe injects the source-tree bind mount automatically when `fibe.gg/repo_url` is set. See [recipe-source-mount](recipe-source-mount.md).
+The exception is `working_dir` — Fibe injects the source-tree bind mount automatically when `fibe.gg/repo_url` is set. See [recipe-source-mount](recipe-source-mount.md).
 
 ### `network_mode: host`
 

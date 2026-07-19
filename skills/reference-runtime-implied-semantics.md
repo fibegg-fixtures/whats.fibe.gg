@@ -65,21 +65,18 @@ services:
 
 ## Dynamic source/build mode is inferred and validated
 
-These fields require `fibe.gg/repo_url` together with a source-friendly label:
+Compose `build:` requires `fibe.gg/repo_url`. A repository-backed service in
+turn requires an absolute Compose `working_dir`, which is both the container's
+working directory and Core's source-bind target. `working_dir` without a
+repository label remains ordinary Compose.
 
-- `fibe.gg/source_mount` (live mount path)
-- `build:` (Docker build input)
-
-If either appears without `fibe.gg/repo_url`, preview/compile fails.
-
-Conversely, a `fibe.gg/repo_url` (or bare `repo_url`) label on its own marks a service as dynamic (source-backed), even when it specifies an `image:` and has no `build:` context or `source_mount` — `repo_url` is the dynamic signal.
+Conversely, a `fibe.gg/repo_url` (or bare `repo_url`) label marks a service as dynamic even when it specifies an `image:` and has no `build:` context. It must still define `working_dir`.
 
 ```yaml
 services:
   web:
     build: .
     labels:
-      fibe.gg/source_mount: /app
     # invalid: needs fibe.gg/repo_url
 ```
 

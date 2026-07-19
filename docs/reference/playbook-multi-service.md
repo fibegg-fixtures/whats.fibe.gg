@@ -48,7 +48,6 @@ x-app-build-labels: &app-build-labels
   fibe.gg/repo_url: https://github.com/owner/repo
   fibe.gg/branch: main
   fibe.gg/dockerfile: Dockerfile
-  fibe.gg/source_mount: "/rails"
   fibe.gg/env_file: env.example
 
 # ============================================================

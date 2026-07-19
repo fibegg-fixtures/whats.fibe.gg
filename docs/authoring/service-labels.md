@@ -4,7 +4,7 @@ description: The complete set of fibe.gg/* labels you can add under labels on a 
 slug: /authoring/service-labels
 sidebar_position: 3
 image: /img/og/authoring-service-labels.png
-keywords: [fibe.gg labels, repo_url, port, visibility, subdomain, path_rule, healthcheck, source_mount, job_watch]
+keywords: [fibe.gg labels, repo_url, port, visibility, subdomain, path_rule, healthcheck, working_dir, job_watch]
 ---
 
 The complete set of `fibe.gg/*` labels you can add under `labels:` on a service. Any unrecognized `fibe.gg/*` label is rejected, so typos surface quickly.
@@ -13,15 +13,20 @@ The complete set of `fibe.gg/*` labels you can add under `labels:` on a service.
 
 | Label | Purpose |
 | --- | --- |
-| `fibe.gg/repo_url` | GitHub HTTPS URL, full `ssh://` URL, or configured Gitea URL the service comes from. Required for built services and source-mounted services. |
+| `fibe.gg/repo_url` | Credential-free HTTP(S), full `ssh://`, or SCP-style SSH repository URL. Required for built and live-source services; plain HTTP warns. |
 | `fibe.gg/branch` | Pin to a non-default branch. |
 | `fibe.gg/dockerfile` | Dockerfile path relative to the repo root (defaults to `Dockerfile`). |
 | `fibe.gg/build_target` | Name of the stage when using a multi-stage build. |
 | `fibe.gg/build_args` | Comma-separated `KEY=value` pairs for build-time arguments. |
-| `fibe.gg/source_mount` | Container path to live-mount the working tree at (defaults to `/app`). |
 | `fibe.gg/start_command` | Command to run, overriding the image's default. For dev-mode templates this is where you put your hot-reload command (`bin/rails server -b 0.0.0.0`, `next dev -H 0.0.0.0`, `vite --host 0.0.0.0`, `uvicorn app:main --reload --host 0.0.0.0`). |
 | `fibe.gg/env_file` | Path to the env example file in your Prop (defaults to `.env.example`). Fibe reads this file to discover the env keys your service expects, pre-fills them in the launch form, and injects the final values into the container's environment — your service just reads ordinary environment variables. |
 | `fibe.gg/production` | Set to `"true"` for built images, `"false"` for source-mounted dev mode. When it's false, Fibe mounts your repository into the container so edits show up live — pair it with `fibe.gg/start_command` set to your dev/watch command so reloads actually happen. |
+
+`working_dir` is a standard service-level Compose field, not a label. Every
+service with `fibe.gg/repo_url` must set it to an explicit absolute container
+path. It has no Fibe default. On non-production services it is also the managed
+source-bind target; on production services it remains the process directory but
+Fibe does not generate a bind.
 
 ## Routing & exposure
 
@@ -65,7 +70,7 @@ labels:
 The runtime enforces these consistency rules:
 
 - A Compose `build:` block **requires** `fibe.gg/repo_url`.
-- `fibe.gg/source_mount` **requires** `fibe.gg/repo_url`.
+- A repository-backed service **requires** an absolute service-level Compose `working_dir`; `working_dir` alone remains ordinary Compose.
 - `fibe.gg/visibility` **requires** `fibe.gg/port`.
 - `fibe.gg/zerodowntime: "true"` **requires** `fibe.gg/port`, and the service **must not** declare `container_name`. Compose `ports:` are stripped by default, but if `x-fibe.gg.metadata.preserve_ports: true` is set, zero-downtime services must not declare `ports:` either.
 - Any label value can be a variable reference using `$$var__NAME`.
@@ -81,7 +86,6 @@ services:
     working_dir: /app
     labels:
       fibe.gg/repo_url: https://github.com/owner/rails-app
-      fibe.gg/source_mount: /app
       fibe.gg/start_command: bin/rails server -b 0.0.0.0 -p 3000
       fibe.gg/port: 3000
       fibe.gg/visibility: external

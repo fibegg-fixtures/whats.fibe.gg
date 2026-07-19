@@ -1,27 +1,47 @@
 ---
 name: recipe-source-mount
-description: Use to set up Fibe live source mounting via `fibe.gg/source_mount` plus `fibe.gg/repo_url` and `fibe.gg/production: false`, including framework-specific dev/watch commands and the rules around `node_modules` and build artifacts.
+description: Use to set up Fibe live source mounting via `working_dir` plus `fibe.gg/repo_url` and `fibe.gg/production: false`, including framework-specific dev/watch commands and the rules around `node_modules` and build artifacts.
 ---
 
-# Recipe: `fibe.gg/source_mount` for live dev
+# Recipe: `working_dir` for live dev
 
-`fibe.gg/source_mount` tells Fibe to bind-mount the cloned repo into the container at that path. Edits to files in the source tree show up inside the container immediately — the app must run a dev/watch process to react.
+`working_dir` tells Fibe to bind-mount the cloned repo into the container at that path. Edits to files in the source tree show up inside the container immediately — the app must run a dev/watch process to react.
 
-## Required labels
+## Required fields and labels
 
-| Label | Value |
+| Field | Value |
 |---|---|
-| `fibe.gg/repo_url` | Git repo URL (required — source mount cannot exist without a repo) |
-| `fibe.gg/source_mount` | absolute path inside the container, e.g. `/app` |
+| `fibe.gg/repo_url` | Git repo URL; marks the service as repository-backed |
+| Compose `working_dir` | absolute path inside the container, e.g. `/app` |
 | `fibe.gg/production` | `"false"` (the source-mounted mode) |
 | `fibe.gg/start_command` | the dev/watch command, NOT a production build |
 
-If `fibe.gg/source_mount` is set but `fibe.gg/repo_url` is missing, the validator rejects: `Service '<n>' has source_mount but no repo_url`.
+`working_dir` alone remains ordinary Compose on an image-only service. When
+`fibe.gg/repo_url` is present, the validator requires an absolute `working_dir`:
+`Service '<n>' must define an absolute working_dir for repository-backed source`.
 
 ## Defaults
 
-- `fibe.gg/source_mount` defaults to `/app` when omitted — only set explicitly if the app expects a different working dir.
+- Repository-backed services have no `working_dir` default. Set an explicit absolute container path.
 - `fibe.gg/production` defaults to unset, which behaves like development for source-mounted setups. Set `"false"` explicitly for clarity, `"true"` to opt out of source mounting and run the built image.
+
+## Checkout and mount semantics
+
+Fibe groups source by normalized repository and exact branch, not by service.
+Several services using the same repository and branch share one checkout and one
+Git synchronization. Different branches always use separate checkouts, even
+when their readable names would collide. The Core-owned source plan is an
+in-memory value: standalone Core derives a repository-digest path, while
+fibe.gg supplies its established `props/<prop_slug>/<branch>` path to the same
+grouping and mount contract. The rendered Compose exposes either consumer-owned
+path to local tools through standard build contexts and bind mounts.
+
+For each eligible non-production service, Fibe replaces every existing Compose
+mount whose normalized container target exactly equals `working_dir`. Short
+syntax, long syntax, anonymous volumes, and interpolated sources are handled.
+The replacement is a read-write bind; old mount modes and long-form options at
+that exact target do not survive. Mounts at parent, child, and unrelated targets
+remain untouched.
 
 ## App-side requirements
 
@@ -47,7 +67,6 @@ services:
       - web_node_modules:/app/node_modules
     labels:
       fibe.gg/repo_url: https://github.com/owner/repo
-      fibe.gg/source_mount: /app
       fibe.gg/start_command: npm run dev -- --host 0.0.0.0
       fibe.gg/port: 5173
       fibe.gg/visibility: external
@@ -70,7 +89,6 @@ services:
       - pip_cache:/root/.cache/pip
     labels:
       fibe.gg/repo_url: ...
-      fibe.gg/source_mount: /app
       fibe.gg/start_command: sh -c "pip install -r requirements.txt && uvicorn app:main --host 0.0.0.0 --reload"
       fibe.gg/port: 8000
       fibe.gg/visibility: external
@@ -120,6 +138,7 @@ For zero-downtime production deployments, switch off source mount:
 services:
   web:
     image: ghcr.io/owner/app:latest    # built image, used as-is
+    working_dir: /app
     labels:
       fibe.gg/repo_url: https://github.com/owner/repo
       fibe.gg/dockerfile: Dockerfile
@@ -130,7 +149,9 @@ services:
       # ... healthcheck labels ...
 ```
 
-In production mode, `fibe.gg/source_mount` is ignored — the container uses the image's filesystem.
+In production mode Fibe does not generate its source bind. Every user-authored
+Compose volume is preserved, including a volume at the `working_dir` target,
+so such a volume may still mask the image filesystem.
 
 ## Toggling dev/prod via a variable
 
@@ -138,9 +159,9 @@ In production mode, `fibe.gg/source_mount` is ignored — the container uses the
 services:
   web:
     image: node:24
+    working_dir: /app
     labels:
       fibe.gg/repo_url: https://github.com/owner/repo
-      fibe.gg/source_mount: /app
       fibe.gg/start_command: npm run dev
       fibe.gg/port: 3000
       fibe.gg/visibility: external
@@ -164,7 +185,7 @@ x-fibe.gg:
 
 ## Pitfalls
 
-- **`fibe.gg/source_mount` without `fibe.gg/repo_url`** — validator hard error.
+- **`fibe.gg/repo_url` without an absolute `working_dir`** — validator hard error.
 - **Committing `node_modules` to the repo** — bloats clone time and is overwritten by the volume anyway. Add to `.gitignore`.
 - **`fibe.gg/start_command` that builds and exits** — like `npm run build` — the container exits after build. Use the dev/watch command instead.
 - **Running production build under source mount** — works but wastes the live-edit feature; switch to `production: "true"`.

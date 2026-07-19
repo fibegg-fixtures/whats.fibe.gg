@@ -98,14 +98,13 @@ The template is a Docker Compose file. The schema validates that:
 
 ### `fibe.gg/*` labels
 
-Twenty labels are recognized. The table below summarizes each one — for the full prose explanation, see [Service labels](/authoring/service-labels/) and the [`reference-fibe-labels`](/reference/reference-fibe-labels/) skill.
+Nineteen labels are recognized. The table below summarizes each one — for the full prose explanation, see [Service labels](/authoring/service-labels/) and the [`reference-fibe-labels`](/reference/reference-fibe-labels/) skill. Repository-backed services additionally require the standard Compose `working_dir` field with an absolute container path.
 
 | Label | Value shape | Required when | Example |
 | --- | --- | --- | --- |
-| `fibe.gg/repo_url` | HTTPS Git URL or `$$var__NAME` | service is dynamic (`build:`, `source_mount`, or source-backed) | `https://github.com/user/repo` |
+| `fibe.gg/repo_url` | HTTP(S)/SSH Git URL or `$$var__NAME` | service is dynamic/source-backed; plain HTTP warns | `https://github.com/user/repo` |
 | `fibe.gg/branch` | string | dynamic services (pin to non-default branch) | `main` |
 | `fibe.gg/dockerfile` | path | dynamic services with `build:` | `./deploy/Dockerfile` |
-| `fibe.gg/source_mount` | container path | live-source-mount services | `/app` |
 | `fibe.gg/start_command` | string | when overriding the image's default | `bundle exec rails s` |
 | `fibe.gg/env_file` | path inside Prop | when env values come from a non-default example | `env.example` |
 | `fibe.gg/build_target` | string | multi-stage build | `production` |

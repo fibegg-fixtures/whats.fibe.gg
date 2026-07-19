@@ -91,7 +91,6 @@ services:
     labels:
       fibe.gg/repo_url: https://github.com/owner/repo
       fibe.gg/branch: main
-      fibe.gg/source_mount: /app
       fibe.gg/start_command: npm ci && npm test
       fibe.gg/job_watch: "true"
       fibe.gg/production: "false"

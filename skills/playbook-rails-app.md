@@ -125,11 +125,11 @@ services:
         bin/rails assets:precompile
     environment: *rails-env
     restart: "no"
+    working_dir: "/rails"
     labels:
       fibe.gg/repo_url: https://github.com/owner/repo   # overwritten by the REPO_URL binding
       fibe.gg/branch: main                              # overwritten by the BRANCH binding
       fibe.gg/dockerfile: Dockerfile
-      fibe.gg/source_mount: "/rails"
 
   web:
     build: .
@@ -144,11 +144,11 @@ services:
       timeout: 10s
       retries: 12
       start_period: 120s
+    working_dir: "/rails"
     labels:
       fibe.gg/repo_url: https://github.com/owner/repo   # overwritten by the REPO_URL binding
       fibe.gg/branch: main                              # overwritten by the BRANCH binding
       fibe.gg/dockerfile: Dockerfile
-      fibe.gg/source_mount: "/rails"
       fibe.gg/start_command: bin/rails server -b 0.0.0.0
       fibe.gg/port: 3000
       fibe.gg/visibility: external
@@ -169,11 +169,11 @@ services:
     environment: *rails-env
     command: bundle exec sidekiq
     restart: unless-stopped
+    working_dir: "/rails"
     labels:
       fibe.gg/repo_url: https://github.com/owner/repo   # overwritten by the REPO_URL binding
       fibe.gg/branch: main                              # overwritten by the BRANCH binding
       fibe.gg/dockerfile: Dockerfile
-      fibe.gg/source_mount: "/rails"
       fibe.gg/start_command: bundle exec sidekiq
       fibe.gg/production: "true"
 
@@ -310,7 +310,7 @@ Rails apps need migrations + asset compilation BEFORE the web tier accepts traff
 ## Pitfalls
 
 - **Hardcoded `secret` for `RAILS_MASTER_KEY`** — must come from the launcher (the repo's encrypted credentials are decrypted with this).
-- **Source mount + `production: "true"`** — combination is fine but the mount is unused at runtime. Set `source_mount` only if you use it for dev mode.
+- **Repository source + `production: "true"`** — `working_dir` is still required as the process directory, but Fibe does not generate a source bind.
 - **Forgetting `RAILS_LOG_TO_STDOUT: "1"`** — without it, Rails logs to a file inside the container; `docker logs` shows nothing useful.
 - **Sidekiq without a healthcheck** — Sidekiq is not HTTP. Don't enable zero-downtime for it; rely on restart-style rollouts and small replica counts.
 - **`RAILS_SERVE_STATIC_FILES` unset** — without it, Rails returns 404 for `/assets/...` behind Traefik. Always set to `"1"` for production templates.

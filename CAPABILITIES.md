@@ -46,7 +46,7 @@ An agent can convert Docker Compose into Fibe templates that:
 - Convert `ports:` to Fibe-managed routing where appropriate.
 - Preserve internal-only services such as databases, caches, queues, and utility containers.
 - Use `fibe.gg/repo_url`, `fibe.gg/branch`, `fibe.gg/dockerfile`, `fibe.gg/build_target`, and `fibe.gg/build_args` for source-backed builds.
-- Use `fibe.gg/source_mount`, `fibe.gg/start_command`, and `fibe.gg/production: "false"` for live development mode.
+- Use `working_dir`, `fibe.gg/start_command`, and `fibe.gg/production: "false"` for live development mode.
 - Decide static image services versus dynamic source-backed services.
 - Add zero-downtime rollout labels and optional healthcheck tuning labels only when the service can support them.
 - Use `deploy.replicas` for scale and expose replica count as a launch variable when useful.

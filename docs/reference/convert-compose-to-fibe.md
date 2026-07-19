@@ -44,13 +44,13 @@ For each service, decide *static* (use a prebuilt `image`) or *dynamic* (Fibe cl
 
 → Load [decide-static-vs-dynamic](decide-static-vs-dynamic.md).
 
-The signal is the `fibe.gg/repo_url` label. A Compose `build:` block **requires** `fibe.gg/repo_url`. So does `fibe.gg/source_mount`.
+The signal is the `fibe.gg/repo_url` label. A Compose `build:` block **requires** `fibe.gg/repo_url`, and every service carrying that label requires an explicit absolute `working_dir`. An ordinary image service may use `working_dir` without becoming repository-backed.
 
-Important distinction: real app services that should build/run locally usually keep a `build:` section. Source-only helper services that exist only to make a repository available through `fibe.gg/source_mount` should normally use a tiny runner `image` and omit `build:` so they do not become build-workflow services.
+Important distinction: real app services that should build/run locally usually keep a `build:` section. Source-only helper services that exist only to make a repository available through `working_dir` should normally use a tiny runner `image` and omit `build:` so they do not become build-workflow services.
 
 ### Step 2 — Resolve `build:` into Fibe labels
 
-If the service has a `build:` block, you have a dynamic service. Add `fibe.gg/repo_url` + (optional) `fibe.gg/dockerfile`, `fibe.gg/branch`, `fibe.gg/build_target`, `fibe.gg/build_args`, `fibe.gg/source_mount`.
+If the service has a `build:` block, you have a dynamic service. Add `fibe.gg/repo_url`, an absolute service-level `working_dir`, and any optional `fibe.gg/dockerfile`, `fibe.gg/branch`, `fibe.gg/build_target`, or `fibe.gg/build_args` labels.
 
 → Load [recipe-build-to-repo-url](recipe-build-to-repo-url.md) and [recipe-build-args-and-target](recipe-build-args-and-target.md).
 
@@ -136,7 +136,7 @@ That gives you a public HTTP route under the Marquee root domain at subdomain `w
 | Public HTTP from prebuilt image | `fibe.gg/port: PORT`<br />`fibe.gg/visibility: external` |
 | Internal-only (basic auth) HTTP | `fibe.gg/port: PORT`<br />`fibe.gg/visibility: internal` |
 | Build from my repo | `fibe.gg/repo_url`, optional `fibe.gg/dockerfile`, `fibe.gg/branch` |
-| Live-edit dev mode | `fibe.gg/repo_url`, `fibe.gg/source_mount: /app`, `fibe.gg/start_command`, `fibe.gg/production: "false"` |
+| Live-edit dev mode | `fibe.gg/repo_url`, `working_dir: /app`, `fibe.gg/start_command`, `fibe.gg/production: "false"` |
 | Zero-downtime rollouts | `fibe.gg/zerodowntime: "true"` on an exposed HTTP service, with optional `fibe.gg/healthcheck_*` overrides when defaults do not match the app; forbids `container_name` and forbids raw `ports:` only when `preserve_ports: true` |
 | One-shot job that defines success | `fibe.gg/job_watch: "true"` on the watched service + `x-fibe.gg.metadata.job_mode: true` |
 | Pick subdomain at launch | `fibe.gg/subdomain: demo` placeholder + `x-fibe.gg.variables.SUBDOMAIN.path: services.web.labels.fibe.gg/subdomain` |

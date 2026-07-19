@@ -172,8 +172,8 @@ A typical iteration loop:
 | --- | --- |
 | Public HTTP from a prebuilt image | `fibe.gg/port: PORT`<br />`fibe.gg/visibility: external` |
 | Internal-only HTTP behind Basic Auth | `fibe.gg/port: PORT`<br />`fibe.gg/visibility: internal` |
-| Build from your repository | `fibe.gg/repo_url` (optionally `fibe.gg/dockerfile`, `fibe.gg/branch`) |
-| Live-edit dev mode | `fibe.gg/repo_url` + `fibe.gg/source_mount: /app` + `fibe.gg/start_command` + `fibe.gg/production: "false"` |
+| Build from your repository | `fibe.gg/repo_url` + an absolute `working_dir` (optionally `fibe.gg/dockerfile`, `fibe.gg/branch`) |
+| Live-edit dev mode | `fibe.gg/repo_url` + `working_dir: /app` + `fibe.gg/start_command` + `fibe.gg/production: "false"` |
 | Zero-downtime rollouts | `fibe.gg/zerodowntime: "true"` + the `fibe.gg/healthcheck_*` labels |
 | One-shot Trick | `fibe.gg/job_watch: "true"` on the watched service + `x-fibe.gg.metadata.job_mode: true` |
 | Subdomain chosen at launch | `fibe.gg/subdomain: $$var__SUBDOMAIN` + matching variable |

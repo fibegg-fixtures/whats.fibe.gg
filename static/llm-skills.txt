@@ -88,7 +88,7 @@ playbook-nginx-static: Use to convert a static-image Compose service (nginx serv
   web:   https://whats.fibe.gg/skills/playbook-nginx-static.md
   local: ./skills/playbook-nginx-static.md
 
-playbook-nodejs-dev: Use to convert a Node.js dev-mode docker-compose (live source mount + hot reload via Vite, Next.js, nodemon) into a Fibe template using `fibe.gg/source_mount` and `fibe.gg/production: false`.
+playbook-nodejs-dev: Use to convert a Node.js dev-mode docker-compose (live source mount + hot reload via Vite, Next.js, nodemon) into a Fibe template using `working_dir` and `fibe.gg/production: false`.
   web:   https://whats.fibe.gg/skills/playbook-nodejs-dev.md
   local: ./skills/playbook-nodejs-dev.md
 
@@ -172,7 +172,7 @@ recipe-random-and-secrets: Use to generate random values for passwords/secrets v
   web:   https://whats.fibe.gg/skills/recipe-random-and-secrets.md
   local: ./skills/recipe-random-and-secrets.md
 
-recipe-source-mount: Use to set up Fibe live source mounting via `fibe.gg/source_mount` plus `fibe.gg/repo_url` and `fibe.gg/production: false`, including framework-specific dev/watch commands and the rules around `node_modules` and build artifacts.
+recipe-source-mount: Use to set up Fibe live source mounting via `working_dir` plus `fibe.gg/repo_url` and `fibe.gg/production: false`, including framework-specific dev/watch commands and the rules around `node_modules` and build artifacts.
   web:   https://whats.fibe.gg/skills/recipe-source-mount.md
   local: ./skills/recipe-source-mount.md
 

@@ -85,9 +85,9 @@ services:
   web:
     image: nginx:alpine
     restart: unless-stopped
+    working_dir: /usr/share/nginx/html
     labels:
       fibe.gg/repo_url: https://github.com/owner/site
-      fibe.gg/source_mount: /usr/share/nginx/html
       fibe.gg/port: 80
       fibe.gg/visibility: external
       fibe.gg/production: "false"

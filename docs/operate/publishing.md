@@ -32,7 +32,7 @@ Fibe-maintained catalog entries have an extra gate: the version must be public, 
 
 - Static services use `image:` only.
 - Dynamic services declare `fibe.gg/repo_url`.
-- Source-mounted services have a sensible `working_dir` and source mount path.
+- Repository-backed services have a sensible absolute `working_dir`.
 - Databases, caches, and queues use named volumes — never host paths.
 - Use `depends_on` wherever startup order matters, but expect the app to retry transient failures.
 - No fixed `container_name`, especially on services with rolling updates.

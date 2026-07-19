@@ -58,7 +58,6 @@ services:
     labels:
       fibe.gg/repo_url: https://github.com/owner/repo
       fibe.gg/branch: main
-      fibe.gg/source_mount: /app
       fibe.gg/dockerfile: Dockerfile
       fibe.gg/start_command: sh -c "pip install -r requirements.txt && uvicorn app:main --host 0.0.0.0 --reload"
       fibe.gg/port: 8000

@@ -11,7 +11,7 @@ format: md
 
 [MODE:BROWNFIELD] Read-only, idempotent. Tier: brownfield.
 
-Returns local Playground names, URLs, source mounts, or full metadata from the local Marquee filesystem. No Fibe API call.
+Returns local Playground names, URLs, source mounts, or full metadata from the local Marquee filesystem. No Fibe API call. Source paths come from the Playground's rendered Compose bind mounts.
 
 ## When to use
 - Discover local Playgrounds with `view:"names"`.
@@ -24,8 +24,8 @@ Returns local Playground names, URLs, source mounts, or full metadata from the l
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `view` | string | yes | `names`, `urls`, `mounts`, or `details` |
-| `id_or_name` | string | no | Local Playground ID, name, compose project, Playspec, or unique Playspec prefix. Omit for `view:"names"` |
+| `view` | string | yes | `names`, `current`, `repos`, `urls`, `mounts`, or `details` |
+| `id_or_name` | string | no | Local Playground ID, name, compose project, Playspec, or unique Playspec prefix. Required for `urls`, `mounts`, and `details`; omit for `names`, `current`, and `repos`. |
 
 ## Output
 Native structured MCP data, not a CLI `stdout` envelope.
@@ -37,18 +37,23 @@ Native structured MCP data, not a CLI `stdout` envelope.
 
 `view:"urls"`:
 ```json
-[{ "service": "web", "url": "web.phoenix.test" }]
+[{ "service": "web", "url": "https://web.phoenix.test" }]
 ```
 
 `view:"mounts"`:
 ```json
-[{ "service": "web", "mount": "/opt/fibe/playgrounds/demo-app--42/props/acme--demo-app/main", "prop": "demo-app", "branch": "main" }]
+[{ "service": "web", "mount": "/opt/fibe/playgrounds/demo-app--42/props/acme--demo-app--91f0c9a8b7/main", "prop": "demo-app", "branch": "main" }]
 ```
 
-`view:"details"` returns the full local Playground object with service metadata.
+`view:"details"` returns the full local Playground object with the per-service
+metadata parsed from rendered Compose. `view:"mounts"` and `details` keep one
+entry per service, so services sharing a physical checkout may report the same
+host path more than once. The link command deduplicates those identical targets.
+The SDK does not expose normalized repository identity and does not allocate the
+`/opt/fibe` checkout layout.
 
 ## Gotchas
-- `view:"names"` does not accept a target selector.
+- `names`, `current`, and `repos` do not accept a target selector.
 - `urls`, `mounts`, and `details` require one target selector.
 - Numeric selectors match the local compose project suffix (`<name>--<id>`), not an API lookup.
 - Ambiguous playspec prefixes return an error listing candidates.

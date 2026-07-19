@@ -125,21 +125,21 @@ If the project is in a monorepo and the Dockerfile assumes a subdirectory contex
 
 Compose allows both `image:` and `build:`. With Fibe:
 
-- In `production: "false"` (dev) mode without `build:`, `image:` is what runs while source is mounted into `fibe.gg/source_mount`. Pick something with the language runtime: `node:24-slim`, `python:3.12`, `ruby:3.3`, `golang:1.23`, or a tiny runner such as `alpine:3.21` for source-only helpers. Avoid `:latest`.
+- In `production: "false"` (dev) mode without `build:`, `image:` is what runs while source is mounted into `working_dir`. Pick something with the language runtime: `node:24-slim`, `python:3.12`, `ruby:3.3`, `golang:1.23`, or a tiny runner such as `alpine:3.21` for source-only helpers. Avoid `:latest`.
 - In `production: "true"` mode, `image:` is a placeholder; Fibe builds a fresh image from the Dockerfile and replaces it.
 
 ## Source-only helpers are not build services
 
-If a service exists only to make a repository available via `fibe.gg/source_mount`, use `image:` and omit `build:`:
+If a service exists only to make a repository available via `working_dir`, use `image:` and omit `build:`:
 
 ```yaml
 services:
   dependency-source:
     image: alpine:3.21
     command: ["sh", "-c", "true"]
+    working_dir: /source/dependency
     labels:
       fibe.gg/repo_url: https://github.com/owner/dependency
-      fibe.gg/source_mount: /source/dependency
       fibe.gg/production: "false"
 ```
 
