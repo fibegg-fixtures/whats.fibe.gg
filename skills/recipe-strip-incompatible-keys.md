@@ -13,7 +13,7 @@ These cause validation or runtime errors and must be removed or rewritten:
 
 | Compose key | Status | Why |
 |---|---|---|
-| `ports:` binding host `80` or `443` with `x-fibe.gg.metadata.preserve_ports: true` | hard error | Reserved for platform routing |
+| `ports:` binding host `80` or `443`, including a range containing either port, with `x-fibe.gg.metadata.preserve_ports: true` | hard error | Reserved for platform routing |
 | `ports:` on `fibe.gg/zerodowntime: "true"` service with `preserve_ports: true` | hard error | Host port pinning conflicts with rolling updates |
 | `container_name:` | rejected when paired with `fibe.gg/zerodowntime: "true"` | Container names must be unique across replicas |
 

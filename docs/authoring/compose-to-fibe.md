@@ -84,7 +84,7 @@ See [`recipe-ports-to-expose`](/reference/recipe-ports-to-expose/).
 
 Remove `container_name` to avoid cross-Playground name collisions on the same Marquee. Fibe strips `hostname:` automatically. Keep `depends_on`, `volumes`, `environment`, `healthcheck`, `networks`, and `restart` as-is.
 
-Raw Compose `ports:` are no longer a launch blocker by default. Leave them when they make local development easier, or delete them for a cleaner template. Only opt into preserving raw host bindings with `x-fibe.gg.metadata.preserve_ports: true`; that advanced mode keeps host-port validation and still rejects reserved `80`/`443`.
+Raw Compose `ports:` are no longer a launch blocker by default. Leave them when they make local development easier, or delete them for a cleaner template. Only opt into preserving raw host bindings with `x-fibe.gg.metadata.preserve_ports: true`; that advanced mode keeps host-port validation and still rejects reserved `80`/`443`, including published ranges containing either port.
 
 See [`recipe-strip-incompatible-keys`](/reference/recipe-strip-incompatible-keys/).
 

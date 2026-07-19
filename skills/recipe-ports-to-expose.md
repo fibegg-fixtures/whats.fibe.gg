@@ -158,7 +158,7 @@ See [recipe-whole-node-paths](recipe-whole-node-paths.md).
 ## Pitfalls
 
 - **Leaving `ports:` while also setting `fibe.gg/port`** — supported for local compatibility. Fibe strips those ports unless `x-fibe.gg.metadata.preserve_ports: true`.
-- **Setting `preserve_ports: true` casually** — preserves raw Docker host bindings on Fibe and re-enables host-port conflict checks, including reserved `80`/`443`. Avoid it for public templates.
+- **Setting `preserve_ports: true` casually** — preserves raw Docker host bindings on Fibe and re-enables host-port conflict checks, including ranges containing reserved `80`/`443`. Avoid it for public templates.
 - **Leaving `ports:` while turning on `fibe.gg/zerodowntime: "true"` with `preserve_ports: true`** — validator rejects (`zerodowntime services cannot have 'ports'`). Without `preserve_ports`, Fibe strips the raw ports before launch.
 - **Setting `fibe.gg/port` on a service that doesn't actually listen on that port** — Traefik routes traffic; the container 404s or refuses. Verify with `docker exec <c> ss -ltnp` (or equivalent).
 - **Using `fibe.gg/visibility: external` for a port the app binds to localhost only** — `0.0.0.0` is required. Fix the app's bind config (see [decide-exposure-strategy](decide-exposure-strategy.md)).
