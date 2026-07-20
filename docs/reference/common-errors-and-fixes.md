@@ -71,11 +71,11 @@ Container names must be unique; replicas duplicate them.
 
 **Fix:** Remove `container_name:`. See [recipe-strip-incompatible-keys](recipe-strip-incompatible-keys.md).
 
-### `Service '<n>': repo_url must be a credential-free HTTP(S) or SSH repository URL`
+### `Service '<n>': repo_url must be an HTTP(S) or SSH repository URL`
 
 The URL isn't HTTPS / isn't a supported provider.
 
-**Fix:** Prefer a valid HTTPS, full `ssh://`, or SCP-style SSH URL such as `git@host:owner/repo.git`. Credential-free HTTP is accepted for private development networks but produces an insecure-transport warning. See [recipe-build-to-repo-url](recipe-build-to-repo-url.md).
+**Fix:** Prefer a valid HTTPS, full `ssh://`, or SCP-style SSH URL such as `git@host:owner/repo.git`. Plain HTTP is accepted for private development networks but produces an insecure-transport warning. See [recipe-build-to-repo-url](recipe-build-to-repo-url.md).
 
 ### `Service '<n>': invalid exposure visibility '<v>' — must be 'internal' or 'external'`
 

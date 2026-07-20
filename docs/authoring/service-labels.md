@@ -13,7 +13,7 @@ The complete set of `fibe.gg/*` labels you can add under `labels:` on a service.
 
 | Label | Purpose |
 | --- | --- |
-| `fibe.gg/repo_url` | Credential-free HTTP(S), full `ssh://`, or SCP-style SSH repository URL. Required for built and live-source services; plain HTTP warns. |
+| `fibe.gg/repo_url` | HTTP(S), full `ssh://`, or SCP-style SSH repository URL. Required for built and live-source services; plain HTTP warns. |
 | `fibe.gg/branch` | Pin to a non-default branch. |
 | `fibe.gg/dockerfile` | Dockerfile path relative to the repo root (defaults to `Dockerfile`). |
 | `fibe.gg/build_target` | Name of the stage when using a multi-stage build. |
@@ -27,6 +27,12 @@ service with `fibe.gg/repo_url` must set it to an explicit absolute container
 path. It has no Fibe default. On non-production services it is also the managed
 source-bind target; on production services it remains the process directory but
 Fibe does not generate a bind.
+
+Prefer credential-free GitHub HTTPS URLs. Standalone Core can apply its one
+host-wide `GITHUB_TOKEN`; Enterprise resolves the Player's Prop/provider
+credential. Explicit credentials in an HTTP(S) URL are supported but persist
+with the authored and rendered configuration, Git origin, and backups. SSH URLs
+use the server's mounted SSH configuration with host-key verification.
 
 ## Routing & exposure
 

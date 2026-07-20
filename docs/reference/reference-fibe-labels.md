@@ -135,7 +135,7 @@ Parsed into a key→value map.
 
 ### `fibe.gg/repo_url`
 
-Core accepts HTTPS URLs, full `ssh://` URLs, and scp-style SSH URLs such as `git@host:owner/repo.git`. Equivalent transport spellings normalize to one repository identity. Enterprise may additionally require that the repository can be resolved to an accessible Prop/provider. Inline `$$var__NAME` interpolation is allowed and bypasses validation until compile time.
+Core accepts HTTP(S) URLs, full `ssh://` URLs, and scp-style SSH URLs such as `git@host:owner/repo.git`. Equivalent transport spellings normalize to one repository identity. A credential-free `https://github.com/...` URL uses standalone Core's optional host-wide `GITHUB_TOKEN`; Enterprise instead resolves the Player's Prop/provider credentials. Explicit HTTP(S) URL credentials take precedence and are supported for generic Git access, but they remain in the authored template, rendered Compose, Git origin, and backups, so prefer the deployment's managed credential path. SSH uses the server's mounted SSH configuration and normal host-key verification. Inline `$$var__NAME` interpolation is allowed and bypasses validation until compile time.
 
 ## Two forms accepted
 

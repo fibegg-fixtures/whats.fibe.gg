@@ -302,7 +302,7 @@ fibe-tool-find-github-repos: Use when you need to search GitHub repos across ALL
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-find-github-repos.md
   local: ./seed-skills/fibe-tool-find-github-repos.md
 
-fibe-tool-get-github-token: Use when you need to mint a short-lived GitHub installation access token for a specific repository. Auto-resolves the correct GitHub App installation.
+fibe-tool-get-github-token: Use when you need the server-provided GitHub credential for a specific repository. Enterprise resolves an App installation; standalone Core returns its configured credential.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-get-github-token.md
   local: ./seed-skills/fibe-tool-get-github-token.md
 
