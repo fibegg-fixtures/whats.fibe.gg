@@ -134,7 +134,7 @@ Connect Fibe to source-control providers.
 | Tool | Purpose |
 | --- | --- |
 | [`fibe_find_github_repos`](/reference/tools/find-github-repos/) | Search GitHub across your installations. |
-| [`fibe_get_github_token`](/reference/tools/get-github-token/) | Mint a short-lived GitHub token. |
+| [`fibe_get_github_token`](/reference/tools/get-github-token/) | Get the server-provided GitHub credential for a repository. |
 | [`fibe_repo_status_check`](/reference/tools/repo-status-check/) | Verify access / privacy / fork status for a repo URL. |
 
 ## Annotations
