@@ -10,6 +10,13 @@ keywords: [Fibe, getting started, Docker environments, dev environments, AI agen
 
 Fibe runs Docker environments on hosts you control, fed from Git, steered from a browser. Launch in seconds, share a URL, attach an AI assistant, stop or extend when done.
 
+:::info Release scope
+[fibe.gg](https://fibe.gg) is the production service. [next.fibe.live](https://next.fibe.live)
+is the staging environment for the maintained v1.5 work. A change described as
+staging-only is not yet a production guarantee. The separate v2/Core extraction
+and mini-fibe-os work are postponed.
+:::
+
 ## The shortest path
 
 1. Add a [Marquee](/concepts/marquees/). A host that runs containers.

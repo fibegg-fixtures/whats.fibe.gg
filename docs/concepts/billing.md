@@ -104,6 +104,16 @@ You don't need to spend anything to:
 
 You start spending when you fund your first Marquee — tutorial Marquees are billed daily in Mana (bought as the Tutorial bundle), and Genie chats need a funded Marquee to run on.
 
+:::info Staging update — 13 September 2026
+On [next.fibe.live](https://next.fibe.live), delayed or repeated subscription
+cancellation jobs recheck the server's current funding and entitlement. They follow
+normal billing grace and retention instead of deleting playground records or
+storage immediately. Renewed funding is checked again before retention cleanup,
+and a failed infrastructure removal request does not mark the server as removed.
+This correction has not yet been promoted to fibe.gg. Retention still applies;
+this is not a promise of indefinite hosting or storage without payment.
+:::
+
 ## When your balance runs low
 
 A funded Marquee is charged once per day — tutorial Marquees from your **Mana** balance, standard Marquees from your **Sparks** balance. Days are **service days**: fixed midnight-to-midnight windows in UTC, and a day counts as paid only when it's funded through to that day's end (billing intervals count 30 service days per month, 365 per year). Every Marquee has a **"Fund until"** date on its page: Fibe debits one day at a time while that window is open, and the page shows the daily rate and the projected cost to your chosen date. If a day's charge can't be covered, the Marquee winds down on a predictable, recoverable path — it doesn't vanish without warning.

@@ -9,6 +9,14 @@ keywords: [delete, disable, cleanup, cascade, Marquee, Agent, Prop, API key, dat
 
 Fibe is built to protect you from foot-guns. The actions that *could* take other things down with them are **blocked** until you've cleared the dependency, and the few that actually delete data say so first. Here's exactly what each action touches.
 
+:::info Subscription cleanup release scope
+The delayed-cancellation correction is deployed to staging, next.fibe.live, and
+has not yet been promoted to fibe.gg. See the [billing release note](/concepts/billing/)
+for its scope. Cancellation, stopping runtime, and retention cleanup are separate
+steps; a database record surviving does not by itself prove that its runtime data
+has been recovered.
+:::
+
 ## At a glance
 
 | You do this… | …and this happens | Data |

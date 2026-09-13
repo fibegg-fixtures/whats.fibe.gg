@@ -1,4 +1,4 @@
-# fibe-skills
+# FIBE public user guide
 
 The source for **[whats.fibe.gg](https://whats.fibe.gg)** — the Fibe user guide and machine-readable skill library.
 
@@ -39,7 +39,7 @@ Pushes to `main` trigger `.github/workflows/deploy.yml`, which builds the site a
 ## Repository structure
 
 ```
-fibe-skills/
+whats.fibe.gg/
 ├── docusaurus.config.js   # site config (URL, navbar, footer, plugins)
 ├── sidebars.js            # manual sidebar hierarchy
 ├── docs/                  # the user-facing guide content (Markdown)
@@ -74,12 +74,29 @@ fibe-skills/
 - `/` — the React homepage. Hero + feature grid + footer.
 - `/intro/` — the entry point into the guide.
 
+## Release scope and workspace skills
+
+This repository publishes the public product guide and product skills. The private
+viktorvsk/fibe-skills repository separately owns contributor workspace procedures;
+its operational references and credentials must not be imported into this site.
+
+Production fibe.gg follows Rails main; next.fibe.live follows unstable. Mark
+staging-only changes explicitly and verify production behavior before removing
+that qualifier. Older standalone Ruby Core/v2 requirements are postponed design
+material, not evidence for the maintained v1.5 release. This distinction does not
+mean every existing guide page has been revalidated against both releases.
+
+For a seed refresh, select an explicit source checkout and verify its branch and
+revision first. Do not run the historical sibling ../fibe import against a v2
+checkout merely because it is nearby. Regenerate from canonical skill sources;
+do not edit generated reference pages directly.
+
 ## Editing content
 
 - **Per-section guide pages** live under `docs/<area>/<page>.md`. They use Docusaurus frontmatter (`title`, `description`, `sidebar_position`, `keywords`) and Markdown / MDX with admonitions (`:::tip`, `:::caution`, `:::info`, `:::details`).
 - **Skill reference pages** live under `docs/reference/` and `docs/reference/tools/`. Most are generated from these canonical sources:
   - `skills/` — the **docs-only** authoring source (recipes, playbooks, decision guides, foundations).
-  - `seed-skills/` — a **mirror of the public MCP tool guides** from the upstream Rails seed dir (`/Users/vvsk/know/fibe/db/seeds/fibe_skills/`). Do **not** edit them here; edit the source in the fibe repo and re-run `npm run import-seed-skills`.
+  - `seed-skills/` — a **mirror of the public MCP tool guides** from the upstream Rails seed dir (`db/seeds/fibe_skills/` in the explicitly selected Rails checkout). Do **not** edit them here; edit the source in the fibe repo and re-run `npm run import-seed-skills`.
 - Curated pages such as `docs/reference/intro.md`, `docs/reference/json-schema.md`, and `docs/reference/platform-behavior-contracts.md` are maintained directly and are not overwritten by the skill sync.
 - **Open Graph card images** are generated automatically at build time from the page title + description. No need to author them by hand.
 - **llms.txt** and **llms-full.txt** are also generated at build time from the same content. No manual upkeep.
