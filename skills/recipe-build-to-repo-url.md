@@ -11,9 +11,9 @@ When the input Compose has a `build:` block, the service is built from source. F
 
 | Compose `build:` field | Fibe label / behavior |
 |---|---|
-| `build:` exists | **Add** `fibe.gg/repo_url: <repo>` (REQUIRED — schema validator rejects build without it) |
+| `build:` exists | **Add** `fibe.gg/repo_url: <repo>` (REQUIRED: schema validator rejects build without it) |
 | `build: .` or `context: .` | Runtime build context becomes the cloned repo path |
-| `context: subdir/` | Not preserved as the runtime context — use `fibe.gg/dockerfile: subdir/Dockerfile` and ensure the Dockerfile works from the repo root, or restructure |
+| `context: subdir/` | Not preserved as the runtime context: use `fibe.gg/dockerfile: subdir/Dockerfile` and ensure the Dockerfile works from the repo root, or restructure |
 | `dockerfile: Dockerfile.dev` | `fibe.gg/dockerfile: Dockerfile.dev` |
 | `target: production` | `fibe.gg/build_target: production` |
 | `args: { KEY: value, K2: v2 }` | `fibe.gg/build_args: "KEY=value,K2=v2"` (comma-separated string) |
@@ -147,10 +147,10 @@ services:
 
 ## Pitfalls
 
-- **Forgetting `fibe.gg/repo_url`** — schema/runtime hard error: `Service '<n>' has a build directive but lacks a fibe.gg/repo_url label`.
-- **Using scp-style SSH** — `git@github.com:owner/repo.git` fails. Use `https://github.com/...`, a configured Gitea URL, or a full `ssh://` URL.
-- **Pointing Dockerfile outside the repo** — paths are interpreted relative to the cloned repo root.
-- **Trying to build from a local directory** — not supported. Fibe is not `docker compose build`; the source must be a remote VCS URL the platform can clone.
+- **Forgetting `fibe.gg/repo_url`**: schema/runtime hard error: `Service '<n>' has a build directive but lacks a fibe.gg/repo_url label`.
+- **Using scp-style SSH**: `git@github.com:owner/repo.git` fails. Use `https://github.com/...`, a configured Gitea URL, or a full `ssh://` URL.
+- **Pointing Dockerfile outside the repo**: paths are interpreted relative to the cloned repo root.
+- **Trying to build from a local directory**: not supported. Fibe is not `docker compose build`; the source must be a remote VCS URL the platform can clone.
 
 ## Related skills
 

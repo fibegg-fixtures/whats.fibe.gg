@@ -1,6 +1,6 @@
 ---
 name: playbook-multi-service
-description: Use when converting a docker-compose with many services (5+) that share configuration - leverages YAML anchors, anchored env blocks, anchored depends_on, and `paths:` arrays for variables.
+description: Use when a Docker Compose file has at least five services that share YAML anchors, environment blocks, dependencies, or variable paths.
 ---
 
 # Playbook: many-service multi-stack template
@@ -244,15 +244,15 @@ The Fibe labels common to all services that build from the same repo. Override p
 
 The skeleton above uses literal YAML nodes plus `path:`/`paths:` bindings for whole values. Inline `$$var__NAME` appears only inside `DATABASE_URL` string fragments, where writing the whole URL through `paths:` would duplicate a derived value across services.
 
-Compose-style `${VAR}` placeholders are NOT fed by launch variables — Compose's `${VAR}` substitution uses the environment passed at compose start, and Fibe does not put template variables there. A `${VAR:-default}` deploys as the literal default (or empty). Keep `${VAR}` only if the same file must also run as plain `docker compose up`, and then add a `path:`/`paths:` binding for every such variable so the launch value overwrites the node at compile time. Also note that `${VAR}` is rejected inside `fibe.gg/*` labels — only `$$var__NAME` markers are allowed there.
+Launch variables do not feed Compose-style `${VAR}` interpolation. Compose receives only its startup environment, so `${VAR:-default}` deploys as the literal default or an empty value. Keep these placeholders for local `docker compose up` compatibility only when a `path:`/`paths:` binding overwrites the node during Fibe compilation. Inside `fibe.gg/*` labels, use `$$var__NAME`; `${VAR}` is rejected.
 
 ## Variable strategy for multi-service
 
 For each variable, decide between three patterns:
 
-1. **One path** — single location, written once: `path: services.db.environment.POSTGRES_PASSWORD`.
-2. **Multiple paths** — write to many locations simultaneously: `paths: [a, b, c]`.
-3. **Inline fragments only** — use `$$var__NAME` inside a larger string when the variable is just one fragment of a derived value.
+1. **One path**: single location, written once: `path: services.db.environment.POSTGRES_PASSWORD`.
+2. **Multiple paths**: write to many locations simultaneously: `paths: [a, b, c]`.
+3. **Inline fragments only**: use `$$var__NAME` inside a larger string when the variable is just one fragment of a derived value.
 
 For shared envs that appear in an anchored block, option 3 + inline is the simplest. The anchor expands to N services, each containing `$$var__NAME`, and the substitution touches all of them.
 
@@ -260,10 +260,10 @@ For label values that need typing (`replicas: 4` as integer), use option 1 or 2 
 
 ## Pitfalls
 
-- **Anchors used before declaration** — YAML 1.2 requires `&anchor` to appear before `*anchor`. Place all anchors at the top of the file.
-- **Forgetting `<<: *anchor`** — `depends_on: *anchor` works (full replace), but `depends_on: <<: *anchor` is wrong syntax. Use `<<:` only inside mappings: `depends_on: { <<: *anchor, extra: ... }`.
-- **`paths:` array with N services that share an anchor** — `paths:` lists exact dotted paths. After anchor expansion, the YAML structure exists at each path, so the writes succeed. Just list them explicitly.
-- **Anchor includes a service-specific value** — over-anchoring leads to wrong defaults across services. Anchor only what's truly identical.
+- **Anchors used before declaration**: YAML 1.2 requires `&anchor` to appear before `*anchor`. Place all anchors at the top of the file.
+- **Forgetting `<<: *anchor`**: `depends_on: *anchor` works (full replace), but `depends_on: <<: *anchor` is wrong syntax. Use `<<:` only inside mappings: `depends_on: { <<: *anchor, extra: ... }`.
+- **`paths:` array with N services that share an anchor**: `paths:` lists exact dotted paths. After anchor expansion, the YAML structure exists at each path, so the writes succeed. Just list them explicitly.
+- **Anchor includes a service-specific value**: over-anchoring leads to wrong defaults across services. Anchor only what's truly identical.
 
 ## Related skills
 

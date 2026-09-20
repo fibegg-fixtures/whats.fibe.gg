@@ -1,6 +1,6 @@
 ---
 name: fibe-tool-agents-duplicate
-description: Use when you need to duplicate an existing Agent's provider, auth material, and runtime settings. Overseer tool — operates on managed Agents.
+description: "Use when you need to duplicate an existing Agent's provider, auth material, and runtime settings. Overseer tool: operates on managed Agents."
 ---
 
 # fibe_agents_duplicate
@@ -27,12 +27,12 @@ The new Agent's full JSON, including a fresh `id`/`name` and copied provider/aut
 - New Agent has inherited auth material from the source Agent, but no running runtime session.
 
 ## Gotchas
-- The new Agent has no `agent_chats` — `start_chat` first if you want runtime interaction.
+- The new Agent has no `agent_chats`: `start_chat` first if you want runtime interaction.
 - Runtime files represented in copied settings are applied on first chat; verify any referenced uploaded artefacts are still accessible before relying on them.
 - Quota counted: counts against the player's max-agents quota.
 - The duplicate starts from the generic `Untitled` name; rename it after creation if you need a specific label.
 
 ## Related
-- `fibe_agents_start_chat` — bring the duplicate online.
-- `fibe_resource_get(resource:"agent")` — inspect the original.
-- `fibe_resource_mutate(resource:"agent", operation:"create")` — start from scratch only when provider auth is already planned.
+- `fibe_agents_start_chat`: bring the duplicate online.
+- `fibe_resource_get(resource:"agent")`: inspect the original.
+- `fibe_resource_mutate(resource:"agent", operation:"create")`: start from scratch only when provider auth is already planned.

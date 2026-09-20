@@ -31,10 +31,10 @@ Pass exactly one of `id`, `id_or_name`, or `id_or_key` depending on the resource
 
 ## Output
 The resource's detailed JSON serialization. Nested includes vary per resource:
-- `playground` — playspec, marquee, services, status, urls.
-- `prop` — provider, repository_url, default_branch.
-- `playspec` — services, source_template_version, mounted files.
-- `template` — versions, source, lineage hints.
+- `playground`: playspec, marquee, services, status, urls.
+- `prop`: provider, repository_url, default_branch.
+- `playspec`: services, source_template_version, mounted files.
+- `template`: versions, source, lineage hints.
 
 ## artefact_attachment (special case)
 Downloads the artefact's single attached file, base64-encoded:
@@ -58,17 +58,17 @@ returns
 Use this for the actual file bytes; `resource:"artefact"` returns metadata only.
 
 ## Secrets / job_env
-- `secret` — returns metadata only. Plaintext is **never** revealed via this tool, regardless of API key scope. Use the dedicated CLI/UI reveal flow.
-- `job_env` — same; the field `reveal` is rejected here.
+- `secret`: returns metadata only. Plaintext is **never** revealed via this tool, regardless of API key scope. Use the dedicated CLI/UI reveal flow.
+- `job_env`: same; the field `reveal` is rejected here.
 
 ## Gotchas
 - Named lookup is case-sensitive (slug-style). For ambiguous text use list + filter.
 - Numeric strings work for `id_or_name` ("123" parses as ID 123).
-- Passing `reveal` returns an error — secrets cannot be unmasked through this tool.
+- Passing `reveal` returns an error: secrets cannot be unmasked through this tool.
 - `artefact` get without `attachment` keyword returns metadata; you must explicitly use `artefact_attachment` for the file.
 - For audit_log / memory the `delete` op exists in schema but is allowlist-restricted; `get` is unrestricted within accessibility.
 
 ## Related
-- `fibe_resource_list` — bulk fetch / discovery.
-- `fibe_resource_mutate` — modify.
-- `fibe_resource_delete` — remove (destructive).
+- `fibe_resource_list`: bulk fetch / discovery.
+- `fibe_resource_mutate`: modify.
+- `fibe_resource_delete`: remove (destructive).

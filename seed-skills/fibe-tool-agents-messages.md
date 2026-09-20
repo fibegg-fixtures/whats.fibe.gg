@@ -20,5 +20,5 @@ Reads persisted Agent messages. Use `conversation_id` whenever the Agent is reus
 - Without `conversation_id`, results may include only the default conversation.
 
 ## Related
-- `fibe_agents_activity` — persisted activity log.
-- `fibe_agents_live_state` — transient processing state.
+- `fibe_agents_activity`: persisted activity log.
+- `fibe_agents_live_state`: transient processing state.

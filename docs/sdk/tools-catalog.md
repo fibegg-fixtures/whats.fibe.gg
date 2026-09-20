@@ -24,8 +24,8 @@ The thin tools that bootstrap the rest. Every agent calls one or two of these at
 | `fibe_auth_list` | List saved credential profiles. (No detail page yet.) |
 | `fibe_auth_status` | Show the active profile and identity. (No detail page yet.) |
 | `fibe_auth_use` | Switch the active profile. (No detail page yet.) |
-| [`fibe_doctor`](/reference/tools/doctor/) | Self-diagnostic — connectivity, auth, environment sanity. |
-| [`fibe_status`](/reference/tools/status/) | Account dashboard — resource counts, quotas, rate-limit headroom. |
+| [`fibe_doctor`](/reference/tools/doctor/) | Self-diagnostic: connectivity, auth, environment sanity. |
+| [`fibe_status`](/reference/tools/status/) | Account dashboard: resource counts, quotas, rate-limit headroom. |
 | [`fibe_schema`](/reference/tools/schema/) | Introspect a resource's JSON schema. |
 | [`fibe_help`](/reference/tools/help/) | Equivalent of `fibe ... --help` for any command. |
 | [`fibe_tools_catalog`](/reference/tools/tools-catalog/) | This catalog, but as a tool the agent can call. |
@@ -35,7 +35,7 @@ The thin tools that bootstrap the rest. Every agent calls one or two of these at
 
 ## Resource CRUD
 
-The five tools that handle every resource family — Playgrounds, Tricks, Agents, Playspecs, Props, Marquees, Templates, Secrets, Webhooks, API keys, Artefacts, etc.
+The five tools that handle every resource family: Playgrounds, Tricks, Agents, Playspecs, Props, Marquees, Templates, Secrets, Webhooks, API keys, Artefacts, etc.
 
 | Tool | Purpose |
 | --- | --- |
@@ -47,7 +47,7 @@ The five tools that handle every resource family — Playgrounds, Tricks, Agents
 
 ## Playgrounds
 
-Long-running environments — the brownfield half of the platform.
+Long-running environments: the brownfield half of the platform.
 
 | Tool | Purpose |
 | --- | --- |
@@ -55,7 +55,7 @@ Long-running environments — the brownfield half of the platform.
 | [`fibe_playgrounds_logs`](/reference/tools/playgrounds-logs/) | Consolidated log dump. |
 | [`fibe_logs_follow`](/reference/tools/logs-follow/) | Stream live logs with progress notifications. |
 | [`fibe_playgrounds_action`](/reference/tools/playgrounds-action/) | Rollout, hard-restart, stop, start, retry, maintenance on/off. Actions that use the Marquee require funding. |
-| [`fibe_playgrounds_debug`](/reference/tools/playgrounds-debug/) | Comprehensive diagnostics for a stuck Playground. |
+| [`fibe_playgrounds_debug`](/reference/tools/playgrounds-debug/) | Deployment diagnostics for a stuck Playground. |
 | [`fibe_playgrounds_switch_template`](/reference/tools/playgrounds-switch-template/) | Switch a Playground to another template, provision repos, rollout, wait. Preserves the Playground ID. |
 
 ## Agents (Genies)
@@ -87,7 +87,7 @@ For "I have nothing yet; build me the whole thing".
 | [`fibe_launch`](/reference/tools/launch/) | Launch inline Compose, a local config file, a GitHub repo config, a Playspec, or a template. |
 | [`fibe_greenfield_create`](/reference/tools/greenfield-create/) | Repos → template version → Playspec → Playground → running. Single call. |
 | [`fibe_templates_search`](/reference/tools/templates-search/) | Search the template catalog. |
-| [`fibe_templates_change`](/reference/tools/templates-change/) | Patch / overwrite a template, optionally rollout. Advanced/hidden — not advertised in the native tool list; invoke it via `fibe_call`. |
+| [`fibe_templates_change`](/reference/tools/templates-change/) | Patch / overwrite a template, optionally rollout. Advanced/hidden: not advertised in the native tool list; invoke it via `fibe_call`. |
 | [`fibe_github_repos_create`](/reference/tools/github-repos-create/) | Provision a new GitHub repo (uses your GitHub App). |
 | [`fibe_gitea_repos_create`](/reference/tools/gitea-repos-create/) | Same for Gitea. |
 
@@ -108,7 +108,7 @@ The trail your work leaves and the live event stream that surfaces it.
 
 ## Pipelines
 
-The most powerful tool. Run multiple calls in sequence, parallel, or for-each, with JSONPath bindings between steps.
+Run multiple calls in sequence, parallel, or for-each, with JSONPath bindings between steps.
 
 | Tool | Purpose |
 | --- | --- |
@@ -141,12 +141,12 @@ Connect Fibe to source-control providers.
 
 Every tool's detail page surfaces three annotations from the canonical catalog:
 
-- **Destructive** — can permanently change or delete data. The MCP server requires a `confirm: true` argument on these by default.
-- **Idempotent** — calling twice has the same effect as calling once (good for retries).
-- **Read-only** — never modifies state. Safe to call freely.
+- **Destructive**: can permanently change or delete data. The MCP server requires a `confirm: true` argument on these by default.
+- **Idempotent**: calling twice has the same effect as calling once (good for retries).
+- **Read-only**: never modifies state. Safe to call freely.
 
-The annotations come from the live catalog — call the `fibe_tools_catalog` tool against a running MCP server to see the authoritative, up-to-date list.
+The annotations come from the live catalog: call the `fibe_tools_catalog` tool against a running MCP server to see the authoritative, up-to-date list.
 
 ## Next step
 
-For end-to-end usage of these tools, head to [Common workflows](/sdk/workflows/) — greenfield, brownfield, pipelines, monitoring, CI integration.
+For end-to-end usage of these tools, head to [Common workflows](/sdk/workflows/): greenfield, brownfield, pipelines, monitoring, CI integration.

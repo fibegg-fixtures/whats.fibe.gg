@@ -1,6 +1,6 @@
 ---
 name: fibe-tool-playgrounds-debug
-description: Use when you need to fetch comprehensive Playground diagnostics — service/container names, ports, paths, labels, status, urls, recent logs — when troubleshooting a deployment.
+description: "Use when troubleshooting a Playground deployment: fetch service and container names, ports, paths, labels, status, URLs, and recent logs."
 ---
 
 # fibe_playgrounds_debug
@@ -10,19 +10,19 @@ description: Use when you need to fetch comprehensive Playground diagnostics —
 Cached debug reads can remain available, but remote refresh requires a funded Marquee and returns `MARQUEE_NOT_FUNDED` when unpaid.
 
 Returns the unified Playground diagnostic envelope through `GET /api/playgrounds/:id/debug`. Two paths:
-- `refresh:false` — read DB-cached diagnostics computed at last refresh (fast, returns immediately).
-- `refresh:true` (default) — enqueue a refresh job, poll request status until terminal, then return the fresh diagnostics.
+- `refresh:false`: read DB-cached diagnostics computed at last refresh (fast, returns immediately).
+- `refresh:true` (default): enqueue a refresh job, poll request status until terminal, then return the fresh diagnostics.
 
 ## When to use
 - Anything wrong with a Playground (missing URL, container crashing, stale state).
-- First call when investigating any service issue — gives you names/ports/labels in one shot, avoiding manual `docker ps` grepping.
+- First call when investigating any service issue: gives you names/ports/labels in one shot, avoiding manual `docker ps` grepping.
 - Right after `fibe_playgrounds_action` reports failure.
 
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
 | `id_or_name` | string | yes | Playground numeric ID or slug-safe name |
-| `mode` | enum | no | `summary` (default) or `full` — `full` includes raw compose / volumes / network details |
+| `mode` | enum | no | `summary` (default) or `full`: `full` includes raw compose / volumes / network details |
 | `refresh` | bool | no | Default `true`. Set `false` for cached read. |
 | `service` | string | no | Restrict diagnostics to one Compose service |
 | `logs_tail` | number | no | Include last N log lines per service (clamped to a server-side maximum) |
@@ -70,15 +70,15 @@ Cached read (`refresh:false`) skips the job and computes diagnostics synchronous
 - `logs_tail` is clamped server-side to a maximum (currently a few hundred). Use `fibe_playgrounds_logs` for larger tails.
 - `service` filter narrows the response but doesn't speed up the refresh meaningfully (Marquee-side debug runs all services anyway).
 - `summary` is what 95% of agent flows want. Use `full` only when summary's redacted/elided fields aren't enough.
-- Cached debug is per-Playground, single-slot — frequent `refresh:false` calls return identical payloads until someone refreshes.
+- Cached debug is per-Playground, single-slot: frequent `refresh:false` calls return identical payloads until someone refreshes.
 
 ## Recipe
-1. `fibe_playgrounds_debug({ id_or_name, mode:"summary" })` — first.
+1. `fibe_playgrounds_debug({ id_or_name, mode:"summary" })`: first.
 2. If a service shows `container_status:"exited"` with non-zero exit code → `fibe_playgrounds_logs(service:"<name>", tail:200)`.
 3. If still unclear → `fibe_playgrounds_debug({ ..., mode:"full", service:"<name>", logs_tail:200 })`.
 
 ## Related
-- `fibe_playgrounds_logs` — single-service logs.
-- `fibe_logs_follow` — stream until pattern.
-- `fibe_playgrounds_wait` — wait for state transitions.
-- `fibe-debug` skill — broader debugging playbook.
+- `fibe_playgrounds_logs`: single-service logs.
+- `fibe_logs_follow`: stream until pattern.
+- `fibe_playgrounds_wait`: wait for state transitions.
+- `fibe-debug` skill: broader debugging playbook.

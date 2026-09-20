@@ -20,9 +20,9 @@ Creates a Gitea repository AND a Prop pointing at it through `POST /api/gitea_re
 - Brownfield switch-template flows where a new source-mounted service needs real files before first rollout. For multiple new services, call this through `fibe_pipeline` so repos are created in one round-trip, then seed/commit/push all new repos before `fibe_playgrounds_switch_template`.
 
 ## When NOT to use
-- Player explicitly wants GitHub — use `fibe_github_repos_create` + `prop.attach`.
-- Already have an external repo — use `prop.mirror` or `prop.attach`.
-- You only need empty repos for switch-template and do not need to write source before rollout — let `fibe_playgrounds_switch_template` provision missing Gitea Props with `provision_inputs` instead.
+- Player explicitly wants GitHub: use `fibe_github_repos_create` + `prop.attach`.
+- Already have an external repo: use `prop.mirror` or `prop.attach`.
+- You only need empty repos for switch-template and do not need to write source before rollout: let `fibe_playgrounds_switch_template` provision missing Gitea Props with `provision_inputs` instead.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -53,17 +53,17 @@ Requires a Gitea connection on the Player's account with a non-empty access toke
 ## Behavior
 1. Create repo via Gitea API.
 2. Normalize the URL and check if a Prop already exists for it.
-3. If exists — return existing Prop (de-dup).
+3. If exists: return existing Prop (de-dup).
 4. Otherwise create a new Prop owned by the current player and link via `player_resources`.
 
 ## Gotchas
 - Idempotency-Key supported. A retry with the same key returns the cached prior response, even on failure.
 - Name collision returns `VALIDATION_FAILED`.
 - Gitea API errors surface as `GITEA_API_ERROR` with the upstream message.
-- The Prop is owned by the Player who triggered creation, not the Gitea owner — they may differ when a player has external Gitea credentials.
-- Cannot re-target an existing Prop — if a duplicate URL exists, the existing Prop is returned untouched.
+- The Prop is owned by the Player who triggered creation, not the Gitea owner: they may differ when a player has external Gitea credentials.
+- Cannot re-target an existing Prop: if a duplicate URL exists, the existing Prop is returned untouched.
 
 ## Related
-- `fibe_github_repos_create` — GitHub variant (no atomic Prop creation).
-- `fibe_resource_mutate(resource:"prop", ...)` — attach/mirror/sync existing repos.
-- `fibe_greenfield_create` — calls this internally as default `git_provider`.
+- `fibe_github_repos_create`: GitHub variant (no atomic Prop creation).
+- `fibe_resource_mutate(resource:"prop", ...)`: attach/mirror/sync existing repos.
+- `fibe_greenfield_create`: calls this internally as default `git_provider`.

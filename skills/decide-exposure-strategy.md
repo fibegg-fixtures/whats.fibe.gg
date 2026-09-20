@@ -7,27 +7,27 @@ description: Use to decide how a service should be reachable - external public H
 
 The output of this decision is `fibe.gg/port`, optional `fibe.gg/visibility`, plus optionally `fibe.gg/subdomain` and `fibe.gg/path_rule`.
 
-## Step 1 — Should this service be reachable at all?
+## Step 1: Should this service be reachable at all?
 
 | Service kind | Reachable? |
 |---|---|
-| Public web app | yes — `fibe.gg/port: PORT` and `fibe.gg/visibility: external` |
-| Internal admin / metrics / status page | yes — `fibe.gg/port: PORT` and `fibe.gg/visibility: internal` |
-| Background worker (Sidekiq, RQ, Celery) | no — omit `fibe.gg/port` |
-| Database / cache / queue | no — omit `fibe.gg/port` (they communicate inside the Compose network) |
+| Public web app | yes: `fibe.gg/port: PORT` and `fibe.gg/visibility: external` |
+| Internal admin / metrics / status page | yes: `fibe.gg/port: PORT` and `fibe.gg/visibility: internal` |
+| Background worker (Sidekiq, RQ, Celery) | no: omit `fibe.gg/port` |
+| Database / cache / queue | no: omit `fibe.gg/port` (they communicate inside the Compose network) |
 | Auxiliary build-time service (setup, migrate, notify) | no |
 | AnyCable/WebSocket server (talked-to from a public web service) | no |
 
 Internal services talk over the Compose `default` network using their service name as DNS (`db`, `redis`, `web-for-anycable`). Do not expose them externally just because the app needs to reach them.
 
-## Step 2 — Pick internal vs external
+## Step 2: Pick internal vs external
 
-- **`fibe.gg/visibility: external`** — public HTTPS route via Traefik on `https://<subdomain>.<marquee-root-domain>`. No additional auth from Fibe. Use for the user-facing app.
-- **`fibe.gg/visibility: internal`** — same routing, but Fibe protects the route with Basic Auth using the Playground's internal access credentials (shown on the Playground page). Use for admin consoles (Sidekiq Dashboard, RailsAdmin, Grafana, pgAdmin) that shouldn't be public but you still want a browser URL.
+- **`fibe.gg/visibility: external`**: public HTTPS route via Traefik on `https://<subdomain>.<marquee-root-domain>`. No additional auth from Fibe. Use for the user-facing app.
+- **`fibe.gg/visibility: internal`**: same routing, but Fibe protects the route with Basic Auth using the Playground's internal access credentials (shown on the Playground page). Use for admin consoles (Sidekiq Dashboard, RailsAdmin, Grafana, pgAdmin) that shouldn't be public but you still want a browser URL.
 
 If you want no public surface at all (only reachable from other containers in the network), do NOT set `fibe.gg/port`. The service is then only reachable inside Compose's network.
 
-## Step 3 — Pick the subdomain
+## Step 3: Pick the subdomain
 
 The subdomain is the leftmost label of the public host. Default: the service name. Override with `fibe.gg/subdomain`.
 
@@ -40,9 +40,9 @@ The subdomain is the leftmost label of the public host. Default: the service nam
 
 Subdomain regex: `^[a-z0-9]([a-z0-9-]*[a-z0-9])?$`. Lowercase alphanumeric and hyphens, cannot start or end with hyphen.
 
-Use `@` when this service should answer at the root of the Marquee — typically the "front door" web app. At most one service per Marquee can use `@` for a given path; conflicts surface at launch.
+Use `@` when this service should answer at the root of the Marquee: typically the "front door" web app. At most one service per Marquee can use `@` for a given path; conflicts surface at launch.
 
-## Step 4 — Decide whether to share a subdomain with `path_rule`
+## Step 4: Decide whether to share a subdomain with `path_rule`
 
 Sometimes two services share one host but differ by URL path. The classic case is a Rails web app + an AnyCable WebSocket server: both at `next.fibe.live`, but `/cable` and `/health` route to the WebSocket service.
 
@@ -73,11 +73,11 @@ x-fibe.gg:
 
 Both services must use the same subdomain value. Use one `SUBDOMAIN` variable with `paths:` to update both labels. Compose-style `${VAR:-default}` is not valid inside `fibe.gg/*` labels, and inline `$$var__SUBDOMAIN` should not be used for whole-label values.
 
-Path rule allowed matchers only: `Path`, `PathPrefix`, `PathRegexp`. Forbidden: Host, HostRegexp, HostSNI, HostSNIRegexp, Headers, HeadersRegexp, Method, Query, ClientIP — Fibe owns those.
+Path rule allowed matchers only: `Path`, `PathPrefix`, `PathRegexp`. Forbidden: Host, HostRegexp, HostSNI, HostSNIRegexp, Headers, HeadersRegexp, Method, Query, ClientIP: Fibe owns those.
 
 See [recipe-add-path-rule](recipe-add-path-rule.md).
 
-## Step 5 — Pick the port
+## Step 5: Pick the port
 
 `fibe.gg/port: PORT` is the **container** port the service listens on, not a host port. Set `fibe.gg/visibility` separately when you need `internal`; otherwise visibility defaults to `external`. Fibe owns host port allocation.
 
@@ -98,7 +98,7 @@ fibe.gg/port: "8080"  # template uses launcher's port choice via path binding
 fibe.gg/visibility: external
 ```
 
-## Step 6 — Verify the app listens on `0.0.0.0`
+## Step 6: Verify the app listens on `0.0.0.0`
 
 A service exposed via Fibe must bind `0.0.0.0` inside the container. `localhost`/`127.0.0.1` is not reachable from the Compose network. Common one-off fixes:
 
@@ -112,9 +112,9 @@ A service exposed via Fibe must bind `0.0.0.0` inside the container. `localhost`
 | FastAPI/uvicorn | `uvicorn app:main --host 0.0.0.0` |
 | Flask dev | `flask run --host 0.0.0.0` |
 
-Vite 6+ additionally needs `server.allowedHosts: true` or the explicit Fibe host in config — otherwise the browser gets `Invalid Host header`.
+Vite 6+ additionally needs `server.allowedHosts: true` or the explicit Fibe host in config: otherwise the browser gets `Invalid Host header`.
 
-## Step 7 — Do not route with Compose `ports:`
+## Step 7: Do not route with Compose `ports:`
 
 Compose `ports:` exposes a host port directly. Fibe strips those bindings by default, so they are fine as local-only development convenience but they do not create a public route. If preserved explicitly, they bypass Traefik:
 

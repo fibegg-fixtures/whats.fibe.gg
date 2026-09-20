@@ -1,31 +1,5 @@
 #!/usr/bin/env node
-/**
- * Pull the real Fibe brand assets from the upstream fibe Rails repo, and
- * generate the 1200×630 OG social card from an SVG source.
- *
- * Upstream icon sources (canonical Fibe brand):
- *   - <fibe>/app/assets/images/fibe.svg            — SVG logo
- *   - <fibe>/app/assets/images/favicon.ico         — multi-size ICO
- *   - <fibe>/app/assets/images/favicon-64.png      — 64×64
- *   - <fibe>/app/assets/images/apple-touch-icon.png — 180×180
- *   - <fibe>/app/assets/images/icon-192.png        — 192×192
- *   - <fibe>/app/assets/images/icon-512.png        — 512×512
- *   - <fibe>/app/assets/images/fibe-icon.png       — 192×192 PNG helper mark
- *
- * Set FIBE_REPO_PATH to override the default location (../../fibe).
- *
- * OG card:
- *   - static/img/_source/og-default.svg — hand-authored 1200×630 social card.
- *     Rendered to static/img/og-default.png via @resvg/resvg-js.
- *
- * Outputs:
- *   - static/img/fibe.svg, favicon.ico, apple-touch-icon.png, favicon-64.png,
- *     icon-192.png, icon-512.png, fibe-icon.png, og-default.png
- *
- * Usage:
- *   npm run build-brand-assets
- *   FIBE_REPO_PATH=/path/to/fibe npm run build-brand-assets
- */
+/** Copies canonical Rails brand assets and renders the local 1200x630 social card. */
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -59,18 +33,15 @@ for (const f of UPSTREAM_ICONS) {
   }
 }
 
-// Copy the upstream icons verbatim. They ARE the brand.
 for (const f of UPSTREAM_ICONS) {
   fs.copyFileSync(path.join(FIBE_IMAGES, f), path.join(IMG, f));
 }
 
-// Drop old synthesized SVG names; fibe.svg is copied from Rails above.
 for (const f of ['favicon.svg', 'logo.svg']) {
   fs.rmSync(path.join(IMG, f), {force: true});
 }
 
-// Render the OG social card from SVG. The card design is local — fibe has no
-// 1200×630 social-share asset upstream.
+// Fibe has no upstream social card, so this site owns its SVG source.
 const OG_SVG = path.join(SRC, 'og-default.svg');
 if (!fs.existsSync(OG_SVG)) {
   console.error(`[build-brand-assets] Missing OG source SVG: ${OG_SVG}`);
@@ -78,9 +49,6 @@ if (!fs.existsSync(OG_SVG)) {
 }
 let ogSvg = fs.readFileSync(OG_SVG, 'utf8');
 
-// Substitute __ICON_BASE64__ with the real upstream icon so the OG card uses
-// the actual Fibe brand mark. We use icon-192.png (small, renders crisply at
-// the 120px mark size on a 1200×630 card).
 const iconBytes = fs.readFileSync(path.join(FIBE_IMAGES, 'icon-192.png'));
 const iconB64 = iconBytes.toString('base64');
 if (!ogSvg.includes('__ICON_BASE64__')) {
@@ -95,7 +63,6 @@ const ogPng = new Resvg(ogSvg, {
 }).render().asPng();
 fs.writeFileSync(path.join(IMG, 'og-default.png'), ogPng);
 
-// Report
 const report = (name) => {
   const p = path.join(IMG, name);
   if (!fs.existsSync(p)) return;

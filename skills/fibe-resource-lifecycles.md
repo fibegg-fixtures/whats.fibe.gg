@@ -25,9 +25,9 @@ Tutorial Marquees add provisioning progress, stricter cleanup, and fix-redeploy 
 
 Funding and unfunded behavior:
 
-- A paid Marquee is charged once per day from your balance — Mana for platform-managed tutorial Marquees, Sparks for self-hosted ones.
+- A paid Marquee is charged once per day from your balance: Mana for platform-managed tutorial Marquees, Sparks for self-hosted ones.
 - If a charge cannot be covered, the Marquee is disabled and a grace period begins. While unfunded, runtime actions (launch, rollout, restart, diagnostics refresh, logs) fail with `MARQUEE_NOT_FUNDED`; read-only and billing views still work.
-- On a self-hosted Marquee, already-running Playgrounds keep running but are no longer actively monitored, recovered, or auto-expired until funded again. On a platform-managed (tutorial) Marquee, the runtime is paused — its Playgrounds are stopped and its Genie chats are set aside, with stored data kept.
+- On a self-hosted Marquee, already-running Playgrounds keep running but are no longer actively monitored, recovered, or auto-expired until funded again. On a platform-managed (tutorial) Marquee, the runtime is paused: its Playgrounds are stopped and its Genie chats are set aside, with stored data kept.
 - If grace ends while still unpaid, the Marquee is suspended. A suspended, still-unpaid platform-managed Marquee can eventually be removed, and removal takes its Playgrounds, Tricks, and their data with it. A self-hosted Marquee is never deleted by Fibe; its host machine and data are untouched.
 - Funding the balance (or auto-recharge) before removal settles the debt and re-enables the Marquee.
 
@@ -117,7 +117,7 @@ Expiration:
 
 - New Playgrounds default to **never expire**. When expiration is enabled without an explicit deadline, Fibe uses an 8-hour fallback for a regular Playground and the operator-configured job fallback for a job-mode run (1 hour by default).
 - A temporary Playground can have an expiration. When it falls due, if the source has uncommitted changes the Playground is parked as `has_changes` and preserved; if it is clean, it is destroyed (containers, named volumes unless persistence is enabled, and the record).
-- Extend adds the duration to whichever is later — the current expiry or now — so extending an already-expired record counts from now. With no duration supplied, the extension is 8 hours for a regular Playground and the configured job fallback for job mode (1 hour by default).
+- Extend adds the duration to whichever is later: the current expiry or now, so extending an already-expired record counts from now. With no duration supplied, the extension is 8 hours for a regular Playground and the configured job fallback for job mode (1 hour by default).
 - Expiration and automatic recovery only run while the Marquee is funded.
 
 ## Trick lifecycle
@@ -160,7 +160,7 @@ Agents can be duplicated, configured, given mounted files, used for standalone c
 
 Runtime data and naming:
 
-- A running Genie keeps an on-Marquee workspace (chat working state and caches). Stop keeps the workspace (restart resumes); clean-up or purge permanently deletes it. Agent configuration — settings, mounted files, credentials, toggles — lives on the Agent itself and survives stop, restart, and clean-up.
+- A running Genie keeps an on-Marquee workspace (chat working state and caches). Stop keeps the workspace (restart resumes); clean-up or purge permanently deletes it. Agent configuration, settings, mounted files, credentials, toggles, lives on the Agent itself and survives stop, restart, and clean-up.
 - Each chat gets a stable, friendly subdomain on its Marquee, with automatic HTTPS from the Marquee's wildcard certificate. There is one live chat per Genie per Marquee; restarting reuses the same name and URL.
 
 ## Webhook lifecycle
@@ -180,21 +180,21 @@ Job ENV entries apply to job-mode runs. Use global entries for every Trick and P
 What deleting or disabling one resource does to others:
 
 - Disable a Marquee: existing Playgrounds keep running (self-hosted) or are paused (platform-managed); live Genie chats are paused with their data kept; no new actions until re-enabled.
-- Delete a Marquee: blocked while Playgrounds or Tricks are still attached — move or remove them first. A self-hosted Marquee's host machine is never touched.
+- Delete a Marquee: blocked while Playgrounds or Tricks are attached. Move or remove them first. A self-hosted Marquee's host machine is never touched.
 - Delete an Agent: its Genie chats are cleaned up; Playgrounds it was attached to survive and simply lose the Agent link.
 - Rotate or revoke an API key a Genie uses: running Genies that depend on it redeploy to pick up the change.
 - Disable a Prop: does not stop Playgrounds, builds, or jobs already using it; it only blocks new source-backed launches until re-enabled.
-- Delete a Prop: blocked while a Playspec still references it. A source-linked Template does not block deletion — it simply loses its source link.
+- Delete a Prop: blocked while a Playspec still references it. A source-linked Template does not block deletion; it simply loses its source link.
 - Cancel a subscription: a platform-managed Marquee tied to it survives as long as it stays funded.
 
 ## Automatic recovery
 
-Fibe self-heals transient problems so users are not interrupted by blips:
+Fibe recovers from these transient failures automatically:
 
 - A brief outage (under a couple of minutes) is ignored; a sustained one triggers an automatic redeploy.
 - A reachable environment stays viewable even if a single health check is missed; a missed health check never stops or errors a running environment.
 - TLS/HTTPS provisioning surfaces a pending state, not a failure, and clears once the certificate is issued.
-- Stuck launches are recovered automatically — a launch still `in_progress` after 30 minutes is reset and retried — and a temporary infrastructure blip (network or host connectivity) is retried rather than treated as a hard failure.
+- A launch still `in_progress` after 30 minutes is reset and retried. Temporary network or host failures are retried instead of becoming hard failures.
 - Automatic recovery and expiration run only while the Marquee is funded.
 
 ## Related skills

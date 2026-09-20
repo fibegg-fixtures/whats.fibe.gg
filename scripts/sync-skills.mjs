@@ -1,33 +1,4 @@
 #!/usr/bin/env node
-/**
- * Rebuild docs/reference/ from BOTH `skills/` (docs-only authoring source) and
- * `seed-skills/` (mirror of the fibe Rails upstream agent-runtime skills).
- *
- * Routing rules:
- *   - skills/<name>.md                  → docs/reference/<name>.md
- *   - seed-skills/fibe-tool-<rest>.md   → docs/reference/tools/<rest>.md
- *                                         (slug = /reference/tools/<rest>)
- *   - seed-skills/fibe-<rest>.md (not tool)
- *                                      → docs/reference/foundation-<rest>.md
- *                                         (slug = /reference/foundation-<rest>)
- *   - seed-skills/<other>.md           → docs/reference/<name>.md
- *
- * The docs/reference/tools/ subdirectory is wiped + rebuilt every run, so stale
- * tool pages disappear when their upstream file is removed.
- *
- * Both source dirs use the upstream skill frontmatter (`name`, `description`).
- * This script rewrites it into Docusaurus frontmatter (`title`, `description`,
- * `slug`, `sidebar_label`, `image`, `keywords`, `tags`, `format: md`).
- *
- * Body transformations:
- *   - Strip a leading H1 if it would duplicate the title.
- *   - HTML-escape angle-bracket placeholders (<root>, <subdomain>, <your-tool>)
- *     outside code blocks/spans so MDX doesn't try to parse them as JSX tags.
- *
- * Usage:
- *   node scripts/sync-skills.mjs
- */
-
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -41,7 +12,6 @@ const TOOLS_DST = path.join(DST, 'tools');
 
 fs.mkdirSync(DST, {recursive: true});
 
-// Wipe and recreate tools/ so deletions upstream propagate cleanly.
 fs.rmSync(TOOLS_DST, {recursive: true, force: true});
 fs.mkdirSync(TOOLS_DST, {recursive: true});
 
@@ -62,13 +32,6 @@ function humanize(text) {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-/**
- * Decide where a source file should be written and what slug + sidebar group it
- * belongs to.
- *
- * Returns:
- *   { dstPath, slug, title, sidebarLabel, ogName, category, tagsExtra }
- */
 function route(file, src) {
   const name = path.basename(file, '.md');
 
@@ -87,8 +50,6 @@ function route(file, src) {
   }
 
   if (src === SEED_SRC && name.startsWith('fibe-')) {
-    // Foundation/guidance skills from the seed dir — flatten the prefix in the slug
-    // to avoid colliding with docs-only fibe-* pages in skills/.
     const stripped = name.replace(/^fibe-/, '');
     const dstName = `foundation-${stripped}.md`;
     return {
@@ -103,7 +64,6 @@ function route(file, src) {
     };
   }
 
-  // Default — copy to docs/reference/<name>.md with category derived from the prefix.
   let category;
   if (name.startsWith('recipe-')) category = 'Recipe';
   else if (name.startsWith('playbook-')) category = 'Playbook';
@@ -146,15 +106,12 @@ function transform(file, src, info) {
     `image: /img/og/${info.ogName}.png`,
     `keywords: [${keywordParts.map(yq).join(', ')}]`,
     `tags: [${tags.map(yq).join(', ')}]`,
-    // Force CommonMark parsing — skill files contain literal angle-bracket placeholders.
     'format: md',
     '---',
   ].join('\n');
 
-  // Strip leading H1 if it duplicates the title.
   let trimmedBody = body.replace(/^\n*#\s+.+\n+/, '\n');
 
-  // Escape angle-bracket placeholders OUTSIDE code blocks / spans.
   trimmedBody = trimmedBody.replace(/(```[\s\S]*?```|`[^`\n]+`)|<([a-z][a-z0-9_-]*?)>/gi, (m, codeBlock, tag) => {
     if (codeBlock) return codeBlock;
     return `&lt;${tag}&gt;`;

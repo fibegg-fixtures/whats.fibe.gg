@@ -23,9 +23,9 @@ Use this for existing templates, Playspecs, repositories, or Compose bodies. Use
 - Player wants a one-shot Playspec/Playground from inline YAML without creating new source repos.
 
 ## When NOT to use
-- Player wants a brand-new app-owned repo scaffolded from a template snapshot — use `fibe_greenfield_create`.
-- Player wants to mutate an existing Playground in place — use `fibe_playgrounds_switch_template`.
-- The Compose file is arbitrary and not Fibe-compatible yet — convert/validate it first.
+- Player wants a brand-new app-owned repo scaffolded from a template snapshot: use `fibe_greenfield_create`.
+- Player wants to mutate an existing Playground in place: use `fibe_playgrounds_switch_template`.
+- The Compose file is arbitrary and not Fibe-compatible yet: convert/validate it first.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -49,14 +49,8 @@ Use this for existing templates, Playspecs, repositories, or Compose bodies. Use
 | `variables` | object | no | Template variables for Fibe template compilation |
 | `env_overrides` | object | no | Runtime Playground environment overrides |
 | `service_subdomains` | object | no | Service-to-subdomain runtime overrides |
-| `services` | object | no | Sparse per-service Playground overrides; omitted fields inherit from the Playspec |
+| `services` | object | no | Per-service runtime Playground configuration |
 | `prop_mappings` | object | no | Map private repository URLs to Prop ids or names |
-
-The `services` object records instance-specific intent, not a replacement
-Compose file. Fibe applies it over the selected Playspec whenever runtime
-Compose is generated. The generated Compose includes platform routing, resolved
-environment, build images, and host paths and is therefore an output, not an
-accepted source configuration.
 
 ## CLI source selection
 The CLI accepts either one explicit source flag or one bare positional source:
@@ -114,13 +108,13 @@ The response shape depends on the selected source:
 - Existing `playspec_id_or_name` launches return the created Playground object.
 
 ## Gotchas
-- Plain Compose is not auto-converted. A service with `build:` must already include `fibe.gg/repo_url` and an absolute Compose `working_dir`.
+- Plain Compose is not auto-converted. Services with `build:` or `fibe.gg/source_mount` must already include the required Fibe labels/metadata.
 - Provide exactly one source field.
 - `job_mode:true` requires `marquee_id_or_name`.
 - A duplicate `name` follows normal backend conflict/validation behavior. Pass `name` explicitly to override repo-name inference.
 - Missing GitHub App access, missing config files, unsupported providers, and ambiguous installations return actionable validation errors.
 
 ## Related
-- `fibe_greenfield_create` — snapshot source, create app-owned repo(s), launch.
-- `fibe_tools_catalog` with `include_schema:true` — inspect the live MCP input schema.
-- `fibe_help` with `path:"launch"` — CLI flag reference for the same flow.
+- `fibe_greenfield_create`: snapshot source, create app-owned repo(s), launch.
+- `fibe_tools_catalog` with `include_schema:true`: inspect the live MCP input schema.
+- `fibe_help` with `path:"launch"`: CLI flag reference for the same flow.

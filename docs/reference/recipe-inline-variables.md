@@ -20,14 +20,14 @@ format: md
 $$var__NAME
 ```
 
-Where `NAME` matches `[A-Za-z0-9_]+` and is declared in `x-fibe.gg.variables`. Always write `$$var__NAME`. `$$random__NAME` in older templates is only recognized by the declared/unused validation — it is NOT substituted at compile time, so migrate it to `$$var__NAME`; never author it.
+Where `NAME` matches `[A-Za-z0-9_]+` and is declared in `x-fibe.gg.variables`. Always write `$$var__NAME`. `$$random__NAME` in older templates is only recognized by the declared/unused validation: it is NOT substituted at compile time, so migrate it to `$$var__NAME`; never author it.
 
 ## Where you can put it
 
 - **Compose string values:** image tags, environment values, command strings, volume mount paths, healthcheck commands.
 - **Known `fibe.gg/*` label values:** the schema's `templatedFibeLabelString` permits `$$var__NAME` inline, but whole-label values should use `path:`/`paths:`.
-- **`x-fibe.gg.variables.*.default`**: NO — defaults must be literals. Validation rejects `$$var__*`, `$$random__*`, and `$$root_domain` inside defaults.
-- **Variable path targets** (`path:`/`paths:`): NO — paths are dotted identifiers, not template strings.
+- **`x-fibe.gg.variables.*.default`**: NO: defaults must be literals. Validation rejects `$$var__*`, `$$random__*`, and `$$root_domain` inside defaults.
+- **Variable path targets** (`path:`/`paths:`): NO: paths are dotted identifiers, not template strings.
 
 ## Examples
 
@@ -56,7 +56,7 @@ services:
       CALLBACK_URL: "https://api.$$root_domain/callback"
 ```
 
-`$$root_domain` is special — always replaced with the Marquee root domain. Prefer explicit public URL variables with literal defaults and `path`/`paths` when the whole env value is a URL.
+`$$root_domain` is special: always replaced with the Marquee root domain. Prefer explicit public URL variables with literal defaults and `path`/`paths` when the whole env value is a URL.
 
 ### Label fragment
 
@@ -184,24 +184,24 @@ Use `path:` for whole-node bindings such as replica counts, passwords, port labe
 Practical differences:
 
 - `$$var__` integrates with `x-fibe.gg.variables` validation, `random`, `required` semantics.
-- `$$var__` is bypassed by Docker's `${...}` engine — it doesn't accidentally try to expand from the Marquee host's environment.
-- The double-dollar `$$` in `$$var__` is also how you escape a single `$` in Compose to prevent its substitution — convenient by design.
+- `$$var__` is bypassed by Docker's `${...}` engine: it doesn't accidentally try to expand from the Marquee host's environment.
+- The double-dollar `$$` in `$$var__` is also how you escape a single `$` in Compose to prevent its substitution: convenient by design.
 
 ## Escaping `$` in Compose values
 
 Outside of Fibe templating: a literal `$` in a Compose value must be written `$$`. So `$$VAR` in a regular Compose file becomes `$VAR` at runtime. In Fibe templates, `$$var__NAME` is the Fibe marker, not Compose-escaped `$$`. Fibe handles the whole `$$var__NAME` token before Compose sees it.
 
-If you need an actual `$$` in a final Compose value (e.g. in a shell command), write `$$$$` — Fibe doesn't touch it (no `var__` follows) and Compose un-escapes one level to `$$`.
+If you need an actual `$$` in a final Compose value (e.g. in a shell command), write `$$$$`: Fibe doesn't touch it (no `var__` follows) and Compose un-escapes one level to `$$`.
 
 ## Pitfalls
 
-- **Lowercase / mixed-case variable names** — allowed by regex (`[A-Za-z0-9_]+`) but inconsistent with most templates' uppercase convention.
-- **`$$var__` without declaration** — `undeclared_var` runtime error.
-- **Whole-node inline values** — validation warns for values such as `fibe.gg/subdomain: $$var__SUBDOMAIN`; replace with concrete placeholders plus `path`/`paths`.
-- **Nested defaults** — `default: "https://$$var__SUBDOMAIN.$$root_domain"` is invalid. Defaults are literal values only.
-- **Splitting `$$var__NAME` across YAML lines via line-continuation** — the literal text must appear unbroken; YAML folded scalars (`>`) might collapse the marker — quote the value.
-- **Using `$VAR` instead of `$$var__VAR`** — `$VAR` is Compose substitution from the host env; Fibe ignores it.
-- **Variable used inline only AND template imported across Marquees with different defaults** — be deliberate about defaults; they live in the template, not the launcher.
+- **Lowercase / mixed-case variable names**: allowed by regex (`[A-Za-z0-9_]+`) but inconsistent with most templates' uppercase convention.
+- **`$$var__` without declaration**: `undeclared_var` runtime error.
+- **Whole-node inline values**: validation warns for values such as `fibe.gg/subdomain: $$var__SUBDOMAIN`; replace with concrete placeholders plus `path`/`paths`.
+- **Nested defaults**: `default: "https://$$var__SUBDOMAIN.$$root_domain"` is invalid. Defaults are literal values only.
+- **Splitting `$$var__NAME` across YAML lines via line-continuation**: the literal text must appear unbroken; YAML folded scalars (`>`) might collapse the marker: quote the value.
+- **Using `$VAR` instead of `$$var__VAR`**: `$VAR` is Compose substitution from the host env; Fibe ignores it.
+- **Variable used inline only AND template imported across Marquees with different defaults**: be deliberate about defaults; they live in the template, not the launcher.
 
 ## Related skills
 

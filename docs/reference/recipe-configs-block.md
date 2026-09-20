@@ -70,7 +70,7 @@ Notes:
 
 ## `configs:` vs `secrets:`
 
-Compose's `secrets:` is similar but for sensitive content with stricter file permissions. Both work on Fibe; prefer `configs:` for plain config, `secrets:` for credentials. (Fibe Secrets — the resource type — is a different layer; use Fibe Secrets for Player-managed long-lived credentials.)
+Compose's `secrets:` is similar but for sensitive content with stricter file permissions. Both work on Fibe; prefer `configs:` for plain config, `secrets:` for credentials. (Fibe Secrets, the resource type, is a different layer; use Fibe Secrets for Player-managed long-lived credentials.)
 
 ## Targets
 
@@ -88,7 +88,7 @@ configs:
     mode: 0o644
 ```
 
-Default mode varies by Docker version — explicit is safer.
+Default mode varies by Docker version: explicit is safer.
 
 ## Variable-driven content
 
@@ -109,21 +109,21 @@ x-fibe.gg:
       default: "3000"
 ```
 
-The Fibe compiler substitutes `$$var__NAME` inside `configs:` content too — it's text-level substitution.
+The Fibe compiler substitutes `$$var__NAME` inside `configs:` content too: it's text-level substitution.
 
 ## When NOT to use
 
 - File is larger than ~10 KB. Move to a Mounted File or include in the Dockerfile.
 - File is binary. Use Mounted File.
-- File needs to change without redeploying the template — Mounted File can be re-uploaded.
-- File is the app's source code — it belongs in the repo (use source mount).
+- File needs to change without redeploying the template: Mounted File can be re-uploaded.
+- File is the app's source code: it belongs in the repo (use source mount).
 
 ## Pitfalls
 
-- **Forgetting the leading pipe `|`** — drops the newlines and YAML may misparse.
-- **YAML treating shell `$VAR` as an alias** — quote or escape. Use `$$VAR` for literal `$VAR`.
-- **Inline content larger than YAML reasonably handles** — splitting a 200-line config across YAML indentation is fragile. Prefer Mounted Files or include in the image.
-- **Forgetting the `target:` path** — without it, Compose mounts at `/<config_name>`, which is rarely what you want.
+- **Forgetting the leading pipe `|`**: drops the newlines and YAML may misparse.
+- **YAML treating shell `$VAR` as an alias**: quote or escape. Use `$$VAR` for literal `$VAR`.
+- **Inline content larger than YAML reasonably handles**: splitting a 200-line config across YAML indentation is fragile. Prefer Mounted Files or include in the image.
+- **Forgetting the `target:` path**: without it, Compose mounts at `/<config_name>`, which is rarely what you want.
 
 ## Related skills
 

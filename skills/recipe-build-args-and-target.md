@@ -9,7 +9,7 @@ Map Compose `build.args` / `build.target` into Fibe labels. The labels are strin
 
 ## `fibe.gg/build_target`
 
-A single string — the name of the Dockerfile stage to build:
+A single string: the name of the Dockerfile stage to build:
 
 ```yaml
 labels:
@@ -108,15 +108,15 @@ After launching, you can verify the args were honored by inspecting the build lo
 
 ## Pitfalls
 
-- **Forgetting to quote** the value — most build arg strings won't trip YAML, but `RAILS_ENV: production` (with space) inside YAML needs care. Use quoted form to be explicit:
+- **Forgetting to quote** the value: most build arg strings won't trip YAML, but `RAILS_ENV: production` (with space) inside YAML needs care. Use quoted form to be explicit:
   ```yaml
   fibe.gg/build_args: "RAILS_ENV=production,NODE_VERSION=20"
   ```
-- **Comma in values** — parser splits, you lose data. Encode or split into multiple args.
-- **Wrong stage name** — typo in `fibe.gg/build_target` → build fails at the docker-build step with a "stage not found" error. Read `Dockerfile` to confirm.
-- **Build args used but not declared in Dockerfile** — Docker silently ignores. `ARG NAME` must appear in the Dockerfile stage.
-- **Multi-stage Dockerfile with shared args** — each stage that uses an arg needs its own `ARG NAME` directive. Docker doesn't propagate.
-- **Trying to override `target` via env var** — there is no `fibe.gg/target_env`; use `$$var__BUILD_TARGET` interpolation.
+- **Comma in values**: parser splits, you lose data. Encode or split into multiple args.
+- **Wrong stage name**: typo in `fibe.gg/build_target` → build fails at the docker-build step with a "stage not found" error. Read `Dockerfile` to confirm.
+- **Build args used but not declared in Dockerfile**: Docker silently ignores. `ARG NAME` must appear in the Dockerfile stage.
+- **Multi-stage Dockerfile with shared args**: each stage that uses an arg needs its own `ARG NAME` directive. Docker doesn't propagate.
+- **Trying to override `target` via env var**: there is no `fibe.gg/target_env`; use `$$var__BUILD_TARGET` interpolation.
 
 ## Related skills
 

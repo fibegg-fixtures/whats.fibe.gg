@@ -11,7 +11,7 @@ The public URL of an exposed service is `https://<subdomain>.<marquee-root-domai
 
 | Value | Effect | Notes |
 |---|---|---|
-| omitted | Default — uses **service name** as subdomain | Service `web` → `web.<root>` |
+| omitted | Default: uses **service name** as subdomain | Service `web` → `web.<root>` |
 | `<name>` | Use `<name>` as subdomain | Lowercase alnum + hyphens, no leading/trailing hyphen |
 | `@` | Bind the route at the **root** of the Marquee | `<root>` |
 | empty string | Treated as default | Same as omitting |
@@ -75,7 +75,7 @@ Inline `$$var__SUBDOMAIN` is accepted by the schema, but do not use it for the w
 
 ## When to use `@`
 
-Use `@` for the **front door** — the service users hit by typing the Marquee root domain itself (no subdomain prefix). A given Marquee can only have one service at `@` (for a given path rule).
+Use `@` for the **front door**: the service users hit by typing the Marquee root domain itself (no subdomain prefix). A given Marquee can only have one service at `@` (for a given path rule).
 
 ```yaml
 services:
@@ -137,12 +137,12 @@ See [reference-fibe-labels](reference-fibe-labels.md) for the schema rules.
 
 ## Pitfalls
 
-- **Uppercase subdomain** — `MyApp` fails the regex. Use lowercase.
-- **Leading/trailing hyphen** — `-staging` or `staging-` fails. Use `staging`.
-- **Underscore** — not allowed in DNS labels. Use hyphens.
-- **Subdomain longer than DNS label limit** — DNS labels should stay within 63 characters. Fibe's current template validation does not flag this length for you, so keep it short yourself.
-- **Same subdomain on multiple services without `path_rule`** — Traefik routes only one (first match). Add `path_rule` to disambiguate.
-- **`@` without quoting** — YAML may misparse. Always quote: `fibe.gg/subdomain: "@"`.
+- **Uppercase subdomain**: `MyApp` fails the regex. Use lowercase.
+- **Leading/trailing hyphen**: `-staging` or `staging-` fails. Use `staging`.
+- **Underscore**: not allowed in DNS labels. Use hyphens.
+- **Subdomain longer than DNS label limit**: DNS labels should stay within 63 characters. Fibe's current template validation does not flag this length for you, so keep it short yourself.
+- **Same subdomain on multiple services without `path_rule`**: Traefik routes only one (first match). Add `path_rule` to disambiguate.
+- **`@` without quoting**: YAML may misparse. Always quote: `fibe.gg/subdomain: "@"`.
 
 ## Related skills
 

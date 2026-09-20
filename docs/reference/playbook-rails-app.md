@@ -257,7 +257,7 @@ x-fibe.gg:
     source_defaults: true
 ```
 
-The `environment:` values keep Compose-style `${VAR:-default}` for local `docker compose up` compatibility — but the bindings are what make launch values take effect on Fibe. Launch variables are never passed to Compose's `${VAR}` interpolation, so `${VAR:-default}` alone only ever yields the literal default (or empty). That is why every variable above carries a `path:`/`paths:` binding or an inline `$$var__` reference (as in `DATABASE_URL`). The `fibe.gg/*` label nodes hold valid literals that the bindings overwrite at compile time — `${VAR}` is rejected inside `fibe.gg/*` labels.
+The `environment:` values keep Compose-style `${VAR:-default}` for local `docker compose up` compatibility. The bindings apply launch values on Fibe because launch variables are never passed to Compose interpolation. Without a binding, `${VAR:-default}` yields only the literal default or an empty value. Every variable above therefore has a `path:`/`paths:` binding or an inline `$$var__` reference, as in `DATABASE_URL`. The `fibe.gg/*` label nodes contain valid literals that bindings overwrite at compile time; `${VAR}` is rejected inside these labels.
 
 ## Adding AnyCable / ActionCable WebSocket
 
@@ -309,15 +309,15 @@ Rails apps need migrations + asset compilation BEFORE the web tier accepts traff
 - Runs `bin/rails assets:precompile`.
 - Exits 0.
 
-`web` and `jobs` depend on `setup` via `service_completed_successfully`. Subsequent rollouts run `setup` again — it should be idempotent.
+`web` and `jobs` depend on `setup` via `service_completed_successfully`. Subsequent rollouts run `setup` again: it should be idempotent.
 
 ## Pitfalls
 
-- **Hardcoded `secret` for `RAILS_MASTER_KEY`** — must come from the launcher (the repo's encrypted credentials are decrypted with this).
-- **Repository source + `production: "true"`** — `working_dir` is still required as the process directory, but Fibe does not generate a source bind.
-- **Forgetting `RAILS_LOG_TO_STDOUT: "1"`** — without it, Rails logs to a file inside the container; `docker logs` shows nothing useful.
-- **Sidekiq without a healthcheck** — Sidekiq is not HTTP. Don't enable zero-downtime for it; rely on restart-style rollouts and small replica counts.
-- **`RAILS_SERVE_STATIC_FILES` unset** — without it, Rails returns 404 for `/assets/...` behind Traefik. Always set to `"1"` for production templates.
+- **Hardcoded `secret` for `RAILS_MASTER_KEY`**: must come from the launcher (the repo's encrypted credentials are decrypted with this).
+- **Repository source + `production: "true"`**: `working_dir` is still required as the process directory, but Fibe does not generate a source bind.
+- **Forgetting `RAILS_LOG_TO_STDOUT: "1"`**: without it, Rails logs to a file inside the container; `docker logs` shows nothing useful.
+- **Sidekiq without a healthcheck**: Sidekiq is not HTTP. Don't enable zero-downtime for it; rely on restart-style rollouts and small replica counts.
+- **`RAILS_SERVE_STATIC_FILES` unset**: without it, Rails returns 404 for `/assets/...` behind Traefik. Always set to `"1"` for production templates.
 
 ## Related skills
 

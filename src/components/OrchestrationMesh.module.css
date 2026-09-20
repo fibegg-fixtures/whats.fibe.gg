@@ -23,7 +23,6 @@
   stroke-width: 1.2;
 }
 
-/* travelling packet — one short bright dash sweeping core → node, forever */
 .pulse {
   fill: none;
   stroke: var(--brand-200);

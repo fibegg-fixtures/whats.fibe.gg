@@ -1,6 +1,6 @@
 ---
 name: fibe-tool-greenfield-create
-description: Use when bootstrapping a greenfield app in one call — creates one or more repos/Props from a template or GitHub repo snapshot, an app-owned template version, a deployed Playground, waits for running, and links it locally to /app/playground.
+description: "Use when bootstrapping a greenfield app in one call: creates one or more repos/Props from a template or GitHub repo snapshot, an app-owned template version, a deployed Playground, waits for running, and links it locally to /app/playground."
 ---
 
 # fibe_greenfield_create
@@ -19,9 +19,9 @@ It can start from an existing template selector, inline `template_body`, or a Gi
 - After deciding template/git_provider/marquee in Greenfield mode (see `system.md`).
 
 ## When NOT to use
-- Player is iterating on an existing app — use `fibe_playgrounds_switch_template` (Brownfield).
-- Just need a Playground from an existing Template — use `fibe_launch` (no repo creation).
-- Player wants to **change the stack of an already-deployed playground** while preserving its id (e.g., "rebuild this playground with FastAPI + AngularJS instead") — use `fibe_playgrounds_switch_template`. That tool is the brownfield analog of this one and provisions Gitea-backed private Props on the fly the same way.
+- Player is iterating on an existing app: use `fibe_playgrounds_switch_template` (Brownfield).
+- Just need a Playground from an existing Template: use `fibe_launch` (no repo creation).
+- Player wants to **change the stack of an already-deployed playground** while preserving its id (e.g., "rebuild this playground with FastAPI + AngularJS instead"): use `fibe_playgrounds_switch_template`. That tool is the brownfield analog of this one and provisions Gitea-backed private Props on the fly the same way.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -82,22 +82,22 @@ The platform's base template uses `{{var__app_name}}`-style placeholders compile
 
 ## Gotchas
 - Before writing inline `template_body`, load `fibe-labels` and `fibe-services`; never infer `fibe.gg/*` labels from old playgrounds or memory. Validate the final YAML with `fibe_schema(resource:"compose", operation:"validate", payload:{compose_yaml: ..., target_type:"playspec"})`.
-- Expose services with `fibe.gg/port`; never use `fibe.gg/expose`. Standalone Core preserves native Compose `ports:` alongside HTTPS routing, so publish a host port only when direct access is intentional.
-- `template_body` and `template_id_or_name`/`version` are mutually exclusive — error if both set.
+- Expose services with `fibe.gg/port`; never use `fibe.gg/expose`. Compose `ports:` may remain for local-only development, but Fibe strips them unless `x-fibe.gg.metadata.preserve_ports: true`.
+- `template_body` and `template_id_or_name`/`version` are mutually exclusive: error if both set.
 - `repository_url` is mutually exclusive with `template_body`, `template_body_path`, `template_id_or_name`, `template_version_id`, and `version`.
 - Repository snapshot mode does not auto-convert plain Compose or inject missing Fibe labels. The fetched file must already be a valid Fibe template/source.
 - GitHub App installation is required even for public repos. If no installation exists, run `fibe github apps connect`; if more than one exists, pass `github_account` or `github_installation_id`.
 - `owner/repo@ref` shorthand is accepted for `repository_url`; full GitHub URLs must use `github_ref`.
-- `template_body_path` only works when the MCP server has filesystem access — fails on remote/HTTP transports.
+- `template_body_path` only works when the MCP server has filesystem access: fails on remote/HTTP transports.
 - `git_provider:"github"` controls destination repo creation and requires the Player to have linked GitHub OAuth. GitHub App installation tokens are only for reading repository snapshot inputs, not for creating destination repos.
 - For multi-service templates, pass `service_subdomains` when the caller needs deterministic URLs. Overrides apply only to exposed services and are validated before repos are created.
-- A duplicate `name` collides with an existing Playground/Repo — the server returns `VALIDATION_FAILED` (handle and retry with a different name).
+- A duplicate `name` collides with an existing Playground/Repo: the server returns `VALIDATION_FAILED` (handle and retry with a different name).
 - Greenfield is **not idempotent**. Re-calling produces a duplicate (or fails on naming collision). Use the request_id-based status endpoint to recover from network drops if the SDK call gets cut.
 - The Marquee must be `running` and chat_launchable for the Playground to deploy. Check `fibe_resource_get(resource:"marquee", ...)` if rollout stalls.
-- `wait_timeout` "0" is treated as "skip wait" — the call returns as soon as initial setup finishes (status may still be `creating`).
+- `wait_timeout` "0" is treated as "skip wait": the call returns as soon as initial setup finishes (status may still be `creating`).
 
 ## Related
-- `fibe_templates_search` — find a fitting template *first*.
-- `fibe_launch` — Playground from an existing Template (no new repo).
-- `fibe_playgrounds_switch_template` — iterate after landing.
-- `fibe_local_playgrounds_link` — re-link if `/app/playground` symlinks went stale.
+- `fibe_templates_search`: find a fitting template *first*.
+- `fibe_launch`: Playground from an existing Template (no new repo).
+- `fibe_playgrounds_switch_template`: iterate after landing.
+- `fibe_local_playgrounds_link`: re-link if `/app/playground` symlinks went stale.

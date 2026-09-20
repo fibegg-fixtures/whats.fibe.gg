@@ -69,7 +69,7 @@ x-fibe.gg:
 
 ### `pg_isready` healthcheck
 
-The healthcheck above uses `pg_isready -U app -d app`. Adapt user/db to your variables. Without a working healthcheck, `depends_on: service_healthy` doesn't help — the app starts before Postgres is accepting connections.
+The healthcheck above uses `pg_isready -U app -d app`. Adapt user/db to your variables. Without a working healthcheck, `depends_on: service_healthy` doesn't help: the app starts before Postgres is accepting connections.
 
 ### Single shared password
 
@@ -85,7 +85,7 @@ The variable lives in ONE place (`services.db.environment.POSTGRES_PASSWORD`), a
 
 ### `shm_size: 256mb`
 
-Postgres uses shared memory for sorts/joins. Default Docker `/dev/shm` is 64 MB — often too small for non-trivial queries (`could not resize shared memory segment` errors). Bump to 256MB or 1GB for heavier workloads.
+Postgres uses shared memory for sorts/joins. Default Docker `/dev/shm` is 64 MB: often too small for non-trivial queries (`could not resize shared memory segment` errors). Bump to 256MB or 1GB for heavier workloads.
 
 ### `restart: unless-stopped`
 
@@ -182,11 +182,11 @@ Use larger values only when the app's real workload needs them.
 
 ## Pitfalls
 
-- **Forgetting `POSTGRES_DB`** — Postgres creates only the role's default DB; the app's expected DB doesn't exist; connection fails.
-- **Default Postgres image runs init scripts ONLY on first init** — if the volume already has data, ENVs like `POSTGRES_DB` are ignored.
-- **`postgres:latest`** — major version upgrades require manual migration. Pin to `17.5` or whatever you tested.
-- **Connections from the app exceed `max_connections`** — bump pgbouncer in or raise `max_connections`. Sidekiq with 25 workers × 4 replicas = 100 connections fast.
-- **App's password env case** — Postgres uses `POSTGRES_PASSWORD`, MariaDB uses `MARIADB_PASSWORD`, the app probably wants `DATABASE_URL` or `DB_PASS`. Map deliberately.
+- **Forgetting `POSTGRES_DB`**: Postgres creates only the role's default DB; the app's expected DB doesn't exist; connection fails.
+- **Default Postgres image runs init scripts ONLY on first init**: if the volume already has data, ENVs like `POSTGRES_DB` are ignored.
+- **`postgres:latest`**: major version upgrades require manual migration. Pin to `17.5` or whatever you tested.
+- **Connections from the app exceed `max_connections`**: bump pgbouncer in or raise `max_connections`. Sidekiq with 25 workers × 4 replicas = 100 connections fast.
+- **App's password env case**: Postgres uses `POSTGRES_PASSWORD`, MariaDB uses `MARIADB_PASSWORD`, the app probably wants `DATABASE_URL` or `DB_PASS`. Map deliberately.
 - **No healthcheck** → `depends_on: service_healthy` does nothing. Always include the healthcheck.
 
 ## Related skills

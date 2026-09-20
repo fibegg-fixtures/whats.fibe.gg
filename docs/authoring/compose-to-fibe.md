@@ -7,7 +7,7 @@ image: /img/og/authoring-compose-to-fibe.png
 keywords: [Compose, conversion, ports to expose, build to repo_url, source mount, zero-downtime, variables]
 ---
 
-A nine-step path for taking an existing `docker-compose.yml` and turning it into a Fibe template. The result is **still valid Docker Compose** — you can `docker compose up` it locally — plus the Fibe additions that make it launchable on a Marquee.
+A nine-step path for turning an existing `docker-compose.yml` into a Fibe template. The result remains valid Docker Compose, so you can run it locally with `docker compose up`. Fibe labels make the same file launchable on a Marquee.
 
 ## Pick the shape first
 
@@ -20,11 +20,11 @@ your docker-compose.yml + intent
   └─ runs on git push / pull request → a Trick + trigger
 ```
 
-The shape decides what you do with steps 5–7.
+The shape decides what you do with steps 5 to 7.
 
 ## The nine steps
 
-### 1 — Classify each service
+### 1: Classify each service
 
 For each service, decide whether it uses a prebuilt image (**static**) or comes from a Git repository (**dynamic**). Dynamic services point at a repo URL; static ones just reference an image.
 
@@ -34,7 +34,7 @@ Dynamic services: your own application code. Either built from a Dockerfile or l
 
 See [`decide-static-vs-dynamic`](/reference/decide-static-vs-dynamic/) for the full rules.
 
-### 2 — Resolve `build:`
+### 2: Resolve `build:`
 
 A Compose `build:` block becomes a dynamic service. Replace it with the `fibe.gg/repo_url` label and any related build settings (Dockerfile path, branch, target stage, build args).
 
@@ -62,7 +62,7 @@ services:
 
 See [`recipe-build-to-repo-url`](/reference/recipe-build-to-repo-url/).
 
-### 3 — Route HTTP with `fibe.gg/port`
+### 3: Route HTTP with `fibe.gg/port`
 
 For services that need a URL, add `fibe.gg/port`. Fibe handles HTTPS routing and gives you a clean URL. Compose `ports:` may stay in the file for local `docker compose up`; Fibe strips raw host bindings by default before launch.
 
@@ -80,7 +80,7 @@ Set `fibe.gg/visibility: internal` instead of `external` for services that shoul
 
 See [`recipe-ports-to-expose`](/reference/recipe-ports-to-expose/).
 
-### 4 — Drop incompatible keys
+### 4: Drop incompatible keys
 
 Remove `container_name` to avoid cross-Playground name collisions on the same Marquee. Fibe strips `hostname:` automatically. Keep `depends_on`, `volumes`, `environment`, `healthcheck`, `networks`, and `restart` as-is.
 
@@ -88,7 +88,7 @@ Raw Compose `ports:` are no longer a launch blocker by default. Leave them when 
 
 See [`recipe-strip-incompatible-keys`](/reference/recipe-strip-incompatible-keys/).
 
-### 5 — Decide rolling updates
+### 5: Decide rolling updates
 
 For exposed HTTP services that can run multiple replicas concurrently, enable zero-downtime rollouts and add the healthcheck labels Fibe needs to know when a new replica is ready.
 
@@ -104,7 +104,7 @@ labels:
 
 **Do not** enable on stateful singletons (Postgres, Redis, single-instance Kafka). See [`decide-zero-downtime`](/reference/decide-zero-downtime/).
 
-### 6 — Extract launch variables
+### 6: Extract launch variables
 
 Anything the launcher should choose (subdomain, image tag, replica count, credentials) becomes a variable. Generated secrets can be set to `random: true` so the launcher doesn't have to invent one.
 
@@ -128,18 +128,18 @@ For dotted label keys such as `services.web.labels.fibe.gg/subdomain`, predeclar
 
 See [Launch variables](/authoring/variables/).
 
-### 7 — Pick the execution mode
+### 7: Pick the execution mode
 
 | Shape | Add this |
 | --- | --- |
-| Long-running HTTP | nothing — the default. |
+| Long-running HTTP | nothing: the default. |
 | Trick | `fibe.gg/job_watch: "true"` on the watched service + `x-fibe.gg.metadata.job_mode: true`. |
 | Scheduled | (Trick settings) + `metadata.schedule_config`. |
 | Triggered | (Trick settings) + `metadata.trigger_config`. |
 
 See [Execution modes](/authoring/execution-modes/).
 
-### 8 — Add metadata
+### 8: Add metadata
 
 Fill in the template's description and category. If the template will be launched from a Prop, opt in to source defaults so the repository and branch can be filled in automatically.
 
@@ -152,11 +152,11 @@ x-fibe.gg:
     preserve_ports: false
 ```
 
-### 9 — Validate & preview
+### 9: Validate & preview
 
-Validate the file first — `fibe playspecs validate-compose --compose "$(cat template.yml)"` with the CLI, or the compose validate operation via the Fibe agent tools. Write labels from this reference rather than from memory: any unrecognized `fibe.gg/*` label is rejected.
+Validate the file first: `fibe playspecs validate-compose --compose "$(cat template.yml)"` with the CLI, or the compose validate operation via the Fibe agent tools. Write labels from this reference rather than from memory: any unrecognized `fibe.gg/*` label is rejected.
 
-Then run a preview launch before publishing. Many issues only surface at compile or runtime — schema validity isn't the same as a successful launch.
+Then run a preview launch before publishing. Many issues only surface at compile or runtime: schema validity isn't the same as a successful launch.
 
 A typical iteration loop:
 
@@ -206,7 +206,7 @@ For more, see the [Playbooks](/authoring/playbooks/).
 
 ## Related
 
-- [Service labels](/authoring/service-labels/) — the full reference for every `fibe.gg/*` label.
-- [Settings block](/authoring/settings-block/) — the full reference for `x-fibe.gg`.
-- [Common problems](/operate/common-problems/) — what to do when the conversion misbehaves.
-- Reference: [`convert-compose-to-fibe`](/reference/convert-compose-to-fibe/) — the skill version of this same flow.
+- [Service labels](/authoring/service-labels/): the full reference for every `fibe.gg/*` label.
+- [Settings block](/authoring/settings-block/): the full reference for `x-fibe.gg`.
+- [Common problems](/operate/common-problems/): what to do when the conversion misbehaves.
+- Reference: [`convert-compose-to-fibe`](/reference/convert-compose-to-fibe/): the skill version of this same flow.

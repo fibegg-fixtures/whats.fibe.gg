@@ -1,6 +1,6 @@
 ---
 title: The Fibe SDK
-description: One binary, three modes — a fibe CLI for the terminal, a Go library to embed, and an MCP server for AI agents. The interface to Fibe.
+description: "One binary, three modes: a fibe CLI for the terminal, a Go library to embed, and an MCP server for AI agents. The interface to Fibe."
 slug: /sdk/intro
 sidebar_position: 1
 sidebar_label: Overview
@@ -8,7 +8,7 @@ image: /img/og/sdk-intro.png
 keywords: [Fibe SDK, fibe CLI, MCP server, Go library, automation, AI agent]
 ---
 
-The Fibe SDK is the **interface to Fibe** — a single Go binary that runs in three modes depending on who's calling:
+The Fibe SDK is the **interface to Fibe**: a single Go binary that runs in three modes depending on who's calling:
 
 - **CLI**: you, at a terminal. `fibe playgrounds list`, `fibe agent chat`, `fibe tricks trigger`.
 - **Go library**: programs you write in Go that embed Fibe directly. Automate deployments, build a custom dashboard, write a control plane.
@@ -22,7 +22,7 @@ All three share the same authentication, the same resource model, the same retry
 | --- | --- |
 | At a terminal | The **CLI**: `fibe ...` |
 | A Go program that needs to drive Fibe | The **Go library** at `github.com/fibegg/sdk/fibe` |
-| An LLM agent (Claude Code, Cursor, Codex, etc.) | The **MCP server**: `fibe mcp serve` — 60+ typed tools (see the [Tools catalog](/sdk/tools-catalog/) for the current list) |
+| An LLM agent (Claude Code, Cursor, Codex, etc.) | The **MCP server**: `fibe mcp serve`: 60+ typed tools (see the [Tools catalog](/sdk/tools-catalog/) for the current list) |
 | Writing a one-off shell script | The **CLI** with `-o json` for parseable output |
 | Building CI/CD automation | The **CLI** from a workflow, with an API key |
 | Embedding Fibe in your own SaaS | The **Go library** |
@@ -54,7 +54,7 @@ That's the whole product surface, in a paragraph.
 
 The SDK is a **client** to the Fibe API. It doesn't run anything itself; it tells the platform what to do. On the other end is Fibe, which orchestrates [Marquees](/concepts/marquees/) (your Docker hosts), [Props](/concepts/props/) (your Git repos), [Templates](/concepts/playspecs/#templates), [Playgrounds](/concepts/playgrounds/), [Tricks](/concepts/tricks/), and [Genies](/concepts/agents/).
 
-So the SDK is what gets you those resources from a script, an agent, or a CI job — same as the web UI gets them from a browser.
+So the SDK is what gets you those resources from a script, an agent, or a CI job: same as the web UI gets them from a browser.
 
 ## The three modes in detail
 
@@ -95,11 +95,11 @@ Read on: [MCP server](/sdk/mcp-server/), [Tools catalog](/sdk/tools-catalog/).
 
 ## What's next
 
-- [Install the CLI](/sdk/install/) — Homebrew, Go install, release binaries.
-- [Authentication](/sdk/authentication/) — login flows, profiles, env vars.
-- [CLI reference](/sdk/cli-reference/) — every command grouped by resource.
-- [Go library](/sdk/go-library/) — embedding the SDK in your own programs.
-- [MCP server](/sdk/mcp-server/) — running it for your AI agent.
-- [Tools catalog](/sdk/tools-catalog/) — every MCP tool, in one place.
-- [Common workflows](/sdk/workflows/) — greenfield, brownfield, pipelines, CI.
-- [Troubleshooting](/sdk/troubleshooting/) — debug, common errors, schema introspection.
+- [Install the CLI](/sdk/install/): Homebrew, Go install, release binaries.
+- [Authentication](/sdk/authentication/): login flows, profiles, env vars.
+- [CLI reference](/sdk/cli-reference/): every command grouped by resource.
+- [Go library](/sdk/go-library/): embedding the SDK in your own programs.
+- [MCP server](/sdk/mcp-server/): running it for your AI agent.
+- [Tools catalog](/sdk/tools-catalog/): every MCP tool, in one place.
+- [Common workflows](/sdk/workflows/): greenfield, brownfield, pipelines, CI.
+- [Troubleshooting](/sdk/troubleshooting/): debug, common errors, schema introspection.

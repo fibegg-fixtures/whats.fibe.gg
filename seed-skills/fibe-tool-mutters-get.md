@@ -1,6 +1,6 @@
 ---
 name: fibe-tool-mutters-get
-description: Use when you need to retrieve one Agent's mutter stream — the "thinking out loud" feed of progress, info, warning, error, and success notes — with optional query/status/severity/playground filters.
+description: "Use when you need one Agent's mutter stream, with optional query, status, severity, and Playground filters."
 ---
 
 # fibe_mutters_get
@@ -12,11 +12,11 @@ Returns the mutter feed for one Agent through `GET /api/agents/:id/mutter`, with
 ## When to use
 - Reviewing an Agent's recent reasoning/progress.
 - Filtering mutters by `playground_id_or_name` while triaging a specific work item.
-- After major milestones — Player feedback often references specific mutters.
+- After major milestones: Player feedback often references specific mutters.
 
 ## When NOT to use
-- Cross-Agent search — use `fibe_monitor_list/follow`.
-- You only need the latest event ASAP — `fibe_monitor_follow` with `type:"mutter"`.
+- Cross-Agent search: use `fibe_monitor_list/follow`.
+- You only need the latest event ASAP: `fibe_monitor_follow` with `type:"mutter"`.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -53,13 +53,13 @@ The top-level fields describe the mutter record; `data` is the filtered, paginat
 - All filters are AND-combined.
 
 ## Gotchas
-- A 404 means the Agent has no mutter record — they haven't posted any mutter yet.
+- A 404 means the Agent has no mutter record: they haven't posted any mutter yet.
 - `total` is the count after filtering; the underlying record may have far more items.
-- Items are typed by their `type` field (`info`, `warning`, `error`, `success`, or another free-form string) — the same field used by `fibe_mutter` when creating.
-- Pagination operates on the in-memory filtered array — large mutter histories work but each request loads the entire JSONB.
+- Items are typed by their `type` field (`info`, `warning`, `error`, `success`, or another free-form string): the same field used by `fibe_mutter` when creating.
+- Pagination operates on the in-memory filtered array: large mutter histories work but each request loads the entire JSONB.
 - `playground_id_or_name` resolves names too (e.g., "demo-app").
 
 ## Related
-- `fibe_mutter` — create new mutter items.
-- `fibe_monitor_list` / `fibe_monitor_follow` — broader event stream.
-- `fibe_feedbacks_list` — Player comments on specific mutters/artefacts.
+- `fibe_mutter`: create new mutter items.
+- `fibe_monitor_list` / `fibe_monitor_follow`: broader event stream.
+- `fibe_feedbacks_list`: Player comments on specific mutters/artefacts.

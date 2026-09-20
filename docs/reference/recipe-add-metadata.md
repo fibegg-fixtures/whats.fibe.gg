@@ -59,7 +59,7 @@ Put `job_mode`, `schedule_config`, and `trigger_config` inside `metadata` for cu
 
 Write **others will see** when they launch this template:
 
-- ✅ "Wiki.js + Postgres — collaborative documentation server"
+- ✅ "Wiki.js + Postgres: collaborative documentation server"
 - ✅ "Ruby on Rails web stack with Postgres, Redis, and Sidekiq workers"
 - ✅ "Nightly database backup to S3"
 - ❌ "Web app"
@@ -70,11 +70,11 @@ A sentence or two. No markdown.
 
 ## `category` conventions
 
-Use a short noun phrase. `metadata.category` is a free-form string shown with the template description; the Bazaar's filterable category is picked from the curated category list when you create or edit the template — keep `metadata.category` aligned with one of those names:
+Use a short noun phrase. `metadata.category` is a free-form string shown with the template description; the Bazaar's filterable category is picked from the curated category list when you create or edit the template: keep `metadata.category` aligned with one of those names:
 
 - `Web`, `Productivity`, `CI`, `Operations`, `Development`, `Database`, `AI`, `Storage`, `Communication`, `Security`.
 
-Avoid niche categories — broader matches discovery.
+Avoid niche categories: broader matches discovery.
 
 ## `source_defaults: true`
 
@@ -139,15 +139,15 @@ x-fibe.gg:
       path: x-fibe.gg.metadata.category
 ```
 
-Rarely useful — these are usually fixed by the template author. But the schema allows it.
+Rarely useful: these are usually fixed by the template author. But the schema allows it.
 
 ## Pitfalls
 
-- **Markdown in `description`** — Bazaar renders as plain text. No headings, no bold.
-- **Root-only `job_mode` / schedule / trigger config** — may validate but not launch/import as intended. Put execution settings in `metadata`.
-- **`source_defaults: true` with NO source Prop** — runtime silently does nothing (there's no Prop to read from); explicitly declared values are still honored.
-- **Forgetting `description` before publishing** — Bazaar rejects.
-- **Description as the template name** — name is set separately when importing/creating the template; description is the body.
+- **Markdown in `description`**: Bazaar renders as plain text. No headings, no bold.
+- **Root-only `job_mode` / schedule / trigger config**: may validate but not launch/import as intended. Put execution settings in `metadata`.
+- **`source_defaults: true` with NO source Prop**: runtime silently does nothing (there's no Prop to read from); explicitly declared values are still honored.
+- **Forgetting `description` before publishing**: Bazaar rejects.
+- **Description as the template name**: name is set separately when importing/creating the template; description is the body.
 
 ## Related skills
 

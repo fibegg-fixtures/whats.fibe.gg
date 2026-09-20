@@ -104,7 +104,7 @@ The schema's `templatedString` rule allows variable markers anywhere in the stri
 |---|---|
 | `Path(`/a`) || Path(`/b`)` | matches `/a` OR `/b` |
 | `Path(`/a`) && PathPrefix(`/sub`)` | matches `/a` AND URL begins with `/sub` (rare; `&&` of `Path()` makes little sense) |
-| `(Path(`/a`) || Path(`/b`)) && PathPrefix(`/`) | grouped — unusual but supported by Traefik |
+| `(Path(`/a`) || Path(`/b`)) && PathPrefix(`/`) | grouped: unusual but supported by Traefik |
 
 In practice, `||` between `Path()` / `PathPrefix()` / `PathRegexp()` is the only combination needed.
 
@@ -141,12 +141,12 @@ Traefik's matchers prefer the more specific rule, so `ws` wins on `/cable` and `
 
 ## Pitfalls
 
-- **No path matcher at all** — value like `Host(`foo.bar`)` is rejected. Value MUST contain `Path`, `PathPrefix`, or `PathRegexp`.
-- **Wrong quote style** — `Path('/api')` or `Path("/api")` aren't valid Traefik. Use backticks.
-- **Trailing slash mismatch** — `PathPrefix(`/api`)` matches `/api` and `/api/x`. `Path(`/api`)` matches ONLY `/api`. Know which you want.
-- **Trying to route by Host or Method** — Fibe owns host; the validator rejects. If you need method-based routing, do it in the app.
-- **Two services with same `path_rule`** — only one wins; you'll see flapping. Make the rules disjoint.
-- **Forgetting `fibe.gg/path_rule` is `req_exposed`** — required-when-exposed in the schema annotation, but the schema doesn't enforce it (presence-only requirement). Set it explicitly when sharing a subdomain.
+- **No path matcher at all**: value like `Host(`foo.bar`)` is rejected. Value MUST contain `Path`, `PathPrefix`, or `PathRegexp`.
+- **Wrong quote style**: `Path('/api')` or `Path("/api")` aren't valid Traefik. Use backticks.
+- **Trailing slash mismatch**: `PathPrefix(`/api`)` matches `/api` and `/api/x`. `Path(`/api`)` matches ONLY `/api`. Know which you want.
+- **Trying to route by Host or Method**: Fibe owns host; the validator rejects. If you need method-based routing, do it in the app.
+- **Two services with same `path_rule`**: only one wins; you'll see flapping. Make the rules disjoint.
+- **Forgetting `fibe.gg/path_rule` is `req_exposed`**: required-when-exposed in the schema annotation, but the schema doesn't enforce it (presence-only requirement). Set it explicitly when sharing a subdomain.
 
 ## Related skills
 

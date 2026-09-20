@@ -8,7 +8,7 @@ image: /img/og/sdk-mcp-server.png
 keywords: [MCP, Model Context Protocol, Claude Code, Cursor, AI agent, fibe mcp serve, Antigravity, Codex]
 ---
 
-The `fibe` binary doubles as an **MCP server** — exposing the same resource surface as the CLI and library, but as **typed tools** an AI agent can call directly. No subprocess overhead, no shell parsing, no string-matching the help text. Your agent gets a real tool API.
+The `fibe` binary doubles as an **MCP server**: exposing the same resource surface as the CLI and library, but as **typed tools** an AI agent can call directly. No subprocess overhead, no shell parsing, no string-matching the help text. Your agent gets a real tool API.
 
 60+ tools across 9 families. Each one is documented individually under [Reference → Tools](/reference/tools/playgrounds-switch-template/). The [Tools catalog](/sdk/tools-catalog/) page is the table-of-contents.
 
@@ -42,7 +42,7 @@ fibe mcp install --client antigravity
 fibe mcp install --client codex
 ```
 
-If your client isn't on that list, the snippet is small enough to write by hand. The `mcp install` command also prints what it added — copy-paste it into a config file the client picks up.
+If your client isn't on that list, the snippet is small enough to write by hand. The `mcp install` command also prints what it added: copy-paste it into a config file the client picks up.
 
 ### Manual configuration (Claude Code example)
 
@@ -100,9 +100,9 @@ When you host the MCP server somewhere shared (a SaaS, a team relay, a Cloudflar
 
 Three options stack:
 
-1. **`Authorization: Bearer <fibe-api-key>` HTTP header** — the agent sends its key with each request. Use this when the agent's API key is known up front.
-2. **`fibe_auth_set` tool** — the agent calls this tool first to set its credentials for the rest of the session. Useful when the credential is discovered at run time (e.g. fetched from a vault).
-3. **Default profile fallback** — single-tenant; not for shared deployments.
+1. **`Authorization: Bearer <fibe-api-key>` HTTP header**: the agent sends its key with each request. Use this when the agent's API key is known up front.
+2. **`fibe_auth_set` tool**: the agent calls this tool first to set its credentials for the rest of the session. Useful when the credential is discovered at run time (e.g. fetched from a vault).
+3. **Default profile fallback**: single-tenant; not for shared deployments.
 
 Force the multi-tenant model with:
 
@@ -120,7 +120,7 @@ By default, destructive tools (delete, rollout, switch-template apply) require a
 FIBE_MCP_YOLO=1 fibe mcp serve   # or pass --yolo
 ```
 
-Use this sparingly. The confirm step exists because LLM agents occasionally request more than they should — losing it on a multi-tenant server means a confused agent can delete things.
+Use this sparingly. The confirm step exists because LLM agents occasionally request more than they should: losing it on a multi-tenant server means a confused agent can delete things.
 
 ## Progress notifications
 
@@ -130,7 +130,7 @@ The agent gets a "still going, here's what I've seen so far" experience instead 
 
 ## Pipelines
 
-`fibe_pipeline` is the most powerful tool in the catalog. It runs multiple Fibe calls in sequence, threads results between them via JSONPath bindings, can run blocks in parallel, supports `for_each` loops, and caches results for 5 minutes.
+`fibe_pipeline` runs multiple Fibe calls in sequence, passes results between them with JSONPath bindings, supports parallel blocks and `for_each` loops, and caches results for 5 minutes.
 
 A typical use: "create a new Prop, then create a Playspec from a template against it, then launch a Playground from the Playspec, then wait for it to be ready, then return the URL". One tool call, one result, with full backoff and error handling under the hood.
 
@@ -154,9 +154,9 @@ These are first-class tools so an agent that doesn't know what you're asking can
 | --- | --- |
 | The client can't find `fibe` | Make sure it's on `PATH` for the user the client runs as. `command: "/usr/local/bin/fibe"` in the config is sometimes needed. |
 | Calls fail with "no credentials" | Either the profile isn't set, or `FIBE_API_KEY` is missing for the env. Run `fibe doctor` outside the client to confirm. |
-| Tools list is empty | Check `FIBE_MCP_TOOLS` — it might be set to a tier with no matching tools. |
+| Tools list is empty | Check `FIBE_MCP_TOOLS`: it might be set to a tier with no matching tools. |
 | Agent gets stuck waiting | The destructive-confirm gate is on. Have the agent retry the tool call with `confirm: true`, or set `FIBE_MCP_YOLO=1` if you trust the workflow. |
-| "Where did my print go?" — server-side output vanishes in stdio mode | Deliberate. In stdio mode stdout **is** the JSON-RPC channel, so the server reroutes stray writes (prints, log output, panic traces) to stderr to keep the protocol pipe clean — look for them there; most MCP hosts surface stderr as a debug log. Anything else that echoes onto the server's stdout (a wrapper script, for example) corrupts the stream, and the client reports parse errors like `invalid message version tag`. |
+| "Where did my print go?": server-side output vanishes in stdio mode | Deliberate. In stdio mode stdout **is** the JSON-RPC channel, so the server reroutes stray writes (prints, log output, panic traces) to stderr to keep the protocol pipe clean: look for them there; most MCP hosts surface stderr as a debug log. Anything else that echoes onto the server's stdout (a wrapper script, for example) corrupts the stream, and the client reports parse errors like `invalid message version tag`. |
 | `Authorization` header isn't being honored | Make sure `FIBE_MCP_REQUIRE_AUTH=1` and the server was started with `--http host:port` (stdio is single-tenant). |
 
 ## Next step

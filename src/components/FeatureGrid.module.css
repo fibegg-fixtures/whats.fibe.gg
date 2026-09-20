@@ -136,7 +136,6 @@
   color: var(--fg-3);
 }
 
-/* Mobile: icon and title sit on the same row, blurb wraps below across the full width. */
 @media (max-width: 640px) {
   .card {
     grid-template-columns: auto 1fr;

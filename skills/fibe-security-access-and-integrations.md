@@ -9,7 +9,7 @@ Use this skill when a user asks who can access what, how credentials are protect
 
 ## Team sharing
 
-A Marquee is the one resource a team can share. A team owner shares it from the team page (web UI); accepted members get manage-level access — the shared Marquee appears in their lists and works everywhere a Marquee is selectable (Playground creation, template launches, CI and schedule targets). Playgrounds on a shared Marquee are visible and manageable to everyone who can manage that Marquee. Ownership and billing stay with the owner; funding rules block owner and members alike when unfunded. There is no read-only grant, and team management has no API/CLI/MCP surface — but team-granted Marquees work through the normal Marquee and Playground scopes.
+A Marquee is the only resource a team can share. A team owner shares it from the team page; accepted members can then select it for Playgrounds, template launches, CI, and schedules. Everyone with access can view and manage its Playgrounds. Ownership and billing stay with the owner, and an unfunded Marquee blocks everyone. Team sharing has no read-only grant or API, CLI, or MCP management surface. Shared Marquees still work through the normal Marquee and Playground scopes.
 
 ## Sessions and trust
 

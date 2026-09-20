@@ -62,11 +62,11 @@ schedule_config:
 
 ## `enabled`
 
-Boolean — disable without removing the schedule config by setting `enabled: false`. Useful for templates that ship with a schedule but should not auto-fire until explicitly opted in.
+Boolean: disable without removing the schedule config by setting `enabled: false`. Useful for templates that ship with a schedule but should not auto-fire until explicitly opted in.
 
 ## Combining with `trigger_config`
 
-Same template can fire on schedule AND on VCS triggers — declare both `schedule_config` AND `trigger_config`. Fibe launches independently for each:
+Same template can fire on schedule AND on VCS triggers: declare both `schedule_config` AND `trigger_config`. Fibe launches independently for each:
 
 ```yaml
 x-fibe.gg:
@@ -173,12 +173,12 @@ x-fibe.gg:
 
 ## Pitfalls
 
-- **`schedule_config` without `job_mode: true`** — schedule does nothing; long-running templates aren't fireable on schedule.
-- **Missing `marquee_id`** — schema accepts (no marquee_id is technically `additionalProperties: true`), but runtime requires it. Always set.
-- **Invalid cron expression** — rejected when the schedule is saved or imported (error: `invalid schedule format`). Test the cron with an external tool first if unsure.
-- **Cron fires while previous run is still active** — typically Fibe just spawns another Playground (parallel runs). If your job is non-idempotent (e.g. modifying a shared DB), guard with a lock or change the cadence.
-- **Long-running tasks with tight crontab** — `*/1 * * * *` for a job that takes 90 seconds = unbounded growth. Make the period > max job duration.
-- **Mistaking schedule UTC for local time** — verify by sending a one-off Mutter with a timestamp at fire.
+- **`schedule_config` without `job_mode: true`**: schedule does nothing; long-running templates aren't fireable on schedule.
+- **Missing `marquee_id`**: schema accepts (no marquee_id is technically `additionalProperties: true`), but runtime requires it. Always set.
+- **Invalid cron expression**: rejected when the schedule is saved or imported (error: `invalid schedule format`). Test the cron with an external tool first if unsure.
+- **Cron fires while previous run is still active**: typically Fibe just spawns another Playground (parallel runs). If your job is non-idempotent (e.g. modifying a shared DB), guard with a lock or change the cadence.
+- **Long-running tasks with tight crontab**: `*/1 * * * *` for a job that takes 90 seconds = unbounded growth. Make the period > max job duration.
+- **Mistaking schedule UTC for local time**: verify by sending a one-off Mutter with a timestamp at fire.
 
 ## Related skills
 

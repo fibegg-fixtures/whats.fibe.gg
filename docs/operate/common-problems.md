@@ -1,6 +1,6 @@
 ---
 title: Common problems & fixes
-description: What the message means, and the smallest change that resolves it. Template validation, variables, triggers, runtime — every common error.
+description: "What the message means, and the smallest change that resolves it. Template validation, variables, triggers, runtime: every common error."
 slug: /operate/common-problems
 sidebar_position: 1
 image: /img/og/operate-common-problems.png
@@ -45,7 +45,7 @@ What the message means, and the smallest change that resolves it.
 | Message | Fix |
 | --- | --- |
 | **Trigger doesn't fire** | Check that the trigger is enabled, the Prop has a working git webhook, and the event type matches what you're actually doing (pull request vs. push to that branch). |
-| **Trigger stopped firing after a Marquee problem** | When the target Marquee leaves the active state, Fibe disables the trigger so events don't pile up against a dead target. Bring the Marquee back, then re-enable the trigger yourself — it doesn't re-enable on its own. |
+| **Trigger stopped firing after a Marquee problem** | When the target Marquee leaves the active state, Fibe disables the trigger so events don't pile up against a dead target. Bring the Marquee back, then re-enable the trigger yourself: it doesn't re-enable on its own. |
 | **Scheduled job doesn't fire** | Check enabled status, verify the cron expression with a quick external tool, and confirm the target Marquee is up. |
 | **Resource ID not found** | The Prop or Marquee referenced in trigger/schedule settings doesn't exist or isn't owned by you anymore. Re-pick a current one. |
 
@@ -53,10 +53,10 @@ What the message means, and the smallest change that resolves it.
 
 | Message | Fix |
 | --- | --- |
-| **Compose `${VAR}` left in the output** | Fibe doesn't fill these from the launcher. Convert to `$$var__VAR` and declare it. Exception: in Trick runs, `${VAR}` *is* filled from your Job ENV entries and the built-in `FIBE_*` run variables — if that's what you meant, define the Job ENV entry instead of converting. |
+| **Compose `${VAR}` left in the output** | Fibe doesn't fill these from the launcher. Convert to `$$var__VAR` and declare it. Exception: in Trick runs, `${VAR}` *is* filled from your Job ENV entries and the built-in `FIBE_*` run variables: if that's what you meant, define the Job ENV entry instead of converting. |
 | **Trick runs forever** | Your watched service started a dev server, an idle loop, or a long-poll. Replace it with a command that exits when the work is done. |
 | **Job timed out waiting for watched services to complete** | The run hit the 4-hour ceiling without the watched service exiting. Fibe checks watched services every 10 seconds by default, up to 1,440 checks; operators can change those defaults. On timeout, the job errors and its containers are torn down. Same root cause as a run that never exits: make the watched command finish when the work is done, or split the work into shorter runs. |
-| **Build timed out: stuck in building state for over 45 minutes** | Builds have a 45-minute ceiling. Usually a slow base-image pull or a heavy build on a slow network — switch to a smaller base image, trim the build context, then relaunch. |
+| **Build timed out: stuck in building state for over 45 minutes** | Builds have a 45-minute ceiling. Usually a slow base-image pull or a heavy build on a slow network: switch to a smaller base image, trim the build context, then relaunch. |
 | **Long-running app reset to one replica and never restarting** | You accidentally set `job_mode: true` on something that should stay up. Remove it. |
 | **502 from the public URL but works inside the container** | Your app is binding to `localhost`. Switch to `0.0.0.0`. See the table below. |
 | **Vite says "Invalid Host header"** | Vite 6+ rejects unknown hosts. Set `server.allowedHosts: true` in your Vite config. |
@@ -65,7 +65,7 @@ What the message means, and the smallest change that resolves it.
 
 ## Subtle behaviors worth knowing
 
-- Mark a template as a Trick and Fibe **forces every service to one replica and no automatic restart** — even ones you didn't list as the watched service.
+- Mark a template as a Trick and Fibe **forces every service to one replica and no automatic restart**: even ones you didn't list as the watched service.
 - **Hostnames in the template are stripped at compile time**; service-to-service traffic uses Compose's built-in DNS by service name.
 - When the **same variable is both inlined and path-bound**, the path write is the final word.
 - The `fibe.gg/*` **labels are read before the container starts**. You can't configure them with environment values that only exist inside the running container.
@@ -84,5 +84,5 @@ What the message means, and the smallest change that resolves it.
 
 ## Related
 
-- Reference: [`common-errors-and-fixes`](/reference/common-errors-and-fixes/) — the skill version of this same content.
-- [Authoring → Service labels](/authoring/service-labels/) — label rules and conflicts.
+- Reference: [`common-errors-and-fixes`](/reference/common-errors-and-fixes/): the skill version of this same content.
+- [Authoring → Service labels](/authoring/service-labels/): label rules and conflicts.

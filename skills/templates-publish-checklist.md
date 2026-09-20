@@ -12,7 +12,7 @@ Before a template is submitted as a public template, walk this list. If any chec
 1. **Valid YAML.** Parses cleanly as YAML.
 2. **Compose-shaped root.** Has `services:`. Every service is a mapping.
 3. **JSON Schema passes.** `fibe_schema(resource: "compose", operation: "validate", payload: {...})` returns valid.
-4. **Runtime / server validation passes.** For a no-write preview of how the template applies, use `fibe_templates_change(mode: "preview", ...)`. A `fibe_launch` is a real deployment — use a disposable Marquee for the test launch.
+4. **Runtime / server validation passes.** For a no-write preview of how the template applies, use `fibe_templates_change(mode: "preview", ...)`. A `fibe_launch` is a real deployment: use a disposable Marquee for the test launch.
 5. **Starts on a normal Docker host** with equivalent env values supplied. (Local `docker compose up` works if you mock the Fibe-injected bits.)
 
 Schema success alone is not enough. See [reference-validation-pipeline](reference-validation-pipeline.md).
@@ -35,7 +35,7 @@ Schema success alone is not enough. See [reference-validation-pipeline](referenc
 - [ ] `fibe.gg/visibility` values lowercase `internal` / `external`; `fibe.gg/port` values `1..65535` or `$$var__NAME`.
 - [ ] User-facing HTTP via `fibe.gg/port`, never Compose `ports:`.
 - [ ] `fibe.gg/subdomain` set only when default routing isn't right.
-- [ ] `fibe.gg/path_rule` uses only `Path`, `PathPrefix`, `PathRegexp` — never `Host`, `Headers`, `Method`, `Query`, `ClientIP`.
+- [ ] `fibe.gg/path_rule` uses only `Path`, `PathPrefix`, `PathRegexp`: never `Host`, `Headers`, `Method`, `Query`, `ClientIP`.
 - [ ] Internal-only routes use `fibe.gg/visibility: internal` with `fibe.gg/port: PORT`.
 - [ ] Non-Fibe labels are intentional and safe (e.g. `traefik.enable`, vendor labels are pass-through).
 
@@ -52,11 +52,11 @@ Opt in **only** if:
 
 - [ ] All variable keys match `^[A-Za-z0-9_]+$`.
 - [ ] Each variable has a non-empty `name:`.
-- [ ] Defaults are safe and realistic — pasteable into a fresh launch.
+- [ ] Defaults are safe and realistic: pasteable into a fresh launch.
 - [ ] `validation:` regex is wrapped as `"/.../"`.
 - [ ] Whole-node values use `path:` / `paths:`. Inline `$$var__NAME` only for string fragments.
 - [ ] No real secrets in `default:`. Use `random: true` for generated, or platform Secrets for external creds.
-- [ ] No hardcoded passwords anywhere — environment, configs, scripts.
+- [ ] No hardcoded passwords anywhere: environment, configs, scripts.
 - [ ] No undeclared `$$var__NAME` references.
 - [ ] No declared-but-unused variables (declare with `path:`/`paths:` to make "unused" OK).
 
@@ -65,7 +65,7 @@ Opt in **only** if:
 - [ ] `x-fibe.gg.metadata.description` explains what launches.
 - [ ] `category` is broad and discoverable (Web, CI, Operations, Database, Productivity, Development, AI, Storage).
 - [ ] `job_mode`, `schedule_config`, `trigger_config` only present when needed.
-- [ ] Runtime IDs (`marquee_id`, `prop_id`) are environment-specific — consider whether the template should ship these or have them filled at launch.
+- [ ] Runtime IDs (`marquee_id`, `prop_id`) are environment-specific: consider whether the template should ship these or have them filled at launch.
 - [ ] Trigger `event_type` is `push` or `pull_request` (no other values).
 
 ## Runtime quality
@@ -76,7 +76,7 @@ Opt in **only** if:
 - [ ] Required env values come from defaults, variables, env files, or platform secrets.
 - [ ] Migrations / setup are explicit (a dedicated `setup` service, or built into the app's `command`).
 - [ ] Healthchecks don't depend on external internet.
-- [ ] Images pinned to a stable tag — not `:latest` in production templates.
+- [ ] Images pinned to a stable tag: not `:latest` in production templates.
 
 ## Security rejects
 
@@ -96,22 +96,22 @@ Reject / revise templates that:
 - `yes` / `on` / `1` as boolean values.
 - `Host(...)` in `path_rule`.
 - Unused or undeclared variables.
-- Expecting container ENV to configure labels/image/routing AFTER container start (it can't — labels are read pre-container).
+- Expecting container ENV to configure labels/image/routing AFTER container start (it can't: labels are read pre-container).
 - Zero-downtime on stateful singleton (Postgres, single-instance Redis).
 
 ## Final review
 
-- [ ] Compare to the closest playbook listed in [Compose Conversion](convert-compose-to-fibe.md) — does the structure match the convention?
+- [ ] Compare to the closest playbook listed in [Compose Conversion](convert-compose-to-fibe.md): does the structure match the convention?
 - [ ] Load [reference-fibe-labels](reference-fibe-labels.md) for any borderline label value.
 - [ ] Run `fibe_schema(resource: "compose", operation: "validate", payload: {...})` from MCP.
-- [ ] For a no-write preview, run `fibe_templates_change(mode: "preview", ...)`. A `fibe_launch` is a real deployment — use a disposable Marquee for the test launch.
+- [ ] For a no-write preview, run `fibe_templates_change(mode: "preview", ...)`. A `fibe_launch` is a real deployment: use a disposable Marquee for the test launch.
 - [ ] Record: launch result, exposed service URLs, required variables. Put in the submission description.
 
 ## After publish
 
-- [ ] Test launch from a fresh Player + fresh Marquee — make sure required variables are honest about what launchers must provide.
+- [ ] Test launch from a fresh Player + fresh Marquee: make sure required variables are honest about what launchers must provide.
 - [ ] Add a Mutter on first launch with screenshots / proof so future Players can compare.
-- [ ] Plan a maintenance window / version bump cadence — pinned image tags drift.
+- [ ] Plan a maintenance window / version bump cadence: pinned image tags drift.
 
 ## Related skills
 

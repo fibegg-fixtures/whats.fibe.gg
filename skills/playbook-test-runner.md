@@ -90,7 +90,7 @@ x-fibe.gg:
 | Java (maven) | `mvn -B test` |
 | PHP (composer) | `sh -c "composer install --no-interaction && vendor/bin/phpunit"` |
 
-For long test suites, split into multiple watched services running in parallel — each declares `fibe.gg/job_watch: "true"` on a different scope of tests.
+For long test suites, split into multiple watched services running in parallel: each declares `fibe.gg/job_watch: "true"` on a different scope of tests.
 
 ## Run results
 
@@ -152,7 +152,7 @@ trigger_config:
   marquee_id: 1
 ```
 
-The trigger's `branch` must equal the PR's **source (head) branch** — a PR merely targeting that branch does not fire the trigger. The checked-out source is the service's configured branch (`fibe.gg/branch`, or the repo default), not the PR head. If the test must run the exact commit that triggered the run, have the test command use the managed run-context variables described in [reference-fibe-managed-env](reference-fibe-managed-env.md).
+The trigger's `branch` must equal the PR's **source (head) branch**: a PR merely targeting that branch does not fire the trigger. The checked-out source is the service's configured branch (`fibe.gg/branch`, or the repo default), not the PR head. If the test must run the exact commit that triggered the run, have the test command use the managed run-context variables described in [reference-fibe-managed-env](reference-fibe-managed-env.md).
 
 For push triggers:
 
@@ -185,9 +185,9 @@ When this template is imported through a source-backed Prop, the runtime fills t
 
 ## Pitfalls
 
-- **`working_dir` + `production: "false"` not working** — the image provides the runtime (`node:22`, `python:3.12`); no Dockerfile is needed for image-based source-mounted services. Check that `fibe.gg/start_command` actually runs the watcher/tests.
-- **`npm ci` failing because package-lock.json mismatch** — pin the lockfile in the repo. Always include `package-lock.json` in CI tests.
-- **Database fixtures not loading** — separate `migrate` service that runs before `test`:
+- **`working_dir` + `production: "false"` not working**: the image provides the runtime (`node:22`, `python:3.12`); no Dockerfile is needed for image-based source-mounted services. Check that `fibe.gg/start_command` actually runs the watcher/tests.
+- **`npm ci` failing because package-lock.json mismatch**: pin the lockfile in the repo. Always include `package-lock.json` in CI tests.
+- **Database fixtures not loading**: separate `migrate` service that runs before `test`:
   ```yaml
   migrate:
     image: my-app
@@ -201,9 +201,9 @@ When this template is imported through a source-backed Prop, the runtime fills t
       migrate:
         condition: service_completed_successfully
   ```
-- **Tests that need an HTTP service** — start it as an unwatched service, point the watched test service at it. Don't expose ports externally.
-- **Long-running flake-prone tests timing out** — Fibe doesn't impose a tight timeout (Playground-level limit applies). If the test runner hangs, it stays hung. Add a wrapper script with `timeout` to enforce an upper bound.
-- **Cold setup hidden by larger timeouts** — if installs or image pulls are slow, cache or prebuild them instead of only increasing the wrapper timeout.
+- **Tests that need an HTTP service**: start it as an unwatched service, point the watched test service at it. Don't expose ports externally.
+- **Long-running flake-prone tests timing out**: Fibe doesn't impose a tight timeout (Playground-level limit applies). If the test runner hangs, it stays hung. Add a wrapper script with `timeout` to enforce an upper bound.
+- **Cold setup hidden by larger timeouts**: if installs or image pulls are slow, cache or prebuild them instead of only increasing the wrapper timeout.
 
 ## Related skills
 

@@ -23,9 +23,9 @@ The lower-level template change primitive. Combines: pick a target → patch, ov
 - Internal workflows that already have exact template/version ids and do not need end-to-end Prop/repo provisioning.
 
 ## When NOT to use
-- Normal existing deployed Playground stack/source/service changes — use `fibe_playgrounds_switch_template`; it is the agent-facing end-to-end tool and handles inline template authoring, private Prop provisioning, rollout, wait, and diagnostics.
-- Initial creation — use `fibe_greenfield_create` or `fibe_launch`.
-- Need to delete a template version — use `fibe_resource_delete(resource:"template_version", id:...)`.
+- Normal existing deployed Playground stack/source/service changes: use `fibe_playgrounds_switch_template`; it is the agent-facing end-to-end tool and handles inline template authoring, private Prop provisioning, rollout, wait, and diagnostics.
+- Initial creation: use `fibe_greenfield_create` or `fibe_launch`.
+- Need to delete a template version: use `fibe_resource_delete(resource:"template_version", id:...)`.
 
 ## Top-level inputs
 
@@ -52,7 +52,7 @@ The lower-level template change primitive. Combines: pick a target → patch, ov
 ### Switch-existing inputs
 | Field | Type | Notes |
 |---|---|---|
-| `target_template_version_id` | number | Required. The version to switch to. Can belong to a completely different template — the server reconciles the prop set and regenerates services. |
+| `target_template_version_id` | number | Required. The version to switch to. Can belong to a completely different template: the server reconciles the prop set and regenerates services. |
 | `switch_variables` | object | New variable values. |
 | `regenerate_variables` | array of string | Variable names to regenerate from defaults. |
 | `confirm_warnings` | bool | Required `true` to proceed when preview reports switch warnings. |
@@ -68,12 +68,12 @@ The lower-level template change primitive. Combines: pick a target → patch, ov
 | `wait_timeout_seconds` | int | `180` | |
 | `diagnose_on_failure` | bool | `true` | Pull `playgrounds.debug` summaries when wait fails |
 | `response_mode` | enum | `summary` | `summary` or `full` |
-| `changelog` | string | — | Stamp on the created template version (patch / overwrite). |
-| `public` | bool | — | Make the new version public on creation. |
-| `confirm` | bool | — | Required `true` for `mode:"apply"` unless `--yolo` |
+| `changelog` | string | None | Stamp on the created template version (patch / overwrite). |
+| `public` | bool | None | Make the new version public on creation. |
+| `confirm` | bool | None | Required `true` for `mode:"apply"` unless `--yolo` |
 
 ## Workflow rules
-- `target_type:"template"` only supports `post_apply:"none"` — there's no Playground/Playspec to roll out yet.
+- `target_type:"template"` only supports `post_apply:"none"`: there's no Playground/Playspec to roll out yet.
 - `post_apply:"trigger_trick"` requires the target to be a Trick (job-mode Playspec).
 - `post_apply:"rollout_target"` requires `target_type:"playground"`.
 - `post_apply:"rollout_all"` rolls out every Playground linked to the affected Playspec.
@@ -91,7 +91,7 @@ Use this hidden primitive only when the caller intentionally needs a template-ve
 Never use `post_apply:"rollout_all"` for a single-user app/project chat. Reserve `rollout_all` for explicit admin/global promotion workflows. Never update the default/global Import Template unless the user is intentionally administering reusable templates.
 
 ## Preview mode
-Returns the diff and warnings without writing anything. Always run `mode:"preview"` first when the change is non-trivial — switch-existing previews surface variable-collision warnings you can resolve via `regenerate_variables`/`switch_variables`.
+Returns the diff and warnings without writing anything. Always run `mode:"preview"` first when the change is non-trivial: switch-existing previews surface variable-collision warnings you can resolve via `regenerate_variables`/`switch_variables`.
 
 ## Output (apply)
 ```json
@@ -141,7 +141,7 @@ For template-author changes where patches would be fragile, use `change_type:"ov
 
 ## Example: switch to a different existing template version
 
-When the user wants to switch an existing playground onto a stack with a *different* set of dynamic services and Props that don't yet exist for them, prefer **`fibe_playgrounds_switch_template`** — single call, takes `template_body`, handles inline template authoring + private Gitea-backed Prop provisioning + rollout in one shot.
+When the user wants to switch an existing playground onto a stack with a *different* set of dynamic services and Props that don't yet exist for them, prefer **`fibe_playgrounds_switch_template`**: single call, takes `template_body`, handles inline template authoring + private Gitea-backed Prop provisioning + rollout in one shot.
 
 Use `fibe_templates_change change_type:"switch_existing"` directly only when:
 - The target template version already exists, and
@@ -167,13 +167,13 @@ Example with `provision_missing_props`:
 - `mode:"apply"` requires `confirm:true` (unless server is `--yolo`).
 - `target_type:"trick"` only works when the resolved Playspec is `job_mode:true`.
 - `template_body_path` is local-only; on remote MCP transports use `template_body`.
-- Rolling out job-mode tricks is rejected — use `trigger_trick` instead.
+- Rolling out job-mode tricks is rejected: use `trigger_trick` instead.
 - `wait_timeout_seconds` ≤ 0 falls back to default 180.
-- The patch is created as a new template version each apply — never mutates an existing version (immutability).
+- The patch is created as a new template version each apply: never mutates an existing version (immutability).
 - When you `apply` a switch, the SDK auto-sets `auto_switch:true` on the playspec to flip references atomically.
 
 ## Related
-- `fibe_playgrounds_switch_template` — single-call brownfield analog of `fibe_greenfield_create` for switching a deployed playground onto a different stack with new private Gitea-backed Props.
-- `fibe_resource_get(resource:"template", id:...)` — review current state.
-- `fibe_playgrounds_wait` / `fibe_playgrounds_debug` — diagnose post-rollout.
-- `fibe_resource_mutate(resource:"template_version", operation:"toggle_public")` — share a version.
+- `fibe_playgrounds_switch_template`: single-call brownfield analog of `fibe_greenfield_create` for switching a deployed playground onto a different stack with new private Gitea-backed Props.
+- `fibe_resource_get(resource:"template", id:...)`: review current state.
+- `fibe_playgrounds_wait` / `fibe_playgrounds_debug`: diagnose post-rollout.
+- `fibe_resource_mutate(resource:"template_version", operation:"toggle_public")`: share a version.

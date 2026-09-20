@@ -50,13 +50,13 @@ Bulk repository status query. Up to 50 GitHub URLs at once through `POST /api/re
 - `requires_fork:true` means a public source should be forked or mirrored before creating a runtime-writable Playspec/Prop from it. Do not launch with read-only public Props.
 
 ## Gotchas
-- Maximum 50 URLs — extras are dropped silently. Pre-chunk if you have more.
+- Maximum 50 URLs: extras are dropped silently. Pre-chunk if you have more.
 - The result's order matches the input order.
 - Empty `github_urls` returns `{repos: []}`.
-- This is read-only — does not mint tokens or modify state.
+- This is read-only: does not mint tokens or modify state.
 - URLs must be GitHub URLs; Gitea URLs are rejected.
 
 ## Related
-- `fibe_find_github_repos` — discovery.
-- `fibe_get_github_token` — once you've confirmed access.
-- `fibe_resource_mutate(resource:"prop", operation:"sync")` — fix accessible-but-stale repos.
+- `fibe_find_github_repos`: discovery.
+- `fibe_get_github_token`: once you've confirmed access.
+- `fibe_resource_mutate(resource:"prop", operation:"sync")`: fix accessible-but-stale repos.

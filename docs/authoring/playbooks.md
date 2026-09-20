@@ -9,7 +9,7 @@ keywords: [playbook, Rails, Node, Python, WordPress, Wiki.js, Postgres, cron, te
 
 Examples by app shape. Each one shows the before/after diff for the input and explains every line.
 
-For each playbook, the [Reference](/reference/intro/) section has a full skill file with the actual YAML. This page is an index — pick the playbook that matches your app and follow the link.
+For each playbook, the [Reference](/reference/intro/) section has a full skill file with the actual YAML. This page is an index: pick the playbook that matches your app and follow the link.
 
 ## By app type
 
@@ -30,7 +30,7 @@ For each playbook, the [Reference](/reference/intro/) section has a full skill f
 
 1. **Find the closest match** to what you're trying to launch.
 2. **Read the before/after diff** to see what changed.
-3. **Adapt the variable names** to your app — most playbooks ask for a subdomain, image tag, DB password, etc.
+3. **Adapt the variable names** to your app: most playbooks ask for a subdomain, image tag, DB password, etc.
 4. **Cross-check the relevant recipes** at the end of each playbook for any extra patterns you need.
 5. **Run a preview launch** before publishing.
 
@@ -38,6 +38,6 @@ If none of the playbooks match exactly, find the closest one and combine it with
 
 ## Related
 
-- [Recipes](/authoring/recipes/) — smaller patterns to combine.
-- [Compose → Fibe](/authoring/compose-to-fibe/) — the master conversion flow.
-- [Before you publish](/operate/publishing/) — the polish checklist.
+- [Recipes](/authoring/recipes/): smaller patterns to combine.
+- [Compose → Fibe](/authoring/compose-to-fibe/): the master conversion flow.
+- [Before you publish](/operate/publishing/): the polish checklist.

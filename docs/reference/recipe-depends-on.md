@@ -37,7 +37,7 @@ services:
 
 ## Long-form vs short-form
 
-Compose allows the short form `depends_on: [a, b]` — equivalent to `condition: service_started` for each. For Fibe templates, use the long form: most apps need `service_healthy` for databases.
+Compose allows the short form `depends_on: [a, b]`: equivalent to `condition: service_started` for each. For Fibe templates, use the long form: most apps need `service_healthy` for databases.
 
 ## Healthcheck on the dependency
 
@@ -120,17 +120,17 @@ In job-mode templates, `depends_on` works as in Compose. Watched services (`fibe
 
 ## `depends_on` vs in-app retry
 
-App code still must retry connections — Compose start order isn't a hard guarantee. `depends_on` reduces transient errors at first start; the app must handle reconnection over its lifetime anyway.
+App code still must retry connections: Compose start order isn't a hard guarantee. `depends_on` reduces transient errors at first start; the app must handle reconnection over its lifetime anyway.
 
 Use the app framework's normal database retry support. For Node/PG, use a connection-pool retry strategy. For Python, use the database driver's retry settings or a retry library.
 
 ## Pitfalls
 
-- **`service_healthy` without a `healthcheck:`** — Compose fails to start: "depends_on service_healthy is not configured". Always pair.
-- **Healthcheck too strict during boot** — app retries forever; `start_period` should be generous.
-- **Compose v2 vs v3 syntax** — long-form `depends_on` works on both. Avoid the v3 deprecation of the short form.
-- **Depending on a service that has been removed from the template** — Compose error. Audit `depends_on` keys.
-- **Depending on a static service from a dynamic service's build** — `depends_on` is runtime ordering only; build happens before any runtime services exist.
+- **`service_healthy` without a `healthcheck:`**: Compose fails to start: "depends_on service_healthy is not configured". Always pair.
+- **Healthcheck too strict during boot**: app retries forever; `start_period` should be generous.
+- **Compose v2 vs v3 syntax**: long-form `depends_on` works on both. Avoid the v3 deprecation of the short form.
+- **Depending on a service that has been removed from the template**: Compose error. Audit `depends_on` keys.
+- **Depending on a static service from a dynamic service's build**: `depends_on` is runtime ordering only; build happens before any runtime services exist.
 
 ## Related skills
 

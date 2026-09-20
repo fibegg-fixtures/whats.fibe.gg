@@ -10,7 +10,7 @@ Authenticator codes, hardware keys, recovery codes, sensitive-action re-auth, ac
 
 ## Authenticator app codes (TOTP)
 
-Scan a QR code with your authenticator app (1Password, Authy, Google Authenticator). Verify once. Each future login asks for a current code. Codes tolerate a small clock drift (±30 seconds), and each code works only once — a code that's already been used can't be replayed.
+Scan a QR code with your authenticator app (1Password, Authy, Google Authenticator). Verify once. Each future login asks for a current code. Codes tolerate a small clock drift (±30 seconds), and each code works only once: a code that's already been used can't be replayed.
 
 Baseline. Set this up first.
 
@@ -58,12 +58,12 @@ Sign-ins from a different IP address or browser within 30 minutes of each other 
 
 | Protection | Behavior |
 |---|---|
-| Passwords | 8–72 characters, no composition rules. Checked at signup and on every change; passwords that show up repeatedly in known data breaches are rejected. |
+| Passwords | 8 to 72 characters, no composition rules. Checked at signup and on every change; passwords that show up repeatedly in known data breaches are rejected. |
 | Failed sign-ins | 10 failed attempts lock the account for 30 minutes. An email with an unlock link goes out; a successful sign-in resets the counter. |
 | Password reset links | Expire after 2 hours. |
 | Signup confirmation links | Expire after 24 hours. |
-| Email change | Takes effect immediately — no re-verification of the new address. A notice goes to the old address, so a silent takeover can't pass unnoticed. |
-| Usernames | 5–39 characters. Letters and digits; dots, hyphens, and underscores allowed in the middle. Must start and end with a letter or digit. Some names (`admin`, `api`, `login`, …) are reserved. |
+| Email change | Takes effect immediately: no re-verification of the new address. A notice goes to the old address, so a silent takeover can't pass unnoticed. |
+| Usernames | 5 to 39 characters. Letters and digits; dots, hyphens, and underscores allowed in the middle. Must start and end with a letter or digit. Some names (`admin`, `api`, `login`, …) are reserved. |
 
 ## FAQ
 
@@ -81,7 +81,7 @@ No. The API authenticates via API keys, which are themselves protected by 2FA at
 
 ## Related
 
-- [API Keys](/advanced/api-keys/) — managing them requires 2FA confirmation.
-- [Secret Vault](/advanced/secrets/) — creating, deleting, or revealing entries requires confirmation.
-- [Audit log](/advanced/audit-log/) — sign-in and security events appear there.
+- [API Keys](/advanced/api-keys/): managing them requires 2FA confirmation.
+- [Secret Vault](/advanced/secrets/): creating, deleting, or revealing entries requires confirmation.
+- [Audit log](/advanced/audit-log/): sign-in and security events appear there.
 - Reference: [`fibe-security-access-and-integrations`](/reference/fibe-security-access-and-integrations/).

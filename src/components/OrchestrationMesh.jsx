@@ -1,12 +1,6 @@
 import React from 'react';
 import styles from './OrchestrationMesh.module.css';
 
-/**
- * Orchestration mesh — the whats.fibe.gg hero signature. A central Genie core
- * dispatches packets of light out along spokes to concept nodes (the same
- * concepts the grid below details). Hub-and-spoke = orchestration; the flowing
- * pulses = the LLM harness driving it. Pure SVG + CSS; reduced-motion safe.
- */
 const CX = 240;
 const CY = 150;
 const RX = 188;
@@ -23,7 +17,6 @@ const nodes = Array.from({length: N}, (_, i) => {
   };
 });
 
-// A subset of spokes carry a travelling packet (staggered).
 const pulseLinks = [0, 3, 6];
 
 export default function OrchestrationMesh() {
@@ -40,14 +33,14 @@ export default function OrchestrationMesh() {
           </filter>
         </defs>
 
-        {/* spokes */}
+        {}
         <g>
           {nodes.map((n, i) => (
             <line key={`l${i}`} x1={CX} y1={CY} x2={n.x} y2={n.y} className={styles.link} />
           ))}
         </g>
 
-        {/* travelling packets, core → node */}
+        {}
         <g filter="url(#mesh-glow)">
           {pulseLinks.map((i, k) => (
             <line
@@ -63,7 +56,7 @@ export default function OrchestrationMesh() {
           ))}
         </g>
 
-        {/* concept nodes */}
+        {}
         <g>
           {nodes.map((n, i) => (
             <circle
@@ -77,7 +70,7 @@ export default function OrchestrationMesh() {
           ))}
         </g>
 
-        {/* the Genie core */}
+        {}
         <g filter="url(#mesh-glow)">
           <circle cx={CX} cy={CY} r="15" className={styles.coreRing} />
           <circle cx={CX} cy={CY} r="8.5" className={styles.core} />

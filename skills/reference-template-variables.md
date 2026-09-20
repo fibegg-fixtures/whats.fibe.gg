@@ -48,7 +48,7 @@ Field semantics:
 
 ### 1. Inline `$$var__NAME`
 
-Pattern: `$$var__([A-Za-z0-9_]+)`. Substituted as plain text before any YAML reparsing. Use it only for fragments inside larger strings. Always write `$$var__NAME`. `$$random__NAME` is only recognized by the declared/unused validation for older templates — it is NOT substituted at compile time, so never author it; the literal text would remain in the compiled file.
+Pattern: `$$var__([A-Za-z0-9_]+)`. Substituted as plain text before any YAML reparsing. Use it only for fragments inside larger strings. Always write `$$var__NAME`. `$$random__NAME` is only recognized by the declared/unused validation for older templates: it is NOT substituted at compile time, so never author it; the literal text would remain in the compiled file.
 
 ```yaml
 services:

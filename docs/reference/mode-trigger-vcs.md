@@ -17,11 +17,11 @@ A VCS-triggered template runs each time the configured VCS event fires (push to 
 2. At least one service with `fibe.gg/job_watch: "true"`.
 3. `x-fibe.gg.metadata.trigger_config` with:
    - `enabled` (bool)
-   - `event_type` enum (`push` | `pull_request`) — optional, defaults to `push`; pull-request triggers match the PR source/head branch
-   - `repo_url` (string) or `prop_id` (positive integer or string form) — provide either; `repo_url` is resolved to your repository connection at import
+   - `event_type` enum (`push` | `pull_request`): optional, defaults to `push`; pull-request triggers match the PR source/head branch
+   - `repo_url` (string) or `prop_id` (positive integer or string form): provide either; `repo_url` is resolved to your repository connection at import
    - `branch` (string)
    - `marquee_id` (positive integer or string form)
-   - optional: `agent_id`, `max_retries`, `prompt_template` — attach an agent that retries fixing a failed run
+   - optional: `agent_id`, `max_retries`, `prompt_template`: attach an agent that retries fixing a failed run
 
 ```yaml
 x-fibe.gg:
@@ -43,7 +43,7 @@ x-fibe.gg:
 
 Enum: `push` (commits pushed to `branch`) or `pull_request` (PR opened/synchronized/reopened whose source/head branch is `branch`).
 
-Optional — defaults to `push`. Pull-request triggers run for opened, synchronized, and reopened PRs when the PR source/head branch matches the configured branch.
+Optional: defaults to `push`. Pull-request triggers run for opened, synchronized, and reopened PRs when the PR source/head branch matches the configured branch.
 
 Schema enforces: `enum: ["push", "pull_request"]`. Other values rejected.
 
@@ -74,7 +74,7 @@ The Prop resource that wires the repo. Props are Fibe's representation of a Git 
 
 ## `marquee_id`
 
-The Marquee where each triggered Playground launches. Must be a Marquee you own or one shared with you through an accepted team membership. Note: team sharing covers Marquees only — the Prop (and optional agent) must still be yours.
+The Marquee where each triggered Playground launches. Must be a Marquee you own or one shared with you through an accepted team membership. Note: team sharing covers Marquees only: the Prop (and optional agent) must still be yours.
 
 ## What runtime does on each event
 
@@ -124,12 +124,12 @@ x-fibe.gg:
       marquee_id: 1
 ```
 
-When `source_defaults: true` is set and the template is imported from a source-backed mechanism, `REPO_URL` and `BRANCH` variables can be populated from the Prop — but for explicit Prop-bound triggers, you usually hardcode or use launcher input.
+When `source_defaults: true` is set and the template is imported from a source-backed mechanism, `REPO_URL` and `BRANCH` variables can be populated from the Prop, but for explicit Prop-bound triggers, you usually hardcode or use launcher input.
 
 ## Branch for `event_type: push` vs `pull_request`
 
 - `push`: trigger fires when `branch` itself receives a commit.
-- `pull_request`: the trigger fires when a PR is opened, synchronized, or reopened and the PR's **source (head) branch** equals `branch`. Matching is on the PR's source branch — a trigger with `branch: main` does not fire for PRs that merely target main.
+- `pull_request`: the trigger fires when a PR is opened, synchronized, or reopened and the PR's **source (head) branch** equals `branch`. Matching is on the PR's source branch: a trigger with `branch: main` does not fire for PRs that merely target main.
 
 ## Permissions
 
@@ -141,11 +141,11 @@ A template can have BOTH `trigger_config` and `schedule_config`. Each fires inde
 
 ## Pitfalls
 
-- **`event_type` typo** — must be exactly `push` or `pull_request`. `pr`, `merge`, `tag` are rejected.
-- **`source_defaults: true` AND hardcoded `repo_url`** — works; hardcoded wins. The auto-fill only applies when fields are absent.
-- **`branch: "*"` for "any branch"** — not supported. Use multiple trigger configs in separate templates if needed.
-- **Trigger fires while previous run is in progress** — parallel runs. If non-idempotent, gate in the job script.
-- **PR triggers re-firing on every push to the PR** — `synchronize` event. Filter in the job script if you only want to run on PR open.
+- **`event_type` typo**: must be exactly `push` or `pull_request`. `pr`, `merge`, `tag` are rejected.
+- **`source_defaults: true` AND hardcoded `repo_url`**: works; hardcoded wins. The auto-fill only applies when fields are absent.
+- **`branch: "*"` for "any branch"**: not supported. Use multiple trigger configs in separate templates if needed.
+- **Trigger fires while previous run is in progress**: parallel runs. If non-idempotent, gate in the job script.
+- **PR triggers re-firing on every push to the PR**: `synchronize` event. Filter in the job script if you only want to run on PR open.
 
 ## Related skills
 

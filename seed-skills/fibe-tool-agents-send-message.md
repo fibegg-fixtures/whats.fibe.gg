@@ -30,7 +30,7 @@ Pushes one user-style message into the Agent's chat queue. It can also pass imag
 The MCP tool's strict input schema accepts `id_or_name`, `text`, `conversation_id`, `busy_policy`, `images`, `attachment_paths`, and `attachment_filenames`.
 
 ## Output
-HTTP 202 envelope — message accepted into queue. Does **not** return the Agent's response; that response will surface via mutter/artefact/event later.
+HTTP 202 envelope: message accepted into queue. Does **not** return the Agent's response; that response will surface via mutter/artefact/event later.
 
 ## Behavior
 1. The Fibe server authorizes the caller for the Agent.
@@ -48,9 +48,9 @@ HTTP 202 envelope — message accepted into queue. Does **not** return the Agent
 - `text:""` is rejected (`required field not set`).
 
 ## Related
-- `fibe_agents_start_chat` — ensure chat is running.
-- `fibe_agents_runtime_status` — pre-flight health check.
-- `fibe_agents_live_state` — observe conversation-scoped streaming state.
-- `fibe_agents_interrupt` — stop a stuck turn.
-- `fibe_monitor_follow` / `fibe_mutters_get` — observe Agent's response stream.
-- `fibe_feedbacks_list` — see if the Agent's reply triggered Player feedback.
+- `fibe_agents_start_chat`: ensure chat is running.
+- `fibe_agents_runtime_status`: pre-flight health check.
+- `fibe_agents_live_state`: observe conversation-scoped streaming state.
+- `fibe_agents_interrupt`: stop a stuck turn.
+- `fibe_monitor_follow` / `fibe_mutters_get`: observe Agent's response stream.
+- `fibe_feedbacks_list`: see if the Agent's reply triggered Player feedback.

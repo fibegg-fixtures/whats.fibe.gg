@@ -1,6 +1,6 @@
 ---
 name: recipe-zero-downtime-healthcheck
-description: Use to tune the five optional `fibe.gg/healthcheck_*` labels for `fibe.gg/zerodowntime: "true"`. Covers path, interval, timeout, retries, and start_period with realistic values.
+description: "Use to tune the five optional `fibe.gg/healthcheck_*` labels for `fibe.gg/zerodowntime: \"true\"`. Covers path, interval, timeout, retries, and start_period with realistic values."
 ---
 
 # Recipe: zero-downtime healthcheck labels
@@ -68,7 +68,7 @@ The path must:
 - Return `2xx` ONLY when the replica is ready to serve real traffic.
 - Be reachable on the same `fibe.gg/port` port.
 - Be cheap (Traefik hits it on every interval × every replica).
-- Be reachable without authentication. The platform's generated probes hit the endpoint from inside the container (and from the load balancer directly), so the platform's internal-visibility Basic Auth never applies — but the endpoint must not sit behind your app's own login.
+- Be reachable without authentication. The platform's generated probes hit the endpoint from inside the container (and from the load balancer directly), so the platform's internal-visibility Basic Auth never applies, but the endpoint must not sit behind your app's own login.
 
 Common framework endpoints:
 
@@ -165,11 +165,11 @@ services:
 
 ## Pitfalls
 
-- **Omitting all five labels** — valid. Fibe uses defaults. Add labels only when the defaults do not match the app.
-- **`retries` as integer** — schema accepts integer or `[1-9][0-9]*` string. Quote it (`"3"`) to be safe.
-- **Duration with `h` / `d`** — only `ms`/`s`/`m`. Convert (`60s` not `1m`, or `1m`).
-- **Healthcheck returns 200 too early** — replicas accept traffic before they're warm; users see errors. Tighten the endpoint to check actual readiness (DB connection, cache warmed, etc.).
-- **Healthcheck behind auth** — even `fibe.gg/visibility: internal` services must keep the healthcheck path free of your app's own authentication (the platform's probes bypass the internal-visibility Basic Auth, but they cannot pass your app's login). Keep the healthcheck on a path the app handles before user authentication.
+- **Omitting all five labels**: valid. Fibe uses defaults. Add labels only when the defaults do not match the app.
+- **`retries` as integer**: schema accepts integer or `[1-9][0-9]*` string. Quote it (`"3"`) to be safe.
+- **Duration with `h` / `d`**: only `ms`/`s`/`m`. Convert (`60s` not `1m`, or `1m`).
+- **Healthcheck returns 200 too early**: replicas accept traffic before they're warm; users see errors. Tighten the endpoint to check actual readiness (DB connection, cache warmed, etc.).
+- **Healthcheck behind auth**: even `fibe.gg/visibility: internal` services must keep the healthcheck path free of your app's own authentication (the platform's probes bypass the internal-visibility Basic Auth, but they cannot pass your app's login). Keep the healthcheck on a path the app handles before user authentication.
 
 ## Related skills
 

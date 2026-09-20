@@ -1,6 +1,6 @@
 ---
 title: "Resource Delete"
-description: "Use when you need to permanently delete a Fibe resource by id (or name for playgrounds/tricks/playspecs/props/marquees/agents). Destructive — requires confirm:true."
+description: "Use when you need to permanently delete a Fibe resource by id (or name for playgrounds/tricks/playspecs/props/marquees/agents). Destructive: requires confirm:true."
 slug: /reference/tools/resource-delete
 sidebar_label: "Resource Delete"
 image: /img/og/reference-tools-resource-delete.png
@@ -37,21 +37,21 @@ Generic delete. Routes to the matching `DELETE /api/<plural>/:id` endpoint. Rela
 }
 ```
 
-## Behavior — Playground
+## Behavior: Playground
 Playground deletion does not block until every container is gone. Fibe marks the Playground `destroying`, returns 202 immediately, and finishes cleanup asynchronously on the Marquee. Use `fibe_playgrounds_wait(status:"destroyed")` if you need to be sure it's gone.
 
-If the playground is already in `destroying`, the call is idempotent — no second job is queued.
+If the playground is already in `destroying`, the call is idempotent: no second job is queued.
 
-## Behavior — others
+## Behavior: others
 | Resource | Notes |
 |---|---|
 | `prop` | Cascade-detaches related Playspecs/Templates referencing it; the underlying Git repo is NOT deleted (you handle that separately). |
 | `playspec` | Refuses if a non-destroyed Playground still references it. |
 | `template` | Deletes versions; refuses if linked Playspecs still exist. Use `template_version` to delete a single version. |
-| `secret` | Plaintext gone forever — irreversible. |
+| `secret` | Plaintext gone forever: irreversible. |
 | `webhook` | Stops future deliveries; past delivery logs persist. |
 | `agent` | Stops chats, removes mounts; artefacts/feedbacks/mutters cascade. |
-| `template_source` | Clears Source attachment from a template (special semantics — alias for "set source to null"). |
+| `template_source` | Clears Source attachment from a template (special semantics: alias for "set source to null"). |
 | `audit_log` / `memory` | Self-delete only; admin-only for cross-player. |
 
 ## Gotchas
@@ -62,6 +62,6 @@ If the playground is already in `destroying`, the call is idempotent — no seco
 - `secret` deletion does NOT remove the Secret from running Playground envs that already mounted it; rolling out a new compose is required to fully evict.
 
 ## Related
-- `fibe_resource_get` — confirm what you're about to delete.
-- `fibe_playgrounds_action` — `stop` first if you want graceful shutdown.
-- `fibe_playgrounds_wait` — confirm async destruction.
+- `fibe_resource_get`: confirm what you're about to delete.
+- `fibe_playgrounds_action`: `stop` first if you want graceful shutdown.
+- `fibe_playgrounds_wait`: confirm async destruction.

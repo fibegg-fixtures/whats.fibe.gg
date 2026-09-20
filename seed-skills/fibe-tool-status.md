@@ -41,5 +41,5 @@ Endpoint: `GET /api/status`. Counts match what the authenticated Player can actu
 - This is a pure read; no side effects, no events, no logs.
 
 ## Related
-- `fibe_doctor` — verify *who* you are; this tells you *what* you have.
-- `fibe_resource_list` — drill into any of these counters.
+- `fibe_doctor`: verify *who* you are; this tells you *what* you have.
+- `fibe_resource_list`: drill into any of these counters.

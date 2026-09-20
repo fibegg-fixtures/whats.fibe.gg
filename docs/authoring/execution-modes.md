@@ -1,6 +1,6 @@
 ---
 title: Execution modes
-description: A template runs in one of four shapes — long-running HTTP, Trick, scheduled Trick, triggered Trick. Decide first; everything else follows.
+description: "A template runs in one of four shapes: long-running HTTP, Trick, scheduled Trick, triggered Trick. Decide first; everything else follows."
 slug: /authoring/execution-modes
 sidebar_position: 8
 image: /img/og/authoring-execution-modes.png
@@ -22,7 +22,7 @@ Required pieces:
 
 Trick rules Fibe enforces for you:
 
-- Routing labels such as `fibe.gg/port`, `fibe.gg/visibility`, and `fibe.gg/subdomain` are stripped before launch — a Trick isn't there to serve traffic.
+- Routing labels such as `fibe.gg/port`, `fibe.gg/visibility`, and `fibe.gg/subdomain` are stripped before launch: a Trick isn't there to serve traffic.
 - Every service is forced to one replica and not to restart.
 - Watched services must actually exit (don't run a dev server or sleep loop).
 - The Trick succeeds when every watched service exits with status zero; non-zero on any watched service fails the run.
@@ -56,12 +56,12 @@ A Trick that fires on a recurring schedule. Add `schedule_config` with `enabled`
 | `*/5 * * * *` | every 5 minutes |
 | `0 */2 * * *` | every 2 hours |
 | `0 0 1 * *` | first of every month at midnight |
-| `30 6 * * 1-5` | 06:30, Mon–Fri |
+| `30 6 * * 1-5` | 06:30, Mon-Fri |
 
-The `cron` field also accepts plain-language schedules — `every day at 9am`, `every 5 minutes` — alongside standard 5-field cron. Invalid expressions are rejected when the template is saved or imported. There's no minimum interval, so nothing stops you scheduling every minute.
+The `cron` field accepts standard five-field cron and plain-language schedules such as `every day at 9am` or `every 5 minutes`. Invalid expressions are rejected when the template is saved or imported. There is no minimum interval, so a schedule can run every minute.
 
 :::caution Overlap
-If your job can run longer than its period, you'll get overlapping runs — unless the Trick is **Stateful (Persist Volumes)**, in which case runs queue and execute one at a time. Make the period longer than the maximum job time, or guard with a lock inside the job. Runtime semantics — the maximum runtime, result retention, run queueing — live on the [Tricks](/concepts/tricks/) page.
+Jobs can overlap when they run longer than their period. **Stateful (Persist Volumes)** Tricks queue runs and execute them one at a time. Otherwise, use a period longer than the maximum job time or guard the job with a lock. The [Tricks](/concepts/tricks/) page covers runtime limits, result retention, and queueing.
 :::
 
 ```yaml
@@ -81,8 +81,8 @@ x-fibe.gg:
 A Trick that fires on a Git event. Add `trigger_config` with the event type (`push` or `pull_request`), the repo URL, branch, the Prop the source is connected through, and the target Marquee.
 
 - **push** fires when the named branch itself receives a commit.
-- **pull_request** fires when a PR is opened or updated whose source (head) branch matches `branch`; that head branch is also the code under test. Set `branch` to the branch PRs are made from — matching on the PR's target branch isn't supported.
-- Wildcards across many branches aren't supported — make a template per shape.
+- **pull_request** fires when a PR is opened or updated whose source (head) branch matches `branch`; that head branch is also the code under test. Set `branch` to the branch PRs are made from: matching on the PR's target branch isn't supported.
+- Wildcards across many branches aren't supported: make a template per shape.
 
 ```yaml
 x-fibe.gg:
@@ -105,5 +105,5 @@ A Trick can be both scheduled (run every night) and triggered (run on every push
 
 ## Related
 
-- [Tricks & automated jobs](/concepts/tricks/) — the concept page.
+- [Tricks & automated jobs](/concepts/tricks/): the concept page.
 - Reference: [`mode-job-trick`](/reference/mode-job-trick/), [`mode-schedule-cron`](/reference/mode-schedule-cron/), [`mode-trigger-vcs`](/reference/mode-trigger-vcs/), [`decide-job-mode`](/reference/decide-job-mode/).

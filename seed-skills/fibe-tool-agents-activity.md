@@ -20,5 +20,5 @@ Reads persisted Agent activity. Use this to inspect tool calls, steps, and outco
 - Use `fibe_agents_live_state` when the current turn has not persisted yet.
 
 ## Related
-- `fibe_agents_messages` — persisted message history.
-- `fibe_agents_live_state` — transient processing state.
+- `fibe_agents_messages`: persisted message history.
+- `fibe_agents_live_state`: transient processing state.

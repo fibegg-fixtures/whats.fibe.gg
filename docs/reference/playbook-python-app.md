@@ -138,7 +138,7 @@ labels:
            gunicorn -b 0.0.0.0:8000 project.wsgi"
 ```
 
-Or split into a one-shot `setup` service (preferred — see [playbook-rails-app](playbook-rails-app.md) for the pattern).
+Or split into a one-shot `setup` service (preferred: see [playbook-rails-app](playbook-rails-app.md) for the pattern).
 
 ## Production variant with zero-downtime
 
@@ -209,11 +209,11 @@ services:
 
 ## Pitfalls
 
-- **`uvicorn --reload` without source mount** — `--reload` does nothing if there's no live source. Either source-mount or drop `--reload` for production.
-- **`pip install` on every start** — slow. Bake into Dockerfile; the dev variant can still `pip install -r requirements.txt` in `start_command` for active development.
-- **Django `ALLOWED_HOSTS`** — must include the Marquee subdomain. Either set `ALLOWED_HOSTS = ["*"]` for dev, or compose the env from the variable: `ALLOWED_HOSTS=$$var__SUBDOMAIN.$$root_domain`.
-- **Flask debug mode in production** — `flask --debug run` is not production-safe. Use `gunicorn`.
-- **Missing healthcheck endpoint** — zero-downtime defaults to `/up`; if the app does not serve that path, set `fibe.gg/healthcheck_path` to a real readiness endpoint such as `/healthz`.
+- **`uvicorn --reload` without source mount**: `--reload` does nothing if there's no live source. Either source-mount or drop `--reload` for production.
+- **`pip install` on every start**: slow. Bake into Dockerfile; the dev variant can still `pip install -r requirements.txt` in `start_command` for active development.
+- **Django `ALLOWED_HOSTS`**: must include the Marquee subdomain. Either set `ALLOWED_HOSTS = ["*"]` for dev, or compose the env from the variable: `ALLOWED_HOSTS=$$var__SUBDOMAIN.$$root_domain`.
+- **Flask debug mode in production**: `flask --debug run` is not production-safe. Use `gunicorn`.
+- **Missing healthcheck endpoint**: zero-downtime defaults to `/up`; if the app does not serve that path, set `fibe.gg/healthcheck_path` to a real readiness endpoint such as `/healthz`.
 
 ## Related skills
 

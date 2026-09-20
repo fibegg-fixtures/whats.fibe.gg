@@ -1,20 +1,9 @@
-/**
- * Custom Docusaurus plugin: emit /llms.txt and /llms-full.txt at build.
- *
- * - llms.txt — a compact, sectioned index of every documentation page per
- *   the format proposed at https://llmstxt.org. One section per top-level
- *   sidebar category; each entry is `[Title](url): description`.
- * - llms-full.txt — every markdown source file concatenated, prefixed with
- *   `# Title` and `> url`, so an LLM can ingest the full guide in one read.
- *
- * The plugin reads from the on-disk `docs/` directory directly so it doesn't
- * need to introspect Docusaurus's internal route table.
- */
+
 
 import fs from 'node:fs';
 import path from 'node:path';
 
-const SITE_TITLE = 'Fibe — user guide & skills';
+const SITE_TITLE = 'Fibe: user guide & skills';
 const SITE_DESCRIPTION =
   'Fibe runs your projects in real Docker environments connected to your compute hosts and Git repositories. The guide covers Marquees, Props, Templates, Playgrounds, Tricks, Genies, and a full reference library of authoring skills.';
 const SITE_URL = 'https://whats.fibe.gg';
@@ -66,7 +55,6 @@ export default function pluginLlmsTxt() {
     async postBuild({siteConfig, outDir, siteDir}) {
       const docsDir = path.resolve(siteDir, 'docs');
 
-      // Build llms.txt sections.
       const sections = [];
       for (const cat of CATEGORIES) {
         const dirAbs = path.join(docsDir, cat.dir);
@@ -81,7 +69,6 @@ export default function pluginLlmsTxt() {
         sections.push({label: cat.label, entries});
       }
 
-      // Compose llms.txt.
       let llms = `# ${SITE_TITLE}\n\n> ${SITE_DESCRIPTION}\n\n`;
       for (const s of sections) {
         llms += `## ${s.label}\n\n`;
@@ -95,7 +82,6 @@ export default function pluginLlmsTxt() {
 
       fs.writeFileSync(path.join(outDir, 'llms.txt'), llms);
 
-      // Compose llms-full.txt.
       let full = `# ${SITE_TITLE}\n\n${SITE_DESCRIPTION}\n\n${SITE_URL}\n\n`;
       for (const s of sections) {
         full += `\n---\n\n# ${s.label}\n\n`;

@@ -9,13 +9,13 @@ Every service in a Fibe template is one of two kinds. Successful classification 
 
 ## The dividing line
 
-**Dynamic** when `fibe.gg/repo_url` is set on the service. The label alone makes the service source-backed — even when it also names an `image:` and has no Compose `build:` block. (The repository the label points to is checked against your connected repositories in a later validation step. A `repo_url` that can't be resolved fails that check, not the static/dynamic classification.)
+**Dynamic** when `fibe.gg/repo_url` is set on the service. The label alone makes the service source-backed: even when it also names an `image:` and has no Compose `build:` block. (The repository the label points to is checked against your connected repositories in a later validation step. A `repo_url` that can't be resolved fails that check, not the static/dynamic classification.)
 
 Compose `build:` requires `fibe.gg/repo_url`. Conversely, every service with
 `fibe.gg/repo_url` requires an explicit absolute Compose `working_dir`.
 `working_dir` alone is standard Compose and does not make a service dynamic.
 
-**Static** otherwise — the service runs the image you specify, period.
+**Static** otherwise: the service runs the image you specify, period.
 
 There is no `fibe.gg/type` label; do not invent one. The classifier derives type from these signals.
 
@@ -51,14 +51,14 @@ There is no `fibe.gg/type` label; do not invent one. The classifier derives type
 | Build target | `fibe.gg/build_target: production` |
 | Build args | `fibe.gg/build_args: "RAILS_ENV=production,NODE_VERSION=24"` |
 
-Most are optional — defaults fit normal repos. See [reference-fibe-labels](reference-fibe-labels.md).
+Most are optional: defaults fit normal repos. See [reference-fibe-labels](reference-fibe-labels.md).
 
 ## Source-backed dev vs production
 
 A dynamic service can run in two modes:
 
-- **`fibe.gg/production: "false"`** — when an explicit absolute `working_dir` is present, Fibe bind-mounts the shared repository-and-branch checkout there. Edits in the source tree are reflected immediately. The app must run a watch/dev process. See [recipe-source-mount](recipe-source-mount.md).
-- **`fibe.gg/production: "true"`** — Fibe builds the Dockerfile and does not add its generated source bind. User-authored Compose volumes remain intact.
+- **`fibe.gg/production: "false"`**: when an explicit absolute `working_dir` is present, Fibe bind-mounts the shared repository-and-branch checkout there. Edits in the source tree are reflected immediately. The app must run a watch/dev process. See [recipe-source-mount](recipe-source-mount.md).
+- **`fibe.gg/production: "true"`**: Fibe builds the Dockerfile and does not add its generated source bind. User-authored Compose volumes remain intact.
 
 The same template can switch between them by parameterizing the label with `$$var__PRODUCTION`.
 
@@ -84,7 +84,7 @@ services:
       fibe.gg/start_command: ...
 ```
 
-`build.context` is irrelevant on Fibe — context is always the repo root. If your `Dockerfile` lives in a subdirectory, set `fibe.gg/dockerfile: deploy/Dockerfile`.
+`build.context` is irrelevant on Fibe: context is always the repo root. If your `Dockerfile` lives in a subdirectory, set `fibe.gg/dockerfile: deploy/Dockerfile`.
 
 See [recipe-build-to-repo-url](recipe-build-to-repo-url.md) and [recipe-build-args-and-target](recipe-build-args-and-target.md).
 
@@ -110,7 +110,7 @@ Do not add `build:` to this pattern just to make it "dynamic". `fibe.gg/repo_url
 
 ## Static services in source-backed templates
 
-Even in a source-backed template (where the main app service is dynamic), supporting services (Postgres, Redis, MinIO, MailHog, Gitea) stay static — they use published images. Treat them as you would in any Compose project.
+Even in a source-backed template (where the main app service is dynamic), supporting services (Postgres, Redis, MinIO, MailHog, Gitea) stay static: they use published images. Treat them as you would in any Compose project.
 
 ```yaml
 services:
@@ -131,9 +131,9 @@ services:
 
 ## Common mistakes
 
-- Setting `fibe.gg/repo_url` on a `postgres` service because "the app uses Postgres". The label means "this service IS built from that repo" — never set on dependencies.
+- Setting `fibe.gg/repo_url` on a `postgres` service because "the app uses Postgres". The label means "this service IS built from that repo": never set on dependencies.
 - Setting `fibe.gg/repo_url` without an absolute Compose `working_dir`. Validator rejects.
-- Leaving Compose `build:` while also setting `fibe.gg/repo_url` — fine, but the `build.context` is ignored. Either remove `build:` entirely or keep it as documentation.
+- Leaving Compose `build:` while also setting `fibe.gg/repo_url`: fine, but the `build.context` is ignored. Either remove `build:` entirely or keep it as documentation.
 
 ## Related skills
 

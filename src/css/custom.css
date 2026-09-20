@@ -1,12 +1,7 @@
-/**
- * Fibe — Docusaurus theme overrides.
- *
- * Phoenix Terminal visual system shared with why.fibe.gg: phosphor green,
- * signal gold, warm olive graphite, and recessed instrument panels.
- */
+
 
 :root {
-  /* Brand — phosphor green */
+
   --brand-50:  #f1fbe6;
   --brand-200: #c8f0a3;
   --brand-300: #abe87f;
@@ -16,7 +11,6 @@
   --brand-700: #46942e;
   --brand-800: #357424;
 
-  /* Gold — signal strand */
   --gold-200: #f9e8a4;
   --gold-300: #f5da79;
   --gold-400: #eec854;
@@ -28,7 +22,6 @@
   --ember-400: #f08760;
   --ember-500: #e26a44;
 
-  /* Brand color — Docusaurus primary */
   --ifm-color-primary: var(--brand-500);
   --ifm-color-primary-dark: var(--brand-600);
   --ifm-color-primary-darker: var(--brand-700);
@@ -37,7 +30,6 @@
   --ifm-color-primary-lighter: var(--brand-300);
   --ifm-color-primary-lightest: var(--brand-200);
 
-  /* Background system */
   --ink-0:  #191c14;
   --ink-1:  #2e3327;
   --ink-2:  #252a1e;
@@ -51,7 +43,6 @@
   --ifm-navbar-background-color: color-mix(in srgb, var(--ink-0) 88%, transparent);
   --ifm-footer-background-color: var(--ink-0);
 
-  /* Foreground */
   --fg-0: #fdfbf0;
   --fg-1: #f3f0e0;
   --fg-2: #e5e2cf;
@@ -67,18 +58,15 @@
   --ifm-color-emphasis-700: var(--fg-3);
   --ifm-color-emphasis-800: var(--fg-2);
 
-  /* Code */
   --ifm-code-background: color-mix(in srgb, var(--brand-500) 10%, transparent);
   --ifm-code-color: var(--gold-200);
   --docusaurus-highlighted-code-line-bg: color-mix(in srgb, var(--brand-500) 15%, transparent);
 
-  /* Hairlines + cards */
   --ifm-toc-border-color: var(--ink-4);
   --ifm-table-stripe-background: var(--ink-2);
   --ifm-table-border-color: var(--ink-4);
   --ifm-hover-overlay: color-mix(in srgb, var(--brand-500) 8%, transparent);
 
-  /* Typography */
   --font-display: "Chakra Petch", "Play", ui-sans-serif, system-ui, sans-serif;
   --ifm-font-family-base: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --ifm-font-family-monospace: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -87,18 +75,15 @@
   --ifm-h3-font-size: 1.25rem;
   --ifm-line-height-base: 1.65;
 
-  /* Layout */
   --ifm-container-width: 1280px;
   --ifm-spacing-horizontal: 1.25rem;
 }
 
-/* Dark mode is the only mode, but be explicit anyway. */
 [data-theme='dark'] {
   --ifm-background-color: var(--ink-1);
   --ifm-background-surface-color: var(--ink-2);
 }
 
-/* Body */
 html {
   scroll-behavior: smooth;
 }
@@ -110,10 +95,6 @@ html, body {
   color: var(--ifm-font-color-base);
 }
 
-/* Make the navbar a translucent floating bar.
-   Apply backdrop-filter only when the mobile drawer is closed — backdrop-filter
-   creates a containing block for descendants with position: fixed, which would
-   trap the mobile drawer (.navbar-sidebar) inside the navbar's 60-px box. */
 .navbar {
   border-bottom: 1px solid var(--ink-4);
   background: var(--ifm-navbar-background-color);
@@ -144,7 +125,6 @@ html, body {
   letter-spacing: 0.01em;
 }
 
-/* Append the subdomain to the wordmark → "Fibe / whats", matching the family. */
 .navbar__title::after {
   content: " / whats";
   color: var(--brand-400);
@@ -154,13 +134,11 @@ html, body {
   letter-spacing: 0.04em;
 }
 
-/* Fibe nav mark — rounded square, etched into the chrome. */
 .navbar__logo img {
   border-radius: 6px;
   box-shadow: 0 0 0 1px var(--ink-5);
 }
 
-/* Headings */
 .markdown h1,
 .markdown h2,
 .markdown h3,
@@ -174,14 +152,12 @@ article h3 {
 .markdown h2:first-of-type, article h2:first-of-type { border-top: none; padding-top: 0; margin-top: 1.5rem; }
 .markdown h3, article h3 { margin-top: 2rem; }
 
-/* Lead paragraph after H1 */
 .markdown > p:first-of-type {
   font-size: 1.1rem;
   color: var(--fg-3);
   line-height: 1.65;
 }
 
-/* Code blocks */
 pre, code {
   font-family: var(--ifm-font-family-monospace);
 }
@@ -199,15 +175,11 @@ pre, code {
   background: transparent !important;
 }
 
-/* Admonitions (tip, caution, info, details) */
 .theme-admonition {
   border-radius: 6px;
   border-left-width: 4px;
 }
 
-/* Tables — keep table semantics, but allow horizontal scroll
-   inside the cell on narrow screens so wide tables (3+ columns
-   with long content) don't break the page layout. */
 table {
   display: table;
   width: 100%;
@@ -221,9 +193,6 @@ table th {
 }
 table td { border-color: var(--ink-4) !important; }
 
-/* Mobile: tables become block-scrollable. The table itself still uses
-   its natural width but scrolls inside its own container instead of
-   pushing the page wider. */
 @media (max-width: 768px) {
   .markdown table,
   article table {
@@ -235,14 +204,13 @@ table td { border-color: var(--ink-4) !important; }
   }
   .markdown table tbody,
   article table tbody {
-    /* Keep cells from collapsing to one column when the table becomes block. */
+
     display: table;
     width: 100%;
     min-width: max-content;
   }
 }
 
-/* Mobile: keep code blocks from pushing the page wider. */
 @media (max-width: 768px) {
   .theme-code-block,
   pre {
@@ -250,7 +218,6 @@ table td { border-color: var(--ink-4) !important; }
   }
 }
 
-/* Cards */
 .card {
   position: relative;
   overflow: hidden;
@@ -284,7 +251,6 @@ table td { border-color: var(--ink-4) !important; }
   box-shadow: 0 8px 24px rgba(0,0,0,0.35);
 }
 
-/* Sidebar */
 .theme-doc-sidebar-container {
   border-right: 1px solid var(--ink-4);
 }
@@ -297,7 +263,6 @@ table td { border-color: var(--ink-4) !important; }
   font-weight: 600;
 }
 
-/* Pagination footer */
 .pagination-nav__link {
   border: 1px solid var(--ink-4);
   background: var(--ink-2);
@@ -309,13 +274,11 @@ table td { border-color: var(--ink-4) !important; }
   background: var(--ink-3);
 }
 
-/* Footer (when our swizzled Footer isn't active, fall back style) */
 .footer--dark {
   background-color: var(--ifm-footer-background-color);
   border-top: 1px solid var(--ink-4);
 }
 
-/* Search */
 .DocSearch-Button, .navbar__search-input {
   background-color: var(--ink-2);
   border: 1px solid var(--ink-4);
@@ -357,13 +320,11 @@ table td { border-color: var(--ink-4) !important; }
   color: var(--fg-1);
 }
 
-/* Selection */
 ::selection {
   background: color-mix(in srgb, var(--brand-500) 40%, transparent);
   color: var(--fg-0);
 }
 
-/* Reduce motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     transition-duration: 0.001ms !important;
@@ -371,18 +332,12 @@ table td { border-color: var(--ink-4) !important; }
   }
 }
 
-/* Mobile navbar: keep the "Fibe / whats" wordmark, drop only the logo mark. */
 @media (max-width: 996px) {
   .navbar__logo {
     display: none !important;
   }
 }
 
-/* ──────────────────────────────────────────────────────────────────────────
-   Gold "fibe →" CTA in the navbar — mirrors the .nav__cta button on the
-   satellite static sites (beveled gold chip, dark display-font label). The
-   default external-link icon is hidden so the arrow in the label stands alone.
-   ────────────────────────────────────────────────────────────────────────── */
 .navbar__fibe-cta {
   display: inline-flex;
   align-items: center;
@@ -404,4 +359,3 @@ table td { border-color: var(--ink-4) !important; }
   text-decoration: none;
 }
 .navbar__fibe-cta svg { display: none; }
-

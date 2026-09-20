@@ -1,6 +1,6 @@
 ---
 title: Common workflows
-description: Existing-source launch, greenfield setup, switch-template workflows, multi-step pipelines, live monitoring, CI integration. The end-to-end stories you'll actually use.
+description: Launch, greenfield, template switching, pipelines, monitoring, and CI workflows.
 slug: /sdk/workflows
 sidebar_position: 8
 sidebar_label: Common workflows
@@ -8,7 +8,7 @@ image: /img/og/sdk-workflows.png
 keywords: [launch, greenfield, switch-template, pipeline, monitor, CI, GitHub Actions, fibe_launch, fibe_greenfield_create, fibe_playgrounds_switch_template]
 ---
 
-End-to-end stories using the [CLI](/sdk/cli-reference/), [Go library](/sdk/go-library/), and [MCP tools](/sdk/tools-catalog/). Pick the workflow that matches what you're doing.
+Common workflows for the [CLI](/sdk/cli-reference/), [Go library](/sdk/go-library/), and [MCP tools](/sdk/tools-catalog/).
 
 ## Launch: existing source to running Playground
 
@@ -28,7 +28,7 @@ fibe launch https://github.com/owner/repo --ref main --file deploy/fibe.yml
 
 Bare positional sources resolve as repositories when they look like `owner/repo`, a full URL, or `.git`; otherwise the CLI looks for a template or Playspec by name. Bare numeric sources are ambiguous, so use `--template`, `--playspec`, or `--template-version`.
 
-A connected GitHub credential is required because Fibe fetches the config server-side — either a GitHub App installation that covers the repo, or a connected GitHub OAuth/PAT connection (which works even for public repos without an App installation). `--ref` selects only the config-file revision; service branch behavior still comes from the template itself. If the repo basename is not the name you want, add `--name`.
+A connected GitHub credential is required because Fibe fetches the config server-side: either a GitHub App installation that covers the repo, or a connected GitHub OAuth/PAT connection (which works even for public repos without an App installation). `--ref` selects only the config-file revision; service branch behavior still comes from the template itself. If the repo basename is not the name you want, add `--name`.
 
 When `--marquee` is omitted, the CLI uses `FIBE_MARQUEE_ID` or the only launchable Marquee. Compose/repo launches default `persist_volumes` from named volumes; pass `--persist-volumes=false` to force stateless behavior.
 
@@ -37,7 +37,6 @@ When `--marquee` is omitted, the CLI uses `FIBE_MARQUEE_ID` or the only launchab
 For an AI agent:
 
 ```jsonc
-// the agent calls:
 {
   "tool": "fibe_launch",
   "args": {
@@ -94,7 +93,7 @@ See [`fibe_greenfield_create`](/reference/tools/greenfield-create/) for the full
 
 ## Switch Template: rewrite an existing Playground
 
-"I want this Playground but with a different template / new repos / changed services — without losing its ID and URL." That's [`fibe_playgrounds_switch_template`](/reference/tools/playgrounds-switch-template/).
+Use [`fibe_playgrounds_switch_template`](/reference/tools/playgrounds-switch-template/) to change a Playground's template, repositories, or services without changing its ID or URL.
 
 ```jsonc
 {
@@ -110,11 +109,11 @@ See [`fibe_greenfield_create`](/reference/tools/greenfield-create/) for the full
 }
 ```
 
-Behind the scenes: provisions the repos the new template references (tune that with `provision_inputs` and `reuse_existing_props`), authors a new template version, switches the Playspec to it, rolls out, and waits. The Playground's ID stays the same — bookmarks and integrations still work.
+The tool provisions referenced repositories, creates a Template Version, switches the Playspec, rolls out, and waits. Tune repository handling with `provision_inputs` and `reuse_existing_props`. The Playground ID remains unchanged.
 
 ## Multi-step pipelines
 
-`fibe_pipeline` runs several MCP tool calls in sequence, threading results between them via JSONPath. Useful when the agent wants one atomic operation instead of round-tripping multiple individual calls.
+`fibe_pipeline` runs several MCP calls and passes results between them with JSONPath.
 
 ```jsonc
 {
@@ -145,9 +144,9 @@ Behind the scenes: provisions the repos the new template references (tune that w
 }
 ```
 
-Pipelines support `parallel: [...]` blocks for steps that can run concurrently and `for_each: ...` for repeating a sub-pipeline over an array. Results are cached for 5 minutes — `fibe_pipeline_result` looks up a cached run by ID.
+Use `parallel: [...]` for independent steps and `for_each: ...` for arrays. `fibe_pipeline_result` can query results cached for five minutes.
 
-For an LLM agent, this is cheaper than separate tool calls because the launch, wait, and return shape live in one plan.
+This reduces agent round trips by keeping launch, wait, and return steps in one plan.
 
 ## Live monitoring & alerting
 
@@ -163,7 +162,7 @@ Or, from an agent:
 { "tool": "fibe_monitor_follow", "args": { "type": "message,artefact", "q": "error" } }
 ```
 
-Events are produced by agents — filter by agent, event type, or text, not by resource family. The agent gets progress notifications as new events arrive. Pair it with `fibe_mutter` to post a note when something interesting happens — that's the basis of "babysitting" workflows where an agent watches a Playground and chimes in on noteworthy events.
+Agents produce these events, so filter by agent, event type, or text. Pair the progress stream with `fibe_mutter` when an agent should watch a Playground and report notable events.
 
 ## CI integration
 
@@ -240,7 +239,7 @@ JSON
 
 Tricks emit `playground.*` events (they're job-mode playgrounds). Use `event_filters` to pin an event to specific resource IDs, and `fibe webhooks event-types` to list every event. See [Webhooks](/advanced/webhooks/) for the full subscription model.
 
-## Switching environments (staging ↔ production)
+## Switching environments
 
 Maintain two profiles and switch with one command:
 
@@ -254,11 +253,11 @@ fibe playgrounds list             # against staging
 fibe --profile prod playgrounds list   # one-off against prod, doesn't change active
 ```
 
-Combined with environment-specific API keys, this is the cleanest way to keep both worlds reachable from one machine.
+Use separate API keys for each environment.
 
 ## Build something custom
 
-The Go library is the right answer when you need to build something Fibe doesn't have a CLI command for: a custom dashboard, a Slack bot that surfaces Playground status, a backup tool, a synthetic-traffic generator. See [Go library](/sdk/go-library/).
+Use the [Go library](/sdk/go-library/) for custom dashboards, chat integrations, backup tools, or synthetic traffic when the CLI lacks the needed operation.
 
 ## Next step
 

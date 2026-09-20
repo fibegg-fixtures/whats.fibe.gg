@@ -11,7 +11,6 @@ export default function Home() {
       const id = hash.substring(1);
       const element = document.getElementById(id);
       if (element) {
-        // Wait for dynamic layout/render to complete before scrolling
         const timer = setTimeout(() => {
           element.scrollIntoView({ behavior: 'auto' });
         }, 150);
@@ -22,12 +21,12 @@ export default function Home() {
 
   return (
     <Layout
-      title="Fibe — user guide"
+      title="Fibe user guide"
       description="Docker environments, AI Genies, and reusable templates. The full user guide for Fibe."
     >
       <Head>
         <link rel="canonical" href="https://whats.fibe.gg/" />
-        <meta property="og:title" content="Fibe — user guide" />
+        <meta property="og:title" content="Fibe user guide" />
         <meta property="og:description" content="Docker environments, AI Genies, and reusable templates." />
         <meta property="og:url" content="https://whats.fibe.gg/" />
       </Head>

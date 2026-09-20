@@ -16,7 +16,7 @@ Fibe templates can declare a variable as `random: true` to have the platform gen
 When a variable has `random: true`:
 
 1. At compile time, if the user did not supply a value, Fibe generates 32 lowercase hex characters.
-2. The generated value is persisted for the launch — subsequent compiles reuse the same value.
+2. The generated value is persisted for the launch: subsequent compiles reuse the same value.
 3. Combined with `required: true`, random generation runs **before** the required check, so the combination always succeeds with no user input.
 
 ```yaml
@@ -73,8 +73,8 @@ The inline reference and the `paths:` writes all receive the same 32-hex value w
 
 Launcher UIs interpret these optional flags:
 
-- `secret: true` — mask the value in the form (show `••••`, allow reveal-click).
-- `sensitive: true` — exclude the value from logs/telemetry.
+- `secret: true`: mask the value in the form (show `••••`, allow reveal-click).
+- `sensitive: true`: exclude the value from logs/telemetry.
 
 Example:
 
@@ -102,7 +102,7 @@ When to choose `random: true` vs a Fibe **Secret** resource:
 | Value lives in this template only | yes | no |
 | Value is the Player's external credential (Stripe key, OpenAI token) | no | yes |
 | Need to rotate without changing template | hard (`regenerate_variables` flow) | easy (update the Secret) |
-| Visibility in launcher UI | masked if `secret: true` | not shown — only metadata |
+| Visibility in launcher UI | masked if `secret: true` | not shown: only metadata |
 | Auditability | low | high |
 
 For a Postgres password that lives inside this Playground: `random: true`. For a Stripe API key the Player owns: Fibe Secret. See [decide-secrets-and-randoms](decide-secrets-and-randoms.md).
@@ -113,9 +113,9 @@ Template-author tooling can request regeneration for selected variable names. Va
 
 ## When NOT to use `random: true`
 
-- **Already-shared values** — if the Postgres password is also stored elsewhere (e.g. Player's password manager), use a regular variable with no default. The Player supplies once, Fibe stores.
-- **Truly sensitive long-lived secrets** — prefer Fibe Secrets.
-- **Values the Player wants to control** — `random: true` makes the value invisible by default; surface it only via launcher reveal-click on `secret: true`.
+- **Already-shared values**: if the Postgres password is also stored elsewhere (e.g. Player's password manager), use a regular variable with no default. The Player supplies once, Fibe stores.
+- **Truly sensitive long-lived secrets**: prefer Fibe Secrets.
+- **Values the Player wants to control**: `random: true` makes the value invisible by default; surface it only via launcher reveal-click on `secret: true`.
 
 ## Patterns for common secrets
 
@@ -147,7 +147,7 @@ RAILS_MASTER_KEY:
     - services.jobs.environment.RAILS_MASTER_KEY
 ```
 
-(No `random: true` — this must match the value the application already uses to decrypt credentials. The launcher supplies it.)
+(No `random: true`: this must match the value the application already uses to decrypt credentials. The launcher supplies it.)
 
 ### Webhook URL (optional, sensitive, no default)
 
@@ -177,10 +177,10 @@ JWT_SECRET:
 
 ## Pitfalls
 
-- **Resetting `random: true` between launches** — without explicit `regenerate_variables`, the stored value persists. If you redeploy and the password changed, your existing DB volume is now inaccessible.
-- **Using `random` for values the app can't accept** — e.g. an app expects a 64-char Base64 secret, but `random` gives 32 hex chars. Either change the app's spec to accept hex, or supply manually.
-- **Treating `secret: true` as encryption** — it's a UI hint, not at-rest encryption. Real secrets use Fibe Secrets.
-- **Not listing the variable in `paths:`** — if you only use `$$var__NAME` inline AND don't declare `paths:`, the variable is "used" by inline reference; that's fine. But if you list NO inline use AND no path, it's `unused_var`.
+- **Resetting `random: true` between launches**: without explicit `regenerate_variables`, the stored value persists. If you redeploy and the password changed, your existing DB volume is now inaccessible.
+- **Using `random` for values the app can't accept**: e.g. an app expects a 64-char Base64 secret, but `random` gives 32 hex chars. Either change the app's spec to accept hex, or supply manually.
+- **Treating `secret: true` as encryption**: it's a UI hint, not at-rest encryption. Real secrets use Fibe Secrets.
+- **Not listing the variable in `paths:`**: if you only use `$$var__NAME` inline AND don't declare `paths:`, the variable is "used" by inline reference; that's fine. But if you list NO inline use AND no path, it's `unused_var`.
 
 ## Related skills
 

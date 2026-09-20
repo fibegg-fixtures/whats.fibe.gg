@@ -23,5 +23,5 @@ Requests the runtime to interrupt the currently running Agent turn. Use this onl
 - After interrupt, check `fibe_agents_live_state` or `fibe_agents_runtime_status` before sending more work.
 
 ## Related
-- `fibe_agents_live_state` — inspect the current turn.
-- `fibe_agents_send_message` — continue after stopping.
+- `fibe_agents_live_state`: inspect the current turn.
+- `fibe_agents_send_message`: continue after stopping.

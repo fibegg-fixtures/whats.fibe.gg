@@ -21,5 +21,5 @@ Deletes one conversation for an Agent. Use during project/user cleanup flows aft
 - Archive or export needed project data before cleanup.
 
 ## Related
-- `fibe_agents_create_conversation` — create/upsert.
-- `fibe_agents_messages` / `fibe_agents_activity` — inspect before deletion.
+- `fibe_agents_create_conversation`: create/upsert.
+- `fibe_agents_messages` / `fibe_agents_activity`: inspect before deletion.

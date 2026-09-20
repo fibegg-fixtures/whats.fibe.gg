@@ -1,6 +1,6 @@
 ---
 title: Decision guides
-description: Short answers to the questions you'll ask while authoring — static or dynamic, exposed how, rolling updates or not, where does the credential go.
+description: "Short answers to the questions you'll ask while authoring: static or dynamic, exposed how, rolling updates or not, where does the credential go."
 slug: /authoring/decisions
 sidebar_position: 7
 image: /img/og/authoring-decisions.png
@@ -11,7 +11,7 @@ Short answers to the questions you'll ask while authoring.
 
 ## Static or dynamic?
 
-A service is **dynamic** if it has a repository URL — either through a Compose `build:` block or the `fibe.gg/repo_url` label. Otherwise it's **static**.
+A service is **dynamic** if it has a repository URL: either through a Compose `build:` block or the `fibe.gg/repo_url` label. Otherwise it's **static**.
 
 **Choose static when:**
 
@@ -39,7 +39,7 @@ See [`decide-static-vs-dynamic`](/reference/decide-static-vs-dynamic/).
 | WebSocket service used by a sibling web app | share a subdomain with a `path_rule` |
 
 :::caution Bind correctly inside the container
-An HTTP service must listen on `0.0.0.0`, not `localhost` — otherwise it works from inside the container but returns 502 from the outside.
+An HTTP service must listen on `0.0.0.0`, not `localhost`: otherwise it works from inside the container but returns 502 from the outside.
 :::
 
 See [`decide-exposure-strategy`](/reference/decide-exposure-strategy/).
@@ -49,7 +49,7 @@ See [`decide-exposure-strategy`](/reference/decide-exposure-strategy/).
 **Yes, when all are true:**
 
 - The service is exposed.
-- It speaks HTTP — a path-based healthcheck makes sense.
+- It speaks HTTP: a path-based healthcheck makes sense.
 - It can run with multiple replicas concurrently (stateless or session-shared).
 - It doesn't pin `container_name` or publish ports.
 
@@ -73,9 +73,9 @@ See [`decide-zero-downtime`](/reference/decide-zero-downtime/) and [`recipe-zero
 | Sensitive value the launcher should type each time | variable marked `sensitive` |
 
 :::caution Anti-patterns
-- Putting a real secret in `default:` — it lives in source.
-- Re-randomizing a database password on every launch — existing data becomes unreachable.
-- Asking the launcher to type a long-lived API key every time — use the vault.
+- Putting a real secret in `default:`: it lives in source.
+- Re-randomizing a database password on every launch: existing data becomes unreachable.
+- Asking the launcher to type a long-lived API key every time: use the vault.
 :::
 
 See [`decide-secrets-and-randoms`](/reference/decide-secrets-and-randoms/) and [Secret Vault & Job ENV](/advanced/secrets/).

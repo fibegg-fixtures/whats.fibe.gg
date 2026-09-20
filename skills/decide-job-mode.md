@@ -11,12 +11,12 @@ A Fibe template runs in one of four execution shapes. Pick first; everything els
 
 | Shape | Marker | Lifecycle |
 |---|---|---|
-| Long-running HTTP | (nothing — default) | Stays up; serves requests; healthchecks monitor. |
+| Long-running HTTP | (nothing: default) | Stays up; serves requests; healthchecks monitor. |
 | Job-mode (Trick) | `x-fibe.gg.metadata.job_mode: true` + `fibe.gg/job_watch: "true"` on at least one service | Starts, runs, all watched services exit, tear down. |
 | Scheduled job | Job-mode + `x-fibe.gg.metadata.schedule_config` | Cron-driven launch of a job-mode template. |
 | Triggered job | Job-mode + `x-fibe.gg.metadata.trigger_config` | VCS event-driven launch (push, pull_request). |
 
-You can combine schedule + trigger on one template — Fibe will launch on either.
+You can combine schedule + trigger on one template: Fibe will launch on either.
 
 ## Choosing
 
@@ -69,7 +69,7 @@ x-fibe.gg:
 
 Job-mode constraints (runtime-enforced):
 
-- `fibe.gg/port` and related routing labels are stripped before launch — job services are not user-facing.
+- `fibe.gg/port` and related routing labels are stripped before launch: job services are not user-facing.
 - Watched services must **exit** (not run a dev server / sleep loop).
 - Unwatched services (DB, queue, cache) just need to start; they get torn down when all watched services finish.
 - Fibe **forces** `restart: "no"` and `deploy.replicas: 1` on every service in a job-mode template.
@@ -132,9 +132,9 @@ See [mode-trigger-vcs](mode-trigger-vcs.md).
 
 ## Pitfalls
 
-- "I want a scheduled HTTP service" — Fibe does not do this. Long-running services serve continuously; if you want periodic work behind an HTTP endpoint, use a long-running service that runs a job internally (cron in-app), OR run a job-mode template alongside.
-- "I want a triggered HTTP preview environment" — use `fibe_resource_mutate(resource: "playground", operation: "create")` from a webhook, not the template's `trigger_config`. Trigger config only fires the job-mode template, not arbitrary long-running ones.
-- Forgetting `metadata.job_mode: true` — services with `job_watch` may still not enter job lifecycle. Set both metadata job mode and a watched service label.
+- "I want a scheduled HTTP service": Fibe does not do this. Long-running services serve continuously; if you want periodic work behind an HTTP endpoint, use a long-running service that runs a job internally (cron in-app), OR run a job-mode template alongside.
+- "I want a triggered HTTP preview environment": use `fibe_resource_mutate(resource: "playground", operation: "create")` from a webhook, not the template's `trigger_config`. Trigger config only fires the job-mode template, not arbitrary long-running ones.
+- Forgetting `metadata.job_mode: true`: services with `job_watch` may still not enter job lifecycle. Set both metadata job mode and a watched service label.
 
 ## Related skills
 

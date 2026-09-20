@@ -82,7 +82,7 @@ x-fibe.gg:
 
 | Decision | Reason |
 |---|---|
-| `image: node:22` (not built) | Source-mounted dev — image just provides the runtime |
+| `image: node:22` (not built) | Source-mounted dev: image just provides the runtime |
 | `volumes: app_node_modules:/app/node_modules` | Named volume layered on top of the source mount so `node_modules/` doesn't leak into the repo |
 | `working_dir: /app` | Bind-mount cloned repo into `/app` |
 | `fibe.gg/start_command: npm run dev -- --host 0.0.0.0` | Dev server with watcher; binds 0.0.0.0 |
@@ -226,12 +226,12 @@ x-fibe.gg:
 
 ## Pitfalls
 
-- **`node_modules` committed to repo** — clone pulls them; volume layers underneath; old versions stick around. Always `.gitignore`.
-- **No `0.0.0.0` bind** — container appears running, requests hang. Always add `--host 0.0.0.0` to dev command.
-- **Vite 6+ without `allowedHosts`** — 403 from Vite. Set `allowedHosts: true` in `vite.config.js`.
-- **Dockerfile not needed for image-based dev services** — a dev service that declares `image:` and has no `build:` section needs no Dockerfile: the image provides the runtime and the source is cloned and mounted. A Dockerfile is only needed if the service has a `build:` section (production build workflow).
-- **Production mode with a development source bind** — production services preserve user-authored volumes but do not receive Core's generated `working_dir` bind. Use one mode or the other.
-- **`fibe.gg/start_command: npm start`** when `start` is a build, not a dev server — container exits. Use `npm run dev` or your actual watcher.
+- **`node_modules` committed to repo**: clone pulls them; volume layers underneath; old versions stick around. Always `.gitignore`.
+- **No `0.0.0.0` bind**: container appears running, requests hang. Always add `--host 0.0.0.0` to dev command.
+- **Vite 6+ without `allowedHosts`**: 403 from Vite. Set `allowedHosts: true` in `vite.config.js`.
+- **Dockerfile not needed for image-based dev services**: a dev service that declares `image:` and has no `build:` section needs no Dockerfile: the image provides the runtime and the source is cloned and mounted. A Dockerfile is only needed if the service has a `build:` section (production build workflow).
+- **Production mode with a development source bind**: production services preserve user-authored volumes but do not receive Core's generated `working_dir` bind. Use one mode or the other.
+- **`fibe.gg/start_command: npm start`** when `start` is a build, not a dev server: container exits. Use `npm run dev` or your actual watcher.
 
 ## Related skills
 

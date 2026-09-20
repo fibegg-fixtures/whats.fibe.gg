@@ -1,22 +1,22 @@
 ---
 name: fibe-tool-get-github-token
-description: Use when you need the server-provided GitHub credential for a specific repository. Enterprise resolves an App installation; standalone Core returns its configured credential.
+description: Use when you need to mint a short-lived GitHub installation access token for a specific repository. Auto-resolves the correct GitHub App installation.
 ---
 
 # fibe_get_github_token
 
-[MODE:SIDEEFFECTS] Tier: other. Idempotent within the returned refresh lease.
+[MODE:SIDEEFFECTS] Tier: other. Idempotent (Fibe caches tokens server-side).
 
-Returns the server-provided GitHub credential for `<owner>/<repo>` through `GET /api/github_token?repo=<owner/repo>`. Enterprise resolves the current Player's matching GitHub App installation and returns a short-lived installation token. Standalone Core returns its single configured `GITHUB_TOKEN`.
+Returns a fresh GitHub App **installation** token scoped to the installation that has access to `<owner>/<repo>` through `GET /api/github_token?repo=<owner/repo>`.
 
 ## When to use
-- Need to clone or push a repository using the credential selected by the connected Fibe server.
+- Need to clone/push to a Fibe-managed Prop's underlying GitHub repo from the Agent container.
 - Issuing a one-off `git push` outside of the SDK's flow.
-- GitHub API access permitted by the returned credential.
+- Webhook subscription / API call against the repo's GitHub App-managed endpoints.
 
 ## When NOT to use
-- You need a specific credential kind. Enterprise returns an App token; Core returns its configured stable token.
-- Pure Fibe API access — that's `FIBE_API_KEY`, not a GitHub token.
+- You need *user-level* OAuth (creating new repos, accessing user profile): installation tokens have App-scoped permissions only.
+- Pure Fibe API access: that's `FIBE_API_KEY`, not a GitHub token.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -26,23 +26,24 @@ Returns the server-provided GitHub credential for `<owner>/<repo>` through `GET 
 ## Output
 ```json
 {
-  "token": "...",
-  "expires_in": 3000
+  "token": "ghs_...",
+  "expires_in": 3000   // seconds; Fibe caches installation tokens for 50 minutes
 }
 ```
 
 ## Behavior
-1. Validates the `owner/repository` input.
-2. Enterprise looks up the current Player's matching GitHub App installation and mints or reuses its short-lived token.
-3. Standalone Core returns its configured process credential without contacting GitHub. `expires_in` is a client refresh lease; repeated requests may return the same token.
+1. Looks up the GitHub App installation that has access to `repo` for the current Player.
+2. If none → 404 `GITHUB_INSTALLATION_NOT_FOUND` with hint to install the App on the org/account.
+3. Otherwise mints (or re-uses cached) installation token.
 
 ## Gotchas
-- Re-fetch before `expires_in`; do not infer the underlying token's expiry from this lease.
-- Enterprise installation tokens have App-defined permissions and are not the Player's OAuth token.
-- Core has no installation or player scope. Any holder of its administrative `FIBE_API_KEY` can retrieve the host-wide token, and rotation requires replacing the Core container with updated ENV.
-- Enterprise can return `GITHUB_INSTALLATION_NOT_FOUND` or `GITHUB_TOKEN_ERROR`. Core returns `GITHUB_TOKEN_NOT_CONFIGURED` when its ENV credential is blank.
+- Tokens are short-lived (typically ~1 hour). Re-fetch when expired.
+- Installation tokens have App-defined permissions: they cannot do anything the GitHub App config doesn't allow (e.g., creating new repos).
+- Fibe's cache TTL is shorter than the token's actual lifetime to avoid serving expired tokens.
+- This is **not** the user OAuth token. For user OAuth, use the GitHub OAuth flow on the Player profile.
+- GitHub API errors propagate as `GITHUB_TOKEN_ERROR` with HTTP 503.
 
 ## Related
-- `fibe_find_github_repos` — Enterprise repository discovery; unsupported in standalone Core.
-- `fibe_repo_status_check` — verify access without minting a token.
-- `fibe_github_repos_create` — create new repo (OAuth path, different mechanism).
+- `fibe_find_github_repos`: discover repos before pulling tokens.
+- `fibe_repo_status_check`: verify access without minting a token.
+- `fibe_github_repos_create`: create new repo (OAuth path, different mechanism).

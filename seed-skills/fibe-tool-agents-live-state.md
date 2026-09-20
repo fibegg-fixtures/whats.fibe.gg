@@ -26,6 +26,6 @@ Live state object, typically including `conversationId`, `isProcessing`, `stream
 - Empty `streamText` does not prove the Agent is idle; check `isProcessing` and `queuedTurns`.
 
 ## Related
-- `fibe_agents_send_message` — enqueue work.
-- `fibe_agents_interrupt` — stop a stuck turn.
-- `fibe_agents_messages` / `fibe_agents_activity` — persisted history.
+- `fibe_agents_send_message`: enqueue work.
+- `fibe_agents_interrupt`: stop a stuck turn.
+- `fibe_agents_messages` / `fibe_agents_activity`: persisted history.

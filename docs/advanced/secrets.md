@@ -12,7 +12,7 @@ Two homes for credentials, depending on who needs them and when.
 
 Encrypted store for long-lived values that shouldn't appear in source or template bodies. Use for external API tokens, third-party credentials, anything you'd rotate every few months and reuse from many places.
 
-A Secret is **fetched by name** when something needs it — a Genie call, a workflow, a launch. The vault is the canonical home, not a duplicate of a template variable.
+A Secret is **fetched by name** when something needs it: a Genie call, a workflow, a launch. The vault is the canonical home, not a duplicate of a template variable.
 
 ### When to use
 
@@ -32,8 +32,8 @@ A Secret is **fetched by name** when something needs it — a Genie call, a work
 
 Inject environment values into **Trick runs**. Two scopes:
 
-- **Global** — available to every Trick you run.
-- **Prop-scoped** — only when the Trick is tied to that repository.
+- **Global**: available to every Trick you run.
+- **Prop-scoped**: only when the Trick is tied to that repository.
 
 Prefer Job ENV over template variables when a credential is reused across many runs and the launcher shouldn't have to supply it each time.
 
@@ -45,8 +45,8 @@ Prefer Job ENV over template variables when a credential is reused across many r
 
 ### Two scopes
 
-- **Global Job ENV** — credentials every Trick needs (e.g. one Slack webhook URL).
-- **Prop-scoped Job ENV** — multiple repos with different deploy keys. Repo A's CI Trick gets repo A's key; B gets B's; they never see each other's.
+- **Global Job ENV**: credentials every Trick needs (e.g. one Slack webhook URL).
+- **Prop-scoped Job ENV**: multiple repos with different deploy keys. Repo A's CI Trick gets repo A's key; B gets B's; they never see each other's.
 
 ## Where to keep what
 
@@ -61,13 +61,13 @@ Prefer Job ENV over template variables when a credential is reused across many r
 ## Anti-patterns
 
 - **Don't** put a real secret in a Template's `default:` field. It lands in git when the Template is source-linked.
-- **Don't** re-randomize a database password on every launch — existing data becomes unreachable.
+- **Don't** re-randomize a database password on every launch: existing data becomes unreachable.
 - **Don't** ask the launcher to type a long-lived API key every time. Use the vault.
 - **Don't** store a credential in both Vault and Job ENV. Pick one home.
 
 ## Audit
 
-Creating, changing, and deleting a vault entry are recorded in the [Audit log](/advanced/audit-log/). Reads and reveals are not logged — revealing a value does, however, require re-confirming your second factor.
+Creating, changing, and deleting a vault entry are recorded in the [Audit log](/advanced/audit-log/). Reads and reveals are not logged: revealing a value does, however, require re-confirming your second factor.
 
 ## FAQ
 
@@ -86,12 +86,12 @@ Fibe scrubs them from log output where it can. If your job code echoes a secret 
 <details>
 <summary>Export Vault contents?</summary>
 
-[Data Backup](/advanced/backup/) exports your secret names and descriptions only — values are never included in the file. After importing a backup, re-enter each secret's value (imported entries carry a placeholder until you do).
+[Data Backup](/advanced/backup/) exports your secret names and descriptions only: values are never included in the file. After importing a backup, re-enter each secret's value (imported entries carry a placeholder until you do).
 </details>
 
 ## Related
 
-- [API Keys](/advanced/api-keys/) — credentials for Fibe itself, not your services.
-- [Webhooks](/advanced/webhooks/) — outbound events; signing secrets live in the Vault.
-- [Tricks](/concepts/tricks/) — what consumes Job ENV.
+- [API Keys](/advanced/api-keys/): credentials for Fibe itself, not your services.
+- [Webhooks](/advanced/webhooks/): outbound events; signing secrets live in the Vault.
+- [Tricks](/concepts/tricks/): what consumes Job ENV.
 - Reference: [`decide-secrets-and-randoms`](/reference/decide-secrets-and-randoms/), [`recipe-random-and-secrets`](/reference/recipe-random-and-secrets/).

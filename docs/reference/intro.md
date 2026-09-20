@@ -8,7 +8,7 @@ image: /img/og/reference-intro.png
 keywords: [Fibe, reference, skills, LLM, authoring, recipes, playbooks]
 ---
 
-The reference section is a library of small, task-focused **skill files**. Each one answers one question — "how do I add a subdomain?", "what's the difference between Marquees and Playgrounds?", "how do I turn this Compose file into a Trick?" — and links to a few related neighbors.
+The reference section contains small, task-focused **skill files**. Each answers one question, such as how to add a subdomain or turn a Compose file into a Trick, then links to related topics.
 
 Two audiences:
 
@@ -21,19 +21,19 @@ Two audiences:
 | --- | --- |
 | **Foundations** | The conceptual map: what Fibe is, what each noun means, who owns what, how features fit together. |
 | **Compose conversion** | The master playbook for turning `docker-compose.yml` into a Fibe template, plus the publish checklist and common-errors guide. |
-| **References** | Authoritative pages for the moving parts — labels, the `x-fibe.gg` block, variables, YAML paths, implied semantics, validation. |
+| **References** | Authoritative pages for the moving parts: labels, the `x-fibe.gg` block, variables, YAML paths, implied semantics, validation. |
 | **Decision guides** | Short, opinionated frameworks for the choices you make while authoring (static vs dynamic, expose external vs internal, zero-downtime on/off, etc.). |
 | **Execution modes** | One per template shape: job-mode Tricks, cron schedules, VCS triggers. |
 | **Recipes** | Small, copy-pasteable patterns (replace `ports:` with `expose`, lift a Compose `${VAR}` into a Fibe variable, share a subdomain across services, etc.). |
-| **App playbooks** | Worked end-to-end conversions for common app shapes — nginx, Node dev mode, Rails, WordPress, Postgres app, Wiki.js, and more. |
+| **App playbooks** | Worked end-to-end conversions for common app shapes: nginx, Node dev mode, Rails, WordPress, Postgres app, Wiki.js, and more. |
 
 ## How to read a skill file
 
 Each file follows a consistent shape:
 
-1. **Frontmatter** with `description` — a one-line summary the user (or an agent) can match against.
-2. **A short body** — usually 100–400 lines, with code examples and cross-links.
-3. **Related skills** at the bottom — a small graph you can follow when one skill leads naturally to another.
+1. **Frontmatter** with `description`: a one-line summary the user (or an agent) can match against.
+2. **A short body**: usually 100 to 400 lines, with code examples and cross-links.
+3. **Related skills** at the bottom: a small graph you can follow when one skill leads naturally to another.
 
 ## How agents use these
 
@@ -44,6 +44,6 @@ If you're building your own agent that should know Fibe, point it at [`whats.fib
 ## Where to start
 
 - New to Fibe? Read [`fibe-product-map`](/reference/fibe-product-map/) and [`glossary`](/reference/glossary/).
-- Coming with a Compose file in hand? Open [`convert-compose-to-fibe`](/reference/convert-compose-to-fibe/) — it tells you which surgical skills to load next.
+- Coming with a Compose file in hand? Open [`convert-compose-to-fibe`](/reference/convert-compose-to-fibe/): it tells you which surgical skills to load next.
 - Stuck on a specific error? Try [`common-errors-and-fixes`](/reference/common-errors-and-fixes/).
 - Publishing your first template? Walk the [`templates-publish-checklist`](/reference/templates-publish-checklist/).

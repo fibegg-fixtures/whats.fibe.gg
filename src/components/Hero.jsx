@@ -10,7 +10,7 @@ export default function Hero() {
           Fibe
         </h1>
         <p className={styles.lede}>
-          Learn how Docker container orchestration combined with the right LLM harness unlocks new possibilities in software development <i>and beyond</i>
+          Run Docker environments, automate work with AI Genies, and reuse what works.
         </p>
         <OrchestrationMesh />
         <div className={styles.ctas}>

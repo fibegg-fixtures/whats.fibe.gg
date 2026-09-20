@@ -1,6 +1,6 @@
 ---
 title: API reference
-description: Public /api namespace conventions for authentication, response envelopes, pagination, async operations, and endpoint groups.
+description: Authentication, responses, pagination, async operations, and endpoint groups for /api.
 slug: /api
 sidebar_label: Overview
 keywords: [Fibe API, REST API, bearer token, async requests]
@@ -66,7 +66,7 @@ Pagination parameters:
 | `per_page` | `25` | `100` | Page size. |
 | `limit` | `25` | `100` | Alias used by endpoints that accept limit-style pagination. |
 
-Failures use the shared error envelope (with one exception — polling a missing or expired async request, covered under [Async operations](#async-operations)). Error codes are stable upper-case identifiers — branch on the `code`, never on message text:
+Failures use the shared error envelope, except when polling a missing or expired async request. Error codes are stable uppercase identifiers; branch on `code`, not message text:
 
 ```json
 {
@@ -78,15 +78,15 @@ Failures use the shared error envelope (with one exception — polling a missing
 }
 ```
 
-Common codes include `VALIDATION_FAILED`, `UNAUTHORIZED`, `FORBIDDEN`, `RESOURCE_NOT_FOUND`, `RATE_LIMITED`, and `MARQUEE_NOT_FUNDED` (402 — the selected Marquee isn't funded).
+Common codes include `VALIDATION_FAILED`, `UNAUTHORIZED`, `FORBIDDEN`, `RESOURCE_NOT_FOUND`, `RATE_LIMITED`, and `MARQUEE_NOT_FUNDED` (402, selected Marquee is unfunded).
 
 Conversation, live-state, and queued-turn endpoints that talk to a live Genie return `422` with a code explaining why delivery failed: `AGENT_RUNTIME_NOT_RUNNING` (the Genie has no running session), `AGENT_RUNTIME_UNREACHABLE` (the session can't be reached), or `AGENT_RUNTIME_ERROR` (the session returned an unexpected error). The `details` object carries the agent (and conversation) involved.
 
-Sending a chat message to a Genie fails with `422` and code `AGENT_COMMUNICATION_FAILED`; the message text gives the reason — `AGENT_BUSY` means the Genie is mid-turn (retry later, or resend with the `queue` busy policy to add it as a queued turn), `NEED_AUTH` means the Genie's provider credentials need re-authentication.
+Sending a chat message can fail with `422` and `AGENT_COMMUNICATION_FAILED`. `AGENT_BUSY` means the Genie is mid-turn; retry or use the `queue` busy policy. `NEED_AUTH` means its provider credentials require authentication.
 
 ### Rate limits
 
-API requests are rate limited per account (default **5,000 requests per hour**; the limit can be raised per account — contact support). When the limit is exceeded the API returns `429` with code `RATE_LIMITED`; honor the `Retry-After` header before retrying.
+API requests are limited per account to **5,000 per hour** by default. Support can raise the limit. A blocked request returns `429` with `RATE_LIMITED`; honor `Retry-After`.
 
 Responses to authenticated requests also include `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset` (seconds until the window resets), so you can pace requests before hitting the limit.
 
@@ -106,7 +106,7 @@ Long-running operations return `202 Accepted` with a polling URL:
 
 Poll `GET /api/async_requests/:id` until the operation is terminal. Queued and running requests return `202`; terminal and error states return `200`.
 
-Status records are short-lived: each progress update keeps one alive for about 10 minutes. A missing or expired async request returns `404` — and this response is a plain `{ "error": "Request not found" }` body without an error code, so treat any `404` from the polling endpoint as expired-or-unknown rather than branching on a code. Start polling right after the `202` response rather than coming back much later.
+Each progress update keeps a status record alive for about 10 minutes. A missing or expired request returns `404` with plain `{ "error": "Request not found" }`. Treat any polling `404` as unknown or expired and start polling soon after the `202` response.
 
 Some write endpoints support `Idempotency-Key` for safe retries. A successful response is remembered for **24 hours** per key: retrying with the same key replays the original response and sets the `X-Idempotent-Replayed: true` header so you can tell a replay from a fresh write. Reuse the same key only for retries of the same logical operation.
 

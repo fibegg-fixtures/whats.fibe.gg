@@ -12,11 +12,11 @@ Replaces (not merges) the Player's `agent_defaults` JSON through `PATCH /api/age
 ## When to use
 - Setting platform-wide LLM provider/model preference.
 - Configuring `provider_overrides` (per-provider API keys / endpoints).
-- Updating runtime tuning fields — temperature, max_tokens, system prompt, etc.
+- Updating runtime tuning fields: temperature, max_tokens, system prompt, etc.
 
 ## When NOT to use
-- Tweaking a single Agent — use `fibe_resource_mutate(resource:"agent", operation:"update")`.
-- Resetting to admin defaults — use `fibe_agent_defaults_reset`.
+- Tweaking a single Agent: use `fibe_resource_mutate(resource:"agent", operation:"update")`.
+- Resetting to admin defaults: use `fibe_agent_defaults_reset`.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -34,12 +34,12 @@ The updated payload (same shape as `fibe_agent_defaults_get`).
 
 ## Gotchas
 - **Replacement, not merge.** To keep existing fields, fetch current via `fibe_agent_defaults_get` first, deep-merge yourself, then send.
-- `provider_overrides` may include API keys — make sure you're connected to the right tenant.
+- `provider_overrides` may include API keys: make sure you're connected to the right tenant.
 - Without `agents:write` scope: 403.
 - A missing or non-object `agent_defaults` payload returns 400; an invalid `websocket_max_connections` (must be a positive integer) returns 422.
 - Existing Agents that already have explicit overrides keep them; defaults only apply to fields NOT set on the Agent.
 
 ## Related
-- `fibe_agent_defaults_get` — read current state first.
-- `fibe_agent_defaults_reset` — start over.
-- `fibe_resource_mutate(resource:"agent", operation:"update")` — per-Agent overrides.
+- `fibe_agent_defaults_get`: read current state first.
+- `fibe_agent_defaults_reset`: start over.
+- `fibe_resource_mutate(resource:"agent", operation:"update")`: per-Agent overrides.

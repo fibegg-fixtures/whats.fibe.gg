@@ -1,15 +1,13 @@
 # FIBE public user guide
 
-The source for **[whats.fibe.gg](https://whats.fibe.gg)** — the Fibe user guide and machine-readable skill library.
+Source for the [Fibe user guide](https://whats.fibe.gg) and its machine-readable skill library.
 
 Two things live here:
 
-1. **A human user guide** — a Docusaurus site that explains every part of Fibe in clear, user-facing language.
-2. **A library of LLM skills** — small, task-focused Markdown files that let an AI agent understand Fibe's behavior, answer product questions, design workflows, and turn Docker Compose files into launchable Fibe templates without reading the application source.
+1. **User guide:** a Docusaurus site covering the Fibe product.
+2. **LLM skills:** focused Markdown guides for product questions, workflows, and converting Docker Compose files to Fibe templates.
 
-Both are published from this repo to `whats.fibe.gg` via GitHub Pages.
-
----
+GitHub Pages publishes both to `whats.fibe.gg`.
 
 ## Local development
 
@@ -21,7 +19,7 @@ npm install
 npm start          # http://localhost:3000 with live reload
 ```
 
-The dev server hot-reloads on edits to anything under `docs/`, `src/`, or static config.
+The development server reloads after changes under `docs/`, `src/`, or static configuration.
 
 ## Build & preview
 
@@ -30,11 +28,11 @@ npm run build      # production build into ./build/
 npm run serve      # preview the built site at http://localhost:3000
 ```
 
-`npm run build` currently warns on broken internal links (`onBrokenLinks: 'warn'`) and still must be run locally before opening a PR so link warnings, generated references, OG cards, and build output are visible.
+Run `npm run build` before opening a PR. It reports broken links (`onBrokenLinks: 'warn'`) and generates references, Open Graph cards, and the site output.
 
 ## Deploy
 
-Pushes to `main` trigger `.github/workflows/deploy.yml`, which builds the site and publishes it to GitHub Pages. The custom domain comes from `static/CNAME`.
+Pushes to `main` run `.github/workflows/deploy.yml`, which builds and publishes the site to GitHub Pages. `static/CNAME` sets the custom domain.
 
 ## Repository structure
 
@@ -44,10 +42,10 @@ whats.fibe.gg/
 ├── sidebars.js            # manual sidebar hierarchy
 ├── docs/                  # the user-facing guide content (Markdown)
 │   ├── intro.md
-│   ├── concepts/          # Product concepts: Marquees, Props, Playgrounds, Tricks, Genies, and more
+│   ├── concepts/          # Product concepts
 │   ├── advanced/          # Security, API keys, Secret Vault, webhooks, limits, and account settings
 │   ├── authoring/         # Compose → Fibe authoring guides
-│   ├── operate/           # Common problems, automatic recovery, cleanup/cascades, publishing
+│   ├── operate/           # Problems, recovery, cleanup, and publishing
 │   ├── sdk/               # CLI, Go library, MCP server, and workflows
 │   ├── api/               # Public REST API reference
 │   └── reference/         # Generated skill/tool pages plus curated behavior references
@@ -71,35 +69,33 @@ whats.fibe.gg/
 
 ## The homepage
 
-- `/` — the React homepage. Hero + feature grid + footer.
-- `/intro/` — the entry point into the guide.
+- `/`: React homepage with a hero, feature grid, and footer.
+- `/intro/`: guide entry point.
 
 ## Release scope and workspace skills
 
-This repository publishes the public product guide and product skills. The private
-viktorvsk/fibe-skills repository separately owns contributor workspace procedures;
-its operational references and credentials must not be imported into this site.
+This repository publishes the public product guide and skills. The private
+`viktorvsk/fibe-skills` repository owns contributor workspace procedures. Do not
+import its operational references or credentials here.
 
-Production fibe.gg follows Rails main; next.fibe.live follows unstable. Mark
-staging-only changes explicitly and verify production behavior before removing
-that qualifier. Older standalone Ruby Core/v2 requirements are postponed design
-material, not evidence for the maintained v1.5 release. This distinction does not
-mean every existing guide page has been revalidated against both releases.
+Production `fibe.gg` follows Rails `main`; `next.fibe.live` follows `unstable`.
+Label staging-only behavior and verify it in production before removing that
+label. Older standalone Ruby Core and v2 requirements are design material, not
+evidence for v1.5. Existing pages may not have been checked against both releases.
 
-For a seed refresh, select an explicit source checkout and verify its branch and
-revision first. Do not run the historical sibling ../fibe import against a v2
-checkout merely because it is nearby. Regenerate from canonical skill sources;
-do not edit generated reference pages directly.
+Before refreshing seeds, choose a source checkout and verify its branch and
+revision. Do not run the historical `../fibe` import against a nearby v2 checkout.
+Regenerate from canonical skills instead of editing generated reference pages.
 
 ## Editing content
 
-- **Per-section guide pages** live under `docs/<area>/<page>.md`. They use Docusaurus frontmatter (`title`, `description`, `sidebar_position`, `keywords`) and Markdown / MDX with admonitions (`:::tip`, `:::caution`, `:::info`, `:::details`).
+- **Guide pages** live under `docs/<area>/<page>.md`. They use Docusaurus frontmatter (`title`, `description`, `sidebar_position`, `keywords`) and Markdown or MDX admonitions (`:::tip`, `:::caution`, `:::info`, `:::details`).
 - **Skill reference pages** live under `docs/reference/` and `docs/reference/tools/`. Most are generated from these canonical sources:
-  - `skills/` — the **docs-only** authoring source (recipes, playbooks, decision guides, foundations).
-  - `seed-skills/` — a **mirror of the public MCP tool guides** from the upstream Rails seed dir (`db/seeds/fibe_skills/` in the explicitly selected Rails checkout). Do **not** edit them here; edit the source in the fibe repo and re-run `npm run import-seed-skills`.
+  - `skills/`: authoring source for recipes, playbooks, decisions, and foundations.
+  - `seed-skills/`: mirror of public MCP tool guides from `db/seeds/fibe_skills/` in the selected Rails checkout. Edit the Rails source, then run `npm run import-seed-skills`.
 - Curated pages such as `docs/reference/intro.md`, `docs/reference/json-schema.md`, and `docs/reference/platform-behavior-contracts.md` are maintained directly and are not overwritten by the skill sync.
-- **Open Graph card images** are generated automatically at build time from the page title + description. No need to author them by hand.
-- **llms.txt** and **llms-full.txt** are also generated at build time from the same content. No manual upkeep.
+- **Open Graph cards** are generated at build time from each page title and description.
+- **llms.txt** and **llms-full.txt** are generated from the same content.
 
 ### Regenerating reference pages
 
@@ -119,16 +115,16 @@ The sync routes files like this:
 - `seed-skills/fibe-<rest>.md` (not tool) → `docs/reference/foundation-<rest>.md`
 - Other seed files → `docs/reference/<name>.md`
 
-The agent-internal seed files (`main.md`, `system.md`, `cursor-runtime.mdc`) are excluded — they're runtime prompts, not documentation.
+Agent runtime prompts (`main.md`, `system.md`, `cursor-runtime.mdc`) are excluded.
 
 ## SEO and discoverability
 
 - `sitemap.xml` is generated automatically by the classic preset and listed in `robots.txt`.
 - Each page emits per-page Open Graph + Twitter Card meta from its frontmatter.
 - `llms.txt` and `llms-full.txt` make the entire site indexable by LLM agents per [llmstxt.org](https://llmstxt.org).
-- `llm-skills.txt` is a compact, deterministic `<name>: <description>` index of every skill and tool. Generated by `npm run build-llm-skills` (and automatically as a `prebuild` step). Re-running on the same inputs always produces a byte-identical file.
+- `llm-skills.txt` is a deterministic `<name>: <description>` index of every skill and tool. `npm run build-llm-skills` generates it and `prebuild` runs it automatically. The same inputs produce the same bytes.
 - `robots.txt` follows the standard at [robotstxt.org](https://www.robotstxt.org).
 
 ## License
 
-© fibe.gg — all rights reserved (the published site). The `skills/` content is licensed for use by LLM tooling that consumes them per the file headers.
+© fibe.gg. All rights reserved for the published site. File headers define the license for LLM tools that consume `skills/`.

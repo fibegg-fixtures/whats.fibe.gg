@@ -18,8 +18,8 @@ fibe doctor
 
 The first thing to try, always. It checks:
 
-- Whether you can reach the Fibe API.
-- Whether your active profile / `FIBE_API_KEY` is valid.
+- Can you reach the Fibe API?
+- Is your active profile or `FIBE_API_KEY` valid?
 - Basic environment sanity (binary version, OS, network).
 
 The output points at the actual problem. **If `fibe doctor` is green, the cause is in your code or in the resource you're calling against**, not in the SDK setup.
@@ -52,7 +52,7 @@ For the MCP server, use the same global flag: `fibe --debug mcp serve` (in a cli
 fibe --explain-errors playgrounds get does-not-exist
 ```
 
-The structured output includes the error code, HTTP status, request ID, and any validation details — enough for an agent to decide whether to retry or change the payload.
+The structured output includes the error code, HTTP status, request ID, and any validation details: enough for an agent to decide whether to retry or change the payload.
 
 ## Common errors
 
@@ -101,14 +101,14 @@ The Playground or Trick has stopped emitting data. For `playgrounds logs --follo
 
 Message delivery fails with a structured 422 whose error code tells you what to do (`--explain-errors` surfaces it):
 
-- `AGENT_BUSY` — the Genie is mid-turn. Retry, or send with a queue busy-policy.
-- `NEED_AUTH` — the Genie needs to re-authenticate: `fibe agents authenticate <id>`.
-- `AGENT_RUNTIME_NOT_RUNNING` — start the chat first: `fibe agents start-chat <id>`.
-- `AGENT_RUNTIME_UNREACHABLE` / `AGENT_RUNTIME_ERROR` — check the Marquee and `fibe agents runtime-status <id>`.
+- `AGENT_BUSY`: the Genie is mid-turn. Retry, or send with a queue busy-policy.
+- `NEED_AUTH`: the Genie needs to re-authenticate: `fibe agents authenticate <id>`.
+- `AGENT_RUNTIME_NOT_RUNNING`: start the chat first: `fibe agents start-chat <id>`.
+- `AGENT_RUNTIME_UNREACHABLE` / `AGENT_RUNTIME_ERROR`: check the Marquee and `fibe agents runtime-status <id>`.
 
 ### MCP: "Authorization required" but the agent set a header
 
-Double-check the server was started with `--http host:port` (add `--streamable` for streamable HTTP) — plain stdio ignores `Authorization` headers and uses the host's profile.
+Double-check the server was started with `--http host:port` (add `--streamable` for streamable HTTP): plain stdio ignores `Authorization` headers and uses the host's profile.
 
 ### MCP: tools list is empty
 
@@ -148,7 +148,7 @@ From an MCP client, the equivalent tools are `fibe_help`, `fibe_schema`, `fibe_d
 
 ## When to file a bug
 
-If `fibe doctor` is green, your scopes are right, and you've tried with `--debug` and a fresh `fibe login` — and the same call works through the web UI but fails via the SDK — that's a real bug. Open an issue with:
+If `fibe doctor` is green, your scopes are right, and you've tried with `--debug` and a fresh `fibe login`, and the same call works through the web UI but fails via the SDK, that's a real bug. Open an issue with:
 
 - `fibe version`
 - `fibe doctor` output
@@ -157,10 +157,10 @@ If `fibe doctor` is green, your scopes are right, and you've tried with `--debug
 
 ## When you're stuck
 
-Sometimes the fastest answer is a Genie. Open one of your AI assistants with access to the [reference library](/reference/intro/), give it the error message, and have it walk the relevant tool docs. The MCP server's tools (especially [`fibe_doctor`](/reference/tools/doctor/), [`fibe_status`](/reference/tools/status/), [`fibe_schema`](/reference/tools/schema/), and [`fibe_help`](/reference/tools/help/)) are designed for exactly this — they let an agent figure out the platform with you.
+Sometimes the fastest answer is a Genie. Open one of your AI assistants with access to the [reference library](/reference/intro/), give it the error message, and have it walk the relevant tool docs. The MCP server's tools (especially [`fibe_doctor`](/reference/tools/doctor/), [`fibe_status`](/reference/tools/status/), [`fibe_schema`](/reference/tools/schema/), and [`fibe_help`](/reference/tools/help/)) are designed for exactly this: they let an agent figure out the platform with you.
 
 ## Related
 
-- [Authentication](/sdk/authentication/) — credential setup.
-- [Tools catalog](/sdk/tools-catalog/) — every tool with annotations.
-- [Common problems & fixes (product-side)](/operate/common-problems/) — errors that come from your template or your Playground, not the SDK.
+- [Authentication](/sdk/authentication/): credential setup.
+- [Tools catalog](/sdk/tools-catalog/): every tool with annotations.
+- [Common problems & fixes (product-side)](/operate/common-problems/): errors that come from your template or your Playground, not the SDK.

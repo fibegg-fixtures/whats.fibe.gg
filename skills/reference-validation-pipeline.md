@@ -5,7 +5,7 @@ description: Use to understand which public validation stage catches which class
 
 # Reference: Fibe template validation pipeline
 
-Validation runs in **layers**. Each layer is authoritative for its scope. Higher layers may pass while later layers fail — never assume schema success means runtime success.
+Validation runs in **layers**. Each layer is authoritative for its scope. Higher layers may pass while later layers fail: never assume schema success means runtime success.
 
 ## The layers, in order
 
@@ -81,14 +81,14 @@ Also produces warnings when a static service has no image and no build, and when
 
 Catches:
 
-- `undeclared_var` — `$$var__X` referenced but `X` not declared.
-- `unused_var` — variable declared but never referenced AND no `path`/`paths`.
-- `missing_name` — variable has no/empty `name`.
-- `invalid_regex_format` — `validation` not wrapped in `/.../`.
-- `invalid_regex` — body inside `/.../` is not a valid validation pattern.
-- `template_token_in_default` — `default` contains `$$var__*`, `$$random__*`, or `$$root_domain`; defaults must be literals.
-- `invalid_path_service` — `path`/`paths` targets a missing `services.<name>` root. Missing leaves under existing services are allowed.
-- Warning `whole_node_inline_var` — a whole YAML node is exactly `$$var__NAME`; use `path`/`paths` instead.
+- `undeclared_var`: `$$var__X` referenced but `X` not declared.
+- `unused_var`: variable declared but never referenced AND no `path`/`paths`.
+- `missing_name`: variable has no/empty `name`.
+- `invalid_regex_format`: `validation` not wrapped in `/.../`.
+- `invalid_regex`: body inside `/.../` is not a valid validation pattern.
+- `template_token_in_default`: `default` contains `$$var__*`, `$$random__*`, or `$$root_domain`; defaults must be literals.
+- `invalid_path_service`: `path`/`paths` targets a missing `services.<name>` root. Missing leaves under existing services are allowed.
+- Warning `whole_node_inline_var`: a whole YAML node is exactly `$$var__NAME`; use `path`/`paths` instead.
 
 ## [5b] Managed env warnings
 
@@ -98,11 +98,11 @@ Compose validation warns when a service `environment:` defines known Fibe-manage
 
 Catches at compile time:
 
-- `Variable '<key>' is required` — required, no value, no default, not random.
-- `Variable '<key>' fails validation pattern <pattern>` — supplied value doesn't match the variable's regex.
-- `Variable '<key>' path '<path>' could not be written` — path binding reached a non-traversable scalar/array shape.
+- `Variable '<key>' is required`: required, no value, no default, not random.
+- `Variable '<key>' fails validation pattern <pattern>`: supplied value doesn't match the variable's regex.
+- `Variable '<key>' path '<path>' could not be written`: path binding reached a non-traversable scalar/array shape.
 
-The compiler also performs the substitution work — it is the layer that actually produces the final compose YAML.
+The compiler also performs the substitution work: it is the layer that actually produces the final compose YAML.
 
 ## [7] Runtime API
 
@@ -111,19 +111,19 @@ Drive through MCP, CLI, API, or UI launch/preview. Catches:
 - `trigger_config.prop_id` / `marquee_id` / `schedule_config.marquee_id` not found or not owned by Player.
 - `trigger_config.repo_url` not authorized (no installed GitHub app, no Gitea token).
 - Source defaults can't be applied (template imported from non-existent Prop).
-- Conflicts during launch (e.g. subdomain already taken at the chosen Marquee — only surfaces at launch).
+- Conflicts during launch (e.g. subdomain already taken at the chosen Marquee: only surfaces at launch).
 
 ## Driving each layer
 
 | Layer | MCP / Tool |
 |---|---|
 | 1-5 (everything but compile + runtime) | `fibe_schema(resource: "compose", operation: "validate", payload: { "compose_yaml": "..." })` |
-| 6 (compile / preview) | `fibe_templates_change(mode: "preview", ...)`. `fibe_launch` has no dry-run — calling it launches for real; validate first with `fibe_schema(resource: "compose", operation: "validate", ...)` |
+| 6 (compile / preview) | `fibe_templates_change(mode: "preview", ...)`. `fibe_launch` has no dry-run: calling it launches for real; validate first with `fibe_schema(resource: "compose", operation: "validate", ...)` |
 | 7 (runtime) | `fibe_launch` for real, or `fibe_resource_mutate(resource: "playspec", operation: "create", ...)` for import |
 
 ## Common confusion
 
-- A schema-valid template can still fail compile. Example: declared `required: true`, no default, no random — only the compiler catches this.
+- A schema-valid template can still fail compile. Example: declared `required: true`, no default, no random: only the compiler catches this.
 - `$$var__NAME` works in whole-label values for old templates, but validation warns because `path`/`paths` preserves local Compose parity and is the primary contract.
 - Defaults are not templates. `default: "api-$$var__SUBDOMAIN"` is invalid; create explicit path-bound variables for derived public values.
 - The schema **does not** prove the template compiles to runnable Compose. Always run a preview/launch.

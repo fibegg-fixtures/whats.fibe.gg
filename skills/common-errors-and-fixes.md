@@ -73,11 +73,11 @@ The URL isn't HTTPS / isn't a supported provider.
 
 **Fix:** Prefer a valid HTTPS, full `ssh://`, or SCP-style SSH URL such as `git@host:owner/repo.git`. Plain HTTP is accepted for private development networks but produces an insecure-transport warning. See [recipe-build-to-repo-url](recipe-build-to-repo-url.md).
 
-### `Service '<n>': invalid exposure visibility '<v>' — must be 'internal' or 'external'`
+### `Service '<n>': invalid exposure visibility '<v>': must be 'internal' or 'external'`
 
 Only lowercase `internal` or `external`.
 
-**Fix:** Use lowercase `internal` or `external`. `External` fails — case-sensitive. See [recipe-ports-to-expose](recipe-ports-to-expose.md).
+**Fix:** Use lowercase `internal` or `external`. `External` fails: case-sensitive. See [recipe-ports-to-expose](recipe-ports-to-expose.md).
 
 ### `Service '<n>': fibe.gg/visibility requires fibe.gg/port`
 
@@ -85,7 +85,7 @@ You set `fibe.gg/visibility` on a service that has no `fibe.gg/port`.
 
 **Fix:** Add the port label, or remove the visibility label.
 
-### `Service '<n>': invalid exposure port '<v>' — must be a number between 1 and 65535`
+### `Service '<n>': invalid exposure port '<v>': must be a number between 1 and 65535`
 
 Port out of range.
 
@@ -97,31 +97,31 @@ Subdomain regex: `^[a-z0-9]([a-z0-9-]*[a-z0-9])?$`, or `@`, or empty.
 
 **Fix:** Lowercase, no leading/trailing hyphen, no underscore. See [recipe-add-subdomain](recipe-add-subdomain.md).
 
-### `Service '<n>': invalid path_rule '<v>' — must contain a valid Traefik path matcher`
+### `Service '<n>': invalid path_rule '<v>': must contain a valid Traefik path matcher`
 
 `path_rule` must contain at least one of `Path(`, `PathPrefix(`, `PathRegexp(`.
 
 **Fix:** Add a path matcher. See [recipe-add-path-rule](recipe-add-path-rule.md).
 
-### `Service '<n>': invalid path_rule '<v>' — must only contain path matchers, not Host/Headers/Method/Query/ClientIP`
+### `Service '<n>': invalid path_rule '<v>': must only contain path matchers, not Host/Headers/Method/Query/ClientIP`
 
 Forbidden matchers (Host/HostRegexp/HostSNI/HostSNIRegexp/Headers/HeadersRegexp/Method/Query/ClientIP) appear. Fibe owns Host rules.
 
 **Fix:** Remove the forbidden matchers. See [recipe-add-path-rule](recipe-add-path-rule.md).
 
-### `Service '<n>': invalid healthcheck_interval '<v>' — must be a duration`
+### `Service '<n>': invalid healthcheck_interval '<v>': must be a duration`
 
 Duration must match `^[0-9]+(ms|s|m)$`. Not `h`, not `d`.
 
 **Fix:** Use `30s`, `1m`, `500ms`. Convert larger units (`60s` not `1m` is also valid).
 
-### `Service '<n>': invalid healthcheck_retries '<v>' — must be a positive integer`
+### `Service '<n>': invalid healthcheck_retries '<v>': must be a positive integer`
 
 Healthcheck retries: `^[1-9][0-9]*$`. Not `0`. Not `-1`.
 
 **Fix:** `"3"`, `"12"`, etc.
 
-### `Service '<n>': invalid <label> value '<v>' — must be true or false`
+### `Service '<n>': invalid <label> value '<v>': must be true or false`
 
 Boolean labels accept only `true`/`false` (string or YAML bool).
 
@@ -212,7 +212,7 @@ Same as above but for Marquee.
 ### Trigger doesn't fire
 
 Possible causes:
-- `enabled: false` — set to `true`.
+- `enabled: false`: set to `true`.
 - The Prop doesn't have a webhook installed (GitHub app missing / Gitea token missing).
 - The event type doesn't match (PR event when you're pushing to the branch).
 

@@ -1,6 +1,6 @@
 ---
 title: Agent Defaults
-description: Account-wide defaults for new Genies — CLI version, system prompt, environment, MCP servers, mounted files, post-init.
+description: "Account-wide defaults for new Genies: CLI version, system prompt, environment, MCP servers, mounted files, post-init."
 slug: /advanced/agent-defaults
 sidebar_position: 8
 keywords: [agent defaults, Genie defaults, system prompt, MCP, mounted files, CLI version]
@@ -8,8 +8,8 @@ keywords: [agent defaults, Genie defaults, system prompt, MCP, mounted files, CL
 
 Account-wide defaults for new Genies. Two levels:
 
-- **General defaults** — apply to every new Genie regardless of provider.
-- **Per-provider defaults** — apply to new Genies of a specific provider (Claude, Gemini, OpenCode, etc.) and override the general default.
+- **General defaults**: apply to every new Genie regardless of provider.
+- **Per-provider defaults**: apply to new Genies of a specific provider (Claude, Gemini, OpenCode, etc.) and override the general default.
 
 The settings cascade for a Genie is: per-Genie → per-provider default → general default → platform default → built-in default. See [Genies → Settings cascade](/concepts/agents/#settings-cascade).
 
@@ -36,9 +36,9 @@ The settings cascade for a Genie is: per-Genie → per-provider default → gene
 
 For text fields that already have an upstream value (per-provider, platform, or built-in default), three modes:
 
-- **Use default** — inherit verbatim.
-- **Append** — extend the upstream value.
-- **Override** — replace entirely.
+- **Use default**: inherit verbatim.
+- **Append**: extend the upstream value.
+- **Override**: replace entirely.
 
 Append is the safe default. Override only when the upstream value gets in the way.
 
@@ -52,5 +52,5 @@ Each field has a reset action: drop the account value and fall back to the next 
 
 ## Related
 
-- [Your Genies](/concepts/agents/) — per-Genie configuration.
-- [MCP server](/sdk/mcp-server/) — what custom MCP JSON points at.
+- [Your Genies](/concepts/agents/): per-Genie configuration.
+- [MCP server](/sdk/mcp-server/): what custom MCP JSON points at.

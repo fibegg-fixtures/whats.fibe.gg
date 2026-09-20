@@ -28,21 +28,17 @@
   <rect width="1200" height="630" fill="url(#bg)"/>
   <rect width="1200" height="630" fill="url(#glow)"/>
 
-  <!-- Brand mark — real Fibe icon, embedded at build time -->
   <image x="80" y="80" width="120" height="120"
          href="data:image/png;base64,__ICON_BASE64__"/>
 
-  <!-- Wordmark -->
   <text x="220" y="170"
         font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
         font-size="68" font-weight="700" fill="#f9fafb">Fibe</text>
 
-  <!-- Headline -->
   <text x="80" y="320"
         font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
         font-size="70" font-weight="700" fill="#f9fafb">User guide &amp; skills</text>
 
-  <!-- Tagline (hand-wrapped) -->
   <text x="80" y="400"
         font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
         font-size="32" font-weight="400" fill="#c5c9d4">Docker environments, AI Genies,</text>
@@ -50,11 +46,9 @@
         font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
         font-size="32" font-weight="400" fill="#c5c9d4">and reusable templates.</text>
 
-  <!-- Footer URL -->
   <text x="80" y="570"
         font-family="ui-monospace, 'SF Mono', Menlo, monospace"
         font-size="22" font-weight="400" fill="#c5c9d4">whats.fibe.gg</text>
 
-  <!-- Bottom accent bar -->
   <rect x="0" y="622" width="1200" height="8" fill="url(#bottomBar)"/>
 </svg>

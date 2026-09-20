@@ -12,15 +12,15 @@ Send signed event callbacks to external systems when Fibe resources change. Outb
 
 Each webhook has:
 
-- A **destination URL** — HTTPS required.
-- A **selection of event types** to listen for — exact names, or `*` for everything.
-- A **signing secret** — Fibe HMAC-signs every payload; verify on receipt.
+- A **destination URL**: HTTPS required.
+- A **selection of event types** to listen for: exact names, or `*` for everything.
+- A **signing secret**: Fibe HMAC-signs every payload; verify on receipt.
 
 Available families cover **Playgrounds, Marquees, Props, Playspecs, Agents, Templates, Artefacts, Mutters, Feedback, API keys, Secrets, Webhooks**.
 
 ## Granular event filters
 
-Family subscription often delivers more than you want. Narrow with **event filters** — receive callbacks only for the specific resources you care about. A filter restricts an event type to a list of resource IDs.
+Family subscription often delivers more than you want. Narrow with **event filters**: receive callbacks only for the specific resources you care about. A filter restricts an event type to a list of resource IDs.
 
 Examples:
 
@@ -32,9 +32,9 @@ Examples:
 Fields:
 
 - **URL**.
-- **Events** — one or more event types.
-- **Description** — your reference.
-- **Active** — toggle to pause without deleting.
+- **Events**: one or more event types.
+- **Description**: your reference.
+- **Active**: toggle to pause without deleting.
 
 Signing secret generated at creation. Use it to verify deliveries.
 
@@ -61,7 +61,7 @@ You subscribe to exact event types (or `*` for everything); unknown event names 
 - A non-2xx response counts as a failed delivery and is **not retried**. Network-level failures (timeouts, connection refused) are retried up to 3 attempts with `attempt^4 + 2` seconds of delay.
 - After 10 consecutive failures the endpoint is disabled automatically; one successful delivery resets the counter.
 - The signature is sent in the `X-Webhook-Signature` header as `sha256=<hex digest>`, an HMAC-SHA256 over the raw request body using your signing secret.
-- Each delivery also carries `X-Webhook-Event` (the event name) and `X-Webhook-Delivery` / `X-Idempotency-Key` (the unique delivery id — use it for idempotency).
+- Each delivery also carries `X-Webhook-Event` (the event name) and `X-Webhook-Delivery` / `X-Idempotency-Key` (the unique delivery id: use it for idempotency).
 - Requests use `User-Agent: Fibe-Webhook/1.0` with a 5-second connect timeout and a 5-second read timeout. Very large receiver responses are truncated in delivery history.
 
 ## Verify signatures
@@ -84,21 +84,21 @@ Constant-time compare.
 ## Resilience
 
 - Payloads are HMAC-signed.
-- Repeated failures **auto-disable** the endpoint — it stays off until you switch it back on yourself, with the **Active** toggle or an endpoint update via the API.
+- Repeated failures **auto-disable** the endpoint: it stays off until you switch it back on yourself, with the **Active** toggle or an endpoint update via the API.
 - Re-enabling does **not** replay missed events. Use the [Audit log](/advanced/audit-log/) for missed events.
 
 ## Common pitfalls
 
-- Pointing a webhook at a private network address from a protected environment — callback never arrives.
-- Logging the raw payload alongside the secret — defeats signing.
-- Skipping signature verification because the URL is "secret enough" — it isn't.
+- Pointing a webhook at a private network address from a protected environment: callback never arrives.
+- Logging the raw payload alongside the secret: defeats signing.
+- Skipping signature verification because the URL is "secret enough": it isn't.
 
 ## Example: Slack notification on Trick failure
 
-- **Destination URL** — your Slack incoming-webhook URL.
-- **Events** — the failure event types themselves: `playground.creation.failed`, `playground.error` (Trick runs are Playground events). There is no status filter.
-- **Event filters** — optionally restrict to the specific Playgrounds you care about, by ID.
-- **Signing secret** — HMAC secret verified in your Slack-relay function.
+- **Destination URL**: your Slack incoming-webhook URL.
+- **Events**: the failure event types themselves: `playground.creation.failed`, `playground.error` (Trick runs are Playground events). There is no status filter.
+- **Event filters**: optionally restrict to the specific Playgrounds you care about, by ID.
+- **Signing secret**: HMAC secret verified in your Slack-relay function.
 
 In practice, relay through a small worker that translates Fibe's payload into Slack blocks.
 
@@ -124,6 +124,6 @@ No. Webhooks are outbound. To trigger a Fibe action from an external event, use 
 
 ## Related
 
-- [API Keys](/advanced/api-keys/) — inbound counterpart.
-- [Audit log](/advanced/audit-log/) — searchable history of changes.
-- [Tricks](/concepts/tricks/) — common webhook trigger source.
+- [API Keys](/advanced/api-keys/): inbound counterpart.
+- [Audit log](/advanced/audit-log/): searchable history of changes.
+- [Tricks](/concepts/tricks/): common webhook trigger source.

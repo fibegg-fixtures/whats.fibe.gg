@@ -15,13 +15,13 @@ Aggregates repository search across every connected GitHub App installation for 
 - Discovering repos when you don't have the org/account name handy.
 
 ## When NOT to use
-- You already know `<owner>/<repo>` — just `prop.attach`.
-- You already know the installation/repo target — search with `q` here, then use the returned repository fields.
+- You already know `<owner>/<repo>`: just `prop.attach`.
+- You already know the installation/repo target: search with `q` here, then use the returned repository fields.
 
 ## Inputs
 | Field | Type | Default | Notes |
 |---|---|---|---|
-| `q` | string | — | Substring on repo name (GitHub search semantics) |
+| `q` | string | None | Substring on repo name (GitHub search semantics) |
 | `page` | int | 1 | Clamped to 1..1000 |
 | `per_page` | int | 30 | Clamped to 1..100 |
 
@@ -47,12 +47,12 @@ Aggregates repository search across every connected GitHub App installation for 
 
 ## Gotchas
 - GitHub search may return stale results vs API; if a freshly-created repo doesn't appear, retry after a short delay.
-- Cannot search a repo the GitHub App doesn't have access to — install the App on the org first.
+- Cannot search a repo the GitHub App doesn't have access to: install the App on the org first.
 - `q` is GitHub's substring/keyword query, not regex.
 - Rate limits: each installation pull counts against its own GitHub App quota.
 
 ## Related
-- `fibe_get_github_token` — short-lived token for a found repo.
-- `fibe_repo_status_check` — verify access to specific URLs.
-- `fibe_github_repos_create` — make a new repo (OAuth path).
-- `fibe_resource_mutate(resource:"prop", operation:"attach")` — register the found repo.
+- `fibe_get_github_token`: short-lived token for a found repo.
+- `fibe_repo_status_check`: verify access to specific URLs.
+- `fibe_github_repos_create`: make a new repo (OAuth path).
+- `fibe_resource_mutate(resource:"prop", operation:"attach")`: register the found repo.

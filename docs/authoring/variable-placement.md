@@ -49,7 +49,7 @@ Fibe infers the type of the written value:
 - `true` / `false` in any letter case → booleans.
 - Anything else → strings.
 
-If you need a literal `"3"`, supply the value with quotes via a different mechanism — a path write of `3` will become an integer.
+If you need a literal `"3"`, supply the value with quotes via a different mechanism: a path write of `3` will become an integer.
 
 ## Useful behaviors
 
@@ -59,5 +59,5 @@ If you need a literal `"3"`, supply the value with quotes via a different mechan
 
 ## Related
 
-- [Launch variables](/authoring/variables/) — what's in a variable definition.
+- [Launch variables](/authoring/variables/): what's in a variable definition.
 - Reference: [`reference-yaml-paths`](/reference/reference-yaml-paths/).

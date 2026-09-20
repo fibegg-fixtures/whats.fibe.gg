@@ -9,7 +9,7 @@ tags: ["reference", "reference"]
 format: md
 ---
 
-`x-fibe.gg` is an **optional** root key on a Fibe Compose template. The Compose root still requires `services:`. The namespace key is the Compose convention for vendor extensions — Docker Compose silently ignores it, so the document remains valid for `docker compose up` testing.
+`x-fibe.gg` is an **optional** root key on a Fibe Compose template. The Compose root still requires `services:`. The namespace key is the Compose convention for vendor extensions: Docker Compose silently ignores it, so the document remains valid for `docker compose up` testing.
 
 The namespace value is an object with these recognized keys. Unknown keys are not part of the public contract; avoid them unless another Fibe feature explicitly documents them.
 
@@ -59,7 +59,7 @@ Some launchers understand optional UI hints such as `secret: true` and `sensitiv
 
 ## `metadata`
 
-Public template description and category. Strongly recommended before publishing — they appear on the template's public Bazaar card (a missing category shows as Uncategorized).
+Public template description and category. Strongly recommended before publishing: they appear on the template's public Bazaar card (a missing category shows as Uncategorized).
 
 ```yaml
 metadata:

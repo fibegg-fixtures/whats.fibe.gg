@@ -1,22 +1,3 @@
-/**
- * Custom Docusaurus plugin: emit one 1200×630 PNG Open Graph card per page.
- *
- * Strategy:
- *  - Walks `docs/` for every .md / .mdx file.
- *  - For each page, reads frontmatter (title + description) and renders an SVG
- *    OG card. Then encodes the SVG → PNG via @resvg/resvg-js.
- *  - Writes to `build/img/og/<slug>.png`.
- *  - A static fallback (`static/img/og-default.png`) covers pages that don't
- *    point at a generated card.
- *
- * Each markdown page's frontmatter sets `image: /img/og/<slug>.png` so
- * Docusaurus's built-in social-card mechanism picks up the right file.
- *
- * Failure mode: if @resvg/resvg-js isn't installed (e.g. fresh clone before
- * `npm install`), the plugin logs a warning and skips silently. The fallback
- * image still works.
- */
-
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -82,7 +63,7 @@ function renderSvg({title, description, eyebrow}) {
     <rect width="${W}" height="${H}" fill="url(#g)"/>
     <rect x="0" y="${H - 8}" width="${W}" height="8" fill="${ACCENT}"/>
     <g font-family="Inter, system-ui, sans-serif">
-      <text x="80" y="120" font-size="22" font-weight="600" letter-spacing="6" fill="${ACCENT}">${escapeXml((eyebrow || 'Fibe — user guide').toUpperCase())}</text>
+      <text x="80" y="120" font-size="22" font-weight="600" letter-spacing="6" fill="${ACCENT}">${escapeXml((eyebrow || 'Fibe: user guide').toUpperCase())}</text>
       ${titleLines.map((line, i) => `<text x="80" y="${titleY + i * 78}" font-size="68" font-weight="700" fill="${FG}">${escapeXml(line)}</text>`).join('')}
       ${descLines.map((line, i) => `<text x="80" y="${descY + i * 36}" font-size="26" fill="${MUTED}">${escapeXml(line)}</text>`).join('')}
       <text x="80" y="${H - 50}" font-size="22" fill="${MUTED}">whats.fibe.gg</text>
@@ -107,7 +88,7 @@ export default function pluginOgImages() {
       try {
         ({Resvg} = await import('@resvg/resvg-js'));
       } catch (err) {
-        console.warn('[plugin-og-images] @resvg/resvg-js not installed — skipping per-page OG card generation. Run `npm install` to enable.');
+        console.warn('[plugin-og-images] @resvg/resvg-js not installed: skipping per-page OG card generation. Run `npm install` to enable.');
         return;
       }
 
@@ -131,8 +112,6 @@ export default function pluginOgImages() {
           try {
             const resvg = new Resvg(svg, {fitTo: {mode: 'width', value: W}});
             const png = resvg.render().asPng();
-            // Flatten `reference/tools` into a single filename so we don't need to
-            // mkdir subdirectories inside the OG output dir.
             const flatPrefix = baseSlug ? baseSlug.replace(/\//g, '-') + '-' : '';
             const outName = `${flatPrefix}${f.base}.png`;
             fs.writeFileSync(path.join(ogOutDir, outName), png);

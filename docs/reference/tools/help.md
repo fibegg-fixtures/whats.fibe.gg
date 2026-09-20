@@ -39,11 +39,11 @@ Returns the short/long/help text for a `fibe <path>` command. No API call, no au
 - Specific subcommand: `{ "path": "templates versions create" }`.
 
 ## Gotchas
-- Errors with `unknown command` for typos — the matcher is exact prefix on CLI command names.
+- Errors with `unknown command` for typos: the matcher is exact prefix on CLI command names.
 - Requires the MCP server to run inside the `fibe` CLI (always true for the standard `fibe mcp serve`).
-- For *MCP* tool descriptions/schemas, prefer `fibe_tools_catalog` — `fibe_help` is for the CLI surface.
+- For *MCP* tool descriptions/schemas, prefer `fibe_tools_catalog`: `fibe_help` is for the CLI surface.
 
 ## Related
-- `fibe_tools_catalog` — MCP tool descriptions.
-- `fibe_schema` — payload schemas for `fibe_resource_*` calls.
-- `fibe_run` — last-resort CLI invocation; use this skill to learn its args.
+- `fibe_tools_catalog`: MCP tool descriptions.
+- `fibe_schema`: payload schemas for `fibe_resource_*` calls.
+- `fibe_run`: last-resort CLI invocation; use this skill to learn its args.

@@ -7,35 +7,35 @@ image: /img/og/concepts-billing.png
 keywords: [Billing, Wallet, Mana, Sparks, plan, subscription, top-up, referral, Rune]
 ---
 
-Everything financial — plans, balance, subscriptions, referrals — lives in **Profile → Billing**. Fibe doesn't push monthly subscriptions on you. You hold a balance in two currencies and spend on action.
+Manage plans, balances, subscriptions, and referrals under **Profile → Billing**. Fibe uses two currencies and charges for usage.
 
 ## Wallet
 
-The Wallet holds your account balance. It's the page you'll see most often under Billing.
+The Wallet holds your account balance.
 
 ### What the Wallet page shows
 
-- **Current balance** in each of the two currencies (see below).
-- **History** — every credit and debit, with a description and a link to the resource that triggered it. Every entry is labeled (top-up, grant, referral reward, conversion), so you can see where each credit came from.
-- **Debt** — unpaid days show up as a debt on the affected Marquee (and in the emails Fibe sends); the debt settles automatically out of your next credit.
+- **Current balance** in both currencies.
+- **History:** labeled credits and debits, with descriptions and links to the resources that caused them.
+- **Debt:** unpaid Marquee days, also reported by email. New credit settles the debt first.
 
 ### Top up
 
 From the Wallet page:
 
-1. Pick an amount, or pick a top-up pack (bundles at a small discount).
+1. Pick an amount or discounted pack.
 2. Pay via the billing provider shown in the checkout flow.
-3. Balance credited — usually immediately, sometimes after the provider clears the transaction.
+3. Receive the balance, usually immediately or after the provider clears the payment.
 
-Purchase amounts are bounded: by default the minimum Mana checkout is $10 and the maximum is 100,000 Mana, in multiples of 10 Mana — amounts outside those bounds are rejected at checkout.
+By default, Mana purchases range from $10 to 100,000 Mana in multiples of 10 Mana. Checkout rejects other amounts.
 
 Balance can also arrive without a checkout: a **[referral](#referrals)** reward, or an occasional **grant** the platform issues directly.
 
 ### Auto-recharge
 
-Auto-recharge is a recurring top-up, not a balance watcher: enable it on the Mana purchase form (a bundle checkout turns it on automatically) and the chosen amount is bought on a schedule — every 30 or 365 days, matching the billing interval you picked. It doesn't react to the balance level, so size it above your daily burn.
+Auto-recharge buys a fixed amount every 30 or 365 days. Enable it on the Mana purchase form; bundle checkout enables it automatically. It does not react to your balance, so choose an amount above your daily use.
 
-Use auto-recharge for production setups where you don't want a Marquee blocked because the balance hit zero — a correctly sized recharge keeps Marquees funded.
+Use a sufficient auto-recharge to keep production Marquees funded.
 
 ## Mana
 
@@ -43,12 +43,12 @@ Mana is the **primary** currency. Use it for anything persistent.
 
 ### What Mana pays for
 
-- **Tutorial (platform-managed) Marquees** — their daily running cost is debited from Mana.
-- **Conversion into Sparks** — one-way; Sparks are what standard (self-hosted) Marquees burn each day. Bundle checkouts convert automatically.
+- **Tutorial Marquees:** their daily cost is charged in Mana.
+- **Sparks:** a one-way conversion used to fund standard, self-hosted Marquees. Bundle checkout converts automatically.
 
 ### Bundles
 
-Buy bundles from the Billing page. Each Marquee's own page shows its daily cost, whether your balance covers it, and a **"Fund until"** date you control — Fibe debits one day at a time while that window is open.
+Buy bundles from Billing. Each Marquee shows its daily cost, available balance, and a **Fund until** date. Fibe charges one day at a time through that date.
 
 ## Sparks
 
@@ -56,7 +56,7 @@ Sparks are the **second** currency: they pay the daily running cost of standard 
 
 ### What Sparks pay for
 
-Sparks pay the **daily running cost of standard (self-hosted) Marquees**. You get Sparks by converting Mana — bundle checkouts do this automatically, or convert manually from the Wallet page.
+Sparks pay the daily cost of standard, self-hosted Marquees. Convert Mana manually in the Wallet or automatically through bundle checkout.
 
 ### Mana → Sparks conversion
 
@@ -64,35 +64,35 @@ Convert Mana to Sparks at a fixed rate from the Wallet page. One-way: Sparks can
 
 ## Subscriptions
 
-If you're on a plan that includes recurring entitlements — a managed Marquee, a feature bundle, anything else billed on a cycle — those show up in the **Active Subscriptions** section of the Billing page.
+Recurring plans appear under **Active Subscriptions** in Billing.
 
 Per-subscription columns:
 
-- **Plan** — what's being subscribed to.
-- **Provider** — the billing provider (e.g. card on file, third-party processor).
-- **Period** — current billing cycle dates.
-- **Status** — active, past due, cancelled, etc.
+- **Plan:** the subscribed product.
+- **Provider:** the billing provider.
+- **Period:** current billing cycle.
+- **Status:** active, past due, cancelled, or another provider state.
 
-If your subscription row shows a Cancel action, use it; otherwise contact support to cancel. Cancellation takes effect immediately — not at the end of the billing period — and stops future recharges only: balance already credited stays in your Wallet. To change plans, buy a different bundle from the Billing page.
+Use the Cancel action when shown; otherwise contact support. Cancellation is immediate and stops future recharges. Existing Wallet credit remains. Buy another bundle to change plans.
 
 ## Referrals
 
-Share your **referral code** with people who'd benefit from Fibe. Your code gives the new player a discount at checkout, and your reward (in Sparks) posts to your Wallet after their first qualifying purchase with the code. Each referred account is rewarded once, ever — a player who has already been referred can't be claimed again with a different code, and referring yourself doesn't count.
+Your **referral code** gives a new player a checkout discount. Their first qualifying purchase adds a Sparks reward to your Wallet. Each account can be referred once, and self-referrals do not count.
 
 The Billing page shows:
 
-- **Your Code** — the referral code unique to your account.
-- **Referrals desc** — a short description of the program (terms, payout, current promotion).
-- **Referred** — how many accounts have signed up using your code.
+- **Your Code:** your referral code.
+- **Referrals desc:** current terms, payout, and promotion.
+- **Referred:** number of accounts registered with your code.
 
 ## Runes
 
-A **Rune** is an invite code. The Billing page shows your own Rune — share it to invite people to Fibe. Each Rune carries a hard redemption cap: once that many sign-ups have used it, the code stops working. A Rune can also be bound to a specific email address **or** to an email domain — one or the other, never both — and only matching addresses can redeem it.
+A **Rune** is an invite code with a redemption limit. It stops working at that limit. A Rune may be restricted to one email address or one email domain, but not both.
 
 The page shows:
 
-- **Rune** — your code.
-- **Used** — how many of its invites have been redeemed.
+- **Rune:** your code.
+- **Used:** redeemed invites.
 
 ## What's free
 
@@ -102,9 +102,9 @@ You don't need to spend anything to:
 - Author Templates privately.
 - Browse the [Bazaar](/concepts/bazaar/).
 
-You start spending when you fund your first Marquee — tutorial Marquees are billed daily in Mana (bought as the Tutorial bundle), and Genie chats need a funded Marquee to run on.
+Spending starts when you fund a Marquee. Tutorial Marquees charge Mana daily, and Genie chats require a funded Marquee.
 
-:::info Staging update — 13 September 2026
+:::info Staging update: 13 September 2026
 On [next.fibe.live](https://next.fibe.live), delayed or repeated subscription
 cancellation jobs recheck the server's current funding and entitlement. They follow
 normal billing grace and retention instead of deleting playground records or
@@ -116,31 +116,31 @@ this is not a promise of indefinite hosting or storage without payment.
 
 ## When your balance runs low
 
-A funded Marquee is charged once per day — tutorial Marquees from your **Mana** balance, standard Marquees from your **Sparks** balance. Days are **service days**: fixed midnight-to-midnight windows in UTC, and a day counts as paid only when it's funded through to that day's end (billing intervals count 30 service days per month, 365 per year). Every Marquee has a **"Fund until"** date on its page: Fibe debits one day at a time while that window is open, and the page shows the daily rate and the projected cost to your chosen date. If a day's charge can't be covered, the Marquee winds down on a predictable, recoverable path — it doesn't vanish without warning.
+A funded Marquee is charged daily: Mana for tutorial Marquees and Sparks for standard ones. A service day runs from midnight to midnight UTC and is paid only when funded through its end. Billing intervals contain 30 service days per month or 365 per year. Each Marquee shows its daily rate, projected cost, and **Fund until** date. If a charge fails, the Marquee enters the recovery process below.
 
-### 1 · Runtime blocked, grace period starts
+### 1. Runtime blocked, grace starts
 
-The moment a daily charge fails, runtime actions on the Marquee are blocked and a **grace period** begins (3 days by default — the exact deadline is in the email you receive when grace starts):
+When a daily charge fails, runtime actions are blocked and a grace period begins. The default is three days; the grace email gives the deadline.
 
 - **New runtime actions are blocked.** Launching, rolling out, restarting, refreshing diagnostics, and pulling logs return a **`MARQUEE_NOT_FUNDED`** message. Read-only views and your Billing pages keep working.
-- **What's already running keeps running**, but Fibe stops actively managing it. On a **self-hosted** Marquee, running Playgrounds stay up — they just won't auto-recover, auto-expire, or pick up edits until you fund again. On a **platform-managed** (tutorial) Marquee, the Marquee is taken out of service: its Playgrounds are flagged as not funded and can no longer be used or managed, and its Genie chats are stopped — stored data is kept until the removal step.
+- **Self-hosted workloads keep running** without automatic recovery, expiration, or updates. A tutorial Marquee goes out of service: Playgrounds become unavailable and Genie chats stop. Stored data remains until removal.
 
 Nothing is deleted yet; the unpaid amount is tracked as a debt on the Marquee.
 
-### 2 · Grace ends → suspended
+### 2. Grace ends and suspension begins
 
-If grace passes and the balance still can't cover the Marquee, it moves to **suspended** — and repeated funding failures get there sooner: after 2 grace incidents, the next failed charge suspends the Marquee immediately, with no new grace period. It stays off and the debt stands. You'll have been emailed along the way.
+If the balance still cannot cover the Marquee after grace, it becomes **suspended**. After two grace incidents, the next failed charge suspends it immediately. The Marquee stays off and keeps its debt. Fibe sends email during this process.
 
-### 3 · Suspended too long → removed (managed Marquees only)
+### 3. Managed Marquee removal
 
-A suspended, still-unpaid **platform-managed** Marquee that passes its retention window (7 days after suspension by default) can be scheduled for removal and eventually **destroyed — and a destroyed Marquee takes its Playgrounds, Tricks, and their data with it.** That's the point of no return, which is why grace and emails come first.
+An unpaid platform-managed Marquee may be removed after its retention window, seven days after suspension by default. Destruction permanently removes its Playgrounds, Tricks, and their data.
 
-A **self-hosted** Marquee — your own server — is **never deleted by Fibe**. Left unpaid it's disabled and suspended, but your machine and its data stay yours; you simply lose Fibe's management until you re-enable it.
+Fibe never deletes a self-hosted server. An unpaid one becomes disabled and suspended, but its machine and data remain yours. Fibe management resumes after re-enabling it.
 
 ### Getting back to normal
 
 - **Top up** before removal. As soon as the credit lands, outstanding charges settle first, then the Marquee can be re-enabled: a self-hosted Marquee's apps were never touched, and on a managed Marquee your Playgrounds and Genie chats can be started again.
-- **Turn on [auto-recharge](#auto-recharge)** sized above your daily burn — the balance is then replenished on a schedule, so a correctly sized recharge keeps Marquees funded.
+- **Enable [auto-recharge](#auto-recharge)** with enough credit to cover daily use.
 
 :::warning Grace is a safety net, not a plan
 For any Marquee running real work, keep a buffer or enable auto-recharge. A removed managed Marquee takes its data with it.
@@ -151,7 +151,7 @@ For any Marquee running real work, keep a buffer or enable auto-recharge. A remo
 <details>
 <summary>Do credits expire?</summary>
 
-No — Mana and Sparks balances don't expire, whether purchased or granted.
+No. Purchased and granted Mana and Sparks do not expire.
 </details>
 
 <details>
@@ -163,7 +163,7 @@ Unused balance is refundable within a reasonable window after purchase. Specific
 <details>
 <summary>Cheapest way to start?</summary>
 
-The Tutorial bundle — a platform-managed Marquee billed daily in Mana, no server of your own needed. Move to your own host when ready for real work.
+The Tutorial bundle provides a managed Marquee billed daily in Mana, with no server required.
 </details>
 
 <details>
@@ -175,7 +175,7 @@ Convert on the Wallet page at the fixed rate. Immediate. One-way.
 <details>
 <summary>What happens if my balance hits zero?</summary>
 
-Runtime actions on the affected Marquee are **blocked** and a grace period starts — a platform-managed Marquee is also switched to Disabled, while a self-hosted one keeps its status but every runtime action returns `MARQUEE_NOT_FUNDED`. What's already running on a **self-hosted** Marquee keeps running — just unmanaged until you fund again. If it stays unpaid through grace it's **suspended**, and a **platform-managed** Marquee can eventually be **removed**, taking its environments with it. A self-hosted Marquee is never deleted by Fibe; your host machine stays yours. Full path: [When your balance runs low](#when-your-balance-runs-low). Auto-recharge avoids the whole thing.
+Runtime actions return `MARQUEE_NOT_FUNDED` and grace begins. A managed Marquee becomes disabled. Workloads on a self-hosted Marquee keep running without Fibe management. Continued nonpayment causes suspension and may eventually remove a managed Marquee and its environments. Fibe never deletes a self-hosted server. See [When your balance runs low](#when-your-balance-runs-low).
 </details>
 
 <details>
@@ -186,7 +186,7 @@ The Wallet history shows the order reference for each purchase; the invoice/rece
 
 ## Related
 
-- [Marquees](/concepts/marquees/) — the daily spender (Mana for tutorial hosts, Sparks for standard ones).
-- [Agents](/concepts/agents/) — run on funded Marquees.
-- [Advanced → Limits & Quotas](/advanced/limits/) — what your plan-level quotas are.
-- [Advanced → Data Backup](/advanced/backup/) — covered by your plan, not a Sparks spend.
+- [Marquees](/concepts/marquees/): daily charges in Mana or Sparks.
+- [Agents](/concepts/agents/): run on funded Marquees.
+- [Advanced → Limits & Quotas](/advanced/limits/): plan quotas.
+- [Advanced → Data Backup](/advanced/backup/): included with plans rather than charged in Sparks.

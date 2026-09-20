@@ -49,14 +49,14 @@ volumes:
 
 ## Conversion steps
 
-1. **`wiki` is the user-facing service** — public HTTP. Replace `ports: ["8080:3000"]` with `fibe.gg/port: 3000` + `fibe.gg/visibility: external` (container port, not host).
-2. **`db` is internal-only** — remove `ports:` if any; talk via service-name DNS (`db:5432`).
-3. **Hardcoded `wikijsrocks` password is unsafe** — convert to a `random: true` variable.
-4. **`DB_NAME=wiki` and other constants** — keep hardcoded.
-5. **Add `x-fibe.gg.metadata`** — description, category.
-6. **Add `x-fibe.gg.variables`** — subdomain, replicas (optional), DB password.
-7. **No `build:`** — both images are pre-built, so this is a fully **static** template.
-8. **No `fibe.gg/repo_url`** anywhere — no source backing.
+1. **`wiki` is the user-facing service**: public HTTP. Replace `ports: ["8080:3000"]` with `fibe.gg/port: 3000` + `fibe.gg/visibility: external` (container port, not host).
+2. **`db` is internal-only**: remove `ports:` if any; talk via service-name DNS (`db:5432`).
+3. **Hardcoded `wikijsrocks` password is unsafe**: convert to a `random: true` variable.
+4. **`DB_NAME=wiki` and other constants**: keep hardcoded.
+5. **Add `x-fibe.gg.metadata`**: description, category.
+6. **Add `x-fibe.gg.variables`**: subdomain, replicas (optional), DB password.
+7. **No `build:`**: both images are pre-built, so this is a fully **static** template.
+8. **No `fibe.gg/repo_url`** anywhere: no source backing.
 
 ## Output (Fibe template)
 
@@ -135,7 +135,7 @@ x-fibe.gg:
 | No metadata | `x-fibe.gg.metadata.{description,category}` | Pantry/launcher card |
 | No subdomain | `fibe.gg/subdomain: wiki` + `SUBDOMAIN.path` | Launcher chooses while local Compose keeps a concrete label |
 
-## Optional enhancements
+## Optional additions
 
 ### Add zero-downtime for the `wiki` service
 

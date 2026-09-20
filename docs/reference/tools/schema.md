@@ -12,13 +12,13 @@ format: md
 [MODE:DIALOG] Read-only, idempotent. Tier: meta.
 
 Returns the shared `resourceschema` registry used to validate every `fibe_resource_*` call. Two roles:
-1. **Discovery** — `resource:"list"` enumerates resources, aliases, and supported operations.
-2. **Validation source** — pre-call schema fetch so payloads pass server-side validation.
+1. **Discovery**: `resource:"list"` enumerates resources, aliases, and supported operations.
+2. **Validation source**: pre-call schema fetch so payloads pass server-side validation.
 
 Also runs side-effect-free Compose YAML validation when called with `resource:"compose", operation:"validate"`.
 
 ## When to use
-- Before any `fibe_resource_mutate` — never guess payload shape.
+- Before any `fibe_resource_mutate`: never guess payload shape.
 - Before `fibe_resource_list` with non-trivial filters.
 - Discovering valid resource names (singular snake_case canonical, plus aliases).
 - Validating a Compose YAML before creating a Playspec/Trick.
@@ -42,11 +42,11 @@ Also runs side-effect-free Compose YAML validation when called with `resource:"c
 }
 ```
 
-**`resource:"<name>"` (no operation)** — all operation schemas keyed by op name.
+**`resource:"<name>"` (no operation)**: all operation schemas keyed by op name.
 
-**`resource:"<name>", operation:"<op>"`** — single JSON Schema for that op's payload.
+**`resource:"<name>", operation:"<op>"`**: single JSON Schema for that op's payload.
 
-**`resource:"compose", operation:"validate"`** — calls `POST /api/compose_validations`; returns Compose validation result + errors.
+**`resource:"compose", operation:"validate"`**: calls `POST /api/compose_validations`; returns Compose validation result + errors.
 
 ## Compose validate payload
 ```json
@@ -64,10 +64,10 @@ Inline `compose_yaml` OR `compose_path` (local filesystem only).
 
 ## Gotchas
 - Canonical names are singular, snake_case: `playground`, not `Playgrounds`. Aliases such as `playgrounds` are accepted but the registry normalizes internally.
-- `fibe_resource_mutate` validates against this same schema **locally** before any HTTP call — failures are reported with the same field names.
+- `fibe_resource_mutate` validates against this same schema **locally** before any HTTP call: failures are reported with the same field names.
 - The schema is the source of truth even when other docs disagree. SDK schema is authoritative because the SDK validates with it.
 
 ## Related
-- `fibe_resource_list` / `fibe_resource_get` / `fibe_resource_delete` — schema-validated.
-- `fibe_resource_mutate` — every payload validated against `(resource, operation)` here.
-- `fibe_tools_catalog` with `include_schema:true` — for non-resource tools.
+- `fibe_resource_list` / `fibe_resource_get` / `fibe_resource_delete`: schema-validated.
+- `fibe_resource_mutate`: every payload validated against `(resource, operation)` here.
+- `fibe_tools_catalog` with `include_schema:true`: for non-resource tools.

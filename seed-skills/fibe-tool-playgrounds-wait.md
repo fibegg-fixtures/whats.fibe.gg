@@ -25,9 +25,9 @@ Polls `GET /api/playgrounds/:id/status` on a fixed interval until it reaches the
 | `interval` | string | no | Go duration; default `3s` |
 
 ## Output
-- Success — the Playground's status response payload at the moment the target was reached.
-- Failure — error envelope:
-  - `timeout after <dur> — last status: <state>` if the deadline expires.
+- Success: the Playground's status response payload at the moment the target was reached.
+- Failure: error envelope:
+  - `timeout after <dur>: last status: <state>` if the deadline expires.
   - Terminal failure (`error`/`failed`/`destroyed` not matching `target`) returns a terminal-state error with the reason populated from `failure_diagnostics`.
 
 ## Behavior
@@ -48,8 +48,8 @@ Polls `GET /api/playgrounds/:id/status` on a fixed interval until it reaches the
 ## Gotchas
 - Hard-coded terminal-failure shortcut: `error`, `failed`, `destroyed`. If `target == "destroyed"`, `destroyed` is the success path; otherwise it errors out.
 - `timeout` and `interval` accept bare integers as seconds (`"30"` = 30 s).
-- This polls the **DB-cached** status — the Marquee writes there asynchronously. There's a small lag between actual container state and what `wait` observes.
-- Don't call this from within `fibe_playgrounds_action`'s output — that already polls the action's request_id; `wait` is for the *post-action* state confirmation.
+- This polls the **DB-cached** status: the Marquee writes there asynchronously. There's a small lag between actual container state and what `wait` observes.
+- Don't call this from within `fibe_playgrounds_action`'s output: that already polls the action's request_id; `wait` is for the *post-action* state confirmation.
 
 ## Recipe (pipeline)
 ```json
@@ -64,6 +64,6 @@ Polls `GET /api/playgrounds/:id/status` on a fixed interval until it reaches the
 ```
 
 ## Related
-- `fibe_playgrounds_action` — the producer of state transitions.
-- `fibe_playgrounds_debug` — diagnose why wait timed out.
-- `fibe_logs_follow` — alternative for log-based readiness signals.
+- `fibe_playgrounds_action`: the producer of state transitions.
+- `fibe_playgrounds_debug`: diagnose why wait timed out.
+- `fibe_logs_follow`: alternative for log-based readiness signals.

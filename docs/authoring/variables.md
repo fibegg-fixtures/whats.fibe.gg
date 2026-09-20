@@ -24,7 +24,7 @@ services:
       fibe.gg/path_rule: PathPrefix(`/$$var__PATH_PREFIX`)
 ```
 
-`$$root_domain` is special — Fibe always replaces it with the launching Marquee's root domain. You don't need to declare it.
+`$$root_domain` is special: Fibe always replaces it with the launching Marquee's root domain. You don't need to declare it.
 
 Every declared variable must be used. Either reference it inline with `$$var__NAME`, or bind it with `path:` / `paths:`. A variable declared for later but not used anywhere fails validation with `unused_var` ("declared but never used").
 
@@ -71,7 +71,7 @@ Defaults are literal values only. Do not put `$$var__*`, `$$random__*`, or `$$ro
 ## Random values
 
 - Set `random: true` and the launcher doesn't have to supply anything.
-- The generated value is **persisted with the launch** and reused on subsequent compiles — your database password doesn't reset every time.
+- The generated value is **persisted with the launch** and reused on subsequent compiles: your database password doesn't reset every time.
 - Mark a variable `secret` or `sensitive` to nudge the launcher UI to mask the value.
 
 ## Validation patterns
@@ -131,6 +131,6 @@ When a `path:` targets a dotted label key such as `services.web.labels.fibe.gg/s
 
 ## Related
 
-- [Variable placement](/authoring/variable-placement/) — what goes in `path:` / `paths:`.
-- [Settings block](/authoring/settings-block/) — where `variables:` lives.
+- [Variable placement](/authoring/variable-placement/): what goes in `path:` / `paths:`.
+- [Settings block](/authoring/settings-block/): where `variables:` lives.
 - Reference: [`reference-template-variables`](/reference/reference-template-variables/), [`recipe-random-and-secrets`](/reference/recipe-random-and-secrets/).

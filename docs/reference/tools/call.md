@@ -19,9 +19,9 @@ Dispatches an arbitrary registered tool by name. Same dispatcher path as a direc
 - Reaching `fibe_props_*`, `fibe_marquees_*`, `fibe_secrets_*`, `fibe_webhooks_*`, etc. when running on `core` tier.
 
 ## When NOT to use
-- The concrete tool is already advertised — call it directly for cleaner traces.
-- You need to call `fibe_pipeline` — call it directly. Nesting is rejected.
-- You need to recursively call `fibe_call` itself — rejected.
+- The concrete tool is already advertised: call it directly for cleaner traces.
+- You need to call `fibe_pipeline`: call it directly. Nesting is rejected.
+- You need to recursively call `fibe_call` itself: rejected.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -62,6 +62,6 @@ Whatever the target tool returns. Errors propagate transparently with the same c
 4. `fibe_call({tool:"...", args:{...}})`.
 
 ## Related
-- `fibe_tools_catalog` — discover targets.
-- `fibe_pipeline` — preferred for multi-step chains; do not nest.
-- `fibe_run` — last-resort CLI escape hatch (less safe; avoid).
+- `fibe_tools_catalog`: discover targets.
+- `fibe_pipeline`: preferred for multi-step chains; do not nest.
+- `fibe_run`: last-resort CLI escape hatch (less safe; avoid).

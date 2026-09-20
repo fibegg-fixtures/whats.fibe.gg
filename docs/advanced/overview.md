@@ -17,7 +17,7 @@ Profile → Advanced Settings holds account-level configuration. Ten sections:
 | [API Keys](/advanced/api-keys/) | Programmatic-access credentials. |
 | [Secret Vault](/advanced/secrets/) | Encrypted credential storage reused across agents and integrations. |
 | [Webhooks](/advanced/webhooks/) | HTTP notifications when events occur on your account. |
-| [GitHub Apps](/advanced/github-apps/) | GitHub App installations — private repo access, CI triggers, agent integration. |
+| [GitHub Apps](/advanced/github-apps/) | GitHub App installations: private repo access, CI triggers, agent integration. |
 | [Agent Defaults](/advanced/agent-defaults/) | Account-wide defaults for new Genies. |
 | [Feature Preferences](/advanced/features/) | Account preferences and per-browser interface tuning. |
 | [Inbox Notifications](/advanced/notifications/) | Which events trigger toast notifications. |
@@ -25,4 +25,4 @@ Profile → Advanced Settings holds account-level configuration. Ten sections:
 
 Open Profile → Advanced Settings to land on the section card grid. Each card opens its dedicated page.
 
-The [audit log](/advanced/audit-log/) is not an Advanced Settings section — open **Audit Logs** from the main navigation.
+The [audit log](/advanced/audit-log/) is not an Advanced Settings section: open **Audit Logs** from the main navigation.

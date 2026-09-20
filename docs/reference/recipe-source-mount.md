@@ -9,7 +9,7 @@ tags: ["reference", "recipe"]
 format: md
 ---
 
-`working_dir` tells Fibe to bind-mount the cloned repo into the container at that path. Edits to files in the source tree show up inside the container immediately — the app must run a dev/watch process to react.
+`working_dir` tells Fibe to bind-mount the cloned repo into the container at that path. Edits to files in the source tree show up inside the container immediately: the app must run a dev/watch process to react.
 
 ## Required fields and labels
 
@@ -55,8 +55,8 @@ The app must:
 2. **Run a watch/dev process** (Vite, webpack-dev-server, nodemon, Rails `bin/dev`, `flask --debug run`, `uvicorn --reload`).
 3. **Listen on the port from `fibe.gg/port`.**
 4. **Allow the public Fibe host** when the framework validates hosts (Vite 6+ needs `server.allowedHosts: true`).
-5. **Watch the mounted source path** (some watchers need polling enabled when filesystem events don't cross the bind mount — e.g. `CHOKIDAR_USEPOLLING=true` for Node).
-6. **Keep `node_modules` / `__pycache__` / `tmp` / `Gemfile.lock`-derived dirs OUT of the source tree mounted from the repo** — they live in container-only volumes.
+5. **Watch the mounted source path** (some watchers need polling enabled when filesystem events don't cross the bind mount: e.g. `CHOKIDAR_USEPOLLING=true` for Node).
+6. **Keep `node_modules` / `__pycache__` / `tmp` / `Gemfile.lock`-derived dirs OUT of the source tree mounted from the repo**: they live in container-only volumes.
 
 ## Volumes for dependency dirs
 
@@ -80,7 +80,7 @@ volumes:
   web_node_modules:
 ```
 
-The named volume sits "on top of" the source-mount at the `node_modules` subdirectory — the container has them, but they don't leak into the repo on disk. (Bind mounts and named volumes layer at distinct paths.)
+The named volume sits "on top of" the source-mount at the `node_modules` subdirectory: the container has them, but they don't leak into the repo on disk. (Bind mounts and named volumes layer at distinct paths.)
 
 Similarly for Python:
 
@@ -189,12 +189,12 @@ x-fibe.gg:
 
 ## Pitfalls
 
-- **`fibe.gg/repo_url` without an absolute `working_dir`** — validator hard error.
-- **Committing `node_modules` to the repo** — bloats clone time and is overwritten by the volume anyway. Add to `.gitignore`.
-- **`fibe.gg/start_command` that builds and exits** — like `npm run build` — the container exits after build. Use the dev/watch command instead.
-- **Running production build under source mount** — works but wastes the live-edit feature; switch to `production: "true"`.
-- **Source-mount + `fibe.gg/zerodowntime`** — works but odd: zero-downtime is about rolling builds, not editing source. Use one or the other.
-- **Long-running compile-on-save (Rust, Java)** that can't reload at runtime — source mount provides no benefit. Use production mode and run a watcher-and-rebuild loop in a separate job-mode template.
+- **`fibe.gg/repo_url` without an absolute `working_dir`**: validator hard error.
+- **Committing `node_modules` to the repo**: bloats clone time and is overwritten by the volume anyway. Add to `.gitignore`.
+- **`fibe.gg/start_command` that builds and exits**: like `npm run build`: the container exits after build. Use the dev/watch command instead.
+- **Running production build under source mount**: works but wastes the live-edit feature; switch to `production: "true"`.
+- **Source-mount + `fibe.gg/zerodowntime`**: works but odd: zero-downtime is about rolling builds, not editing source. Use one or the other.
+- **Long-running compile-on-save (Rust, Java)** that can't reload at runtime: source mount provides no benefit. Use production mode and run a watcher-and-rebuild loop in a separate job-mode template.
 
 ## Related skills
 

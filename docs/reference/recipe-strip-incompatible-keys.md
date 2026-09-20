@@ -48,7 +48,7 @@ These work as in plain Compose:
 - `working_dir:`
 - `networks:`
 - `deploy:` (`replicas`, `resources.limits.cpus`, `memory`, etc.)
-- `configs:`, `secrets:` (Compose config/secret features — orthogonal to Fibe Secrets)
+- `configs:`, `secrets:` (Compose config/secret features: orthogonal to Fibe Secrets)
 - `shm_size:`, `tmpfs:`, etc.
 - `labels:` (`fibe.gg/*` keys + any other vendor labels)
 
@@ -114,7 +114,7 @@ volumes:
   app_uploads:
 ```
 
-The exception is `working_dir` — Fibe injects the source-tree bind mount automatically when `fibe.gg/repo_url` is set. See [recipe-source-mount](recipe-source-mount.md).
+The exception is `working_dir`: Fibe injects the source-tree bind mount automatically when `fibe.gg/repo_url` is set. See [recipe-source-mount](recipe-source-mount.md).
 
 ### `network_mode: host`
 
@@ -126,14 +126,14 @@ Current validation warns. Avoid in public templates unless the Marquee owner exp
 
 ### `cap_add: [SYS_ADMIN]` / `devices:` / etc.
 
-Same caveat — host-level escapes need Marquee admin awareness. Avoid for public templates.
+Same caveat: host-level escapes need Marquee admin awareness. Avoid for public templates.
 
 ## "Quality but not required" cleanups
 
 - **Drop dev-only services** unintended for production: `mailhog`, `phpmyadmin`, file-watchers, etc. Or guard with `profiles:`.
 - **Tighten image tags**: `postgres:latest` → `postgres:17.5`. Reproducible launches.
 - **Add resource limits**: `deploy.resources.limits.cpus`, `.memory` for noisy containers.
-- **Remove `restart: always`** on services that should NOT auto-restart (like one-shot migrations). For Fibe job-mode templates, this is irrelevant — runtime forces `restart: "no"`.
+- **Remove `restart: always`** on services that should NOT auto-restart (like one-shot migrations). For Fibe job-mode templates, this is irrelevant: runtime forces `restart: "no"`.
 
 ## Worked example
 
@@ -183,12 +183,12 @@ volumes:
 
 ## Pitfalls
 
-- **Forgetting to remove `ports:` on a zero-downtime service while `preserve_ports: true` is enabled** — schema/runtime hard error.
-- **Setting `preserve_ports: true` on a template with local dev ports** — preserves raw host bindings on Fibe; leave it unset unless those bindings are required.
-- **Keeping `container_name:` because "the docs said to"** — breaks replicas.
-- **Bind-mounting host paths and assuming they exist on every Marquee** — use named volumes or source mounts instead.
-- **Leaving `network_mode: host`** — Fibe relies on Compose networks for service discovery.
-- **Keeping `restart: always` in a job-mode template** — runtime forces `no` anyway, but the value is misleading. Use `restart: "no"` or omit.
+- **Forgetting to remove `ports:` on a zero-downtime service while `preserve_ports: true` is enabled**: schema/runtime hard error.
+- **Setting `preserve_ports: true` on a template with local dev ports**: preserves raw host bindings on Fibe; leave it unset unless those bindings are required.
+- **Keeping `container_name:` because "the docs said to"**: breaks replicas.
+- **Bind-mounting host paths and assuming they exist on every Marquee**: use named volumes or source mounts instead.
+- **Leaving `network_mode: host`**: Fibe relies on Compose networks for service discovery.
+- **Keeping `restart: always` in a job-mode template**: runtime forces `no` anyway, but the value is misleading. Use `restart: "no"` or omit.
 
 ## Related skills
 

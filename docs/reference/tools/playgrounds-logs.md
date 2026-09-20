@@ -21,8 +21,8 @@ One-shot service log fetch through async `POST /api/playgrounds/:id/logs`; the S
 - Pair with `fibe_playgrounds_debug` for full context (debug surfaces names; logs surface causes).
 
 ## When NOT to use
-- Need to wait for a pattern to appear — use `fibe_logs_follow`.
-- Need debug summary, not raw logs — use `fibe_playgrounds_debug`.
+- Need to wait for a pattern to appear: use `fibe_logs_follow`.
+- Need debug summary, not raw logs: use `fibe_playgrounds_debug`.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -53,12 +53,12 @@ Schema varies slightly by Marquee Docker version; the `logs` field is always pop
 4. Returns request_id + status_url; the SDK polls.
 
 ## Gotchas
-- "Service not found" usually means a typo — service names come from the Playspec's `services[*].name`, not always the Compose service name (Fibe sometimes prefixes/normalizes).
+- "Service not found" usually means a typo: service names come from the Playspec's `services[*].name`, not always the Compose service name (Fibe sometimes prefixes/normalizes).
 - Marquee unreachable → polling eventually returns an error envelope. Re-check Marquee status.
 - Logs may be truncated by Docker's own log driver (`max-size` etc.); `tail` is best-effort.
-- Container restarts reset stdout/stderr buffers — recent crashes may have logs that no longer exist.
+- Container restarts reset stdout/stderr buffers: recent crashes may have logs that no longer exist.
 
 ## Related
-- `fibe_playgrounds_debug` — names + ports + per-service status.
-- `fibe_logs_follow` — live streaming with pattern matching.
-- `fibe-debug` skill — broader troubleshooting recipes.
+- `fibe_playgrounds_debug`: names + ports + per-service status.
+- `fibe_logs_follow`: live streaming with pattern matching.
+- `fibe-debug` skill: broader troubleshooting recipes.

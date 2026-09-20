@@ -1,6 +1,6 @@
 ---
 title: JSON Schema
-description: The official JSON Schema for Fibe Compose templates — fibe.gg/* labels, x-fibe.gg namespace, variables, metadata. Use it for editor autocomplete and CI validation.
+description: "The official JSON Schema for Fibe Compose templates: fibe.gg/* labels, x-fibe.gg namespace, variables, metadata. Use it for editor autocomplete and CI validation."
 slug: /reference/json-schema
 sidebar_label: JSON Schema
 sidebar_position: 99
@@ -9,7 +9,7 @@ keywords: [JSON Schema, fibe.gg, validation, autocomplete, VSCode, IntelliJ, YAM
 format: md
 ---
 
-A machine-readable schema describes everything Fibe expects in a Compose template — every `fibe.gg/*` label, the `x-fibe.gg` namespace, template variables, scheduling, triggers. Point your editor at it for autocomplete and on-the-fly validation, or run it through any JSON-Schema validator in CI to gate your templates before launch.
+A machine-readable schema describes everything Fibe expects in a Compose template: every `fibe.gg/*` label, the `x-fibe.gg` namespace, template variables, scheduling, triggers. Point your editor at it for autocomplete and on-the-fly validation, or run it through any JSON-Schema validator in CI to gate your templates before launch.
 
 ## Where it lives
 
@@ -93,12 +93,12 @@ CI failure on schema-invalid input is a cheap way to catch problems before the p
 The template is a Docker Compose file. The schema validates that:
 
 - The root has a `services:` map.
-- Each service may carry `labels:` — either as an object (`{key: value}`) or an array (`["key=value"]`). Both forms are accepted; the schema validates the **fibe.gg/** subset in either shape.
+- Each service may carry `labels:`: either as an object (`{key: value}`) or an array (`["key=value"]`). Both forms are accepted; the schema validates the **fibe.gg/** subset in either shape.
 - Any property not under `fibe.gg/` passes through untouched.
 
 ### `fibe.gg/*` labels
 
-Nineteen labels are recognized. The table below summarizes each one — for the full prose explanation, see [Service labels](/authoring/service-labels/) and the [`reference-fibe-labels`](/reference/reference-fibe-labels/) skill. Repository-backed services additionally require the standard Compose `working_dir` field with an absolute container path.
+Nineteen labels are recognized. The table below summarizes each one: for the full prose explanation, see [Service labels](/authoring/service-labels/) and the [`reference-fibe-labels`](/reference/reference-fibe-labels/) skill. Repository-backed services additionally require the standard Compose `working_dir` field with an absolute container path.
 
 | Label | Value shape | Required when | Example |
 | --- | --- | --- | --- |
@@ -110,7 +110,7 @@ Nineteen labels are recognized. The table below summarizes each one — for the 
 | `fibe.gg/build_target` | string | multi-stage build | `production` |
 | `fibe.gg/build_args` | `KEY=value` comma-list | when `--build-arg` values are needed | `KEY=val,K2=v2` |
 | `fibe.gg/production` | `true` / `false` | distinguish built image vs source-mounted dev | `true` |
-| `fibe.gg/port` | port number (1–65535) | the service should have a URL | `3000` |
+| `fibe.gg/port` | port number (1 to 65535) | the service should have a URL | `3000` |
 | `fibe.gg/visibility` | `external` or `internal` | non-default visibility | `external` |
 | `fibe.gg/subdomain` | `@`, lowercase alnum+hyphen, or empty | overriding the default (service-name) subdomain | `api` |
 | `fibe.gg/path_rule` | Traefik `Path` / `PathPrefix` / `PathRegexp` matcher | sharing one subdomain across services | `PathPrefix(\`/api\`)` |
@@ -142,7 +142,7 @@ x-fibe.gg:
     trigger_config: { ... }   # VCS-triggered launches
 ```
 
-The schema accepts execution settings (`job_mode`, `schedule_config`, `trigger_config`) at both the root of `x-fibe.gg` and under `x-fibe.gg.metadata`. Current launch/import behavior reads them from `metadata` — keep them there.
+The schema accepts execution settings (`job_mode`, `schedule_config`, `trigger_config`) at both the root of `x-fibe.gg` and under `x-fibe.gg.metadata`. Current launch/import behavior reads them from `metadata`: keep them there.
 
 ### Template variables
 
@@ -214,13 +214,13 @@ A few rules are enforced by Fibe at compile/runtime but live outside the JSON Sc
 - **Required-when cross-label rules.** Example: a Compose `build:` block requires `fibe.gg/repo_url`. The schema describes individual labels but not their interdependencies.
 - **Reachability of resources.** `marquee_id: 1` is valid JSON-Schema-wise but fails at runtime if you don't own Marquee 1.
 - **Variable usage.** Declared-but-never-used or referenced-but-never-declared variables are flagged by the validator after schema check, not by the schema itself.
-- **Job-mode constraints.** When `metadata.job_mode: true`, the runtime forces `restart: "no"` and `replicas: 1`, and forbids `expose:` — those are runtime enforcements, not schema constraints.
+- **Job-mode constraints.** When `metadata.job_mode: true`, the runtime forces `restart: "no"` and `replicas: 1`, and forbids `expose:`: those are runtime enforcements, not schema constraints.
 
 For the full validation pipeline (schema → cross-label → compile → runtime), see [`reference-validation-pipeline`](/reference/reference-validation-pipeline/).
 
 ## Related
 
-- [Service labels](/authoring/service-labels/) — every `fibe.gg/*` label in prose form.
-- [Settings block](/authoring/settings-block/) — the `x-fibe.gg` namespace.
-- [Launch variables](/authoring/variables/) — variable shape and binding.
+- [Service labels](/authoring/service-labels/): every `fibe.gg/*` label in prose form.
+- [Settings block](/authoring/settings-block/): the `x-fibe.gg` namespace.
+- [Launch variables](/authoring/variables/): variable shape and binding.
 - Reference skills: [`reference-fibe-labels`](/reference/reference-fibe-labels/), [`reference-x-fibe-gg-namespace`](/reference/reference-x-fibe-gg-namespace/), [`reference-template-variables`](/reference/reference-template-variables/), [`reference-yaml-paths`](/reference/reference-yaml-paths/), [`reference-validation-pipeline`](/reference/reference-validation-pipeline/).

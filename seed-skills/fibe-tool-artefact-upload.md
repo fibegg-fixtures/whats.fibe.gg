@@ -17,8 +17,8 @@ When `FIBE_WORKSPACE_PATH` is set, the same content is also written into that di
 - Capturing tool output for later download/review.
 
 ## When NOT to use
-- Short progress updates — use `fibe_mutter`.
-- Persistent data the agent will reuse — that's a Memory (`fibe_memorize`) not an Artefact.
+- Short progress updates: use `fibe_mutter`.
+- Persistent data the agent will reuse: that's a Memory (`fibe_memorize`) not an Artefact.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -56,17 +56,17 @@ The created Artefact JSON, including its `id`, attached file URL hint, content t
 - Subdirectories OK (`reports/2026-q1.md` writes under `<workspace>/reports/...`).
 
 ## Output download
-To later read the file content, use `fibe_resource_get(resource:"artefact_attachment", id_or_name:<artefact_id>)` — returns base64.
+To later read the file content, use `fibe_resource_get(resource:"artefact_attachment", id_or_name:<artefact_id>)`: returns base64.
 
 ## Gotchas
 - `FIBE_AGENT_ID` env is required only when `agent_id_or_name` is omitted; missing identity then fails immediately.
 - `content_base64` and `content_path` are mutually exclusive in practice (only one is read; base64 wins if both set).
 - `body`/`content_text` are useful for report-style artefacts where there is no local file to read.
-- Without explicit `filename`, the artefact's filename equals `name` — make `name` filesystem-safe if you rely on this.
-- `content_path` only works on local MCP transport — fails on remote-served MCP.
+- Without explicit `filename`, the artefact's filename equals `name`: make `name` filesystem-safe if you rely on this.
+- `content_path` only works on local MCP transport: fails on remote-served MCP.
 - Workspace writes use `0644`/`0755` permissions; existing files are overwritten silently.
 
 ## Related
-- `fibe_resource_get(resource:"artefact_attachment")` — download the file.
-- `fibe_resource_list(resource:"artefact")` — discover existing artefacts.
-- `fibe_mutter` — short-form alternative.
+- `fibe_resource_get(resource:"artefact_attachment")`: download the file.
+- `fibe_resource_list(resource:"artefact")`: discover existing artefacts.
+- `fibe_mutter`: short-form alternative.

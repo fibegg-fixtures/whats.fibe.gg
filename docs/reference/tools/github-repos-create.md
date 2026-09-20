@@ -19,9 +19,9 @@ Creates a fresh GitHub repository on the Player's OAuth-linked GitHub account th
 - Standalone Prop creation tied to a brand-new GitHub repo.
 
 ## When NOT to use
-- Player has no GitHub OAuth connection — fail fast with a redirect message.
-- You only need to deploy something — `fibe_launch` doesn't need a repo.
-- Existing repo — use the `prop.attach` operation via `fibe_resource_mutate`.
+- Player has no GitHub OAuth connection: fail fast with a redirect message.
+- You only need to deploy something: `fibe_launch` doesn't need a repo.
+- Existing repo: use the `prop.attach` operation via `fibe_resource_mutate`.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -32,7 +32,7 @@ Creates a fresh GitHub repository on the Player's OAuth-linked GitHub account th
 | `description` | string | no | Repo description |
 
 ## Auth
-Requires the Player's GitHub **OAuth** token (NOT the GitHub App installation token — those are scoped to the App, not the user, and cannot create user/org repos). Without OAuth, Fibe returns `GITHUB_OAUTH_REQUIRED`.
+Requires the Player's GitHub **OAuth** token (NOT the GitHub App installation token: those are scoped to the App, not the user, and cannot create user/org repos). Without OAuth, Fibe returns `GITHUB_OAUTH_REQUIRED`.
 
 ## Output
 ```json
@@ -53,10 +53,10 @@ Requires the Player's GitHub **OAuth** token (NOT the GitHub App installation to
 - Repository name collisions surface as `REPOSITORY_CREATION_FAILED`.
 - Private repos require a GitHub plan that allows them.
 - The OAuth token's scopes must include `repo` (or `public_repo` for public-only).
-- Idempotency-Key is honored server-side — retrying with the same key skips creation if the request already succeeded.
+- Idempotency-Key is honored server-side: retrying with the same key skips creation if the request already succeeded.
 
 ## Related
-- `fibe_gitea_repos_create` — Gitea variant; creates Prop atomically.
-- `fibe_get_github_token` — pull a usable installation token afterward (different scope!).
-- `fibe_find_github_repos` — list existing repos before creating.
-- `fibe_resource_mutate(resource:"prop", operation:"attach")` — register the new repo as a Prop.
+- `fibe_gitea_repos_create`: Gitea variant; creates Prop atomically.
+- `fibe_get_github_token`: pull a usable installation token afterward (different scope!).
+- `fibe_find_github_repos`: list existing repos before creating.
+- `fibe_resource_mutate(resource:"prop", operation:"attach")`: register the new repo as a Prop.

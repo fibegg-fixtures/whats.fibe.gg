@@ -9,21 +9,21 @@ description: Use when an existing deployed playground needs to be switched end-t
 
 Apply mode requires the Playground's Marquee to be funded. Preview mode remains read-only. Unpaid Marquees return `MARQUEE_NOT_FUNDED`.
 
-The single-call tool for **changing the stack or service/source shape of an already-deployed playground** without recreating it. Preserves the playground id, repoints its playspec at a (possibly fresh) template, regenerates services, optionally provisions private Gitea repos for new props the player doesn't yet own, and rolls out — all in one MCP call.
+The single-call tool for **changing the stack or service/source shape of an already-deployed playground** without recreating it. Preserves the playground id, repoints its playspec at a (possibly fresh) template, regenerates services, optionally provisions private Gitea repos for new props the player doesn't yet own, and rolls out: all in one MCP call.
 
 This is the brownfield analog of `fibe_greenfield_create`. Routes through `/api/import_templates` (when authoring inline) + `/api/playspecs/:id/template_version_switch` + `/api/playgrounds/:id/rollout` server-side.
 
 ## When to use
 
-- "I want this playground to be a completely different app now (FastAPI + AngularJS instead of bun web)" — change the entire stack while keeping the deployment id.
+- "I want this playground to be a completely different app now (FastAPI + AngularJS instead of bun web)": change the entire stack while keeping the deployment id.
 - "Switch this trick onto a different template version that has new dynamic props the player doesn't own yet."
 - Any flow where the natural answer would be "delete and recreate" but the player needs to keep the same playground id (saved settings, share links, etc.).
 
 ## When NOT to use
 
-- Brand-new playground from scratch — use `fibe_greenfield_create`.
-- Template-author or admin workflows that specifically need to patch/overwrite/switch a template version primitive — use hidden `fibe_templates_change` through `fibe_call`.
-- Job-mode Trick template patching/reruns — use hidden `fibe_templates_change` with `target_type:"trick"` through `fibe_call`.
+- Brand-new playground from scratch: use `fibe_greenfield_create`.
+- Template-author or admin workflows that specifically need to patch/overwrite/switch a template version primitive: use hidden `fibe_templates_change` through `fibe_call`.
+- Job-mode Trick template patching/reruns: use hidden `fibe_templates_change` with `target_type:"trick"` through `fibe_call`.
 
 ## Top-level inputs
 
@@ -58,13 +58,13 @@ This is the brownfield analog of `fibe_greenfield_create`. Routes through `/api/
 |---|---|---|---|
 | `provision_missing_props` | enum | `"gitea"` | `"off"` \| `"gitea"` \| `"github"`. When the new template references a repo URL the player doesn't already own a Prop for, the server creates a fresh **private** repo in the player's connected Gitea (or GitHub) account, seeds it from the template's declared `source_repo_url`, and creates a Prop record. Set to `"off"` to disable and require existing player Props. |
 | `provision_private` | bool | `true` | Whether the freshly provisioned repos should be private. |
-| `provision_inputs` | array | — | Per-URL overrides: `[{source_repo_url, name_override?, default_branch?, description?, auto_init?}]`. `source_repo_url` must match a URL declared by the new template. |
+| `provision_inputs` | array | None | Per-URL overrides: `[{source_repo_url, name_override?, default_branch?, description?, auto_init?}]`. `source_repo_url` must match a URL declared by the new template. |
 
 ### Outcome controls
 | Field | Type | Default | Notes |
 |---|---|---|---|
 | `mode` | enum | `apply` | `preview` returns the diff, warnings, required variables, and prop-resolution preview without writes. `apply` commits. |
-| `confirm` | bool | — | Required `true` for `mode:"apply"` unless server runs `--yolo`. |
+| `confirm` | bool | None | Required `true` for `mode:"apply"` unless server runs `--yolo`. |
 | `confirm_warnings` | bool | `false` | Required `true` to proceed when preview reports switch warnings (dropped services, exposure changes, etc.). |
 | `wait` | bool | `true` | Block on rollout completion. |
 | `wait_timeout_seconds` | int | `180` | |
@@ -82,7 +82,7 @@ This is the brownfield analog of `fibe_greenfield_create`. Routes through `/api/
 
 - The **playground id is preserved**. Same `id`, same `playspec_id`. Only the playspec's `source_template_version_id` is repointed and `services[]` regenerated.
 - Before writing inline `template_body`, load `fibe-labels` and `fibe-services`; never infer `fibe.gg/*` labels from old playgrounds. Validate final YAML with `fibe_schema(resource:"compose", operation:"validate", payload:{compose_yaml: ..., target_type:"playspec"})`.
-- Expose services with `fibe.gg/port`; never use `fibe.gg/expose`. Standalone Core preserves native Compose `ports:` alongside HTTPS routing, so publish a host port only when direct access is intentional.
+- Expose services with `fibe.gg/port`; never use `fibe.gg/expose`. Compose `ports:` may remain for local-only development, but Fibe strips them unless `x-fibe.gg.metadata.preserve_ports: true`.
 - For latency-sensitive brownfield rewrites, avoid trial-and-error discovery: gather the target playground, local mounts, and URLs first; then make one clear switch-template plan and apply it once.
 - When the new services need custom source files before startup, pre-create all new Gitea repos in one `fibe_pipeline` batch, seed/commit/push their source, reference those real repo URLs in `template_body`, and then apply the switch. Use `provision_missing_props:"off"` when every referenced repo already has a Prop, so missing repos fail early instead of being silently replaced.
 - When the new services can start from generated/default source, skip manual repo creation and let this tool provision missing Props. Provide a unique `source_repo_url` per service and matching `provision_inputs` with `auto_init:true` so the tool creates empty initialized repos instead of trying to clone placeholder URLs.
@@ -95,7 +95,7 @@ This is the brownfield analog of `fibe_greenfield_create`. Routes through `/api/
   - `"off"`: fail with `PROP_RESOLUTION_FAILED`. Use this only if you've pre-created the Props and want the switch to honour them strictly.
 - Old Props that the new template no longer references stay in the DB (no auto-cleanup). Delete them with `fibe_resource_delete resource=prop` if desired.
 
-## Preview mode — what the agent sees before applying
+## Preview mode: what the agent sees before applying
 
 `mode:"preview"` returns a result that includes `prop_resolution_preview`:
 
@@ -142,7 +142,7 @@ The player has a deployed playground (id `42`) running the bun-web demo. They as
 ```json
 {
   "id_or_name": 42,
-  "template_body": "x-fibe.gg:\n  variables:\n    app_name:\n      name: 'App name'\n      required: true\nservices:\n  api:\n    image: python:3.12-slim\n    working_dir: /srv\n    command: ['uvicorn', 'app:app', '--host', '0.0.0.0', '--port', '8000']\n    environment:\n      APP_NAME: $$var__app_name\n    labels:\n      fibe.gg/repo_url: 'https://github.com/fibegg/__fibe_greenfield_new_repo__'\n      fibe.gg/port: 8000\n      fibe.gg/visibility: external\n      fibe.gg/subdomain: '$$var__app_name-api'\n  frontend:\n    image: node:20-alpine\n    working_dir: /app\n    command: ['npx', 'serve', '-s', 'dist', '-l', '80']\n    labels:\n      fibe.gg/repo_url: 'https://github.com/fibegg/__fibe_greenfield_new_repo__'\n      fibe.gg/port: 80\n      fibe.gg/visibility: external\n      fibe.gg/subdomain: '$$var__app_name-web'\n",
+  "template_body": "x-fibe.gg:\n  variables:\n    app_name:\n      name: 'App name'\n      required: true\nservices:\n  api:\n    image: python:3.12-slim\n    command: ['uvicorn', 'app:app', '--host', '0.0.0.0', '--port', '8000']\n    environment:\n      APP_NAME: $$var__app_name\n    labels:\n      fibe.gg/repo_url: 'https://github.com/fibegg/__fibe_greenfield_new_repo__'\n      fibe.gg/source_mount: '/srv'\n      fibe.gg/port: 8000\n      fibe.gg/visibility: external\n      fibe.gg/subdomain: '$$var__app_name-api'\n  frontend:\n    image: node:20-alpine\n    working_dir: /app\n    command: ['npx', 'serve', '-s', 'dist', '-l', '80']\n    labels:\n      fibe.gg/repo_url: 'https://github.com/fibegg/__fibe_greenfield_new_repo__'\n      fibe.gg/source_mount: '/app'\n      fibe.gg/port: 80\n      fibe.gg/visibility: external\n      fibe.gg/subdomain: '$$var__app_name-web'\n",
   "variables": { "app_name": "fastapi-angular-42" },
   "provision_missing_props": "gitea",
   "wait": true,
@@ -175,12 +175,12 @@ What happens server-side, atomically:
 - Before handoff, verify each exposed root URL plus at least one real endpoint/data path. Container health and `/health` alone are not enough.
 - For `postgres:18+`, mount persistent data at `/var/lib/postgresql` (not `/var/lib/postgresql/data`) or use a fresh volume name. Postgres 18 rejects old-style `/var/lib/postgresql/data` mounts when a reused volume contains prior data.
 - Old Props that the new template no longer references are NOT auto-deleted. They become orphans owned by the player (harmless but cluttery). Delete via `fibe_resource_delete resource=prop`.
-- Job-mode tricks cannot be switched through this tool — use hidden `fibe_templates_change` with `target_type:"trick"` through `fibe_call`.
+- Job-mode tricks cannot be switched through this tool: use hidden `fibe_templates_change` with `target_type:"trick"` through `fibe_call`.
 
 ## Related
 
-- `fibe_greenfield_create` — brand new playground from scratch.
-- `fibe_templates_change` — hidden advanced primitive: patch/overwrite an existing template, switch a playspec to an existing version, patch Tricks, etc. Lower-level building block for this tool.
-- `fibe_resource_get(resource:"playground", id:...)` — verify the playground after switching.
-- `fibe_playgrounds_debug` / `fibe_playgrounds_logs` — diagnose post-rollout.
-- `fibe_resource_delete(resource:"prop", id:...)` — clean up orphaned Props from old templates.
+- `fibe_greenfield_create`: brand new playground from scratch.
+- `fibe_templates_change`: hidden advanced primitive: patch/overwrite an existing template, switch a playspec to an existing version, patch Tricks, etc. Lower-level building block for this tool.
+- `fibe_resource_get(resource:"playground", id:...)`: verify the playground after switching.
+- `fibe_playgrounds_debug` / `fibe_playgrounds_logs`: diagnose post-rollout.
+- `fibe_resource_delete(resource:"prop", id:...)`: clean up orphaned Props from old templates.

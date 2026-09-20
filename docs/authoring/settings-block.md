@@ -25,20 +25,20 @@ x-fibe.gg:
 ```
 
 :::info Where execution settings live
-Execution settings (`job_mode`, `schedule_config`, `trigger_config`) must live under `metadata`. Copies at the root of `x-fibe.gg` are accepted by the schema for compatibility but have no effect — Fibe only reads the `metadata` versions.
+Execution settings (`job_mode`, `schedule_config`, `trigger_config`) must live under `metadata`. Copies at the root of `x-fibe.gg` are accepted by the schema for compatibility but have no effect: Fibe only reads the `metadata` versions.
 :::
 
 ## variables
 
 A map of launch-time inputs keyed by variable name. Each entry can carry:
 
-- `name` — the display label shown in the launcher (required).
-- `required` — must the launcher supply a value?
-- `default` — used when no value is provided.
-- `random` — generate a value automatically (good for first-launch passwords).
-- `validation` — pattern the value must match (slash-wrapped regex).
-- `path` or `paths` — where the value is written into the template body.
-- `secret` / `sensitive` — UI hints for the launcher.
+- `name`: the display label shown in the launcher (required).
+- `required`: must the launcher supply a value?
+- `default`: used when no value is provided.
+- `random`: generate a value automatically (good for first-launch passwords).
+- `validation`: pattern the value must match (slash-wrapped regex).
+- `path` or `paths`: where the value is written into the template body.
+- `secret` / `sensitive`: UI hints for the launcher.
 
 See [Launch variables](/authoring/variables/) for the full details.
 
@@ -65,7 +65,7 @@ schedule_config:
   marquee_id: 1
 ```
 
-Combined with `job_mode: true`. Cron is a standard 5-field expression. Fibe resolves `marquee_id` to a Marquee you can manage — one you own, or one shared with your team.
+Combined with `job_mode: true`. Cron is a standard 5-field expression. Fibe resolves `marquee_id` to a Marquee you can manage: one you own, or one shared with your team.
 
 ## trigger_config
 
@@ -112,7 +112,7 @@ If a variable path targets `services.wiki.labels.fibe.gg/subdomain`, the `wiki` 
 
 ## Related
 
-- [Launch variables](/authoring/variables/) — the inside of `variables:`.
-- [Variable placement](/authoring/variable-placement/) — paths under templates.
-- [Execution modes](/authoring/execution-modes/) — `job_mode`, schedule, trigger settings.
+- [Launch variables](/authoring/variables/): the inside of `variables:`.
+- [Variable placement](/authoring/variable-placement/): paths under templates.
+- [Execution modes](/authoring/execution-modes/): `job_mode`, schedule, trigger settings.
 - Reference: [`reference-x-fibe-gg-namespace`](/reference/reference-x-fibe-gg-namespace/).

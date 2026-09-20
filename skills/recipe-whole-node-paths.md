@@ -24,7 +24,7 @@ services:
       APP_NAME: placeholder        # overwritten by the path write
 ```
 
-The placeholder string can be anything — it just makes the YAML parseable as Compose for non-Fibe tooling. After compile, the node holds the variable value.
+The placeholder string can be anything: it just makes the YAML parseable as Compose for non-Fibe tooling. After compile, the node holds the variable value.
 
 ## Multiple paths
 
@@ -76,8 +76,8 @@ If you need a literal string `"3"` and not integer `3`, you currently cannot for
 
 Dotted segments. Special cases:
 
-- `[N]` — array index when the parent is an array.
-- `\.` — literal `.` in a key (rarely needed).
+- `[N]`: array index when the parent is an array.
+- `\.`: literal `.` in a key (rarely needed).
 - The editor matches the **longest contiguous run** of dotted segments against existing keys before descending. This lets you target `fibe.gg/port` as a single key with a dot in it.
 
 Allowed regex: `^[A-Za-z0-9_./\[\]-]+$`.
@@ -144,7 +144,7 @@ COMMAND_ARG:
   path: services.web.command.[1]
 ```
 
-Use sparingly — fragile if command structure changes.
+Use sparingly: fragile if command structure changes.
 
 ## Edge cases to document in conversion notes
 
@@ -193,7 +193,7 @@ Do not write `fibe.gg/port: $$var__PORT` for the same whole node. Validation war
 - You can’t use `path:` to inject nested structures (arrays/maps); use inline string templates for those.
 ## When the destination exists
 
-The default behavior is `create_missing: true` — intermediate hashes are created under existing services. So even if `services.web.environment` doesn't exist statically, the path write creates it. Runtime validation rejects paths aimed at missing `services.<name>` roots because those usually mean a typo.
+The default behavior is `create_missing: true`: intermediate hashes are created under existing services. So even if `services.web.environment` doesn't exist statically, the path write creates it. Runtime validation rejects paths aimed at missing `services.<name>` roots because those usually mean a typo.
 
 For arrays, the array must already exist; `path` does not create new array slots.
 
@@ -234,7 +234,7 @@ APP_NAME:
 Both run on the same variable name, but you usually want one or the other:
 
 - `$$var__NAME` is **string substitution**, runs first.
-- `path:` is **node write**, runs second — and overwrites whatever string substitution produced.
+- `path:` is **node write**, runs second, and overwrites whatever string substitution produced.
 
 So `path:` always wins on the destination node. Use inline ONLY when the destination is part of a bigger string. Use `path:` for everything else.
 
@@ -242,10 +242,10 @@ See [recipe-inline-variables](recipe-inline-variables.md) for inline-only patter
 
 ## Pitfalls
 
-- **Wrong typing** — `default: "0"` lands as integer 0, not string "0". If you need string, use inline.
-- **Path doesn't exist and parent is a scalar/array** — silent failure for that path; other paths still process.
-- **Path includes invalid characters** — regex `^[A-Za-z0-9_./\[\]-]+$` only. No spaces, no `=`, no `:`.
-- **Trying to inject YAML structure** — `path:` writes one scalar/bool/int. You cannot inject `[a, b, c]` or `{ k: v }` as a node via `path:`.
+- **Wrong typing**: `default: "0"` lands as integer 0, not string "0". If you need string, use inline.
+- **Path doesn't exist and parent is a scalar/array**: silent failure for that path; other paths still process.
+- **Path includes invalid characters**: regex `^[A-Za-z0-9_./\[\]-]+$` only. No spaces, no `=`, no `:`.
+- **Trying to inject YAML structure**: `path:` writes one scalar/bool/int. You cannot inject `[a, b, c]` or `{ k: v }` as a node via `path:`.
 
 ## Related skills
 

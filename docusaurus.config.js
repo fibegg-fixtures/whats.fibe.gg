@@ -1,7 +1,4 @@
 // @ts-check
-// Docusaurus config for whats.fibe.gg — the Fibe user guide and skills library.
-// Mirrors conventions of the docs project at docs.fibe.gg.
-
 import {themes as prismThemes} from 'prism-react-renderer';
 import path from 'path';
 import {fileURLToPath} from 'url';
@@ -11,7 +8,7 @@ const __dirname = path.dirname(__filename);
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Fibe — user guide & skills',
+  title: 'Fibe user guide and skills',
   tagline: 'Docker environments, AI Genies, and reusable templates.',
   favicon: 'img/favicon.ico',
 
@@ -56,7 +53,7 @@ const config = {
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebSite',
-        name: 'Fibe — user guide & skills',
+        name: 'Fibe user guide and skills',
         url: 'https://whats.fibe.gg',
         publisher: {'@type': 'Organization', name: 'Fibe', url: 'https://fibe.gg'},
       }),
@@ -117,7 +114,7 @@ const config = {
         {name: 'description', content: 'Fibe user guide: Docker environments, AI Genies, reusable templates, automated jobs.'},
         {name: 'keywords', content: 'Fibe, fibe.gg, Docker, Docker Compose, dev environment, AI agent, Genie, Marquee, Playground, Trick, Bazaar, template, developer tools'},
         {name: 'author', content: 'Fibe'},
-        {name: 'twitter:image:alt', content: 'Fibe — user guide'},
+        {name: 'twitter:image:alt', content: 'Fibe user guide'},
         {name: 'robots', content: 'index, follow, max-image-preview:large'},
       ],
       colorMode: {
@@ -134,8 +131,6 @@ const config = {
           height: 28,
         },
         items: [
-          // GitHub + fibe.gg now live in the footer; the navbar keeps only the
-          // search box and a gold "fibe →" CTA to its right.
           {type: 'search', position: 'right'},
           {
             href: 'https://fibe.gg/',
@@ -146,9 +141,6 @@ const config = {
         ],
       },
       footer: {
-        // Footer is rendered by the swizzled component at src/theme/Footer/index.js.
-        // This entry exists so Docusaurus doesn't complain — the swizzled component
-        // reads its links from a single source within itself.
         style: 'dark',
         copyright: `© ${new Date().getFullYear()} fibe.gg`,
       },

@@ -17,8 +17,8 @@ Streams service logs line-by-line as MCP progress notifications, returning a fin
 - Tailing a worker after triggering a job.
 
 ## When NOT to use
-- One-shot snapshot — use `fibe_playgrounds_logs`.
-- Need cross-service context — use `fibe_playgrounds_debug` with `logs_tail`.
+- One-shot snapshot: use `fibe_playgrounds_logs`.
+- Need cross-service context: use `fibe_playgrounds_debug` with `logs_tail`.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -60,11 +60,11 @@ Whichever comes first.
 ## Gotchas
 - Named identifiers are accepted through `id_or_name`.
 - `duration` strings: `"30s"`, `"5m"`. Bare integers are interpreted as seconds.
-- Some MCP clients drop progress notifications between request and final result — even then you still get the aggregated `lines` array at the end.
+- Some MCP clients drop progress notifications between request and final result: even then you still get the aggregated `lines` array at the end.
 - If the underlying Marquee SSH connection drops, the stream just stops; reconnect and re-call to resume.
 - This is the right primitive for "verify the service is up" but `fibe_playgrounds_wait(status:"running")` is usually simpler when the signal is the Playground status flip.
 
 ## Related
-- `fibe_playgrounds_logs` — bounded snapshot.
-- `fibe_playgrounds_wait` — wait for status transitions instead.
-- `fibe_playgrounds_debug` — get service names before following.
+- `fibe_playgrounds_logs`: bounded snapshot.
+- `fibe_playgrounds_wait`: wait for status transitions instead.
+- `fibe_playgrounds_debug`: get service names before following.

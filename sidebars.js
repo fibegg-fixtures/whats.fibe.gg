@@ -1,14 +1,4 @@
 // @ts-check
-// Manual sidebar hierarchy.
-//
-// Top-level sections (in order):
-//   - Welcome
-//   - Concepts
-//   - Advanced Settings
-//   - Fibe Templates (Operate nested as a sub-category)
-//   - SDK, CLI & MCP
-//   - Reference: API
-//   - Reference: skills & tools (Tools and Skills sub-categories)
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
@@ -20,19 +10,15 @@ const sidebars = {
       label: 'Concepts',
       collapsed: false,
       items: [
-        // Workspace & discovery — matches the top group of the Fibe app sidebar
-        // (Bridge → Agents, since Bridge was removed from docs).
         'concepts/agents',
         'concepts/bazaar',
         'concepts/scrolls',
-        // Build-and-run resources — matches the middle group.
         'concepts/marquees',
         'concepts/teams',
         'concepts/props',
         'concepts/playspecs',
         'concepts/playgrounds',
         'concepts/tricks',
-        // Billing stays last (not in the app sidebar; lives under Profile).
         'concepts/billing',
       ],
     },
@@ -128,7 +114,6 @@ const sidebars = {
           label: 'Tools',
           collapsed: true,
           items: [
-            // Auth, doctor & meta
             'reference/tools/auth-set',
             'reference/tools/doctor',
             'reference/tools/status',
@@ -139,19 +124,16 @@ const sidebars = {
             'reference/tools/run',
             'reference/tools/update-name',
             'reference/tools/memorize',
-            // Resource CRUD
             'reference/tools/resource-list',
             'reference/tools/resource-get',
             'reference/tools/resource-mutate',
             'reference/tools/resource-delete',
-            // Playgrounds
             'reference/tools/playgrounds-wait',
             'reference/tools/playgrounds-logs',
             'reference/tools/logs-follow',
             'reference/tools/playgrounds-action',
             'reference/tools/playgrounds-debug',
             'reference/tools/playgrounds-switch-template',
-            // Agents
             'reference/tools/agents-duplicate',
             'reference/tools/agents-runtime-status',
             'reference/tools/agents-send-message',
@@ -165,7 +147,6 @@ const sidebars = {
             'reference/tools/agent-defaults-get',
             'reference/tools/agent-defaults-update',
             'reference/tools/agent-defaults-reset',
-            // Greenfield / Templates / Repos
             'reference/tools/launch',
             'reference/tools/greenfield-create',
             'reference/tools/templates-search',
@@ -175,7 +156,6 @@ const sidebars = {
             'reference/tools/find-github-repos',
             'reference/tools/get-github-token',
             'reference/tools/repo-status-check',
-            // Monitoring / Mutters / Feedback / Artefacts
             'reference/tools/monitor-list',
             'reference/tools/monitor-follow',
             'reference/tools/mutter',
@@ -183,10 +163,8 @@ const sidebars = {
             'reference/tools/feedbacks-list',
             'reference/tools/feedbacks-get',
             'reference/tools/artefact-upload',
-            // Pipeline
             'reference/tools/pipeline',
             'reference/tools/pipeline-result',
-            // Local dev
             'reference/tools/local-playgrounds-info',
             'reference/tools/local-playgrounds-link',
           ],

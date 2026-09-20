@@ -10,7 +10,7 @@ description: Use when you need to fetch one feedback entry by id, including the 
 Returns the full Feedback record for one ID on the current Agent through `GET /api/agents/:agent_id/feedbacks/:id`.
 
 ## When to use
-- After `fibe_feedbacks_list` returns rows truncated by serialization — pull the full entry.
+- After `fibe_feedbacks_list` returns rows truncated by serialization: pull the full entry.
 - Need the full `selected_text` / `context` to understand what the Player highlighted.
 
 ## Inputs
@@ -24,10 +24,10 @@ Like `fibe_feedbacks_list`, requires `FIBE_AGENT_ID` env.
 The same row shape as `fibe_feedbacks_list`'s `data[i]` but always full content (no truncation).
 
 ## Gotchas
-- 404 on cross-agent IDs — feedback is scoped to the current Agent.
+- 404 on cross-agent IDs: feedback is scoped to the current Agent.
 - `source_type` + `source_id` together identify the commented resource; load that resource separately if you need the original.
 - `playground_id` may be null for feedback unattached to a specific Playground.
 
 ## Related
-- `fibe_feedbacks_list` — discover IDs.
-- `fibe_resource_get(resource:"artefact")` — load the source.
+- `fibe_feedbacks_list`: discover IDs.
+- `fibe_resource_get(resource:"artefact")`: load the source.

@@ -13,7 +13,7 @@ Enable **only when all of these are true**:
 
 1. The service is **exposed via `fibe.gg/port`**.
 2. The service speaks **HTTP** (so a path-based healthcheck makes sense).
-3. The service can run with **multiple replicas concurrently** — stateless, or session-shared via external store.
+3. The service can run with **multiple replicas concurrently**: stateless, or session-shared via external store.
 4. The service does **not** require a single fixed `container_name`.
 5. The template does **not** preserve raw Compose `ports:` for this service.
 
@@ -26,7 +26,7 @@ If any are false, leave `fibe.gg/zerodowntime` unset (default behavior is single
 | Postgres / MySQL / SQLite | Stateful singleton; rolling updates corrupt or split writes. |
 | Redis / memcached (cache) | Cache is fine to restart; the operational gain is small. |
 | RabbitMQ / Kafka brokers | Stateful. |
-| Sidekiq / Celery worker (background queue) | Not HTTP — has no healthcheck path. Use Docker restart and a small replica count. |
+| Sidekiq / Celery worker (background queue) | Not HTTP: has no healthcheck path. Use Docker restart and a small replica count. |
 | Private RPC/backend service | Not user-facing; replicas may be useful, but zero-downtime routing usually is not. |
 | Any service with `ports:` host-binding and `x-fibe.gg.metadata.preserve_ports: true` | Validator rejects. Leave `preserve_ports` unset or remove the raw ports. |
 | Single-instance admin tools (Sidekiq Dashboard) | Marginal gain. |
@@ -59,8 +59,8 @@ Pick values that match the actual app boot time. A slow framework app may need `
 
 ## What to REMOVE when enabling
 
-- Raw Compose `ports:` block when `x-fibe.gg.metadata.preserve_ports: true` is set — Fibe rejects zero-downtime services with preserved host ports. With the default metadata, raw ports are stripped before launch.
-- `container_name:` — Fibe rejects zero-downtime services with fixed container names because they prevent scaling.
+- Raw Compose `ports:` block when `x-fibe.gg.metadata.preserve_ports: true` is set: Fibe rejects zero-downtime services with preserved host ports. With the default metadata, raw ports are stripped before launch.
+- `container_name:`: Fibe rejects zero-downtime services with fixed container names because they prevent scaling.
 
 Keep:
 - Compose `healthcheck:` is OK (used by `depends_on` ordering). The Fibe `fibe.gg/healthcheck_*` labels are separate rollout-tuning inputs; if omitted, Fibe generates a rollout healthcheck from defaults.
@@ -113,10 +113,10 @@ Note: 12 retries × 10s interval = up to 2 minutes after the start period before
 
 ## Common pitfalls
 
-- **Healthcheck path returns non-2xx during warmup** — old instances stay running; new ones never accept traffic. Verify locally before enabling.
-- **App writes to local filesystem** that is replica-local — replicas diverge. Move state to volumes (and share, e.g. named volume + read-after-write semantics) or external service.
-- **Session state stored in-memory** — rolling replicas → user logouts. Use Redis/cookie-signed sessions.
-- **Long-running per-request work** — old instances may be killed before requests finish. Add a `preStop` mechanism via the app's own shutdown hooks (Rails: `at_exit`, Node: `SIGTERM` handler).
+- **Healthcheck path returns non-2xx during warmup**: old instances stay running; new ones never accept traffic. Verify locally before enabling.
+- **App writes to local filesystem** that is replica-local: replicas diverge. Move state to volumes (and share, e.g. named volume + read-after-write semantics) or external service.
+- **Session state stored in-memory**: rolling replicas → user logouts. Use Redis/cookie-signed sessions.
+- **Long-running per-request work**: old instances may be killed before requests finish. Add a `preStop` mechanism via the app's own shutdown hooks (Rails: `at_exit`, Node: `SIGTERM` handler).
 
 ## Related skills
 

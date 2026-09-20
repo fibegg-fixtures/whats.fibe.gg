@@ -17,9 +17,9 @@ Pattern (schema-enforced): `^[A-Za-z0-9_./\[\]-]+$`.
 
 Path is split on `.` with three special cases:
 
-1. **Escaped dot `\.`** — becomes a literal `.` in the segment. Use this when a key actually contains a dot (e.g. label keys like `fibe.gg/subdomain` — see below).
-2. **Bracketed index `[N]`** — normalized to `N`; used as an array index when the parent is an array.
-3. **Longest-prefix-key match** — when navigating a Hash, the editor first tries the longest contiguous run of dotted segments that matches an existing key, then falls back to single-segment descent. This is the reason `fibe.gg/subdomain` works as a single segment despite containing dots.
+1. **Escaped dot `\.`**: becomes a literal `.` in the segment. Use this when a key actually contains a dot (e.g. label keys like `fibe.gg/subdomain`: see below).
+2. **Bracketed index `[N]`**: normalized to `N`; used as an array index when the parent is an array.
+3. **Longest-prefix-key match**: when navigating a Hash, the editor first tries the longest contiguous run of dotted segments that matches an existing key, then falls back to single-segment descent. This is the reason `fibe.gg/subdomain` works as a single segment despite containing dots.
 
 ## Practical paths you will write
 
@@ -62,7 +62,7 @@ paths:
   - services.web.command.[2]
 ```
 
-The index must be its own dot-separated segment — `.[0]` (or plain `.0`). An attached form like `command[2]` is treated as a literal key named `command[2]`, not an index. And a numeric segment whose parent turns out to be a map writes a literal key (e.g. `"0"`) instead of indexing — double-check the parent is actually an array.
+The index must be its own dot-separated segment: `.[0]` (or plain `.0`). An attached form like `command[2]` is treated as a literal key named `command[2]`, not an index. And a numeric segment whose parent turns out to be a map writes a literal key (e.g. `"0"`) instead of indexing: double-check the parent is actually an array.
 
 ### A nested `configs` block
 
@@ -80,7 +80,7 @@ The value being written is detected from its string form:
 | `^(?i)(true|false)$` | boolean |
 | anything else | string |
 
-So `default: 3` paths into `deploy.replicas` lands as YAML integer `3`. `default: "true"` paths into a boolean key lands as boolean `true`. If you need a literal string `"3"`, you must accept the typing — the runtime does not currently support an explicit "string" hint.
+So `default: 3` paths into `deploy.replicas` lands as YAML integer `3`. `default: "true"` paths into a boolean key lands as boolean `true`. If you need a literal string `"3"`, you must accept the typing: the runtime does not currently support an explicit "string" hint.
 
 ## Multiple paths
 
@@ -101,7 +101,7 @@ Use this pattern when one generated value must be shared across all services tha
 
 ## Single string vs array
 
-The `paths:` value accepts either a single template path OR an array of paths. The single-string form is identical to declaring `path:` alone, just under the `paths:` key — use the form that reads best:
+The `paths:` value accepts either a single template path OR an array of paths. The single-string form is identical to declaring `path:` alone, just under the `paths:` key: use the form that reads best:
 
 ```yaml
 paths: services.web.environment.APP_NAME   # single
@@ -112,7 +112,7 @@ paths:                                      # array
 
 ## When the path does not exist
 
-By default, `create_missing: true` is used — intermediate hashes are created if missing. The path is still expected to make sense (cannot index a scalar). For a path that touches a non-existent service, the compile fails silently for that path; runtime validation surfaces this only via missing-reference checks.
+By default, `create_missing: true` is used: intermediate hashes are created if missing. The path is still expected to make sense (cannot index a scalar). For a path that touches a non-existent service, the compile fails silently for that path; runtime validation surfaces this only via missing-reference checks.
 
 To be safe, ensure every path's parent already exists in the static portion of your template (declare the env block as an empty object if you need: `environment: {}`).
 
@@ -143,7 +143,7 @@ x-fibe.gg:
 
 ## Mixing inline + path on the same variable
 
-If the same variable name appears as both `$$var__NAME` inline AND has a `path:`, both happen — inline substitution first, then whole-node write. Be careful: the path will overwrite anything at that node, including the result of inline substitution. Pick one mechanism per variable usage:
+If the same variable name appears as both `$$var__NAME` inline AND has a `path:`, both happen: inline substitution first, then whole-node write. Be careful: the path will overwrite anything at that node, including the result of inline substitution. Pick one mechanism per variable usage:
 
 - Inline when the variable is a fragment of a larger string (URL components, port numbers in colon-separated values, image tags).
 - Path when the whole value at that node is the variable (env scalars, label values, replica counts).

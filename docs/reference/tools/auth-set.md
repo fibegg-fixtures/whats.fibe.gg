@@ -11,16 +11,16 @@ format: md
 
 [MODE:SIDEEFFECTS] Tier: other. Not idempotent.
 
-Overrides the API key and/or domain for the current MCP session. Validates the new credentials via a Ping (`GET /api/me`) before committing — so a typo in `api_key` cannot poison the session.
+Overrides the API key and/or domain for the current MCP session. Validates the new credentials via a Ping (`GET /api/me`) before committing, so a typo in `api_key` cannot poison the session.
 
 ## When to use
 - Switching between production / staging / local in one MCP session.
-- Multi-tenant HTTP MCP server — each session needs its own credentials.
+- Multi-tenant HTTP MCP server: each session needs its own credentials.
 - Temporary impersonation: switch to a service account, do work, switch back.
 
 ## When NOT to use
-- Stdio transports running on a single tenant — env vars (`FIBE_API_KEY`, `FIBE_DOMAIN`) are simpler.
-- You only need to read with current creds — no override needed.
+- Stdio transports running on a single tenant: env vars (`FIBE_API_KEY`, `FIBE_DOMAIN`) are simpler.
+- You only need to read with current creds: no override needed.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -48,16 +48,16 @@ At least one of `api_key`/`domain` must be set.
 4. On success or `validate:false`, the override persists for the rest of the session.
 
 ## Persistence scope
-- Lives in MCP session state — not on disk.
+- Lives in MCP session state: not on disk.
 - Only the current session sees the override; other sessions on the same server keep their own creds.
 - Re-call to update further; pass `api_key:""` is treated as "not set" (only domain changes), not as "clear".
 
 ## Gotchas
-- `validate:false` saves silently even on bad credentials — every later tool call returns 401 until you call `fibe_auth_set` again. Default is `true` for a reason.
+- `validate:false` saves silently even on bad credentials: every later tool call returns 401 until you call `fibe_auth_set` again. Default is `true` for a reason.
 - `domain` must include scheme-friendly host (`next.fibe.live`, `rails.test:3000`). Don't include `https://`.
-- This affects the **HTTP client** the server uses — env vars (`FIBE_*`) are not mutated.
+- This affects the **HTTP client** the server uses: env vars (`FIBE_*`) are not mutated.
 - Switching tenants does NOT clear the cached resource tools / catalog state; if you cached `pipeline_id`s, they remain valid only for the original session.
 
 ## Related
-- `fibe_doctor` — confirm new identity after switching.
-- `FIBE_API_KEY` / `FIBE_DOMAIN` env vars — for stdio single-tenant setup.
+- `fibe_doctor`: confirm new identity after switching.
+- `FIBE_API_KEY` / `FIBE_DOMAIN` env vars: for stdio single-tenant setup.

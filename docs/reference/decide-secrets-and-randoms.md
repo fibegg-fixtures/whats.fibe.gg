@@ -11,9 +11,9 @@ format: md
 
 Three storage locations exist for "values the launcher / template needs":
 
-1. **Template variable** — declared in `x-fibe.gg.variables`, bound at template launch.
-2. **Fibe Secret** — separately managed resource referenced by ID.
-3. **Job ENV entry** — Player-scoped or Prop-scoped env vars injected only into **job-mode** runs.
+1. **Template variable**: declared in `x-fibe.gg.variables`, bound at template launch.
+2. **Fibe Secret**: separately managed resource referenced by ID.
+3. **Job ENV entry**: Player-scoped or Prop-scoped env vars injected only into **job-mode** runs.
 
 Pick by lifecycle and audience.
 
@@ -25,7 +25,7 @@ Pick by lifecycle and audience.
 | Generated password for a Postgres in this template | Template variable, `random: true` | Fibe generates once, reuses on subsequent compiles. Persistent for the Playground. |
 | Sensitive API token to talk to a third party (Stripe, OpenAI) | **Fibe Secret** | Lives outside the template, audited, can be rotated without changing the template. |
 | Anything you want hidden in launcher UI | Template variable + `secret: true` and/or `sensitive: true` | UI cosmetic; the schema permits the flags. |
-| Per-Player or per-Prop secrets injected into job-mode runs | **Job ENV entry** | Job runs only — won't leak into long-running services. |
+| Per-Player or per-Prop secrets injected into job-mode runs | **Job ENV entry** | Job runs only: won't leak into long-running services. |
 
 ## When to use template variables
 
@@ -60,7 +60,7 @@ Use this combination for values such as Slack webhook URLs. See [recipe-random-a
 
 ## When to use Fibe Secrets
 
-When the value is **not specific to this template** — it's the Player's credential for an external service (Stripe key, Anthropic API key, GitHub token, S3 credentials). Secrets are a separate resource.
+When the value is **not specific to this template**: it's the Player's credential for an external service (Stripe key, Anthropic API key, GitHub token, S3 credentials). Secrets are a separate resource.
 
 - Manage via `fibe_resource_mutate(resource: "secret", operation: "create"|"update")` then reference by ID.
 - Reads return non-revealed metadata.
@@ -76,13 +76,13 @@ Only for **job-mode** templates. Job ENV entries are key→value pairs at Player
 - Prop-scoped Job ENV applies when the job-mode run or service uses that Prop.
 - Manage via `fibe_resource_mutate(resource: "job_env", operation: "create"|"update")` and list via `fibe_resource_list(resource: "job_env")`.
 
-Use case: "every CI job should have an `NPM_TOKEN`" — set it once as a Job ENV, no need to put the value in the template.
+Use case: "every CI job should have an `NPM_TOKEN`": set it once as a Job ENV, no need to put the value in the template.
 
-## Random secrets — what to know
+## Random secrets: what to know
 
 `random: true` generates a 32-character lowercase hex value at compile time. Once persisted for that launch, it is reused on subsequent compiles so the password is stable across rollouts.
 
-To rotate, the runtime supports `regenerate_variables: ["DB_PASSWORD"]` — used by template-author tooling, not exposed to general launchers.
+To rotate, the runtime supports `regenerate_variables: ["DB_PASSWORD"]`: used by template-author tooling, not exposed to general launchers.
 
 Combine `required: true` + `random: true` to make the variable required AND auto-generate when not supplied. Fibe generates the value before the required check, so the combination succeeds without user input.
 
@@ -94,10 +94,10 @@ Combine `required: true` + `random: true` to make the variable required AND auto
 
 ## Anti-patterns
 
-- **Storing a secret as a `default:` value** — it lives in plain YAML, in the template body, in everyone's git history. Use `random: true` (template-scoped) or a Fibe Secret (Player-scoped).
-- **Letting the launcher type a long-lived API key** every time — once is OK; recurring is not. Store as a Fibe Secret, reference by ID in the template variable.
-- **Putting secrets in environment files committed to a repo** — `fibe.gg/env_file` points at an example. Never put real values there.
-- **Re-randomizing a DB password on every launch** — without persistence the existing data becomes inaccessible. `random: true` is fine because it persists; do NOT name variables in `regenerate_variables` unless you intend rotation.
+- **Storing a secret as a `default:` value**: it lives in plain YAML, in the template body, in everyone's git history. Use `random: true` (template-scoped) or a Fibe Secret (Player-scoped).
+- **Letting the launcher type a long-lived API key** every time: once is OK; recurring is not. Store as a Fibe Secret, reference by ID in the template variable.
+- **Putting secrets in environment files committed to a repo**: `fibe.gg/env_file` points at an example. Never put real values there.
+- **Re-randomizing a DB password on every launch**: without persistence the existing data becomes inaccessible. `random: true` is fine because it persists; do NOT name variables in `regenerate_variables` unless you intend rotation.
 
 ## Related skills
 

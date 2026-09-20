@@ -9,7 +9,7 @@ tags: ["reference", "recipe"]
 format: md
 ---
 
-Compose supports environment-variable interpolation: `${VAR}`, `${VAR:-default}`, `${VAR:?error}`. On a developer laptop, these come from a local `.env` file. On Fibe, launch-time variables replace them — but through template compilation (`$$var__` markers or `path:` bindings), not through Compose's env interpolation.
+Compose supports environment-variable interpolation: `${VAR}`, `${VAR:-default}`, `${VAR:?error}`. On a developer laptop, these come from a local `.env` file. On Fibe, launch-time variables replace them, but through template compilation (`$$var__` markers or `path:` bindings), not through Compose's env interpolation.
 
 The conversion is mostly mechanical: for every `${VAR...}` in the input compose, declare a corresponding entry in `x-fibe.gg.variables`. Prefer keeping a concrete local placeholder and adding a `path:`/`paths:` binding so the launch value overwrites that whole node at compile time. Rewrite to `$$var__VAR` only when the value is a fragment inside a larger string.
 
@@ -17,7 +17,7 @@ The conversion is mostly mechanical: for every `${VAR...}` in the input compose,
 
 | Style | Where the substitution happens | When to use |
 |---|---|---|
-| `${VAR:-default}` | Docker Compose engine at start — launch variables are NOT in that environment | Only for local `docker compose up` compatibility, and only together with a `path:`/`paths:` binding |
+| `${VAR:-default}` | Docker Compose engine at start: launch variables are NOT in that environment | Only for local `docker compose up` compatibility, and only together with a `path:`/`paths:` binding |
 | `$$var__VAR` | Fibe template compiler before Compose sees it | Fragment-only last resort; integrates with `x-fibe.gg` validation but breaks local Compose parity when used as the whole value |
 
 Launch variables are NOT passed to Compose's `${VAR}` interpolation. On Fibe, `${VAR:-default}` resolves to the literal default (or empty) at deploy. If you keep `${VAR}` placeholders so the same file also runs cleanly with plain `docker compose up`, you must also add a `path:`/`paths:` binding so the launch value overwrites that node at compile time.
@@ -113,9 +113,9 @@ Inline is required here because `DATABASE_URL` is built from multiple parts, and
 
 ## Mixed style
 
-Inside one variable declaration you can have BOTH inline references AND `path:` — the compiler runs inline substitution first, then path writes. Be careful: the path write happens to a node that may already have been substituted, so it overwrites. Pick one style per variable usage to avoid confusion.
+Inside one variable declaration you can have BOTH inline references AND `path:`: the compiler runs inline substitution first, then path writes. Be careful: the path write happens to a node that may already have been substituted, so it overwrites. Pick one style per variable usage to avoid confusion.
 
-## Required + default + random — common combinations
+## Required + default + random: common combinations
 
 ```yaml
 # Required, must be supplied by launcher
@@ -168,18 +168,18 @@ EMAIL:
 ## Variables you should NOT extract
 
 - Static infrastructure values that don't change across launches (`POOL_MODE: transaction`, `POSTGRES_HOST_AUTH_METHOD: trust`).
-- Internal service hostnames inside the Compose network (`db`, `redis`, `pgbouncer`) — these are fixed by Compose service names.
+- Internal service hostnames inside the Compose network (`db`, `redis`, `pgbouncer`): these are fixed by Compose service names.
 - Constants the app needs (`RAILS_LOG_TO_STDOUT: "1"`).
 
 Just hardcode these.
 
 ## Pitfalls
 
-- **Forgetting to declare** — `$$var__X` without `x-fibe.gg.variables.X` → `undeclared_var` error.
-- **Declaring but never using** — declared without `path`/`paths` and never referenced inline → `unused_var`.
-- **Variable name mismatched between inline and `paths`** — they don't auto-link by spelling, but they MUST resolve through the same declared key.
+- **Forgetting to declare**: `$$var__X` without `x-fibe.gg.variables.X` → `undeclared_var` error.
+- **Declaring but never using**: declared without `path`/`paths` and never referenced inline → `unused_var`.
+- **Variable name mismatched between inline and `paths`**: they don't auto-link by spelling, but they MUST resolve through the same declared key.
 - **Compose-style default `${VAR:-default}`** + Fibe variable declared with a different default → confusion. Pick one source.
-- **Nested Fibe defaults** — `default: "$$var__OTHER.$$root_domain"` is invalid. Defaults are literals; use explicit path-bound variables for derived public values.
+- **Nested Fibe defaults**: `default: "$$var__OTHER.$$root_domain"` is invalid. Defaults are literals; use explicit path-bound variables for derived public values.
 
 ## Related skills
 

@@ -15,7 +15,7 @@ The label prefix is `fibe.gg/` (the prefix can be changed in self-hosted install
 
 | Label | Value | Default | Required when |
 |---|---|---|---|
-| `fibe.gg/repo_url` | HTTP(S) URL, full `ssh://` URL, SCP-style SSH URL, or `$$var__NAME` | — | service is dynamic/source-backed; plain HTTP warns |
+| `fibe.gg/repo_url` | HTTP(S) URL, full `ssh://` URL, SCP-style SSH URL, or `$$var__NAME` | None | service is dynamic/source-backed; plain HTTP warns |
 | `fibe.gg/dockerfile` | Path relative to repo root | `Dockerfile` | non-default Dockerfile location |
 | `fibe.gg/branch` | Git ref name | repo default branch | pin to non-default branch |
 | `fibe.gg/start_command` | shell command string | image `CMD` | overriding runtime command |
@@ -61,22 +61,22 @@ Only the literal value `true` (string or YAML boolean) is treated as true; anyth
 
 Schema allows the empty string, a numeric string/integer, or `$$var__NAME`. Runtime requires `1 ≤ PORT ≤ 65535`.
 
-- `3000` — route traffic to container port 3000.
-- Variable-driven port — keep a local placeholder such as `3000` and bind `x-fibe.gg.variables.PORT.path: services.web.labels.fibe.gg/port`.
+- `3000`: route traffic to container port 3000.
+- Variable-driven port: keep a local placeholder such as `3000` and bind `x-fibe.gg.variables.PORT.path: services.web.labels.fibe.gg/port`.
 
 ### `fibe.gg/visibility`
 
 Schema allows the empty string, `external`, `internal`, or `$$var__NAME`. Runtime defaults omitted visibility to `external`.
 
-- `external` — public HTTPS route via Traefik.
-- `internal` — same routing, but the route is protected with Basic Auth using the Playground's internal access credentials (a per-service password override is possible).
+- `external`: public HTTPS route via Traefik.
+- `internal`: same routing, but the route is protected with Basic Auth using the Playground's internal access credentials (a per-service password override is possible).
 
 ### `fibe.gg/subdomain`
 
 Allowed values:
-- `@` — bind the route at the root of the Marquee domain.
+- `@`: bind the route at the root of the Marquee domain.
 - lowercase alnum/hyphen, no leading/trailing hyphen: `^[a-z0-9]([a-z0-9-]*[a-z0-9])?$`.
-- empty string — fall back to the default (service name).
+- empty string: fall back to the default (service name).
 - Variable-driven subdomain via `path`/`paths` binding.
 
 Scalar values are coerced to strings before validation (`true`/`false`/integer become `"true"`/`"false"`/`"123"`), then validated by the slug regex.
@@ -107,7 +107,7 @@ If omitted, the public host is `<service-name>.<marquee-root-domain>`.
 
 Allowed matchers in the value: `Path`, `PathPrefix`, `PathRegexp`. The value must contain at least one of these (`Path|PathPrefix|PathRegexp\s*\(` regex check).
 
-**Forbidden** matchers — Fibe owns the host, you cannot override it: `Host`, `HostRegexp`, `HostSNI`, `HostSNIRegexp`, `Headers`, `HeadersRegexp`, `Method`, `Query`, `ClientIP`.
+**Forbidden** matchers: Fibe owns the host, you cannot override it: `Host`, `HostRegexp`, `HostSNI`, `HostSNIRegexp`, `Headers`, `HeadersRegexp`, `Method`, `Query`, `ClientIP`.
 
 Multiple matchers can be combined with `&&` / `||`:
 
@@ -139,7 +139,7 @@ Core accepts HTTP(S) URLs, full `ssh://` URLs, and scp-style SSH URLs such as `g
 
 ## Two forms accepted
 
-**Map form (preferred — easier to target with `path:` bindings):**
+**Map form (preferred: easier to target with `path:` bindings):**
 
 ```yaml
 services:
@@ -169,7 +169,7 @@ These are enforced by the **runtime parser**, not the JSON Schema:
 
 - Compose `build:` requires `fibe.gg/repo_url`.
 - A service with `fibe.gg/repo_url` requires an absolute Compose `working_dir`; `working_dir` without the label is ordinary Compose.
-- `fibe.gg/visibility` requires `fibe.gg/port` — setting visibility on a service without a port fails parsing. With a port and no visibility, the route defaults to `external`.
+- `fibe.gg/visibility` requires `fibe.gg/port`: setting visibility on a service without a port fails parsing. With a port and no visibility, the route defaults to `external`.
 - `fibe.gg/zerodowntime: "true"` requires:
   - `fibe.gg/port` set,
   - service does **not** define `container_name`,
@@ -218,7 +218,7 @@ Core source checkout as their build context.
 
 When a template imports from a source Prop and `x-fibe.gg.metadata.source_defaults: true`, the runtime fills:
 
-- `fibe.gg/repo_url` on services that have `build:`, an explicit `working_dir`, or already declare repository/branch metadata — with the source Prop's URL. Outside an explicitly tracked `source_defaults` template, `working_dir` remains ordinary Compose.
+- `fibe.gg/repo_url` on services that have `build:`, an explicit `working_dir`, or already declare repository/branch metadata: with the source Prop's URL. Outside an explicitly tracked `source_defaults` template, `working_dir` remains ordinary Compose.
 - `fibe.gg/branch` similarly with the source ref.
 - `trigger_config.repo_url` / `branch` if the template is `job_mode: true` and a `trigger_config` exists.
 

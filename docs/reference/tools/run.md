@@ -11,16 +11,16 @@ format: md
 
 [MODE:SIDEEFFECTS] Tier: meta. Not idempotent.
 
-Executes a `fibe <args>` CLI command in-process, captures stdout/stderr, returns both. Forces `--output json` automatically. Serializes calls under a per-server lock — concurrent `fibe_run` invocations queue.
+Executes a `fibe <args>` CLI command in-process, captures stdout/stderr, returns both. Forces `--output json` automatically. Serializes calls under a per-server lock: concurrent `fibe_run` invocations queue.
 
 ## When to use
 - A CLI subcommand has no MCP equivalent and is not registered in `fibe_tools_catalog`.
 - Reproducing the exact behavior of a CLI invocation a Player ran in their terminal.
 
 ## When NOT to use
-- A native MCP tool exists — use it.
-- A registered tool exists but is hidden — use `fibe_call`.
-- You need a multi-step workflow — use `fibe_pipeline`.
+- A native MCP tool exists: use it.
+- A registered tool exists but is hidden: use `fibe_call`.
+- You need a multi-step workflow: use `fibe_pipeline`.
 
 The runtime returns a `recommended_tool` warning when it detects a CLI path that maps to a dedicated MCP tool (e.g., `playgrounds create` → `fibe_resource_mutate`). Heed it.
 
@@ -51,7 +51,7 @@ The runtime returns a `recommended_tool` warning when it detects a CLI path that
 Capture buffer is 1MB per stream. When truncated, `total_bytes` shows the real size.
 
 ## Gotchas
-- Args are JSON scalars — pass `["--limit","5"]`, not `["--limit",5]` mixed with quoting concerns. Numbers/bools auto-stringify.
+- Args are JSON scalars: pass `["--limit","5"]`, not `["--limit",5]` mixed with quoting concerns. Numbers/bools auto-stringify.
 - Pass `confirm:true` for destructive CLI paths; otherwise the dispatcher rejects the call before running the command.
 - `--output json` is prepended; do not pass it yourself.
 - stdout/stderr are buffered to memory for the entire run, then returned at once. Long-running CLI commands block until they exit (or `timeout_ms` fires).
@@ -59,6 +59,6 @@ Capture buffer is 1MB per stream. When truncated, `total_bytes` shows the real s
 - The lock is process-wide. Two parallel `fibe_run` calls in different MCP sessions still serialize.
 
 ## Related
-- `fibe_call` — preferred when the target is a registered tool.
-- `fibe_help` — read flag docs before running.
-- `fibe_pipeline` — for chained workflows.
+- `fibe_call`: preferred when the target is a registered tool.
+- `fibe_help`: read flag docs before running.
+- `fibe_pipeline`: for chained workflows.

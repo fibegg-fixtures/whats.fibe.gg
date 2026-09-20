@@ -8,7 +8,7 @@ image: /img/og/sdk-go-library.png
 keywords: [fibe Go library, github.com/fibegg/sdk/fibe, retry, circuit breaker, idempotency, rate limit]
 ---
 
-The Go library at `github.com/fibegg/sdk/fibe` is the same code the CLI uses internally — same retries, same circuit-breaker, same rate-limit handling, same structured errors. Embed it in your own Go programs when you want fine-grained control without shelling out to the CLI.
+The Go library at `github.com/fibegg/sdk/fibe` is the same code the CLI uses internally: same retries, same circuit-breaker, same rate-limit handling, same structured errors. Embed it in your own Go programs when you want fine-grained control without shelling out to the CLI.
 
 This page is the orientation. Per-method API docs live at [pkg.go.dev/github.com/fibegg/sdk/fibe](https://pkg.go.dev/github.com/fibegg/sdk/fibe).
 
@@ -95,16 +95,16 @@ type PlaygroundsManager interface {
 
 (Exact signatures live in godoc. The shape above is the pattern.)
 
-## Built-in robustness
+## Failure handling
 
 You don't manage retries or backoff yourself:
 
-- **Request timeout** — every request times out after 30 seconds by default; change it with `WithTimeout`.
-- **Automatic retry** on transient errors — on by default: up to 3 retries on 429, 500, 502, 503, and 504 responses, with exponential backoff and full jitter (a random fraction of 500 ms × 2^attempt, capped at 30 s); a `Retry-After` header overrides the computed delay. Network timeouts and cancelled contexts are **not** retried — those return to you immediately.
-- **Idempotency keys** — for safe re-tries of the same mutation, pass your own key: `ctx = fibe.WithIdempotencyKey(ctx, fibe.NewIdempotencyKey())`; the platform replays the cached response for 24 hours. Without one, each call gets a fresh key — so two separate `Create` calls create two resources.
-- **Circuit breaker** (opt-in; off by default in the library, on by default in the [MCP server](/sdk/mcp-server/)) — `fibe.WithCircuitBreaker(fibe.DefaultBreakerConfig)` opens after 5 consecutive failures, so your program doesn't hammer a sick API. After 30s it goes half-open and lets 2 test requests through: a success closes the circuit, any failure reopens it.
-- **Rate-limit awareness** — when the server returns a rate-limit header, the client sleeps for the indicated retry-after window.
-- **Structured errors** — every error implements an interface that lets you ask `IsNotFound(err)`, `IsRateLimited(err)`, `RequestID(err)`, etc., instead of string-matching.
+- **Request timeout**: every request times out after 30 seconds by default; change it with `WithTimeout`.
+- **Automatic retry** is on by default for transient errors. The client retries 429, 500, 502, 503, and 504 responses up to three times with exponential backoff and full jitter (a random fraction of 500 ms × 2^attempt, capped at 30 s). A `Retry-After` header overrides that delay. Network timeouts and cancelled contexts return immediately.
+- **Idempotency keys**: for safe re-tries of the same mutation, pass your own key: `ctx = fibe.WithIdempotencyKey(ctx, fibe.NewIdempotencyKey())`; the platform replays the cached response for 24 hours. Without one, each call gets a fresh key, so two separate `Create` calls create two resources.
+- **Circuit breaker** (opt-in; off by default in the library, on by default in the [MCP server](/sdk/mcp-server/)): `fibe.WithCircuitBreaker(fibe.DefaultBreakerConfig)` opens after 5 consecutive failures, so your program doesn't hammer a sick API. After 30s it goes half-open and lets 2 test requests through: a success closes the circuit, any failure reopens it.
+- **Rate-limit awareness**: when the server returns a rate-limit header, the client sleeps for the indicated retry-after window.
+- **Structured errors**: every error implements an interface that lets you ask `IsNotFound(err)`, `IsRateLimited(err)`, `RequestID(err)`, etc., instead of string-matching.
 
 You can tune these by passing options to `NewClient`. Example: a tighter retry policy for a CI runner that should fail fast:
 
@@ -116,7 +116,7 @@ client := fibe.NewClient(
 )
 ```
 
-## Example — launch a Playground and stream logs
+## Example: launch a Playground and stream logs
 
 ```go
 ctx := context.Background()
@@ -139,7 +139,7 @@ for line := range client.Playgrounds.LogsStream(ctx, pg.ID, "web", nil) {
 }
 ```
 
-## Example — trigger a Trick and report results
+## Example: trigger a Trick and report results
 
 ```go
 trick, err := client.Tricks.Trigger(ctx, &fibe.TrickTriggerParams{
@@ -185,7 +185,7 @@ Tests run offline; no network, no Fibe account needed.
 
 The client is safe to share across goroutines. Each call is independent; the rate limiter and circuit breaker coordinate across goroutines so you don't have to.
 
-For workloads doing many parallel calls, bound the parallelism yourself — e.g. an `errgroup.Group` with `SetLimit` — the client respects context cancellation.
+For workloads doing many parallel calls, bound the parallelism yourself: e.g. an `errgroup.Group` with `SetLimit`: the client respects context cancellation.
 
 ## When the CLI is enough
 

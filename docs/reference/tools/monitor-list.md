@@ -1,6 +1,6 @@
 ---
 title: "Monitor List"
-description: "Use when you need to list Agent-produced events (messages, activities, mutters, artefacts) with standard pagination. Snapshot mode — for one-shot reads."
+description: "Use when you need to list Agent-produced events (messages, activities, mutters, artefacts) with standard pagination. Snapshot mode: for one-shot reads."
 slug: /reference/tools/monitor-list
 sidebar_label: "Monitor List"
 image: /img/og/reference-tools-monitor-list.png
@@ -19,16 +19,16 @@ Returns a paginated event feed across one or more Agents through `GET /api/event
 - Filtered cross-Agent event search by full-text.
 
 ## When NOT to use
-- Need real-time push — use `fibe_monitor_follow`.
-- Just one Agent's mutter stream — use `fibe_mutters_get`.
+- Need real-time push: use `fibe_monitor_follow`.
+- Just one Agent's mutter stream: use `fibe_mutters_get`.
 
 ## Inputs
 | Field | Type | Default | Notes |
 |---|---|---|---|
 | `agent` | string | empty (= all accessible) | Comma-separated Agent IDs/names |
 | `type` | string | empty (= all) | Comma-separated: `message`, `activity`, `mutter`, `artefact` |
-| `since` | ISO 8601 string | — | Lower bound for `occurred_at` |
-| `q` | string | — | Full-text search across event content |
+| `since` | ISO 8601 string | None | Lower bound for `occurred_at` |
+| `q` | string | None | Full-text search across event content |
 | `page` | int | 1 | 1-based |
 | `per_page` | int | 25 | Max 100 |
 | `content_limit` | int | 32768 | Truncate each event payload to N bytes (max 131072) |
@@ -61,6 +61,6 @@ Returns a paginated event feed across one or more Agents through `GET /api/event
 - The `total` meta counts visible events post-filter, not the global count.
 
 ## Related
-- `fibe_monitor_follow` — long-poll variant.
-- `fibe_mutters_get` — single-Agent mutter stream.
-- `fibe_resource_list(resource:"artefact")` — when you only want artefacts.
+- `fibe_monitor_follow`: long-poll variant.
+- `fibe_mutters_get`: single-Agent mutter stream.
+- `fibe_resource_list(resource:"artefact")`: when you only want artefacts.

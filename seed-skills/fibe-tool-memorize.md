@@ -20,20 +20,20 @@ The flow:
 - Building searchable evidence trail tying knowledge to specific transcript moments.
 
 ## When NOT to use
-- Short-term progress — that's a `fibe_mutter`.
-- Files / generated outputs — that's an Artefact (`fibe_artefact_upload`).
+- Short-term progress: that's a `fibe_mutter`.
+- Files / generated outputs: that's an Artefact (`fibe_artefact_upload`).
 
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `conversation_id` | string | yes | Stable local UUID (not a Fibe numeric ID) — discover via `fibe_local_conversations_list` |
+| `conversation_id` | string | yes | Stable local UUID (not a Fibe numeric ID): discover via `fibe_local_conversations_list` |
 | `content` | string | yes | The memory body |
 | `tags` | array of string | no | Lowercase slug-like tags |
-| `confidence` | number | no | 0.0–1.0 |
+| `confidence` | number | no | 0.0 to 1.0 |
 | `agent_id_or_name` | int or string | no | Defaults to `FIBE_AGENT_ID` env |
 | `memory_key` | string | no | Explicit idempotency key; otherwise auto-computed |
 | `metadata` | object | no | Free-form |
-| `groundings` | array | no | Proof references — see below |
+| `groundings` | array | no | Proof references: see below |
 
 ### Groundings (proof structure)
 Each grounding points to a span in either a normalized message OR a raw provider event.
@@ -66,11 +66,11 @@ The created/updated Memory record + grounding records.
 - Tags are normalized lowercase + slug-like; non-conforming tags get coerced.
 - `agent_id_or_name` falls back to `FIBE_AGENT_ID`; passing your own value overrides env. Mismatch with `FIBE_AGENT_ID` may break association policies.
 - Memory search/get/delete go through `fibe_resource_*` with `resource:"memory"`.
-- Local conversation files are ephemeral on a remote MCP transport — the SDK likely fails outside local mode for unfamiliar transcripts.
+- Local conversation files are ephemeral on a remote MCP transport: the SDK likely fails outside local mode for unfamiliar transcripts.
 
 ## Related
-- `fibe_local_conversations_list` / `fibe_local_conversations_get` — find conversation IDs.
-- `fibe_resource_list(resource:"memory")` — search persisted memories.
-- `fibe_resource_get(resource:"memory")` — fetch a specific memory.
-- `fibe_resource_delete(resource:"memory")` — forget.
-- `fibe_schema(resource:"memory", operation:"memorize")` — exact JSON shape.
+- `fibe_local_conversations_list` / `fibe_local_conversations_get`: find conversation IDs.
+- `fibe_resource_list(resource:"memory")`: search persisted memories.
+- `fibe_resource_get(resource:"memory")`: fetch a specific memory.
+- `fibe_resource_delete(resource:"memory")`: forget.
+- `fibe_schema(resource:"memory", operation:"memorize")`: exact JSON shape.

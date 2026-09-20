@@ -9,7 +9,7 @@ tags: ["reference", "skill"]
 format: md
 ---
 
-This skill is the **master playbook**. It does not duplicate exact rules — it tells you which surgical skills to load for each step. Load the listed skills on demand; do not preload all of them.
+This skill is the **master playbook**. It does not duplicate exact rules: it tells you which surgical skills to load for each step. Load the listed skills on demand; do not preload all of them.
 
 ## The contract (read first)
 
@@ -19,7 +19,7 @@ A Fibe template is **valid Docker Compose** plus:
 2. Optional `x-fibe.gg` block with `variables` and `metadata`. Put job, schedule and trigger settings under `metadata` for current launch/import behavior.
 3. No other Fibe-specific top-level keys. `services:` is still required.
 
-Validation runs in three stages — schema is a first pass, runtime owns final compile. Load [reference-validation-pipeline](reference-validation-pipeline.md) to see what each stage catches.
+Validation runs in three stages: schema is a first pass, runtime owns final compile. Load [reference-validation-pipeline](reference-validation-pipeline.md) to see what each stage catches.
 
 ## High-level decision tree
 
@@ -38,7 +38,7 @@ input: a docker-compose.yml + intent (one of)
 
 Do them in this order. Each step links to one or more surgical skills.
 
-### Step 1 — Classify every service
+### Step 1: Classify every service
 
 For each service, decide *static* (use a prebuilt `image`) or *dynamic* (Fibe clones/builds from a Git repo, can be source-mounted).
 
@@ -48,13 +48,13 @@ The signal is the `fibe.gg/repo_url` label. A Compose `build:` block **requires*
 
 Important distinction: real app services that should build/run locally usually keep a `build:` section. Source-only helper services that exist only to make a repository available through `working_dir` should normally use a tiny runner `image` and omit `build:` so they do not become build-workflow services.
 
-### Step 2 — Resolve `build:` into Fibe labels
+### Step 2: Resolve `build:` into Fibe labels
 
 If the service has a `build:` block, you have a dynamic service. Add `fibe.gg/repo_url`, an absolute service-level `working_dir`, and any optional `fibe.gg/dockerfile`, `fibe.gg/branch`, `fibe.gg/build_target`, or `fibe.gg/build_args` labels.
 
 → Load [recipe-build-to-repo-url](recipe-build-to-repo-url.md) and [recipe-build-args-and-target](recipe-build-args-and-target.md).
 
-### Step 3 — Route HTTP with `fibe.gg/port`
+### Step 3: Route HTTP with `fibe.gg/port`
 
 User-facing HTTP is **always** `fibe.gg/port`. Compose `ports:` may remain for local `docker compose up`, but Fibe strips raw host bindings by default and does not use them for public traffic. Traefik routing comes from the label.
 
@@ -65,21 +65,21 @@ Then choose how the public URL is shaped:
 - path prefix on the same host: [recipe-add-path-rule](recipe-add-path-rule.md)
 - internal-only auth-protected: [decide-exposure-strategy](decide-exposure-strategy.md)
 
-### Step 4 — Strip Compose keys that Fibe forbids or owns
+### Step 4: Strip Compose keys that Fibe forbids or owns
 
-Remove `container_name` and `hostname:` lines (compiler strips `hostname:` automatically; `container_name` is surfaced as an error when combined with `fibe.gg/zerodowntime`). Keep everything else (`depends_on`, `volumes`, `environment`, `healthcheck`, `networks`, `restart`) — pass-through.
+Remove `container_name` and `hostname:` lines (compiler strips `hostname:` automatically; `container_name` is surfaced as an error when combined with `fibe.gg/zerodowntime`). Keep everything else (`depends_on`, `volumes`, `environment`, `healthcheck`, `networks`, `restart`): pass-through.
 
 For `ports:`, prefer either leaving local-only bindings in place or deleting them for cleanliness. Do **not** set `x-fibe.gg.metadata.preserve_ports: true` unless the template really needs raw Docker host bindings on Fibe; only that explicit opt-in preserves ports and re-enables host-port conflict checks.
 
 → Load [recipe-strip-incompatible-keys](recipe-strip-incompatible-keys.md). Adjust supporting bits: [recipe-named-volumes](recipe-named-volumes.md) for persistence volumes, [recipe-depends-on](recipe-depends-on.md) for startup ordering, [recipe-anchors-and-aliases](recipe-anchors-and-aliases.md) for shared config blocks, [recipe-configs-block](recipe-configs-block.md) for inline config files.
 
-### Step 5 — Decide zero-downtime
+### Step 5: Decide zero-downtime
 
 For exposed HTTP services that can scale horizontally and respond to a health endpoint, enable rolling updates.
 
 → Load [decide-zero-downtime](decide-zero-downtime.md) and [recipe-zero-downtime-healthcheck](recipe-zero-downtime-healthcheck.md).
 
-### Step 6 — Extract launch-time variables
+### Step 6: Extract launch-time variables
 
 Anything the launcher should set (subdomain, image tag, replica counts, credentials defaults) becomes a `x-fibe.gg.variables.<NAME>` entry. Two interpolation idioms:
 - whole-node value: `path:` / `paths:` (primary route; preserves local Compose placeholders) → [recipe-whole-node-paths](recipe-whole-node-paths.md)
@@ -92,25 +92,25 @@ Sources of variables to extract:
 Generated/secret values:
 → Load [recipe-random-and-secrets](recipe-random-and-secrets.md) and [decide-secrets-and-randoms](decide-secrets-and-randoms.md).
 
-### Step 7 — Decide and apply execution mode
+### Step 7: Decide and apply execution mode
 
 If long-running HTTP → done. Otherwise:
 - one-shot job → [mode-job-trick](mode-job-trick.md)
 - recurring cron → [mode-schedule-cron](mode-schedule-cron.md)
 - on git push/PR → [mode-trigger-vcs](mode-trigger-vcs.md)
 
-### Step 8 — Add metadata
+### Step 8: Add metadata
 
 `x-fibe.gg.metadata.description` and `x-fibe.gg.metadata.category` are required for publishable templates. `source_defaults: true` is useful for triggered/source-backed templates; runtime will fill `trigger_config.repo_url`/`branch` from the source Prop when set.
 
 → Load [recipe-add-metadata](recipe-add-metadata.md) for the field details, [reference-x-fibe-gg-namespace](reference-x-fibe-gg-namespace.md) for full namespace shape.
 
-### Step 9 — Validate
+### Step 9: Validate
 
 1. YAML parses.
 2. Root has `services:`.
-3. JSON Schema passes — no unknown `fibe.gg/*` labels, all values match label regexes, variable names match `^[A-Za-z0-9_]+$`, paths match `^[A-Za-z0-9_./\[\]-]+$`.
-4. Runtime API (`fibe_schema(resource: "compose", operation: "validate", payload: {...})`) passes — declared-vs-referenced variables match, defaults are literal, path bindings target existing service roots, whole-node inline warnings are reviewed, and prop/marquee/repo URLs are resolvable.
+3. JSON Schema passes: no unknown `fibe.gg/*` labels, all values match label regexes, variable names match `^[A-Za-z0-9_]+$`, paths match `^[A-Za-z0-9_./\[\]-]+$`.
+4. Runtime API (`fibe_schema(resource: "compose", operation: "validate", payload: {...})`) passes: declared-vs-referenced variables match, defaults are literal, path bindings target existing service roots, whole-node inline warnings are reviewed, and prop/marquee/repo URLs are resolvable.
 
 → Load [reference-validation-pipeline](reference-validation-pipeline.md), then [templates-publish-checklist](templates-publish-checklist.md) if publishing.
 
@@ -127,7 +127,7 @@ services:
       fibe.gg/visibility: external
 ```
 
-That gives you a public HTTP route under the Marquee root domain at subdomain `web` (the default — service name). Add `fibe.gg/subdomain` to override.
+That gives you a public HTTP route under the Marquee root domain at subdomain `web` (the default: service name). Add `fibe.gg/subdomain` to override.
 
 ## "Just give me the labels I need" cheatsheet
 
@@ -146,7 +146,7 @@ That gives you a public HTTP route under the Marquee root domain at subdomain `w
 
 ## Worked examples
 
-If the input compose matches one of these shapes, jump straight to the matching playbook — it shows the input/output diff and explains every line:
+If the input compose matches one of these shapes, jump straight to the matching playbook: it shows the input/output diff and explains every line:
 
 | Input shape | Playbook |
 |---|---|
@@ -163,11 +163,11 @@ If the input compose matches one of these shapes, jump straight to the matching 
 
 ## After conversion
 
-- Run `fibe_schema(resource: "compose", operation: "validate", payload: {"compose_yaml": "..."})` from MCP. Always validate authored YAML this way — never infer labels from old playgrounds or remembered examples; unknown `fibe.gg/*` labels fail.
+- Run `fibe_schema(resource: "compose", operation: "validate", payload: {"compose_yaml": "..."})` from MCP. Always validate authored YAML this way: never infer labels from old playgrounds or remembered examples; unknown `fibe.gg/*` labels fail.
 - Then `fibe_launch` for a test launch, or `fibe_resource_mutate(resource: "playspec", operation: "create", ...)` to import.
 - Watch for errors against [common-errors-and-fixes](common-errors-and-fixes.md).
 
 ## What this skill is NOT
 
-- It is not a YAML linter — use schema/runtime validation.
+- It is not a YAML linter: use schema/runtime validation.
 - It does not cover deploy/operate concerns after a Playground is already running; use the appropriate runtime tool or environment guide for that stage.

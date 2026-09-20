@@ -16,11 +16,11 @@ Live event stream across one or more Agents. Polls the same monitor query as `fi
 ## When to use
 - Wait for an Agent to publish an Artefact: `type:"artefact", max_events:1`.
 - Watch a multi-step task unfold across mutters/messages.
-- Live debugging — see what the Agent is doing in real time.
+- Live debugging: see what the Agent is doing in real time.
 
 ## When NOT to use
-- One-shot list with manual polling — use `fibe_monitor_list`.
-- Single Agent's mutter feed — `fibe_mutters_get` is cheaper.
+- One-shot list with manual polling: use `fibe_monitor_list`.
+- Single Agent's mutter feed: `fibe_mutters_get` is cheaper.
 
 ## Inputs
 | Field | Type | Default | Notes |
@@ -28,7 +28,7 @@ Live event stream across one or more Agents. Polls the same monitor query as `fi
 | `agent` | string | empty | Comma-separated Agent IDs/names |
 | `type` | string | empty | Comma-separated event types |
 | `since` | ISO 8601 string | now | Lower bound for new events |
-| `q` | string | — | Full-text search |
+| `q` | string | None | Full-text search |
 | `content_limit` | int | 32768 | Per-payload byte truncation (max 131072) |
 | `max_events` | int | 100 | Stop after N events |
 | `duration` | string | `30s` | Go duration; capped at 30 min |
@@ -53,9 +53,9 @@ The follow stops when:
 ## Gotchas
 - Requires `monitor:read` API key scope (same as `fibe_monitor_list`).
 - `duration > 30m` is silently capped.
-- `since` defaults to "now" — historical events do NOT appear unless you set `since` to a past timestamp.
+- `since` defaults to "now": historical events do NOT appear unless you set `since` to a past timestamp.
 - Long-poll holds the MCP request open; some clients have request timeouts shorter than your `duration`.
-- Each poll tick is a server query — keep `poll_interval >= 2s` for shared environments.
+- Each poll tick is a server query: keep `poll_interval >= 2s` for shared environments.
 
 ## Recipe
 Wait for the next artefact from a specific Agent:
@@ -69,6 +69,6 @@ Wait for the next artefact from a specific Agent:
 ```
 
 ## Related
-- `fibe_monitor_list` — paginated snapshot.
-- `fibe_mutters_get` — focused mutter stream.
-- `fibe_logs_follow` — log-level streaming.
+- `fibe_monitor_list`: paginated snapshot.
+- `fibe_mutters_get`: focused mutter stream.
+- `fibe_logs_follow`: log-level streaming.

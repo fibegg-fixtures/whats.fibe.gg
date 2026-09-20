@@ -21,7 +21,7 @@ Marquees provide:
 - SSH terminal access.
 - Registry credentials for private images.
 - Capacity for multiple Playgrounds.
-- Team sharing — the owner can share a Marquee with their team from the team page; members get manage access and can see and manage the Playgrounds running on it.
+- Team sharing: the owner can share a Marquee with their team from the team page; members get manage access and can see and manage the Playgrounds running on it.
 
 ## Props and source control
 

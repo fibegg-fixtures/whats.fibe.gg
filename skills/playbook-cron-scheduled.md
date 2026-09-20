@@ -1,6 +1,6 @@
 ---
 name: playbook-cron-scheduled
-description: Use to build a Fibe template for a scheduled cron job - daily DB backup, periodic data sync, log cleanup. Combines `metadata.job_mode: true` + `metadata.schedule_config` + watched service.
+description: "Use to build a Fibe template for a scheduled cron job - daily DB backup, periodic data sync, log cleanup. Combines `metadata.job_mode: true` + `metadata.schedule_config` + watched service."
 ---
 
 # Playbook: scheduled cron job
@@ -105,7 +105,7 @@ x-fibe.gg:
 | No `fibe.gg/port` | Job-mode strips exposure labels before launch |
 | `fibe.gg/job_watch: "true"` | One watched service decides success/failure |
 | `restart: "no"` | Required behavior; runtime forces it anyway |
-| `command:` inline shell | Self-contained — no Dockerfile build needed |
+| `command:` inline shell | Self-contained: no Dockerfile build needed |
 | `$$var__NAME` for secrets | Generated via launcher, masked with `secret: true` |
 | Cron in UTC | Default; if the org needs local time, document explicitly |
 
@@ -149,7 +149,7 @@ x-fibe.gg:
 
 ## Variant: fan-out across props
 
-If you want the same scheduled job to run for several Props (e.g. backups across multiple Player DBs), create one template per Prop, each with its own `schedule_config.marquee_id` and Prop-specific variables. There is no "for each Prop" in `schedule_config` — schedule fires one job at a time.
+If you want the same scheduled job to run for several Props (e.g. backups across multiple Player DBs), create one template per Prop, each with its own `schedule_config.marquee_id` and Prop-specific variables. There is no "for each Prop" in `schedule_config`: schedule fires one job at a time.
 
 ## Cron expressions cheat sheet
 
@@ -176,12 +176,12 @@ To re-run the last fire: `fibe_resource_mutate(resource: "trick", operation: "re
 
 ## Pitfalls
 
-- **Missing `job_watch`** — without a watched service the run is "always succeeding" or undefined. Always set on the service whose exit defines outcome.
-- **Bash with single `$VAR`** — Compose substitutes `$VAR` from its env, leaving an empty string if not set. Use `$$VAR` to escape and get a literal `$VAR` for the shell to expand.
-- **Fibe template `$$var__NAME`** vs **shell `$$VAR`** — easy to confuse. `$$var__NAME` is substituted by Fibe at compile time; `$$VAR` is `$VAR` to the shell at runtime.
-- **Job exceeding the next cron interval** — runs overlap. Make the cron sparse enough or gate with a flock/distributed lock.
-- **Cron in wrong timezone** — schedule is UTC by default. If the team thinks in local time, document or convert.
-- **Missing AWS config / IAM creds** — silent S3 upload failure. Log diagnostics in the script.
+- **Missing `job_watch`**: without a watched service the run is "always succeeding" or undefined. Always set on the service whose exit defines outcome.
+- **Bash with single `$VAR`**: Compose substitutes `$VAR` from its env, leaving an empty string if not set. Use `$$VAR` to escape and get a literal `$VAR` for the shell to expand.
+- **Fibe template `$$var__NAME`** vs **shell `$$VAR`**: easy to confuse. `$$var__NAME` is substituted by Fibe at compile time; `$$VAR` is `$VAR` to the shell at runtime.
+- **Job exceeding the next cron interval**: runs overlap. Make the cron sparse enough or gate with a flock/distributed lock.
+- **Cron in wrong timezone**: schedule is UTC by default. If the team thinks in local time, document or convert.
+- **Missing AWS config / IAM creds**: silent S3 upload failure. Log diagnostics in the script.
 
 ## Related skills
 

@@ -30,7 +30,7 @@ These work on every command:
 | `-f, --from-file <path>` | Load a JSON or YAML payload from a file or `-` for stdin. |
 | `--explain-errors` | Print structured error output (error code, HTTP status, request ID, validation details). |
 
-Exit codes are deliberately simple: `0` on success, `1` on any error — there are no per-failure-type codes. Scripts that need to branch on **why** a call failed should pass `--explain-errors` and parse the structured output instead of the exit code.
+Exit codes are deliberately simple: `0` on success, `1` on any error: there are no per-failure-type codes. Scripts that need to branch on **why** a call failed should pass `--explain-errors` and parse the structured output instead of the exit code.
 
 ## Playgrounds
 
@@ -56,7 +56,7 @@ fibe playgrounds status <id>
 fibe playgrounds compose <id>              # the compiled compose for the running env
 fibe playgrounds logs <id> [--service web] [--tail 100] [--follow --duration 10m]
 fibe playgrounds env <id>                  # injected env values
-fibe playgrounds debug <id>                # comprehensive diagnostics
+fibe playgrounds debug <id>                # deployment diagnostics
 ```
 
 The shorthand `pg` works wherever `playgrounds` does: `fibe pg list`.
@@ -85,7 +85,7 @@ fibe tricks logs <id>
 fibe tricks rerun <id-or-name>
 ```
 
-`fibe tricks trigger` takes `--playspec` (required), `--marquee`, `--name`, `--env-overrides`, `--only-service`, and `--except-service`. The trick's behavior comes from the job-mode Playspec; job credentials come from Job ENV. Use `--explain-errors` if a trigger fails — the error typically points at a missing variable or an unreachable repo.
+`fibe tricks trigger` takes `--playspec` (required), `--marquee`, `--name`, `--env-overrides`, `--only-service`, and `--except-service`. The trick's behavior comes from the job-mode Playspec; job credentials come from Job ENV. Use `--explain-errors` if a trigger fails: the error typically points at a missing variable or an unreachable repo.
 
 ## Agents (Genies)
 
@@ -172,7 +172,7 @@ fibe installations list                      # GitHub Apps installed on your acc
 fibe repo-status check --url <repo-url>      # repeat --url to check many repos
 ```
 
-There's no `--owner` flag — the repo owner is determined by your connected GitHub App installation (or your Gitea account). Use `fibe installations list` to see which installations you have.
+There's no `--owner` flag: the repo owner is determined by your connected GitHub App installation (or your Gitea account). Use `fibe installations list` to see which installations you have.
 
 ## Secrets, Job ENV, API keys, Webhooks
 
@@ -197,7 +197,7 @@ fibe webhooks test <id>
 fibe webhooks delete <id>
 ```
 
-These operations need an API key with the matching scopes (e.g. `secrets:write`, `keys:manage`, `webhooks:write`). The CLI never prompts for 2FA — re-auth challenges only exist in the web app.
+These operations need an API key with the matching scopes (e.g. `secrets:write`, `keys:manage`, `webhooks:write`). The CLI never prompts for 2FA: re-auth challenges only exist in the web app.
 
 ## Artefacts, Mutters, Feedback
 
@@ -293,7 +293,7 @@ fibe playgrounds list -o json | jq '.Data[].id'
 fibe playgrounds list -o json --only id,name,status
 ```
 
-List commands emit an envelope with `Data` (the items) and `Meta` (pagination) keys — reach into `.Data`, not a bare array.
+List commands emit an envelope with `Data` (the items) and `Meta` (pagination) keys: reach into `.Data`, not a bare array.
 
 Combine with `jq` for ad-hoc analysis, or pipe `-o yaml` to `yq` for richer queries.
 
@@ -308,4 +308,4 @@ fibe agents update sys-op -f /tmp/sys-op-patch.yaml
 
 ## Next step
 
-For programmatic access, the [Go library](/sdk/go-library/) gives you the same surface in Go. For AI agents, the [MCP server](/sdk/mcp-server/) exposes the same surface as typed MCP tools — see the [Tools catalog](/sdk/tools-catalog/).
+For programmatic access, the [Go library](/sdk/go-library/) gives you the same surface in Go. For AI agents, the [MCP server](/sdk/mcp-server/) exposes the same surface as typed MCP tools: see the [Tools catalog](/sdk/tools-catalog/).

@@ -11,7 +11,7 @@ The **Bazaar** is the public marketplace for [Templates](/concepts/playspecs/#te
 
 ## What's in the Bazaar
 
-Any Template version a Player published with publish-ready metadata (description, category, sensible defaults). The Bazaar listing is the view filter — Templates aren't a separate codebase, the same Templates power your private launches and the public marketplace.
+Any Template version a Player published with publish-ready metadata (description, category, sensible defaults). The Bazaar listing is the view filter: Templates aren't a separate codebase, the same Templates power your private launches and the public marketplace.
 
 ## Browse
 
@@ -31,11 +31,11 @@ Pick a Template, click Launch:
 3. Pick a target Marquee.
 4. Launch.
 
-The result is a normal [Playground](/concepts/playgrounds/) you fully own. The original Template stays where it was — your Playspec carries a reference to the version you launched.
+The result is a normal [Playground](/concepts/playgrounds/) you fully own. The original Template stays where it was: your Playspec carries a reference to the version you launched.
 
 ## Fork from the Bazaar
 
-Forking makes a private copy of the Template in your account. The fork is independent — future updates to the original don't flow into your fork.
+Forking makes a private copy of the Template in your account. The fork is independent: future updates to the original don't flow into your fork.
 
 Use forking when you want to:
 
@@ -47,11 +47,11 @@ Use forking when you want to:
 
 From a Template you own:
 
-1. Fill in publish-ready metadata — description, category, default values that work without your specific environment.
+1. Fill in publish-ready metadata: description, category, default values that work without your specific environment.
 2. Walk the [publishing checklist](/operate/publishing/).
 3. Mark a version public (the **Make public** action on the version).
 
-That version is now public — immediately. Anyone can find it in search, open it by direct link, and fork or launch it; there's no review queue before it goes live. Publishing is per-version: each version has its own public toggle, so private drafts coexist with published versions on the same Template. Future versions you publish appear too. You can unpublish a version at any time without touching the others; existing forks keep working.
+That version becomes public immediately. Anyone can find it in search, open its direct link, and fork or launch it; there is no review queue. Publishing applies per version, so private drafts and published versions can share one Template. You can unpublish one version without affecting the others, and existing forks keep working.
 
 ## Quality bar
 
@@ -60,7 +60,7 @@ The Bazaar is a public surface. Before publishing:
 - Real test launch from a fresh setup. No leftover state.
 - Variables are honest about what launchers must provide. No hidden hardcoded values.
 - Screenshots in the launch's mutters so future launchers see success.
-- Description explains what the Template does, not just what's in it.
+- Description states the Template's purpose and contents.
 
 See [Before you publish](/operate/publishing/) for the full checklist.
 
@@ -73,7 +73,7 @@ Templates you publish appear on your public profile alongside any [Genies you've
 <details>
 <summary>Is the Bazaar moderated?</summary>
 
-Fibe staff can take down Templates that are malicious, broken, or misleading. If you find one, report it to support — there's no in-product report button yet.
+Fibe staff can take down Templates that are malicious, broken, or misleading. If you find one, report it to support: there's no in-product report button yet.
 </details>
 
 <details>
@@ -85,7 +85,7 @@ Not today. Bazaar Templates are free to launch. Hosting costs (Marquee usage) st
 <details>
 <summary>How many Templates can I publish?</summary>
 
-Accounts hold 20 Templates by default, each with up to 100 versions. Quotas can be raised per account — see [Limits & Quotas](/advanced/limits/).
+Accounts hold 20 Templates by default, each with up to 100 versions. Quotas can be raised per account: see [Limits & Quotas](/advanced/limits/).
 </details>
 
 <details>
@@ -96,7 +96,7 @@ Nothing. Running Playgrounds keep running. The Template version is already clone
 
 ## Related
 
-- [Playspecs & Templates](/concepts/playspecs/) — Template authoring lifecycle, and what a Bazaar launch produces.
-- [Scrolls](/concepts/scrolls/) — Pantry is the private counterpart to the public Bazaar.
-- [Before you publish](/operate/publishing/) — publishing checklist.
-- **[Fibe Templates](/authoring/overview/)** — full authoring guide.
+- [Playspecs & Templates](/concepts/playspecs/): Template authoring lifecycle, and what a Bazaar launch produces.
+- [Scrolls](/concepts/scrolls/): Pantry is the private counterpart to the public Bazaar.
+- [Before you publish](/operate/publishing/): publishing checklist.
+- **[Fibe Templates](/authoring/overview/)**: full authoring guide.

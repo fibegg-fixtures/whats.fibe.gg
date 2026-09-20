@@ -16,11 +16,11 @@ Values marked as configurable are the shipped defaults. A hosted environment may
 
 ### API key scope families and granular restrictions
 
-API keys support 56 scopes across families (marquees, props, playspecs, playgrounds, Genies, secrets, webhooks, etc.) with read/write/delete/manage actions. Some families offer a `manage` scope combining read+write+delete. Granular restrictions allow limiting a scope to specific resource IDs (e.g. `secrets:read` restricted to secrets [42, 99]). Resource ownership is validated at save time — you cannot grant a key access to resources not owned by your account. Scope escalation is blocked: non-admin players cannot create keys with `*` (wildcard) or grant a key access to a team they don't belong to.
+API keys support 56 scopes across families (marquees, props, playspecs, playgrounds, Genies, secrets, webhooks, etc.) with read/write/delete/manage actions. Some families offer a `manage` scope combining read+write+delete. Granular restrictions allow limiting a scope to specific resource IDs (e.g. `secrets:read` restricted to secrets [42, 99]). Resource ownership is validated at save time: you cannot grant a key access to resources not owned by your account. Scope escalation is blocked: non-admin players cannot create keys with `*` (wildcard) or grant a key access to a team they don't belong to.
 
 ### API key token visibility and rotation
 
-Raw API key tokens are shown **only once** at creation and cannot be retrieved later. After creation, keys display a masked token showing the first 14 characters plus asterisks (e.g. `abc123*******...`). Exception: keys marked "For Genies (unencrypted)" store tokens unencrypted and can be revealed via the key card after re-confirming 2FA. Regular keys must be rotated to get a new token — rotation creates a new key with identical scopes/restrictions and immediately expires the old one.
+Raw API key tokens are shown **only once** at creation and cannot be retrieved later. After creation, keys display a masked token showing the first 14 characters plus asterisks (e.g. `abc123*******...`). Exception: keys marked "For Genies (unencrypted)" store tokens unencrypted and can be revealed via the key card after re-confirming 2FA. Regular keys must be rotated to get a new token: rotation creates a new key with identical scopes/restrictions and immediately expires the old one.
 
 ### Webhook HMAC-SHA256 signing and header format
 
@@ -28,7 +28,7 @@ Each webhook payload is HMAC-signed using SHA256 with the endpoint's signing sec
 
 ### Webhook delivery retry strategy and failure auto-disable
 
-Network-level failures (timeouts, connection refused, socket errors, SSL errors) trigger automatic retries up to 3 attempts with exponential backoff: delay = (attempt^4) + 2 seconds. HTTP 2xx responses mark success; non-2xx (including 4xx client errors) count as permanent failures — **not retried**. After 10 consecutive failures, the endpoint auto-disables. One successful delivery resets the failure counter. Failed deliveries are recorded in delivery history entries with status (pending/retrying/success/failed), response code, and truncated response body (10,000 char limit).
+Network-level failures (timeouts, connection refused, socket errors, SSL errors) trigger automatic retries up to 3 attempts with exponential backoff: delay = (attempt^4) + 2 seconds. HTTP 2xx responses mark success; non-2xx (including 4xx client errors) count as permanent failures: **not retried**. After 10 consecutive failures, the endpoint auto-disables. One successful delivery resets the failure counter. Failed deliveries are recorded in delivery history entries with status (pending/retrying/success/failed), response code, and truncated response body (10,000 char limit).
 
 ### API key authentication caching and expiry validation
 
@@ -36,19 +36,19 @@ Successfully authenticated API keys are cached for 24 hours. Expired keys fail a
 
 ### API key rate limit defaults and tracking
 
-Default API rate limit is 5,000 requests per hour (RPH) per player. This limit is global across all of a player's API keys. The limit window resets hourly on a fixed epoch schedule: clients receive `limit`, `remaining`, and `reset_seconds` (time until next window). Admins can set individual per-player limits. All keys share the player's throttle bucket — one key's usage counts against the player's global quota.
+Default API rate limit is 5,000 requests per hour (RPH) per player. This limit is global across all of a player's API keys. The limit window resets hourly on a fixed epoch schedule: clients receive `limit`, `remaining`, and `reset_seconds` (time until next window). Admins can set individual per-player limits. All keys share the player's throttle bucket: one key's usage counts against the player's global quota.
 
 ### Audit log immutability and visibility scope
 
-Audit logs are write-once, immutable records — they cannot be modified or deleted once created. Each entry contains action, actor (Player/System/Stripe/Playguard), actor_id, channel (UI/API/System/Webhook), resource type/id/name, timestamp, metadata. Entries are visible to a player only if: the player is the actor, the player owns the resource, the player owns a resource the entry affects, or the entry is a system event for the player. Audit history is kept indefinitely — no retention window or automatic deletion. One successful API call per key generates one audit entry (last_used_at updates are not audited).
+Audit logs are write-once, immutable records: they cannot be modified or deleted once created. Each entry contains action, actor (Player/System/Stripe/Playguard), actor_id, channel (UI/API/System/Webhook), resource type/id/name, timestamp, metadata. Entries are visible to a player only if: the player is the actor, the player owns the resource, the player owns a resource the entry affects, or the entry is a system event for the player. Audit history is kept indefinitely: no retention window or automatic deletion. One successful API call per key generates one audit entry (last_used_at updates are not audited).
 
 ### Data export/import structure and exclusions
 
-Exports include: Props, Marquees, Playspecs, Genies, Playgrounds, Templates, Secrets (names/descriptions only — **never values**), Webhook endpoints (URL and subscriptions only — signing secrets **excluded and regenerated on import**). **Excluded from export**: profile settings, API keys, audit logs, artefacts, mutters, conversations. Exports are JSONL files. Default retention: 24 hours before download link expires (configurable). Max import file size: 50 MB (default), max 5,000 records per import. Two conflict strategies: merge (update existing) or skip (create new only). Rollback removes all records created by a completed import.
+Exports include: Props, Marquees, Playspecs, Genies, Playgrounds, Templates, Secrets (names/descriptions only, **never values**), Webhook endpoints (URL and subscriptions only, signing secrets **excluded and regenerated on import**). **Excluded from export**: profile settings, API keys, audit logs, artefacts, mutters, conversations. Exports are JSONL files. Default retention: 24 hours before download link expires (configurable). Max import file size: 50 MB (default), max 5,000 records per import. Two conflict strategies: merge (update existing) or skip (create new only). Rollback removes all records created by a completed import.
 
 ### Webhook URL validation and SSRF protection
 
-Webhook URLs must be HTTPS in production (configurable via `enforce_webhook_https` runtime capability). At save time, Fibe makes a HEAD/GET request to the URL to validate it resolves to a public IP — private IP addresses are rejected immediately. This SSRF guard prevents storing URLs pointing to internal networks or 127.0.0.1. Non-2xx responses and unreachable hosts don't block save (server may be temporarily down). At delivery time, the delivery-time guard validates private-network destinations again. Test/dev environments may allow HTTP and skip SSRF checks.
+Webhook URLs must be HTTPS in production (configurable via `enforce_webhook_https` runtime capability). At save time, Fibe makes a HEAD/GET request to the URL to validate it resolves to a public IP: private IP addresses are rejected immediately. This SSRF guard prevents storing URLs pointing to internal networks or 127.0.0.1. Non-2xx responses and unreachable hosts don't block save (server may be temporarily down). At delivery time, the delivery-time guard validates private-network destinations again. Test/dev environments may allow HTTP and skip SSRF checks.
 
 ### Webhook delivery history retention
 
@@ -70,7 +70,7 @@ User-published template versions need only the public flag to appear in Bazaar f
 
 ### Template publishing is version-gated, not template-wide
 
-You don't publish a template — you publish individual versions. Each version can independently toggle its public flag without affecting the template or other versions. This means you can have private draft versions alongside published public ones, and unpublishing a version doesn't remove the template.
+You don't publish a template: you publish individual versions. Each version can independently toggle its public flag without affecting the template or other versions. This means you can have private draft versions alongside published public ones, and unpublishing a version doesn't remove the template.
 
 ### Approved vs Public are separate flags; approved requires public first
 
@@ -120,11 +120,11 @@ Tutorial plan holders get 1 Marquee, Single plan holders get 1, and Multiplayer 
 
 ### Subscription cancellation takes effect immediately
 
-When a player cancels a subscription via the UI, the Fibe immediately cancels on the provider (Stripe/Creem/Paddle). The cancellation does not wait for the current billing period to end; it is effective immediately. Wallets already credited remain intact; no refunds are issued for the remainder of the period. Cancelling a subscription does not stop any running marquees or playgrounds—it only stops future recharge transactions.
+When a player cancels a subscription via the UI, the Fibe immediately cancels on the provider (Stripe/Creem/Paddle). The cancellation does not wait for the current billing period to end; it is effective immediately. Wallets already credited remain intact; no refunds are issued for the remainder of the period. Cancelling a subscription does not stop any running marquees or playgrounds: it only stops future recharge transactions.
 
 ### Tutorial marquees are disabled at grace start, not at suspension
 
-When grace begins (a daily charge fails on a tutorial marquee), the marquee is immediately marked disabled status and provisioning state remains provisioned. This blocks all runtime actions (launch, rollout, restart, etc.) with a `MARQUEE_NOT_FUNDED` error. However, the marquee itself is not removed from Fibe yet. If grace passes unpaid, the status moves to suspended but the marquee is not deleted until the retention window elapses. Standard (self-hosted) marquees are never disabled—only blocked from runtime actions until the debt is repaid.
+When grace begins (a daily charge fails on a tutorial marquee), the marquee is immediately marked disabled status and provisioning state remains provisioned. This blocks all runtime actions (launch, rollout, restart, etc.) with a `MARQUEE_NOT_FUNDED` error. However, the marquee itself is not removed from Fibe yet. If grace passes unpaid, the status moves to suspended but the marquee is not deleted until the retention window elapses. Standard (self-hosted) marquees are never disabled: only blocked from runtime actions until the debt is repaid.
 
 ### Raw Mana checkout minimum and maximum enforce purchase bounds
 
@@ -318,7 +318,7 @@ When extending a playground's expiration, the system uses the maximum of the cur
 
 When a job-mode playground completes, only the last 5,000 log lines are captured per service by default. Older logs are discarded. Each service's exit code is recorded, and success is determined by whether all watched services exited with code 0.
 
-### Playground state machine is strict — not all transitions are allowed
+### Playground state machine is strict: not all transitions are allowed
 
 Playgrounds follow a strict state machine: pending/in_progress/running/error/has_changes/completed/destroying/stopping/stopped. From 'completed' state, only 'destroying' is allowed (job-mode only). From 'destroying', no transitions are possible (terminal). This prevents invalid state changes and ensures data consistency.
 
@@ -328,7 +328,7 @@ Automatic rollouts for drift detection are blocked for 3 minutes after playgroun
 
 ### SSH debug terminal sessions expire after 4 hours
 
-Each SSH terminal session connected to a Marquee has a 4-hour session TTL. After 4 hours of session registration, the session becomes invalid and cannot be reconnected. Additionally, only 3 concurrent SSH terminal sessions are allowed per Marquee — attempting a 4th will fail until one of the existing three closes.
+Each SSH terminal session connected to a Marquee has a 4-hour session TTL. After 4 hours of session registration, the session becomes invalid and cannot be reconnected. Additionally, only 3 concurrent SSH terminal sessions are allowed per Marquee: attempting a 4th will fail until one of the existing three closes.
 
 ## Props, Git Providers, And Source Control
 
@@ -422,7 +422,7 @@ When a user signs in, the system checks for sign-ins from different IP or user-G
 
 ### Password length and character constraints
 
-Passwords must be 8–72 characters. No character-type restrictions (uppercase, lowercase, symbols, numbers not enforced). All passwords are checked against the Have I Been Pwned breach database; if a password appears in 6 or more breaches it is rejected during signup and password change.
+Passwords must be 8 to 72 characters. No character-type restrictions (uppercase, lowercase, symbols, numbers not enforced). All passwords are checked against the Have I Been Pwned breach database; if a password appears in 6 or more breaches it is rejected during signup and password change.
 
 ### Password reset token validity window
 
@@ -454,7 +454,7 @@ When a user changes their email address, a notification email is sent to the OLD
 
 ### Username constraints and reserved names
 
-Usernames must be 5–39 characters, start and end with alphanumeric, and contain only [a-zA-Z0-9._-]. 68 reserved names are blocked (admin, api, login, logout, root, system, etc.). Usernames are case-insensitive unique.
+Usernames must be 5 to 39 characters, start and end with alphanumeric, and contain only [a-zA-Z0-9._-]. 68 reserved names are blocked (admin, api, login, logout, root, system, etc.). Usernames are case-insensitive unique.
 
 ### WebAuthn credential registration and signing
 
@@ -464,15 +464,15 @@ WebAuthn credentials store external ID, public key, and signature counter. Multi
 
 ### Account deletion auto-leaves all teams (except as leader); leader teams are problematic
 
-When a player deletes their account, the account deletion flow iterates all accepted team memberships and calls the team departure flow on each one (except where the player is the team leader). If a player is the leader of any team, the departure call is skipped with a warning logged, and the team remains orphaned with a an orphaned owner reference. This means deleting a leader account does not clean up their teams or transfer leadership — the team becomes inaccessible.
+When a player deletes their account, the account deletion flow iterates all accepted team memberships and calls the team departure flow on each one (except where the player is the team leader). If a player is the leader of any team, the departure call is skipped with a warning logged, and the team remains orphaned with a an orphaned owner reference. This means deleting a leader account does not clean up their teams or transfer leadership: the team becomes inaccessible.
 
 ### Only owner and admin can invite members; only owner and admin can manage team
 
-Regular members (role="member") can only read team data; they cannot invite others, manage members, or change settings. Only users with role="owner" or role="admin" can manage team membership records. When inviting members, only the non-owner roles ("member", "admin") can be assigned — the contract explicitly restricts this. Changing a member's role is limited to these two roles, not owner.
+Regular members (role="member") can only read team data; they cannot invite others, manage members, or change settings. Only users with role="owner" or role="admin" can manage team membership records. When inviting members, only the non-owner roles ("member", "admin") can be assigned: the contract explicitly restricts this. Changing a member's role is limited to these two roles, not owner.
 
 ### Team creator is always the owner and cannot be changed
 
-The player who creates a team automatically becomes the team owner (role="owner", immutable). When a team is created, an owner membership record is created automatically with the creator. The owner role can ONLY be assigned to the team creator via validation (owner_role_matches_creator). The owner cannot be demoted or changed — they can only transfer the owner role to another accepted member, which promotes them to owner and demotes the current owner to admin.
+The player who creates a team automatically becomes the team owner (role="owner", immutable). When a team is created, an owner membership record is created automatically with the creator. The owner role can ONLY be assigned to the team creator via validation (owner_role_matches_creator). The owner cannot be demoted or changed: they can only transfer the owner role to another accepted member, which promotes them to owner and demotes the current owner to admin.
 
 ### Team invitations are username-based and auto-resolve on signup
 
@@ -484,19 +484,19 @@ The team owner/leader (creator) cannot leave or be removed from the team. Attemp
 
 ### Departing members lose access to shared resources but retain personal ownership
 
-When a member leaves a team (non-leader), all TeamResource records contributed by that member are destroyed (revoked from the team). However, the underlying PlayerResource records (personal ownership) remain intact — they own those resources individually. Playgrounds running on team-shared Marquees are terminated (set to "destroying" status) when the member departs, and their PlayerResource entry for the playground is removed. The contributing player keeps their personal Marquee resources but the team no longer has access.
+When a member leaves a team (non-leader), all TeamResource records contributed by that member are destroyed (revoked from the team). However, the underlying PlayerResource records (personal ownership) remain intact: they own those resources individually. Playgrounds running on team-shared Marquees are terminated (set to "destroying" status) when the member departs, and their PlayerResource entry for the playground is removed. The contributing player keeps their personal Marquee resources but the team no longer has access.
 
 ### Members can read shared resources but cannot edit or delete them
 
-When a Marquee (runtime container) is shared with a team at "manage" permission level, all accepted members get read access to it. Non-owner/admin members cannot destroy, update, or modify shared Marquees or their Props/Playspecs — only the owner/admin can manage those. Shared resources appear in the member's accessible list but are read-only. Team members can contribute (share) their own Marquees to the team, but those are also then subject to member visibility restrictions.
+When a Marquee (runtime container) is shared with a team at "manage" permission level, all accepted members get read access to it. Non-owner/admin members cannot destroy, update, or modify shared Marquees or their Props/Playspecs: only the owner/admin can manage those. Shared resources appear in the member's accessible list but are read-only. Team members can contribute (share) their own Marquees to the team, but those are also then subject to member visibility restrictions.
 
-### No team-scoped secrets, API keys, or audit logs — only resource sharing
+### No team-scoped secrets, API keys, or audit logs: only resource sharing
 
-Teams do not provide team-scoped secrets, API keys, webhooks, or audit logs. Teams only share Marquee resources with access control. Secrets, API keys, webhook endpoints, and audit logs remain player-scoped. When a member leaves a team, they retain all their personal secrets and keys — team membership has no effect on those resources. Team members cannot see each other's personal secrets or audit logs.
+Teams do not provide team-scoped secrets, API keys, webhooks, or audit logs. Teams only share Marquee resources with access control. Secrets, API keys, webhook endpoints, and audit logs remain player-scoped. When a member leaves a team, they retain all their personal secrets and keys: team membership has no effect on those resources. Team members cannot see each other's personal secrets or audit logs.
 
 ### Only Marquees (container runtimes) can be shared; read-only permission is "manage"
 
-Only Marquee resources can be shared with teams (SHAREABLE_RESOURCE_TYPE="Marquee"). The only permission level is "manage" — there is no read-only or restricted sharing option. When a Marquee is contributed to a team at permission_level="manage", all team members get full access to run and interact with it (read/execute semantics, despite the name). Each resource can only belong to one team globally — a Marquee shared with one team cannot be re-shared to another.
+Only Marquee resources can be shared with teams (SHAREABLE_RESOURCE_TYPE="Marquee"). The only permission level is "manage": there is no read-only or restricted sharing option. When a Marquee is contributed to a team at permission_level="manage", all team members get full access to run and interact with it (read/execute semantics, despite the name). Each resource can only belong to one team globally: a Marquee shared with one team cannot be re-shared to another.
 
 ### Teams feature is optional and gated behind a feature flag
 
@@ -552,7 +552,7 @@ Services marked with job_watch: true (or fibe.gg/job_watch label) are watched. J
 
 ### CI trigger default max retries is unlimited; only checked at invocation
 
-Trigger playspecs can specify max_retries count (per push event). If max_retries=3, the trigger worker refuses to create playground on retry_count >= 3. Default (nil) means unlimited retries. Retries only happen via explicit webhook re-fires or manual job re-queuing—no automatic exponential backoff or retry scheduling built in.
+Trigger playspecs can specify max_retries count (per push event). If max_retries=3, the trigger worker refuses to create playground on retry_count >= 3. Default (nil) means unlimited retries. Retries only happen via explicit webhook re-fires or manual job re-queuing: no automatic exponential backoff or retry scheduling built in.
 
 ### Job results persist with the Trick record after runtime cleanup
 
@@ -562,7 +562,7 @@ A job result containing service exit codes and log tails remains available after
 
 Schedule configuration supports cron expressions (e.g., '0 9 * * *') and human-readable formats (e.g., 'every day at 9am', 'every 5 minutes'). Invalid formats are rejected at playspec validation time. There is no minimum interval enforcement for scheduled Tricks, so very frequent schedules should be used carefully.
 
-### Scheduled jobs do not overlap—single instance per playspec
+### Scheduled jobs do not overlap: single instance per playspec
 
 The schedule worker re-enqueues itself for the next cron tick only after the current run completes. If a job takes longer than the scheduled interval, the next scheduled run is skipped (no queue-stacking). No concurrency control or 'missed run' recovery exists.
 

@@ -1,9 +1,4 @@
-/**
- * Concept icons extracted from the Fibe product icon set.
- *
- * Each icon is a 24×24 viewBox SVG that inherits color from `currentColor`
- * so it picks up the parent text color via CSS.
- */
+
 import React from 'react';
 
 const Svg = ({children, ...rest}) => (
@@ -20,7 +15,6 @@ const Svg = ({children, ...rest}) => (
   </svg>
 );
 
-// Marquee — umbrella shape (verbatim from svg_data.rb UMBRELLA_ICON_DATA).
 export const MarqueeIcon = (props) => (
   <Svg {...props}>
     <g strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5">
@@ -41,7 +35,6 @@ export const MarqueeIcon = (props) => (
   </Svg>
 );
 
-// Props — Greek/temple column with a kit/prop above (theatre prop).
 export const PropsIcon = (props) => (
   <Svg {...props}>
     <g strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5">
@@ -62,7 +55,6 @@ export const PropsIcon = (props) => (
   </Svg>
 );
 
-// Templates — playspec grid (the Fibe "blueprint" icon).
 export const TemplatesIcon = (props) => (
   <Svg {...props}>
     <g strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5">
@@ -88,7 +80,6 @@ export const TemplatesIcon = (props) => (
   </Svg>
 );
 
-// Playgrounds — Fibe playground icon (sail, arrow, swing).
 export const PlaygroundsIcon = (props) => (
   <Svg {...props}>
     <g strokeLinecap="round" strokeLinejoin="round">
@@ -114,7 +105,6 @@ export const PlaygroundsIcon = (props) => (
   </Svg>
 );
 
-// Tricks — top hat (magic trick) with motion.
 export const TricksIcon = (props) => (
   <Svg {...props}>
     <g strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5">
@@ -131,9 +121,6 @@ export const TricksIcon = (props) => (
   </Svg>
 );
 
-// Genies — the OpenCode robot mark from the Fibe product icon set,
-// filled with its red palette so it reads as the OpenCode mascot
-// rather than as a generic outline icon.
 export const GeniesIcon = (props) => (
   <svg
     width="36"
@@ -155,7 +142,6 @@ export const GeniesIcon = (props) => (
   </svg>
 );
 
-// Compose → Fibe — terminal / convert icon.
 export const ComposeIcon = (props) => (
   <Svg {...props}>
     <path
@@ -167,7 +153,6 @@ export const ComposeIcon = (props) => (
   </Svg>
 );
 
-// SDK / CLI / MCP — terminal window with a prompt and a cursor.
 export const SdkIcon = (props) => (
   <Svg {...props}>
     <g strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5">
@@ -182,7 +167,6 @@ export const SdkIcon = (props) => (
   </Svg>
 );
 
-// Wallet, Mana & Sparks — wallet pouch with a small sparkle (Sparks/Mana).
 export const WalletIcon = (props) => (
   <Svg {...props}>
     <g strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5">

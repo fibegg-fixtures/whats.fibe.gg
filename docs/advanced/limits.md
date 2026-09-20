@@ -28,9 +28,9 @@ Default quotas per account:
 | Job ENV entries | 200 |
 | Scroll artefacts | 500 |
 
-Counts are how many you currently have (Trick runs count as Playgrounds). Marquee allowance is tracked separately from this table — by default 100 standard Marquees and 1 tutorial Marquee.
+Counts are how many you currently have (Trick runs count as Playgrounds). Marquee allowance is tracked separately from this table: by default 100 standard Marquees and 1 tutorial Marquee.
 
-Quotas are platform defaults that can be raised per account — contact support if you hit one. Platform support accounts may have nonstandard limits for support work. [Billing](/concepts/billing/) top-ups fund your wallet; they don't change these quotas. Only your Marquee allowance is tied to your subscription.
+Quotas are platform defaults that can be raised per account: contact support if you hit one. Platform support accounts may have nonstandard limits for support work. [Billing](/concepts/billing/) top-ups fund your wallet; they don't change these quotas. Only your Marquee allowance is tied to your subscription.
 
 ## Per-parent caps
 
@@ -65,11 +65,11 @@ Document conversion limits are defaults and can be raised per Genie. Memory and 
 
 ## Statuses
 
-- **OK** — well under the limit.
-- **Near limit** — within the configured warning band (typically 80%).
-- **Exceeded** — at or past the limit; new creates are blocked until usage drops.
+- **OK**: well under the limit.
+- **Near limit**: within the configured warning band (typically 80%).
+- **Exceeded**: at or past the limit; new creates are blocked until usage drops.
 
 ## Related
 
-- [Billing](/concepts/billing/) — wallet top-ups and subscriptions.
-- [API Keys](/advanced/api-keys/) — scopes and rotation.
+- [Billing](/concepts/billing/): wallet top-ups and subscriptions.
+- [API Keys](/advanced/api-keys/): scopes and rotation.

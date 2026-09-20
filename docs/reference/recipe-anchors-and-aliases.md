@@ -13,9 +13,9 @@ Large templates often repeat the same `environment:`, `depends_on:`, `build:`, o
 
 ## Syntax recap
 
-- `&name` — declare an anchor on a YAML node.
-- `*name` — reference (alias) the anchor.
-- `<<: *name` — merge keys from the anchored mapping into the current mapping.
+- `&name`: declare an anchor on a YAML node.
+- `*name`: reference (alias) the anchor.
+- `<<: *name`: merge keys from the anchored mapping into the current mapping.
 
 ## At the document level: `x-*` extension keys
 
@@ -135,7 +135,7 @@ When `$$var__APP_NAME` is substituted inside the fragment, both services get the
 
 ## Anchors and `path:` bindings
 
-`path:` writes to the **compiled** YAML structure. Aliases are resolved during YAML load; the editor walks the structure once. Writing to `services.web.environment.APP_NAME` does NOT propagate to the aliased other service — they were already separate nodes after the alias expansion.
+`path:` writes to the **compiled** YAML structure. Aliases are resolved during YAML load; the editor walks the structure once. Writing to `services.web.environment.APP_NAME` does NOT propagate to the aliased other service: they were already separate nodes after the alias expansion.
 
 If you want the same value in two services via a path binding, list both paths:
 
@@ -149,7 +149,7 @@ x-fibe.gg:
         - services.worker.environment.APP_NAME
 ```
 
-Or use inline `$$var__NAME` inside an anchored block — that propagates because substitution runs on the raw template text before aliases expand.
+Or use inline `$$var__NAME` inside an anchored block: that propagates because substitution runs on the raw template text before aliases expand.
 
 ## Anchors and label keys
 
@@ -184,16 +184,16 @@ Use this when several roles build from the same repository but expose different 
 
 ## Limits
 
-- Anchors and aliases are **YAML-level** — they're expanded by the parser before any Fibe processing.
+- Anchors and aliases are **YAML-level**: they're expanded by the parser before any Fibe processing.
 - The schema validates the expanded form. If your anchor produces invalid labels, validation fails at that service after expansion.
-- Some YAML tools strip aliases on round-trip — if you reformat with a custom tool, verify aliases survive.
+- Some YAML tools strip aliases on round-trip: if you reformat with a custom tool, verify aliases survive.
 
 ## Pitfalls
 
-- **Anchor used before declared** — YAML 1.2 requires the anchor to appear in document order before its alias. Place `x-*` blocks at the top of the file.
-- **Aliases inside `x-fibe.gg.variables` definitions** — works, but the runtime treats variable definitions as a flat hash. Anchors there are over-engineered.
-- **Cycles** — YAML aliases cannot loop. `<<: *foo` inside the `&foo`-anchored block is invalid.
-- **Stripping aliases for "readability"** — fine, but the template gets longer. Choose taste over DRY only when the duplication is small.
+- **Anchor used before declared**: YAML 1.2 requires the anchor to appear in document order before its alias. Place `x-*` blocks at the top of the file.
+- **Aliases inside `x-fibe.gg.variables` definitions**: works, but the runtime treats variable definitions as a flat hash. Anchors there are over-engineered.
+- **Cycles**: YAML aliases cannot loop. `<<: *foo` inside the `&foo`-anchored block is invalid.
+- **Stripping aliases for "readability"**: fine, but the template gets longer. Choose taste over DRY only when the duplication is small.
 
 ## Related skills
 

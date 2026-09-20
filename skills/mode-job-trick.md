@@ -1,6 +1,6 @@
 ---
 name: mode-job-trick
-description: Use to convert a Docker Compose template into a Fibe job-mode template (Trick) with `fibe.gg/job_watch`, `x-fibe.gg.metadata.job_mode: true`, and the runtime constraints around restart, replicas, and exposure.
+description: "Use to convert a Docker Compose template into a Fibe job-mode template (Trick) with `fibe.gg/job_watch`, `x-fibe.gg.metadata.job_mode: true`, and the runtime constraints around restart, replicas, and exposure."
 ---
 
 # Mode: job-mode templates (Tricks)
@@ -13,7 +13,7 @@ A Trick is a job-mode Playground: it starts, runs the watched service(s) to comp
 2. **Watched service**: `fibe.gg/job_watch: "true"` on at least one service. Its exit code decides success/failure.
 
 Optional but recommended:
-- `x-fibe.gg.metadata.description`, `category` — for clarity.
+- `x-fibe.gg.metadata.description`, `category`: for clarity.
 - Source defaults: `metadata.source_defaults: true` if the template is imported from a Prop.
 
 ## Minimum example
@@ -38,7 +38,7 @@ x-fibe.gg:
 
 ## What runtime does to a job-mode template
 
-- **Removes routing/exposure labels** — no public routes are created for job services; platform bookkeeping labels remain on the containers. The platform has already used the source labels to set up clones and mounts.
+- **Removes routing/exposure labels**: no public routes are created for job services; platform bookkeeping labels remain on the containers. The platform has already used the source labels to set up clones and mounts.
 - **Forces `restart: "no"`** on every service. Restarts would fight job lifecycle.
 - **Forces `deploy.replicas: 1`** on every service. Replicas would multiply work.
 - **Strips `fibe.gg/port`, visibility, subdomain, expose, and Traefik routing labels** before launch. Job services aren't user-facing.
@@ -89,7 +89,7 @@ services:
       interval: 5s
 ```
 
-The `migrate` service is **not** watched — it's a setup step. Only `test` defines success.
+The `migrate` service is **not** watched: it's a setup step. Only `test` defines success.
 
 ## Job ENV entries
 
@@ -99,18 +99,18 @@ Job-mode templates can pull launcher-level env vars from **Job ENV entries** (Pl
 - Global Job ENV applies to every Player job.
 - Prop-scoped Job ENV applies only when the job uses that Prop.
 
-This is the right home for CI credentials (`NPM_TOKEN`, `STRIPE_SECRET_KEY`) — values not in the template but injected per Player/Prop scope.
+Use this for CI credentials such as `NPM_TOKEN` and `STRIPE_SECRET_KEY`. Fibe injects them per Player and Prop scope, so they need not appear in the template.
 
-Entries marked secret are NOT injected into runs triggered by `pull_request` events (protection against untrusted PR code). They are available on push-triggered, scheduled, and manual runs. If a PR test needs a credential, it must come from a non-secret entry or the template itself — understand the exposure risk first.
+Entries marked secret are NOT injected into runs triggered by `pull_request` events (protection against untrusted PR code). They are available on push-triggered, scheduled, and manual runs. If a PR test needs a credential, it must come from a non-secret entry or the template itself: understand the exposure risk first.
 
 ### Built-in run-context variables
 
 Job services receive Fibe-managed run context env, and source-backed service paths are available to Compose interpolation. Use [reference-fibe-managed-env](reference-fibe-managed-env.md) for the complete variable list, scope, and ownership rules before adding any platform-looking `FIBE_*` key to a template.
 
-## When NOT to use job mode
+## When not to use job mode
 
 - Long-running HTTP services. Use long-running templates.
-- Scheduled HTTP work — use a long-running service that does work internally. Job mode means "exit when done".
+- Scheduled HTTP work: use a long-running service that does work internally. Job mode means "exit when done".
 - Services that need exposed ports. Job mode strips routing labels, so they won't get public URLs.
 
 ## Triggering a Trick
@@ -184,11 +184,11 @@ services:
 
 ## Pitfalls
 
-- **Setting only one of `job_mode: true` / `job_watch`** — `job_watch` without `job_mode`: the label is ignored and the template runs long-running. `job_mode` without any watched service: validation rejects — unless a service is source-backed, in which case source-backed services are watched by default in job mode (set `fibe.gg/job_watch: "false"` to opt one out).
-- **Watched service that doesn't exit** (e.g. starts a dev server) — job never finishes. Watched services MUST exit.
-- **Setting `fibe.gg/port` on a job service** — no public route is created; the label is stripped before launch. Remove it for clarity.
-- **`container_name:`, `ports:`, `restart: always`** — silently overridden, but misleading. Remove for clarity.
-- **No `setup`/`migrate` waiting** — if the test service runs before migrations finish, you get false-fail. Use `depends_on: service_completed_successfully`.
+- **Setting only one of `job_mode: true` / `job_watch`**: without `job_mode`, the `job_watch` label is ignored and the template stays long-running. Without an explicit watched service, source-backed services are watched by default; validation rejects templates with nothing to watch. Set `fibe.gg/job_watch: "false"` to exclude a source-backed service.
+- **Watched service that doesn't exit** (e.g. starts a dev server): job never finishes. Watched services MUST exit.
+- **Setting `fibe.gg/port` on a job service**: no public route is created; the label is stripped before launch. Remove it for clarity.
+- **`container_name:`, `ports:`, `restart: always`**: silently overridden, but misleading. Remove for clarity.
+- **No `setup`/`migrate` waiting**: if the test service runs before migrations finish, you get false-fail. Use `depends_on: service_completed_successfully`.
 
 ## Related skills
 

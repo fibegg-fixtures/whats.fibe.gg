@@ -1,17 +1,3 @@
-/**
- * Swizzled Footer for whats.fibe.gg.
- *
- * Centered layout matching the LoginLayout footer in the fibe Rails project:
- *  - Brand + family-of-sites strip.
- *  - Icon-only social row (Slack, Buttondown, GitHub, Rumble, Nostr · Yakihonne, Email).
- *  - Support Ukraine pill (🇺🇦).
- *  - Legal links row (Terms · Privacy).
- *  - Copyright line.
- *
- * Social, legal and family targets live in the SOCIAL_LINKS / LEGAL_LINKS /
- * FAMILY_LINKS constants below — keep them in sync with the static-site footers.
- */
-
 import React from 'react';
 import Link from '@docusaurus/Link';
 import styles from './styles.module.css';
@@ -156,7 +142,7 @@ export default function Footer() {
         </div>
 
         <div className={styles.copyright}>
-          © {year} fibe.gg — All rights reserved.
+          © {year} fibe.gg: All rights reserved.
         </div>
       </div>
     </footer>

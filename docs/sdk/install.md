@@ -8,7 +8,7 @@ image: /img/og/sdk-install.png
 keywords: [fibe install, brew, go install, release binaries, fibe doctor, shell completion]
 ---
 
-The `fibe` binary is the same single executable whether you use it as a CLI, a Go library dependency, or an MCP server. Pick whichever install method fits your environment.
+The same `fibe` executable works as a CLI, a Go library dependency, and an MCP server. Pick the install method that fits your environment.
 
 ## Homebrew (macOS, Linux)
 
@@ -40,11 +40,11 @@ Use `@latest`, a tag (`@v1.2.3`), or a commit SHA. For reproducible CI, pin to a
 
 For systems without Homebrew or Go, download a binary from the project's [releases page](https://github.com/fibegg/sdk/releases). Builds are published for:
 
-- macOS — amd64, arm64
-- Linux — amd64, arm64
-- Windows — amd64
+- macOS: amd64, arm64
+- Linux: amd64, arm64
+- Windows: amd64
 
-Pick the tarball for your platform. Asset names embed the version — they look like `fibe_<version>_linux_amd64.tar.gz` (Windows ships as a `.zip`) — so there's no stable "latest" URL; resolve the latest tag first, either on the releases page or with the GitHub CLI:
+Pick the archive for your platform. Asset names include the version, such as `fibe_<version>_linux_amd64.tar.gz`; Windows uses `.zip`. There is no stable "latest" asset URL, so resolve the latest tag from the releases page or GitHub CLI first:
 
 ```sh
 # Linux example — fetch the newest release with the GitHub CLI
@@ -95,7 +95,7 @@ After this, `fibe pl<Tab>` completes to `fibe playgrounds`, and so on through ev
 - **Go install**: `go install github.com/fibegg/sdk/cmd/fibe@latest`
 - **Release binary**: download the new tarball and overwrite the existing binary.
 
-The CLI is backward-compatible across patch versions; minor versions occasionally add new commands and tools. Major versions only happen with notable API changes — they're called out in the changelog.
+The CLI is backward-compatible across patch versions; minor versions occasionally add new commands and tools. Major versions only happen with notable API changes: they're called out in the changelog.
 
 ## Next step
 

@@ -15,7 +15,7 @@ Use this skill when a user asks how Fibe's AI Genies work, how to automate work,
 
 An Agent is a persistent AI assistant configuration. It stores provider choice, credentials, settings, prompts, mounted files, and runtime preferences.
 
-Supported provider families include Gemini, Antigravity, Claude Code, OpenAI Codex, Cursor, and OpenCode. Credential type depends on provider: OAuth-style credentials, device-code credentials, pasted credential bundles, or API keys. Antigravity uses the Google OAuth code flow from its headless CLI. A Genie can also run in Fibe Mana mode — Fibe powers the model from your Mana balance, so no provider credential is needed (not available for Cursor and Antigravity).
+Supported provider families include Gemini, Antigravity, Claude Code, OpenAI Codex, Cursor, and OpenCode. Credential type depends on provider: OAuth-style credentials, device-code credentials, pasted credential bundles, or API keys. Antigravity uses the Google OAuth code flow from its headless CLI. A Genie can also run in Fibe Mana mode: Fibe powers the model from your Mana balance, so no provider credential is needed (not available for Cursor and Antigravity).
 
 An Agent is usable when authenticated and not expired or revoked.
 
@@ -44,7 +44,7 @@ Typical chat lifecycle:
 1. User selects an authenticated Agent and target Marquee.
 2. Chat starts and gets a protected URL.
 3. User chats through Bridge or the Agent chat page.
-4. User can stop the chat (history kept; restart later) or clean it up (working data deleted). Chats don't expire — a chat runs, and is auto-recovered if unreachable, until stopped or cleaned up.
+4. User can stop the chat (history kept; restart later) or clean it up (working data deleted). Chats don't expire: a chat runs, and is auto-recovered if unreachable, until stopped or cleaned up.
 
 ## Bridge
 

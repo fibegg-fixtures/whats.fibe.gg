@@ -51,7 +51,7 @@ x-fibe.gg:
 
 If you have actual HTML files to ship, two options:
 
-### Option A — inline content via `configs:` (small)
+### Option A: inline content via `configs:` (small)
 
 ```yaml
 services:
@@ -82,7 +82,7 @@ x-fibe.gg:
 
 See [recipe-configs-block](recipe-configs-block.md).
 
-### Option B — repo-backed (source-mounted)
+### Option B: repo-backed (source-mounted)
 
 ```yaml
 services:
@@ -104,7 +104,7 @@ x-fibe.gg:
 
 Whatever's at the repo root gets mounted into the nginx serving dir.
 
-### Option C — pre-built image
+### Option C: pre-built image
 
 If the site is built and pushed to a registry (CI workflow):
 
@@ -168,9 +168,9 @@ URL becomes `https://<root-domain>/`, no leftmost label.
 
 ## Pitfalls
 
-- **Forgetting to omit `ports:`** — schema accepts, but Traefik can't route until you remove it. Always remove.
-- **Mounting a host path** — won't exist on the Marquee. Use `configs:`, source mount, or pre-built image.
-- **Bind-mounting `/etc/nginx/nginx.conf` from host** — same issue. Use `configs:` to ship the nginx config inline.
+- **Forgetting to omit `ports:`**: schema accepts, but Traefik can't route until you remove it. Always remove.
+- **Mounting a host path**: won't exist on the Marquee. Use `configs:`, source mount, or pre-built image.
+- **Bind-mounting `/etc/nginx/nginx.conf` from host**: same issue. Use `configs:` to ship the nginx config inline.
 
 ## Related skills
 

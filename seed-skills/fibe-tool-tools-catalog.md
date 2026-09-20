@@ -43,7 +43,7 @@ Lists every tool registered on the Fibe MCP server, including ones not advertise
 }
 ```
 
-`advertised: false` means the tool is registered server-side but not exposed to this MCP session — reach it via `fibe_call`.
+`advertised: false` means the tool is registered server-side but hidden from this MCP session. Reach it through `fibe_call`.
 
 ## Recipes
 - Discover all webhook-related tools: `{tier:"all", name_pattern:"webhook"}`.
@@ -56,6 +56,6 @@ Lists every tool registered on the Fibe MCP server, including ones not advertise
 - The list reflects the **server's** registered tools, not what each client UI displays. UIs may further filter (e.g., Codex hides destructive tools by default).
 
 ## Related
-- `fibe_call` — invoke a tool returned here.
-- `fibe_schema` — authoritative for resource payload shapes.
-- `fibe_help` — CLI-level help for the same tool path.
+- `fibe_call`: invoke a tool returned here.
+- `fibe_schema`: authoritative for resource payload shapes.
+- `fibe_help`: CLI-level help for the same tool path.

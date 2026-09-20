@@ -25,8 +25,8 @@ Looks up the cached output of a prior `fibe_pipeline` invocation. Cache is per-s
 | `path` | string | no | JSONPath; rooted at step bindings, falls back to full response |
 
 ## Path resolution
-- `"$.step_id.field"` — looks up inside `bindings` (the `steps` map).
-- `"$.status"`, `"$.error"`, `"$.completed_step_ids"` — fall back to the full cached envelope.
+- `"$.step_id.field"`: looks up inside `bindings` (the `steps` map).
+- `"$.status"`, `"$.error"`, `"$.completed_step_ids"`: fall back to the full cached envelope.
 - Empty `path` returns the entire cached response.
 
 ## Output
@@ -38,9 +38,9 @@ On expiry/miss:
 ```
 
 ## Gotchas
-- Cache is keyed by **session ID**, not pipeline ID alone — another session cannot read your cache.
+- Cache is keyed by **session ID**, not pipeline ID alone: another session cannot read your cache.
 - TTL is 5 minutes hardcoded; long-running flows that wait then look up should re-run if past that window.
-- `path` is JSONPath (PaesslerAG/jsonpath v1) — slice indexing, recursive descent, and filter expressions all work.
+- `path` is JSONPath (PaesslerAG/jsonpath v1): slice indexing, recursive descent, and filter expressions all work.
 
 ## Recipe
 After a `fibe_pipeline` returns `pipeline_id="abc"`:
@@ -48,4 +48,4 @@ After a `fibe_pipeline` returns `pipeline_id="abc"`:
 - Get just one created ID: `{pipeline_id:"abc", path:"$.create_pg.id"}`.
 
 ## Related
-- `fibe_pipeline` — the producer.
+- `fibe_pipeline`: the producer.

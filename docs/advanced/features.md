@@ -12,7 +12,7 @@ Account-wide preferences and per-browser interface tuning.
 
 ### Teams (Collaboration)
 
-Unlocks creating and managing [Teams](/concepts/teams/). Off by default and enabled per account rather than from this page. Without it the Teams page is hidden — you can still accept a team invitation and use a Marquee shared with you.
+Unlocks creating and managing [Teams](/concepts/teams/). It is off by default and an admin enables it per account. Without it, the Teams page is hidden, but you can still accept an invitation and use a shared Marquee.
 
 ### Beta program
 
@@ -28,9 +28,9 @@ Turn off on slow devices. Disables decorative motion, smooth scrolling, blur, an
 
 Two states surfaced:
 
-- **Full visual effects enabled** — default.
-- **Reduced effects active on this device** — set when off.
+- **Full visual effects enabled**: default.
+- **Reduced effects active on this device**: set when off.
 
 ## Related
 
-- [Inbox Notifications](/advanced/notifications/) — separate per-event control.
+- [Inbox Notifications](/advanced/notifications/): separate per-event control.

@@ -93,7 +93,7 @@ Fibe's mutation-testing workflow. Muti tracks surviving mutations and can ask a 
 
 ## Pantry (Templates)
 
-The user's personal template collection — private, forked, and source-linked templates live here, including templates the user may later publish.
+The user's personal template collection: private, forked, and source-linked templates live here, including templates the user may later publish.
 
 ## Player
 
@@ -121,7 +121,7 @@ The cron-style automation block for a job-mode Template. It tells Fibe when and 
 
 ## Scrolls
 
-A searchable workspace of everything your Genies have produced and everything you've written — artefacts, activity, feedback, memories, and conversation messages.
+A searchable workspace of everything your Genies have produced and everything you've written: artefacts, activity, feedback, memories, and conversation messages.
 
 ## Secret
 
@@ -133,7 +133,7 @@ A Template behavior that lets source-linked launches fill repository and branch 
 
 ## Team
 
-A web-managed group for sharing Marquees. The team owner invites members (by username or GitHub handle) and shares Marquees with manage-level access; accepted members launch on shared Marquees as if they were their own. Other resources stay personal. When sharing ends — unshare, removal, or leaving — the member's Playgrounds on that Marquee are destroyed and their Genie chats on it are stopped.
+A web-managed group for sharing Marquees. The team owner invites members (by username or GitHub handle) and shares Marquees with manage-level access; accepted members launch on shared Marquees as if they were their own. Other resources stay personal. When sharing ends, unshare, removal, or leaving, the member's Playgrounds on that Marquee are destroyed and their Genie chats on it are stopped.
 
 ## Template
 

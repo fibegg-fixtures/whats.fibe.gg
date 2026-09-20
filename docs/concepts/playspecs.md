@@ -1,13 +1,13 @@
 ---
 title: Playspecs
-description: A Playspec is a launch blueprint. A Template is a reusable recipe many Playspecs can share. Both manage what a launch becomes — from different angles.
+description: "Playspecs hold launch settings; Templates provide reusable environment definitions."
 slug: /concepts/playspecs
 sidebar_position: 6
 image: /img/og/concepts-playspecs.png
 keywords: [Playspec, blueprint, launch, Template, Template Version, variables, Bazaar, reproducibility, bulk upgrade, fork, publish, source-linked]
 ---
 
-A **Playspec** is a launch blueprint — one configured launch, ready to fire. A **Template** is a reusable recipe a Playspec is launched from. Many Playspecs can share one Template. Both manage what a launch becomes, from different angles: the Playspec carries the launch-time values; the Template carries the body.
+A **Playspec** stores one launch configuration. A **Template** supplies the reusable environment body. Many Playspecs can share a Template while keeping their own launch values.
 
 This page covers both, in that order.
 
@@ -21,26 +21,26 @@ A Playspec points at a Template version, holds variable values, and lists mounte
 | --- | --- |
 | **Template Version** | The frozen Template snapshot to launch from. May be omitted if launched from raw YAML. |
 | **Variable values** | Inputs the Template asks for. |
-| **Marquee** | Chosen at each launch — not stored on the Playspec. The Playground records which Marquee it runs on. Scheduled and CI-triggered Tricks name their target Marquee in the automation settings. |
+| **Marquee** | Chosen at each launch: not stored on the Playspec. The Playground records which Marquee it runs on. Scheduled and CI-triggered Tricks name their target Marquee in the automation settings. |
 | **Mounted files** | Optional uploads attached at launch (e.g. seed data, credentials). |
 | **Schedule / triggers** | Optional automation (cron, VCS push). Applies to Tricks. |
 
-Re-launch the same Playspec months later and you get an equivalent environment. The Template Version is frozen; the variables are stored; you pick the Marquee at launch.
+Relaunching a Playspec produces an equivalent environment because its Template Version and variables are fixed. You choose the Marquee at launch.
 
 ### Launching
 
-Pick a Template (or paste raw YAML), pick a Marquee, fill variables, click Launch. The resulting Playspec is saved. Launching is repeatable from the Playspec itself.
+Choose a Template or paste YAML, select a Marquee, fill the variables, and launch. Fibe saves the resulting Playspec for later runs.
 
 ### Editing a Playspec
 
 Edits to a Playspec don't touch the running Playground. The Playground keeps running until you apply the change:
 
-- **Rollout** — apply with the least disruption available.
-- **Hard restart** — full stop and start.
+- **Rollout**: apply with the least disruption available.
+- **Hard restart**: full stop and start.
 
-(If Fibe has to repair the Playground for another reason, the repair also picks up your latest Playspec.)
+Repairs also apply the latest Playspec.
 
-Prep changes in advance, apply on your schedule.
+Prepare changes, then apply them when ready.
 
 ### Switch to a newer Template version
 
@@ -56,31 +56,31 @@ This control only applies to Playspecs with a source Template Version. A Playspe
 
 ### Launch without a Template
 
-Paste a Compose file into a new Playspec, set variables, go. Use a Template only when you want reuse, sharing, auto-publish from a [Prop](/concepts/props/) file, or [Bazaar](/concepts/bazaar/) publication.
+Paste a Compose file into a new Playspec and set its variables. Use a Template for reuse, sharing, automatic publication from a [Prop](/concepts/props/) file, or [Bazaar](/concepts/bazaar/) publication.
 
 For a one-off run, skip the Template entirely.
 
 ## Templates
 
-A Template is a reusable environment recipe — a Docker Compose file plus a few Fibe additions (labels, optional settings block). Author privately, iterate, keep for yourself or publish to the [Bazaar](/concepts/bazaar/).
+A Template is a Docker Compose environment with Fibe labels and an optional settings block. Keep it private or publish it to the [Bazaar](/concepts/bazaar/).
 
 Templates keep launches reproducible. Two people launching the same Template version get the same starting environment.
 
-For authoring a Template from scratch — Compose-to-Fibe conversion, label and settings-block reference, recipes, playbooks — see the top-level **[Fibe Templates](/authoring/overview/)** section.
+For conversion, labels, settings, recipes, and playbooks, see [Fibe Templates](/authoring/overview/).
 
 ### Lifecycle
 
 1. **Create.** Paste a Compose file, import from a connected [Prop](/concepts/props/), fork an existing Template, or take one from the [Bazaar](/concepts/bazaar/).
 2. **Publish a Version.** A frozen snapshot of body + variables + metadata + automation settings. New launches default to the latest suitable version.
-3. **Existing Playspecs** keep the version they launched from. Switching is explicit — see [Switch to a newer Template version](#switch-to-a-newer-template-version) above.
+3. **Existing Playspecs** keep the version they launched from. Switching is explicit: see [Switch to a newer Template version](#switch-to-a-newer-template-version) above.
 4. **Source-linked Templates** auto-publish a new version when the linked file changes.
 5. **Fork any time.** Forks are independent. They don't track the source.
 
 ### Versions are frozen
 
-Published versions can't change. Edits become a new Version with a new ID. This is what makes a Playspec reproducible — it always knows the exact Version it came from.
+Published versions are immutable. Each edit creates a Version with a new ID, so a Playspec always knows its exact source.
 
-### Source-linked Templates — the strongest pattern
+### Source-linked Templates: the strongest pattern
 
 A Template can point at a file in a [Prop](/concepts/props/). The environment recipe lives in source control alongside your code.
 
@@ -95,7 +95,7 @@ Then:
 - New commits touching that file **auto-publish a new Template version**. The body is the file at that commit.
 - Flip the **CI** toggle and Fibe creates a dedicated Trick that runs against the latest version on push or pull request.
 
-This keeps Templates editable in normal source control — PRs, code review, branch protection — and Fibe stays in sync without pasting.
+This keeps Templates in normal source control with pull requests, review, and branch protection. Fibe stays synchronized without copy and paste.
 
 ### `source_defaults`
 
@@ -103,8 +103,8 @@ Inside a Template's metadata, set `source_defaults: true`. Launching the Templat
 
 File-linking and `source_defaults` are distinct:
 
-- **File-linking** — *where the Template body lives* (in a Prop's file).
-- **`source_defaults`** — *how launch-time values are populated* (from the importing Prop).
+- **File-linking**: *where the Template body lives* (in a Prop's file).
+- **`source_defaults`**: *how launch-time values are populated* (from the importing Prop).
 
 Use either, both, or neither. See [Fibe Templates → Settings block](/authoring/settings-block/).
 
@@ -122,7 +122,7 @@ Before publishing to the [Bazaar](/concepts/bazaar/):
 <details>
 <summary>Template vs Playspec?</summary>
 
-A **Template** is a reusable recipe. A **Playspec** is one configured launch — picks a Template Version, fills variables, picks a Marquee, mounts files. Many Playspecs can derive from the same Template.
+A **Template** is a reusable recipe. A **Playspec** is one configured launch: picks a Template Version, fills variables, picks a Marquee, mounts files. Many Playspecs can derive from the same Template.
 </details>
 
 <details>
@@ -146,7 +146,7 @@ Destroy the Playground first, then delete the Playspec.
 <details>
 <summary>How do I delete a Template?</summary>
 
-You can delete a Template at any time. Playspecs launched from it keep their body and keep running, but lose the link — no more version suggestions, switching, or upgrades. If you want to keep that lineage, keep the Template.
+You can delete a Template at any time. Playspecs launched from it keep their body and keep running, but lose the link: no more version suggestions, switching, or upgrades. If you want to keep that lineage, keep the Template.
 </details>
 
 <details>
@@ -157,10 +157,10 @@ If the Template is source-linked, the repo file *is* the body. Edits become new 
 
 ## Related
 
-- [Props](/concepts/props/) — where source-linked Template bodies live.
-- [Playgrounds](/concepts/playgrounds/) — what a Playspec produces when launched.
-- [Marquees](/concepts/marquees/) — where Playgrounds run.
-- [Bazaar](/concepts/bazaar/) — public Template marketplace.
-- [Tricks](/concepts/tricks/) — Playspecs run as one-shot jobs.
-- **[Fibe Templates](/authoring/overview/)** — full authoring guide: Compose-to-Fibe, labels, settings block, recipes, playbooks.
+- [Props](/concepts/props/): where source-linked Template bodies live.
+- [Playgrounds](/concepts/playgrounds/): what a Playspec produces when launched.
+- [Marquees](/concepts/marquees/): where Playgrounds run.
+- [Bazaar](/concepts/bazaar/): public Template marketplace.
+- [Tricks](/concepts/tricks/): Playspecs run as one-shot jobs.
+- **[Fibe Templates](/authoring/overview/)**: full authoring guide: Compose-to-Fibe, labels, settings block, recipes, playbooks.
 - Reference: [`fibe-resource-lifecycles`](/reference/fibe-resource-lifecycles/), [`convert-compose-to-fibe`](/reference/convert-compose-to-fibe/), [`recipe-add-metadata`](/reference/recipe-add-metadata/).

@@ -12,7 +12,7 @@ Live checks require the chat Marquee to be funded. Unpaid Marquees return `MARQU
 Pulls the combined chat envelope and live status for an Agent through `GET /api/agents/:id/runtime_status`.
 
 ## When to use
-- Before sending messages — confirm the Agent is up.
+- Before sending messages: confirm the Agent is up.
 - Investigating why messages aren't being processed.
 - Quick health check across managed Agents.
 
@@ -41,18 +41,18 @@ With a chat:
 ```
 
 ## Field meanings
-- `runtime_reachable` — Agent responded to the status check.
-- `authenticated` — Agent reports valid LLM provider credentials.
-- `is_processing` — Agent is currently mid-turn.
-- `queue_count` — pending messages waiting for the Agent.
+- `runtime_reachable`: Agent responded to the status check.
+- `authenticated`: Agent reports valid LLM provider credentials.
+- `is_processing`: Agent is currently mid-turn.
+- `queue_count`: pending messages waiting for the Agent.
 
 ## Gotchas
 - `status:"pending"` is the normal start/restart deployment state; poll until `status:"running"` and `runtime_reachable:true`.
 - `runtime_reachable:false` despite `status:"running"` usually means the runtime is unreachable or recovery is being queued while Fibe preserves a potentially healthy session.
-- "missing" status means no chat ever started — call `fibe_agents_start_chat`.
+- "missing" status means no chat ever started: call `fibe_agents_start_chat`.
 - Returns immediately; does not poll.
 
 ## Related
-- `fibe_agents_start_chat` — bring chat online.
-- `fibe_agents_send_message` — only sensible after `runtime_reachable:true`.
-- `fibe_resource_get(resource:"agent")` — config-side info.
+- `fibe_agents_start_chat`: bring chat online.
+- `fibe_agents_send_message`: only sensible after `runtime_reachable:true`.
+- `fibe_resource_get(resource:"agent")`: config-side info.

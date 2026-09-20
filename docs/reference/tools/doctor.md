@@ -18,7 +18,7 @@ Endpoint: `GET /api/me`. Auth uses bearer token from `FIBE_API_KEY` (or session-
 ## When to use
 - `[SYSCHECK]` step.
 - After switching tenant via `fibe_auth_set`.
-- Tool calls failing with 401/403 — confirm key validity before chasing other causes.
+- Tool calls failing with 401/403: confirm key validity before chasing other causes.
 - Confirming which environment (production / staging / local) you're connected to.
 
 ## Output shape (success)
@@ -53,9 +53,9 @@ Endpoint: `GET /api/me`. Auth uses bearer token from `FIBE_API_KEY` (or session-
 - `domain` reflects the Fibe Client's resolved base URL, including any `fibe_auth_set` override. `profile`, `auth_source`, and `domain_source` explain where that target came from.
 - `api_key_scopes` is omitted for legacy keys without explicit scopes; missing scopes mean broad access, not zero access.
 - `version` is the SDK build, not the server version.
-- This tool requires no inputs — passing args is silently ignored.
+- This tool requires no inputs: passing args is silently ignored.
 
 ## Related
-- `fibe_auth_set` — change the key/domain mid-session.
-- `fibe_status` — workload/quota dashboard (also requires valid auth).
-- `fibe_help` — meta CLI help (no auth).
+- `fibe_auth_set`: change the key/domain mid-session.
+- `fibe_status`: workload/quota dashboard (also requires valid auth).
+- `fibe_help`: meta CLI help (no auth).

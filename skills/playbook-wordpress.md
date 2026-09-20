@@ -133,11 +133,11 @@ x-fibe.gg:
 
 ## Persistent volumes
 
-Both `wp_data` and `db_data` are named volumes. Without these, every relaunch loses the site content and DB. They survive container restarts but not Marquee destruction — for true durability, point WordPress at S3-compatible object storage (plugins exist) and use managed MySQL.
+Both `wp_data` and `db_data` are named volumes. Without these, every relaunch loses the site content and DB. They survive container restarts but not Marquee destruction: for true durability, point WordPress at S3-compatible object storage (plugins exist) and use managed MySQL.
 
 ## Notes on WordPress quirks
 
-- WordPress serves at `/wp-admin`, `/wp-login.php`, etc. on the same port — no path rule needed.
+- WordPress serves at `/wp-admin`, `/wp-login.php`, etc. on the same port: no path rule needed.
 - Some WordPress setups require setting `WORDPRESS_CONFIG_EXTRA` env to define `WP_HOME` / `WP_SITEURL` matching the public URL. Add:
   ```yaml
   WORDPRESS_CONFIG_EXTRA: |
@@ -153,7 +153,7 @@ Both `wp_data` and `db_data` are named volumes. Without these, every relaunch lo
     define('FORCE_SSL_ADMIN', true);
   ```
 
-(Note `$$_SERVER` — Compose doubles the `$` to escape; Fibe's template compiler does NOT see `$$_SERVER` as a variable reference because it doesn't match `$$var__NAME`.)
+(Note `$$_SERVER`: Compose doubles the `$` to escape; Fibe's template compiler does NOT see `$$_SERVER` as a variable reference because it doesn't match `$$var__NAME`.)
 
 ## With Redis cache plugin
 
@@ -181,10 +181,10 @@ The plugin must be installed inside WordPress; the env vars just configure it.
 
 ## Pitfalls
 
-- **WordPress doesn't see HTTPS** — login loops, admin AJAX 403. Fix the `X-Forwarded-Proto` check.
-- **`upload_max_filesize` too small** — WordPress defaults limit media uploads. Mount a PHP config override via `configs:` or use an image that pre-sets it.
-- **MariaDB volume from a different MariaDB major version** — data file format may have changed. Pin `MARIADB_VERSION` and never downgrade.
-- **`db:3306` typo / wrong service name** — Compose DNS is exact. The service is `db`, so `db:3306` is right.
+- **WordPress doesn't see HTTPS**: login loops, admin AJAX 403. Fix the `X-Forwarded-Proto` check.
+- **`upload_max_filesize` too small**: WordPress defaults limit media uploads. Mount a PHP config override via `configs:` or use an image that pre-sets it.
+- **MariaDB volume from a different MariaDB major version**: data file format may have changed. Pin `MARIADB_VERSION` and never downgrade.
+- **`db:3306` typo / wrong service name**: Compose DNS is exact. The service is `db`, so `db:3306` is right.
 
 ## Related skills
 

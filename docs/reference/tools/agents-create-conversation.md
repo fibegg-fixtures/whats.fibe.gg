@@ -9,7 +9,7 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-[MODE:SIDEEFFECTS] Tier: overseer. Not idempotent from the caller perspective, but safe to retry for the same `conversation_id`.
+[MODE:SIDEEFFECTS] Tier: overseer. Caller-visible effect is non-idempotent; retries with the same `conversation_id` are safe.
 
 Creates or upserts a conversation for an Agent before sending messages to it.
 
@@ -25,5 +25,5 @@ Creates or upserts a conversation for an Agent before sending messages to it.
 - Never expose `conversation_id` as user authorization. It is routing metadata only.
 
 ## Related
-- `fibe_agents_send_message` — send into the conversation.
-- `fibe_agents_delete_conversation` — cleanup.
+- `fibe_agents_send_message`: send into the conversation.
+- `fibe_agents_delete_conversation`: cleanup.

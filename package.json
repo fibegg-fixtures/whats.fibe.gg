@@ -2,7 +2,7 @@
   "name": "fibe-skills",
   "version": "0.1.0",
   "private": true,
-  "description": "User guide and machine-readable skill library for fibe.gg — published at whats.fibe.gg",
+  "description": "Fibe user guide and machine-readable skill library published at whats.fibe.gg",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
