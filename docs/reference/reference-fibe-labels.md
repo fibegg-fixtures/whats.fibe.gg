@@ -11,11 +11,12 @@ format: md
 
 The label prefix is `fibe.gg/` (the prefix can be changed in self-hosted installations, but `fibe.gg/` is what every public template uses). Unknown `fibe.gg/*` labels FAIL parsing. Non-`fibe.gg/` labels pass through to Docker.
 
-## All 19 supported labels
+## Supported labels
 
 | Label | Value | Default | Required when |
 |---|---|---|---|
 | `fibe.gg/repo_url` | HTTP(S) URL, full `ssh://` URL, SCP-style SSH URL, or `$$var__NAME` | None | service is dynamic/source-backed; plain HTTP warns |
+| `fibe.gg/source_mount` | absolute container path | `working_dir`, then legacy `/app` | legacy override of the source bind target; prefer `working_dir` |
 | `fibe.gg/dockerfile` | Path relative to repo root | `Dockerfile` | non-default Dockerfile location |
 | `fibe.gg/branch` | Git ref name | repo default branch | pin to non-default branch |
 | `fibe.gg/start_command` | shell command string | image `CMD` | overriding runtime command |
@@ -37,11 +38,11 @@ The label prefix is `fibe.gg/` (the prefix can be changed in self-hosted install
 
 Any of the above values may contain a `$$var__NAME` interpolation, but use inline syntax only for fragments. If the whole label value is launch-time variable driven, keep a concrete local placeholder and bind the variable through `x-fibe.gg.variables.<NAME>.path`. See [reference-template-variables](reference-template-variables.md).
 
-Repository-backed services also require the standard service-level Compose
+Repository-backed services should set the standard service-level Compose
 `working_dir` field with an absolute container path. It is not a Fibe label and
 does not make a service dynamic by itself. Core uses it as the generated
 non-production source-bind target; production keeps the field but receives no
-generated bind.
+generated bind. The legacy `fibe.gg/source_mount` label takes precedence over `working_dir` for the bind target. Existing templates that omit both retain `/app`.
 
 ## Value rules
 
@@ -168,7 +169,7 @@ In array form each item is `<name>=<value>`. The schema applies the same `fibeLa
 These are enforced by the **runtime parser**, not the JSON Schema:
 
 - Compose `build:` requires `fibe.gg/repo_url`.
-- A service with `fibe.gg/repo_url` requires an absolute Compose `working_dir`; `working_dir` without the label is ordinary Compose.
+- A service with `fibe.gg/repo_url` should set an absolute Compose `working_dir`; `working_dir` without the label is ordinary Compose.
 - `fibe.gg/visibility` requires `fibe.gg/port`: setting visibility on a service without a port fails parsing. With a port and no visibility, the route defaults to `external`.
 - `fibe.gg/zerodowntime: "true"` requires:
   - `fibe.gg/port` set,
@@ -210,9 +211,7 @@ If unset, the runtime fills:
 - `fibe.gg/env_file` → `.env.example`
 - `fibe.gg/branch` → repo default branch
 
-`working_dir` is deliberately absent from that list. It has no default:
-omitting it creates no generated bind. Repository-backed builds still use the
-Core source checkout as their build context.
+`working_dir` is a standard Compose field. Fibe uses it as the source target unless the legacy `source_mount` label overrides it. Existing templates that omit both use `/app`; set an explicit path to avoid masking image-installed dependencies.
 
 ## Source defaults (auto-fill for source-backed templates)
 

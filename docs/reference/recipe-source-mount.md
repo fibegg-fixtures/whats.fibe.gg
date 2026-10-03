@@ -21,12 +21,11 @@ format: md
 | `fibe.gg/start_command` | the dev/watch command, NOT a production build |
 
 `working_dir` alone remains ordinary Compose on an image-only service. When
-`fibe.gg/repo_url` is present, the validator requires an absolute `working_dir`:
-`Service '<n>' must define an absolute working_dir for repository-backed source`.
+`fibe.gg/repo_url` is present, use an absolute `working_dir` as the source target. The legacy `fibe.gg/source_mount` label overrides that target; it can therefore differ from the container working directory. Avoid combining different targets unless the distinction is intentional.
 
 ## Defaults
 
-- Repository-backed services have no `working_dir` default. Set an explicit absolute container path.
+- Set an explicit absolute `working_dir` for repository-backed services. Existing templates without either `working_dir` or `fibe.gg/source_mount` retain the legacy `/app` mount default.
 - `fibe.gg/production` defaults to unset, which behaves like development for source-mounted setups. Set `"false"` explicitly for clarity, `"true"` to opt out of source mounting and run the built image.
 
 ## Checkout and mount semantics
@@ -41,7 +40,7 @@ grouping and mount contract. The rendered Compose exposes either consumer-owned
 path to local tools through standard build contexts and bind mounts.
 
 For each eligible non-production service, Fibe replaces every existing Compose
-mount whose normalized container target exactly equals `working_dir`. Short
+mount whose normalized container target exactly equals the source target (`fibe.gg/source_mount`, otherwise `working_dir`). Short
 syntax, long syntax, anonymous volumes, and interpolated sources are handled.
 The replacement is a read-write bind; old mount modes and long-form options at
 that exact target do not survive. Mounts at parent, child, and unrelated targets
@@ -189,7 +188,7 @@ x-fibe.gg:
 
 ## Pitfalls
 
-- **`fibe.gg/repo_url` without an absolute `working_dir`**: validator hard error.
+- **`fibe.gg/repo_url` without an absolute `working_dir`**: set a container path explicitly; legacy templates may fall back to `/app`, which can hide image-installed dependencies.
 - **Committing `node_modules` to the repo**: bloats clone time and is overwritten by the volume anyway. Add to `.gitignore`.
 - **`fibe.gg/start_command` that builds and exits**: like `npm run build`: the container exits after build. Use the dev/watch command instead.
 - **Running production build under source mount**: works but wastes the live-edit feature; switch to `production: "true"`.

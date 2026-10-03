@@ -197,6 +197,24 @@ Validation rejects `path:` / `paths:` entries that target `services.<name>...` w
 
 ## Runtime errors
 
+### GitHub App installed, but repository attach says `GITHUB_NOT_CONNECTED`
+
+Check the repository owner, selected repositories, environment, and OAuth identity. A personal-account installation does not cover an organization's repositories; production and staging use different Apps. An expired GitHub user token can prevent linking an otherwise successful installation. Reconnect GitHub with the identity that can access it and retry linking; reinstalling the App is unnecessary.
+
+### Gitea destination exists after provisioning failed
+
+Use the same repository name to recover an authenticated, matching Fibe creation receipt or attached Prop. Fibe checks local name conflicts before remote creation, does not overwrite unrelated repositories, and does not reseed nonempty destinations during recovery. `fibe props sync <id>` reconciles its webhook as well as repository metadata when its Gitea credential has repository administration permission. Readable public or shared repositories can be indexed without that permission; push-triggered updates require a hook managed by the repository administrator. A failed webhook list on an administered repository is an error, so retries do not create blind duplicates.
+
+### Mirror accepted, but source is not available yet
+
+The accepted response starts asynchronous work. Read `mirror_status` and `mirror_error` with `fibe props get <id>`, or use `fibe wait prop <id> --status completed`. A final failure persists its reason. Retrying the mirror request for that source reuses the mapped Prop and safely retries its known destination.
+
+### Running playground still has a failed requested deployment
+
+Lifecycle status describes the retained runtime. Service readiness additionally checks `needs_recreation`, build warnings, running services, and successful completion of one-shot dependencies. Use `fibe wait playground <id> --readiness services`; `--readiness lifecycle` deliberately waits only for the lifecycle state. Inspect retained build logs with `fibe playgrounds debug <id> --build-logs --output json`. Old build logs may be marked truncated; newly completed builds retain their entire log. Debug output requires access to the playground and can contain application output.
+
+Slow startup uses the Compose healthcheck `start_period`, `interval`, `timeout`, and `retries` to derive a readiness budget, capped at 30 minutes. Configure those per service. `state_reasons` explains a retained previous runtime and automatic rollout cooldowns; `runtime_operation` identifies the latest action, trigger, request time, and generation. A later runtime action supersedes older queued actions. In-flight external work cannot be instantly canceled.
+
 ### `trigger_config.prop_id <N> not found`
 
 The Prop ID doesn't exist or you don't have access.
@@ -228,11 +246,11 @@ Possible causes:
 
 **Fix:** Set `enabled: true`; confirm the target Marquee is reachable and funded.
 
-### Compose `${VAR}` substitution leaves `${VAR}` in output
+### Runtime environment drift repeats for Compose `${VAR}` references
 
-The launcher didn't set the env var, and Compose left the placeholder.
+Compose expands environment references before creating containers. Raw generated YAML can contain `${VAR}` even when the container holds the correct expanded value. Fibe compares running values against Docker-rendered configuration to avoid repeated rollouts for this case. A genuinely changed expanded value still reports drift.
 
-**Fix:** Use Fibe's `$$var__VAR` form instead, OR ensure the var is provided at launch.
+**Fix:** Inspect the supplied playground environment and service status. Use `$$var__VAR` with a declared Fibe variable for values chosen at template launch, or supply the environment expected by Compose. Do not remove valid Compose references solely because they appear in raw YAML.
 
 ### Job-mode template runs forever
 

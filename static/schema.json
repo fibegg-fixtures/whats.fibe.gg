@@ -6,28 +6,156 @@
   "x-fibe.gg": {
     "version": "1",
     "labels": [
-      { "key": "dockerfile", "description_key": "desc_dockerfile", "example": "./deploy/Dockerfile", "value_key": "val_path", "required_key": "req_yes", "required_code": true },
-      { "key": "repo_url", "description_key": "desc_github", "example": "https://github.com/user/repo", "value_key": "val_url", "required_key": "req_dynamic", "required_code": true },
-      { "key": "subdomain", "description_key": "desc_subdomain", "example": "api", "value_key": "val_string", "required_key": "req_exposed", "required_code": true },
-      { "key": "branch", "description_key": "desc_branch", "example": "main", "value_key": "val_string", "required_key": "req_dynamic", "required_code": true },
-      { "key": "port", "description_key": "desc_port", "example": "3000", "value_key": "val_port", "required_key": "req_no", "required_code": false },
-      { "key": "visibility", "description_key": "desc_visibility", "example": "external", "value_key": "val_visibility", "required_key": "req_no", "required_code": false },
-      { "key": "start_command", "description_key": "desc_start_cmd", "example": "bundle exec rails s", "value_key": "val_string", "required_key": "req_no", "required_code": false },
-      { "key": "env_file", "description_key": "desc_env_file", "example": "env.example", "value_key": "val_path", "required_key": "req_no", "required_code": false },
-      { "key": "path_rule", "description_key": "desc_path_rule", "example": "PathPrefix(`/api`)", "value_key": "val_string", "required_key": "req_exposed", "required_code": true },
-      { "key": "production", "description_key": "desc_production", "example": "true", "value_key": "val_boolean", "required_key": "req_no", "required_code": false },
-      { "key": "zerodowntime", "description_key": "desc_zerodowntime", "example": "true", "value_key": "val_boolean", "required_key": "req_no", "required_code": false },
-      { "key": "build_target", "description_key": "desc_build_target", "example": "production", "value_key": "val_string", "required_key": "req_no", "required_code": false },
-      { "key": "build_args", "description_key": "desc_build_args", "example": "KEY=val,K2=v2", "value_key": "val_list", "required_key": "req_no", "required_code": false },
-      { "key": "healthcheck_path", "description_key": "desc_healthcheck_path", "example": "/up", "value_key": "val_path", "required_key": "req_zerodowntime", "required_code": true },
-      { "key": "healthcheck_interval", "description_key": "desc_healthcheck_interval", "example": "10s", "value_key": "val_duration", "required_key": "req_zerodowntime", "required_code": true },
-      { "key": "healthcheck_timeout", "description_key": "desc_healthcheck_timeout", "example": "5s", "value_key": "val_duration", "required_key": "req_zerodowntime", "required_code": true },
-      { "key": "healthcheck_retries", "description_key": "desc_healthcheck_retries", "example": "3", "value_key": "val_integer", "required_key": "req_zerodowntime", "required_code": true },
-      { "key": "healthcheck_start_period", "description_key": "desc_healthcheck_start_period", "example": "30s", "value_key": "val_duration", "required_key": "req_zerodowntime", "required_code": true }
+      {
+        "key": "dockerfile",
+        "description_key": "desc_dockerfile",
+        "example": "./deploy/Dockerfile",
+        "value_key": "val_path",
+        "required_key": "req_yes",
+        "required_code": true
+      },
+      {
+        "key": "repo_url",
+        "description_key": "desc_github",
+        "example": "https://github.com/user/repo",
+        "value_key": "val_url",
+        "required_key": "req_dynamic",
+        "required_code": true
+      },
+      {
+        "key": "subdomain",
+        "description_key": "desc_subdomain",
+        "example": "api",
+        "value_key": "val_string",
+        "required_key": "req_exposed",
+        "required_code": true
+      },
+      {
+        "key": "branch",
+        "description_key": "desc_branch",
+        "example": "main",
+        "value_key": "val_string",
+        "required_key": "req_dynamic",
+        "required_code": true
+      },
+      {
+        "key": "port",
+        "description_key": "desc_port",
+        "example": "3000",
+        "value_key": "val_port",
+        "required_key": "req_no",
+        "required_code": false
+      },
+      {
+        "key": "visibility",
+        "description_key": "desc_visibility",
+        "example": "external",
+        "value_key": "val_visibility",
+        "required_key": "req_no",
+        "required_code": false
+      },
+      {
+        "key": "start_command",
+        "description_key": "desc_start_cmd",
+        "example": "bundle exec rails s",
+        "value_key": "val_string",
+        "required_key": "req_no",
+        "required_code": false
+      },
+      {
+        "key": "env_file",
+        "description_key": "desc_env_file",
+        "example": "env.example",
+        "value_key": "val_path",
+        "required_key": "req_no",
+        "required_code": false
+      },
+      {
+        "key": "path_rule",
+        "description_key": "desc_path_rule",
+        "example": "PathPrefix(`/api`)",
+        "value_key": "val_string",
+        "required_key": "req_exposed",
+        "required_code": true
+      },
+      {
+        "key": "production",
+        "description_key": "desc_production",
+        "example": "true",
+        "value_key": "val_boolean",
+        "required_key": "req_no",
+        "required_code": false
+      },
+      {
+        "key": "zerodowntime",
+        "description_key": "desc_zerodowntime",
+        "example": "true",
+        "value_key": "val_boolean",
+        "required_key": "req_no",
+        "required_code": false
+      },
+      {
+        "key": "build_target",
+        "description_key": "desc_build_target",
+        "example": "production",
+        "value_key": "val_string",
+        "required_key": "req_no",
+        "required_code": false
+      },
+      {
+        "key": "build_args",
+        "description_key": "desc_build_args",
+        "example": "KEY=val,K2=v2",
+        "value_key": "val_list",
+        "required_key": "req_no",
+        "required_code": false
+      },
+      {
+        "key": "healthcheck_path",
+        "description_key": "desc_healthcheck_path",
+        "example": "/up",
+        "value_key": "val_path",
+        "required_key": "req_zerodowntime",
+        "required_code": true
+      },
+      {
+        "key": "healthcheck_interval",
+        "description_key": "desc_healthcheck_interval",
+        "example": "10s",
+        "value_key": "val_duration",
+        "required_key": "req_zerodowntime",
+        "required_code": true
+      },
+      {
+        "key": "healthcheck_timeout",
+        "description_key": "desc_healthcheck_timeout",
+        "example": "5s",
+        "value_key": "val_duration",
+        "required_key": "req_zerodowntime",
+        "required_code": true
+      },
+      {
+        "key": "healthcheck_retries",
+        "description_key": "desc_healthcheck_retries",
+        "example": "3",
+        "value_key": "val_integer",
+        "required_key": "req_zerodowntime",
+        "required_code": true
+      },
+      {
+        "key": "healthcheck_start_period",
+        "description_key": "desc_healthcheck_start_period",
+        "example": "30s",
+        "value_key": "val_duration",
+        "required_key": "req_zerodowntime",
+        "required_code": true
+      }
     ]
   },
   "type": "object",
-  "required": ["services"],
+  "required": [
+    "services"
+  ],
   "properties": {
     "services": {
       "type": "object",
@@ -54,7 +182,10 @@
       "additionalProperties": true
     },
     "labels": {
-      "type": ["object", "array"],
+      "type": [
+        "object",
+        "array"
+      ],
       "if": {
         "type": "array"
       },
@@ -127,6 +258,10 @@
         },
         "fibe.gg/healthcheck_start_period": {
           "$ref": "#/$defs/durationLabel"
+        },
+        "fibe.gg/source_mount": {
+          "$ref": "#/$defs/absoluteContainerPath",
+          "deprecated": true
         }
       },
       "additionalProperties": true
@@ -155,6 +290,7 @@
         {
           "enum": [
             "fibe.gg/repo_url",
+            "fibe.gg/source_mount",
             "fibe.gg/job_watch",
             "fibe.gg/dockerfile",
             "fibe.gg/env_file",
@@ -188,7 +324,7 @@
           "$ref": "#/$defs/templatedFibeLabelString"
         },
         {
-          "pattern": "^fibe\\.gg/(?:repo_url|start_command|branch|build_target|build_args)(?:=[^\\r\\n]*)?$"
+          "pattern": "^fibe\\.gg/(?:repo_url|source_mount|start_command|branch|build_target|build_args)(?:=[^\\r\\n]*)?$"
         },
         {
           "pattern": "^fibe\\.gg/(?:dockerfile|env_file)(?:=(?:|[A-Za-z0-9_./-]+))?$"
@@ -230,7 +366,7 @@
     },
     "templatedFibeLabelString": {
       "type": "string",
-      "pattern": "^fibe\\.gg/(?:repo_url|job_watch|dockerfile|env_file|start_command|port|visibility|production|zerodowntime|branch|subdomain|path_rule|build_target|build_args|healthcheck_path|healthcheck_interval|healthcheck_timeout|healthcheck_retries|healthcheck_start_period)(?:=[^\\r\\n]*\\$\\$var__[A-Za-z0-9_]+[^\\r\\n]*)$"
+      "pattern": "^fibe\\.gg/(?:repo_url|source_mount|job_watch|dockerfile|env_file|start_command|port|visibility|production|zerodowntime|branch|subdomain|path_rule|build_target|build_args|healthcheck_path|healthcheck_interval|healthcheck_timeout|healthcheck_retries|healthcheck_start_period)(?:=[^\\r\\n]*\\$\\$var__[A-Za-z0-9_]+[^\\r\\n]*)$"
     },
     "absoluteContainerPath": {
       "anyOf": [
@@ -443,7 +579,13 @@
           "type": "boolean"
         },
         "default": {
-          "type": ["string", "number", "integer", "boolean", "null"]
+          "type": [
+            "string",
+            "number",
+            "integer",
+            "boolean",
+            "null"
+          ]
         },
         "validation": {
           "type": "string",
@@ -535,7 +677,10 @@
         },
         "event_type": {
           "type": "string",
-          "enum": ["push", "pull_request"]
+          "enum": [
+            "push",
+            "pull_request"
+          ]
         },
         "repo_url": {
           "type": "string"
