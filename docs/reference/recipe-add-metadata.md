@@ -34,21 +34,21 @@ x-fibe.gg:
     schedule_config:
       enabled: false
       cron: "0 * * * *"
-      marquee_id: 1
+      host_id: 1
     trigger_config:
       enabled: false
       event_type: push
       repo_url: ""
       branch: main
-      prop_id: 1
-      marquee_id: 1
+      repository_id: 1
+      host_id: 1
 ```
 
 | Field | Type | Purpose |
 |---|---|---|
 | `description` | string | Bazaar card description and launcher summary |
 | `category` | string | Bazaar filter |
-| `source_defaults` | bool | Auto-fill `repo_url`/`branch` from the source Prop when imported |
+| `source_defaults` | bool | Auto-fill `repo_url`/`branch` from the source Repository when imported |
 | `job_mode` | bool | Marks this template as one-shot/job-mode |
 | `schedule_config` | object | Cron-driven job launches |
 | `trigger_config` | object | VCS-triggered job launches |
@@ -78,13 +78,13 @@ Avoid niche categories: broader matches discovery.
 
 ## `source_defaults: true`
 
-Set when the template will be imported from a source Prop (a Git repo). When true, the runtime auto-fills:
+Set when the template will be imported from a source Repository (a Git repo). When true, the runtime auto-fills:
 
-- `fibe.gg/repo_url` on services that have `build:`, an explicit `working_dir`, or already declare `fibe.gg/repo_url`/`fibe.gg/branch` → with the source Prop's repo URL. Outside an explicitly tracked `source_defaults` template, `working_dir` remains ordinary Compose.
+- `fibe.gg/repo_url` on services that have `build:`, an explicit `working_dir`, or already declare `fibe.gg/repo_url`/`fibe.gg/branch` → with the source Repository's repo URL. Outside an explicitly tracked `source_defaults` template, `working_dir` remains ordinary Compose.
 - `fibe.gg/branch` similarly with the source ref.
 - `trigger_config.repo_url`/`branch` if the template has a `trigger_config` and `job_mode: true`.
 
-This lets one template be used across many repos: import from any Prop, no per-import editing.
+This lets one template be used across many repos: import from any Repository, no per-import editing.
 
 ```yaml
 x-fibe.gg:
@@ -96,14 +96,14 @@ x-fibe.gg:
     trigger_config:
       enabled: true
       event_type: push
-      # repo_url and branch auto-fill from source Prop
-      prop_id: 1
-      marquee_id: 1
+      # repo_url and branch auto-fill from source Repository
+      repository_id: 1
+      host_id: 1
 ```
 
 ## Execution settings in metadata
 
-Schema accepts these at both `x-fibe.gg.<key>` and `x-fibe.gg.metadata.<key>`. Current public import flows use the metadata location for Playspec execution settings. Reasons to keep them in metadata:
+Schema accepts these at both `x-fibe.gg.<key>` and `x-fibe.gg.metadata.<key>`. Current public import flows use the metadata location for Spec execution settings. Reasons to keep them in metadata:
 
 - Public templates return one metadata payload.
 - Launchers and import flows can carry the template's execution shape with its description/category.
@@ -145,7 +145,7 @@ Rarely useful: these are usually fixed by the template author. But the schema al
 
 - **Markdown in `description`**: Bazaar renders as plain text. No headings, no bold.
 - **Root-only `job_mode` / schedule / trigger config**: may validate but not launch/import as intended. Put execution settings in `metadata`.
-- **`source_defaults: true` with NO source Prop**: runtime silently does nothing (there's no Prop to read from); explicitly declared values are still honored.
+- **`source_defaults: true` with NO source Repository**: runtime silently does nothing (there's no Repository to read from); explicitly declared values are still honored.
 - **Forgetting `description` before publishing**: Bazaar rejects.
 - **Description as the template name**: name is set separately when importing/creating the template; description is the body.
 

@@ -1,6 +1,6 @@
 ---
 name: fibe-tool-resource-get
-description: Use when you need to fetch a single Fibe resource by id, or by name for playgrounds, tricks, playspecs, props, marquees, and agents. Includes artefact_attachment download.
+description: Use when you need to fetch a single Fibe resource by id, or by name for playgrounds, tasks, specs, repositories, hosts, and agents. Includes artefact_attachment download.
 ---
 
 # fibe_resource_get
@@ -11,7 +11,7 @@ Generic single-record fetch. Routes to the typed per-resource lookup, hitting `G
 
 ## When to use
 - "What's the current state of playground X?"
-- "Does this name resolve to a real prop?"
+- "Does this name resolve to a real repository?"
 - Pre-mutation read to avoid lost-update.
 - Downloading an artefact's attached file (`resource:"artefact_attachment"`).
 
@@ -23,13 +23,13 @@ Generic single-record fetch. Routes to the typed per-resource lookup, hitting `G
 | `id_or_name` | string | Numeric ID or name for named resources |
 | `id_or_key` | string | Numeric ID or key for secrets |
 
-Pass exactly one of `id`, `id_or_name`, or `id_or_key` depending on the resource. Named resources (`playground`, `trick`, `playspec`, `prop`, `marquee`, `agent`) accept `id_or_name`.
+Pass exactly one of `id`, `id_or_name`, or `id_or_key` depending on the resource. Named resources (`playground`, `task`, `spec`, `repository`, `host`, `agent`) accept `id_or_name`.
 
 ## Output
 The resource's detailed JSON serialization. Nested includes vary per resource:
-- `playground`: playspec, marquee, services, status, urls.
-- `prop`: provider, repository_url, default_branch.
-- `playspec`: services, source_template_version, mounted files.
+- `playground`: spec, host, services, status, urls.
+- `repository`: provider, repository_url, default_branch.
+- `spec`: services, source_template_version, mounted files.
 - `template`: versions, source, lineage hints.
 
 ## artefact_attachment (special case)

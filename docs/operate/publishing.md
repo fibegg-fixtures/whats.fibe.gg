@@ -7,7 +7,7 @@ image: /img/og/operate-publishing.png
 keywords: [publish, Bazaar, checklist, quality, template review, security]
 ---
 
-A checklist for templates that will appear in the [Bazaar](/concepts/playspecs/#templates). Walk it once before you click publish; re-walk it on major updates.
+A checklist for templates that will appear in the [Bazaar](/concepts/specs/#templates). Walk it once before you click publish; re-walk it on major updates.
 
 The goal is to make sure that someone clicking your Template in the Bazaar gets a successful launch, first try, without having to read your mind.
 
@@ -106,13 +106,13 @@ Fibe-maintained catalog entries have an extra gate: the version must be public, 
 
 ## After you publish
 
-- Test a launch from a clean account with a fresh Marquee. Required variables should be honest about what the launcher must provide.
+- Test a launch from a clean account with a fresh Host. Required variables should be honest about what the launcher must provide.
 - Capture screenshots as artefacts (with a mutter noting the result) so collaborators browsing the timeline can see what success looks like.
 - Plan a refresh cadence: pinned image tags drift, and a template that worked a year ago may need a touch-up.
 
 ## Related
 
-- [Templates](/concepts/playspecs/#templates): Template versioning + how publishing works.
+- [Templates](/concepts/specs/#templates): Template versioning + how publishing works.
 - [Authoring → Service labels](/authoring/service-labels/): the rules being checked.
 - [Common problems](/operate/common-problems/): what to do when something fails.
 - [`fibe templates` CLI](/sdk/cli-reference/): managing templates from the command line.

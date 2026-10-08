@@ -11,7 +11,7 @@ format: md
 
 [MODE:OVERSEER] Tier: overseer. Read-only.
 
-Live state requires the chat Marquee to be funded. Unpaid Marquees return `MARQUEE_NOT_FUNDED`.
+Live state requires the chat Host to be funded. Unpaid Hosts return `HOST_NOT_FUNDED`.
 
 Reads transient live state for one Agent conversation. Use it when you need processing state, streamed text, queued turns, or the current activity id without waiting for persisted monitor events.
 

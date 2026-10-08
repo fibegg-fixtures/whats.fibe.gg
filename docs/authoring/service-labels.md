@@ -19,7 +19,7 @@ The complete set of `fibe.gg/*` labels you can add under `labels:` on a service.
 | `fibe.gg/build_target` | Name of the stage when using a multi-stage build. |
 | `fibe.gg/build_args` | Comma-separated `KEY=value` pairs for build-time arguments. |
 | `fibe.gg/start_command` | Command to run, overriding the image's default. For dev-mode templates this is where you put your hot-reload command (`bin/rails server -b 0.0.0.0`, `next dev -H 0.0.0.0`, `vite --host 0.0.0.0`, `uvicorn app:main --reload --host 0.0.0.0`). |
-| `fibe.gg/env_file` | Path to the env example file in your Prop (defaults to `.env.example`). Fibe reads this file to discover the env keys your service expects, pre-fills them in the launch form, and injects the final values into the container's environment: your service just reads ordinary environment variables. |
+| `fibe.gg/env_file` | Path to the env example file in your Repository (defaults to `.env.example`). Fibe reads this file to discover the env keys your service expects, pre-fills them in the launch form, and injects the final values into the container's environment: your service just reads ordinary environment variables. |
 | `fibe.gg/production` | Set to `"true"` for built images, `"false"` for source-mounted dev mode. When it's false, Fibe mounts your repository into the container so edits show up live: pair it with `fibe.gg/start_command` set to your dev/watch command so reloads actually happen. |
 
 `working_dir` is a standard service-level Compose field, not a label. Every
@@ -29,7 +29,7 @@ source-bind target; on production services it remains the process directory but
 Fibe does not generate a bind.
 
 Prefer credential-free GitHub HTTPS URLs. Standalone Core can apply its one
-host-wide `GITHUB_TOKEN`; Enterprise resolves the Player's Prop/provider
+host-wide `GITHUB_TOKEN`; Enterprise resolves the Player's Repository/provider
 credential. Explicit credentials in an HTTP(S) URL are supported but persist
 with the authored and rendered configuration, Git origin, and backups. SSH URLs
 use the server's mounted SSH configuration with host-key verification.
@@ -40,7 +40,7 @@ use the server's mounted SSH configuration with host-key verification.
 | --- | --- |
 | `fibe.gg/port` | Container port to route through Traefik. |
 | `fibe.gg/visibility` | `external` for a public HTTPS URL, or `internal` for a URL gated by Basic Auth. Defaults to `external`. |
-| `fibe.gg/subdomain` | Choose the subdomain under the Marquee's root domain. Lowercase letters and digits, optional hyphens. Use `@` to bind at the root domain itself. Defaults to the service name. |
+| `fibe.gg/subdomain` | Choose the subdomain under the Host's root domain. Lowercase letters and digits, optional hyphens. Use `@` to bind at the root domain itself. Defaults to the service name. |
 | `fibe.gg/path_rule` | Share a subdomain across multiple services using path matchers like `Path`, `PathPrefix`, and `PathRegexp`. Combine with `&&` or `||`. |
 
 ## Rolling updates
@@ -59,7 +59,7 @@ Set `fibe.gg/zerodowntime: "true"` when the service is exposed, speaks HTTP, and
 
 | Label | Purpose |
 | --- | --- |
-| `fibe.gg/job_watch` | Set to `"true"` on the service whose exit defines the result of a Trick. |
+| `fibe.gg/job_watch` | Set to `"true"` on the service whose exit defines the result of a Task. |
 
 ## Booleans: quote them
 

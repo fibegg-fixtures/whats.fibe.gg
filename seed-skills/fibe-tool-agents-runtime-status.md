@@ -7,7 +7,7 @@ description: Use when you need to check an Agent's reachability, authentication,
 
 [MODE:OVERSEER] Read-only, idempotent. Tier: overseer.
 
-Live checks require the chat Marquee to be funded. Unpaid Marquees return `MARQUEE_NOT_FUNDED`.
+Live checks require the chat Host to be funded. Unpaid Hosts return `HOST_NOT_FUNDED`.
 
 Pulls the combined chat envelope and live status for an Agent through `GET /api/agents/:id/runtime_status`.
 
@@ -30,7 +30,7 @@ Without an active chat:
 With a chat:
 ```json
 {
-  "id": <chat_id>, "status": "running", "marquee_id": ...,
+  "id": <chat_id>, "status": "running", "host_id": ...,
   "runtime_reachable": true,
   "authenticated": true,
   "is_processing": false,

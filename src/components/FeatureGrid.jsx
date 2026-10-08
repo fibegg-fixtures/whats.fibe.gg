@@ -2,12 +2,12 @@ import React from 'react';
 import Link from '@docusaurus/Link';
 import styles from './FeatureGrid.module.css';
 import {
-  MarqueeIcon,
-  PropsIcon,
+  HostIcon,
+  RepositoriesIcon,
   TemplatesIcon,
   PlaygroundsIcon,
-  TricksIcon,
-  GeniesIcon,
+  TasksIcon,
+  AgentsIcon,
   ComposeIcon,
   SdkIcon,
   WalletIcon,
@@ -15,15 +15,15 @@ import {
 
 const FEATURES = [
   {
-    title: 'Marquees',
+    title: 'Hosts',
     blurb: 'Hosts for your Playgrounds. Bring your own or use a managed one.',
-    href: '/concepts/marquees/',
-    Icon: MarqueeIcon,
+    href: '/concepts/hosts/',
+    Icon: HostIcon,
   },
   {
-    title: 'Playspecs',
+    title: 'Specs',
     blurb: 'Define an application once and launch it many times.',
-    href: '/concepts/playspecs/#templates',
+    href: '/concepts/specs/#templates',
     Icon: TemplatesIcon,
   },
   {
@@ -33,22 +33,22 @@ const FEATURES = [
     Icon: PlaygroundsIcon,
   },
   {
-    title: 'Props',
+    title: 'Repositories',
     blurb: 'Git repositories connected to Fibe.',
-    href: '/concepts/props/',
-    Icon: PropsIcon,
+    href: '/concepts/repositories/',
+    Icon: RepositoriesIcon,
   },
   {
-    title: 'Genies',
+    title: 'Agents',
     blurb: 'AI assistants configured for your product and work.',
     href: '/concepts/agents/',
-    Icon: GeniesIcon,
+    Icon: AgentsIcon,
   },
   {
-    title: 'Tricks',
+    title: 'Tasks',
     blurb: 'Scheduled, manual, and event-driven jobs.',
-    href: '/concepts/tricks/',
-    Icon: TricksIcon,
+    href: '/concepts/tasks/',
+    Icon: TasksIcon,
   },
   {
     title: 'Docker Compose to Fibe',

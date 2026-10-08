@@ -27,7 +27,7 @@ Validation runs in three stages: schema is a first pass, runtime owns final comp
 input: a docker-compose.yml + intent (one of)
   ├─ HTTP service(s)                     → "long-running web template"
   ├─ background workers + DB only        → "long-running app template"
-  ├─ one-shot task that exits            → "job-mode template" (Trick)
+  ├─ one-shot task that exits            → "job-mode template" (Task)
   ├─ cron-style recurring                → "job-mode + schedule_config"
   └─ git push / PR triggered             → "job-mode + metadata.trigger_config"
 ```
@@ -95,13 +95,13 @@ Generated/secret values:
 ### Step 7: Decide and apply execution mode
 
 If long-running HTTP → done. Otherwise:
-- one-shot job → [mode-job-trick](mode-job-trick.md)
+- one-shot job → [mode-job-task](mode-job-task.md)
 - recurring cron → [mode-schedule-cron](mode-schedule-cron.md)
 - on git push/PR → [mode-trigger-vcs](mode-trigger-vcs.md)
 
 ### Step 8: Add metadata
 
-`x-fibe.gg.metadata.description` and `x-fibe.gg.metadata.category` are required for publishable templates. `source_defaults: true` is useful for triggered/source-backed templates; runtime will fill `trigger_config.repo_url`/`branch` from the source Prop when set.
+`x-fibe.gg.metadata.description` and `x-fibe.gg.metadata.category` are required for publishable templates. `source_defaults: true` is useful for triggered/source-backed templates; runtime will fill `trigger_config.repo_url`/`branch` from the source Repository when set.
 
 → Load [recipe-add-metadata](recipe-add-metadata.md) for the field details, [reference-x-fibe-gg-namespace](reference-x-fibe-gg-namespace.md) for full namespace shape.
 
@@ -110,7 +110,7 @@ If long-running HTTP → done. Otherwise:
 1. YAML parses.
 2. Root has `services:`.
 3. JSON Schema passes: no unknown `fibe.gg/*` labels, all values match label regexes, variable names match `^[A-Za-z0-9_]+$`, paths match `^[A-Za-z0-9_./\[\]-]+$`.
-4. Runtime API (`fibe_schema(resource: "compose", operation: "validate", payload: {...})`) passes: declared-vs-referenced variables match, defaults are literal, path bindings target existing service roots, whole-node inline warnings are reviewed, and prop/marquee/repo URLs are resolvable.
+4. Runtime API (`fibe_schema(resource: "compose", operation: "validate", payload: {...})`) passes: declared-vs-referenced variables match, defaults are literal, path bindings target existing service roots, whole-node inline warnings are reviewed, and repository/host/repo URLs are resolvable.
 
 → Load [reference-validation-pipeline](reference-validation-pipeline.md), then [templates-publish-checklist](templates-publish-checklist.md) if publishing.
 
@@ -127,7 +127,7 @@ services:
       fibe.gg/visibility: external
 ```
 
-That gives you a public HTTP route under the Marquee root domain at subdomain `web` (the default: service name). Add `fibe.gg/subdomain` to override.
+That gives you a public HTTP route under the Host root domain at subdomain `web` (the default: service name). Add `fibe.gg/subdomain` to override.
 
 ## "Just give me the labels I need" cheatsheet
 
@@ -164,7 +164,7 @@ If the input compose matches one of these shapes, jump straight to the matching 
 ## After conversion
 
 - Run `fibe_schema(resource: "compose", operation: "validate", payload: {"compose_yaml": "..."})` from MCP. Always validate authored YAML this way: never infer labels from old playgrounds or remembered examples; unknown `fibe.gg/*` labels fail.
-- Then `fibe_launch` for a test launch, or `fibe_resource_mutate(resource: "playspec", operation: "create", ...)` to import.
+- Then `fibe_launch` for a test launch, or `fibe_resource_mutate(resource: "spec", operation: "create", ...)` to import.
 - Watch for errors against [common-errors-and-fixes](common-errors-and-fixes.md).
 
 ## What this skill is NOT

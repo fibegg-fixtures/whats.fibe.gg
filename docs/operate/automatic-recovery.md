@@ -16,23 +16,23 @@ Fibe recovers from several transient failures automatically. This page separates
 - **"TLS pending" / "HTTPS provisioning"** is a normal state, **not a failure**: a certificate is being issued. It clears on its own, usually within a few minutes of a service first being exposed.
 - **A stuck launch** is picked back up automatically: a launch that sits "in progress" for **30 minutes** is re-queued. A temporary infrastructure wobble, a brief network or host-connectivity blip, is **retried**, not treated as a hard failure.
 - A build still running after **45 minutes** fails with a timeout.
-- **A Genie that momentarily can't be reached** is left viewable and quietly redeployed if the outage holds; a mid-provisioning SSL handshake shows as "pending," never an error.
-- **Trick runs are the exception**: a finished or failed run stays that way. Fibe does not redeploy it. Run the Trick again instead. A launch that stalls before execution still recovers automatically.
+- **A Agent that momentarily can't be reached** is left viewable and quietly redeployed if the outage holds; a mid-provisioning SSL handshake shows as "pending," never an error.
+- **Task runs are the exception**: a finished or failed run stays that way. Fibe does not redeploy it. Run the Task again instead. A launch that stalls before execution still recovers automatically.
 
 ## Needs you: act
 
 These are real and won't fix themselves:
 
 - A service that **crashes on startup**: bad image, missing variable, wrong bind address. Check the logs.
-- A **validation error** on a Template or Playspec: the message names the fix.
-- A genuinely **down or unreachable host**: firewall, disk full, key changed. The Marquee's connection test surfaces it.
-- A **Trick that never exits**: the watched service isn't finishing.
+- A **validation error** on a Template or Spec: the message names the fix.
+- A genuinely **down or unreachable host**: firewall, disk full, key changed. The Host's connection test surfaces it.
+- A **Task that never exits**: the watched service isn't finishing.
 
 See [Common problems & fixes](/operate/common-problems/) for the exact message → smallest-fix table.
 
 ## One caveat: funding
 
-Automatic recovery, redeploys, and auto-expiration only run while the **Marquee is funded**. An unfunded Marquee's environments are left exactly as they are until you fund it again: nothing self-heals in the meantime. See [Billing: When your balance runs low](/concepts/billing/#when-your-balance-runs-low).
+Automatic recovery, redeploys, and auto-expiration only run while the **Host is funded**. An unfunded Host's environments are left exactly as they are until you fund it again: nothing self-heals in the meantime. See [Billing: When your balance runs low](/concepts/billing/#when-your-balance-runs-low).
 
 ## See also
 

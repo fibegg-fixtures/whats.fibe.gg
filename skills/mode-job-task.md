@@ -1,11 +1,11 @@
 ---
-name: mode-job-trick
-description: "Use to convert a Docker Compose template into a Fibe job-mode template (Trick) with `fibe.gg/job_watch`, `x-fibe.gg.metadata.job_mode: true`, and the runtime constraints around restart, replicas, and exposure."
+name: mode-job-task
+description: "Use to convert a Docker Compose template into a Fibe job-mode template (Task) with `fibe.gg/job_watch`, `x-fibe.gg.metadata.job_mode: true`, and the runtime constraints around restart, replicas, and exposure."
 ---
 
-# Mode: job-mode templates (Tricks)
+# Mode: job-mode templates (Tasks)
 
-A Trick is a job-mode Playground: it starts, runs the watched service(s) to completion, and tears itself down. Use for CI test runs, migrations, scheduled backups, one-shot data jobs.
+A Task is a job-mode Playground: it starts, runs the watched service(s) to completion, and tears itself down. Use for CI test runs, migrations, scheduled backups, one-shot data jobs.
 
 ## Required pieces
 
@@ -14,7 +14,7 @@ A Trick is a job-mode Playground: it starts, runs the watched service(s) to comp
 
 Optional but recommended:
 - `x-fibe.gg.metadata.description`, `category`: for clarity.
-- Source defaults: `metadata.source_defaults: true` if the template is imported from a Prop.
+- Source defaults: `metadata.source_defaults: true` if the template is imported from a Repository.
 
 ## Minimum example
 
@@ -93,13 +93,13 @@ The `migrate` service is **not** watched: it's a setup step. Only `test` defines
 
 ## Job ENV entries
 
-Job-mode templates can pull launcher-level env vars from **Job ENV entries** (Player-scoped or Prop-scoped). They're injected at run time:
+Job-mode templates can pull launcher-level env vars from **Job ENV entries** (Player-scoped or Repository-scoped). They're injected at run time:
 
 - Manage via `fibe_resource_mutate(resource: "job_env", operation: "create"|"update")`.
 - Global Job ENV applies to every Player job.
-- Prop-scoped Job ENV applies only when the job uses that Prop.
+- Repository-scoped Job ENV applies only when the job uses that Repository.
 
-Use this for CI credentials such as `NPM_TOKEN` and `STRIPE_SECRET_KEY`. Fibe injects them per Player and Prop scope, so they need not appear in the template.
+Use this for CI credentials such as `NPM_TOKEN` and `STRIPE_SECRET_KEY`. Fibe injects them per Player and Repository scope, so they need not appear in the template.
 
 Entries marked secret are NOT injected into runs triggered by `pull_request` events (protection against untrusted PR code). They are available on push-triggered, scheduled, and manual runs. If a PR test needs a credential, it must come from a non-secret entry or the template itself: understand the exposure risk first.
 
@@ -113,16 +113,16 @@ Job services receive Fibe-managed run context env, and source-backed service pat
 - Scheduled HTTP work: use a long-running service that does work internally. Job mode means "exit when done".
 - Services that need exposed ports. Job mode strips routing labels, so they won't get public URLs.
 
-## Triggering a Trick
+## Triggering a Task
 
-- Manually: `fibe_resource_mutate(resource: "trick", operation: "trigger", payload: {...})`.
-- Re-run last: `fibe_resource_mutate(resource: "trick", operation: "rerun", payload: { id_or_name: <run id or name> })`.
+- Manually: `fibe_resource_mutate(resource: "task", operation: "trigger", payload: {...})`.
+- Re-run last: `fibe_resource_mutate(resource: "task", operation: "rerun", payload: { id_or_name: <run id or name> })`.
 - Scheduled: combine with `metadata.schedule_config` ([mode-schedule-cron](mode-schedule-cron.md)).
 - VCS-triggered: combine with `metadata.trigger_config` ([mode-trigger-vcs](mode-trigger-vcs.md)).
 
 ## Validation
 
-Specifically validate with `target_type: "trick"`:
+Specifically validate with `target_type: "task"`:
 
 ```
 fibe_schema(
@@ -130,7 +130,7 @@ fibe_schema(
   operation: "validate",
   payload: {
     "compose_yaml": "...",
-    "target_type": "trick",
+    "target_type": "task",
     "job_mode": true
   }
 )

@@ -9,7 +9,7 @@ Three storage locations exist for "values the launcher / template needs":
 
 1. **Template variable**: declared in `x-fibe.gg.variables`, bound at template launch.
 2. **Fibe Secret**: separately managed resource referenced by ID.
-3. **Job ENV entry**: Player-scoped or Prop-scoped env vars injected only into **job-mode** runs.
+3. **Job ENV entry**: Player-scoped or Repository-scoped env vars injected only into **job-mode** runs.
 
 Pick by lifecycle and audience.
 
@@ -21,7 +21,7 @@ Pick by lifecycle and audience.
 | Generated password for a Postgres in this template | Template variable, `random: true` | Fibe generates once, reuses on subsequent compiles. Persistent for the Playground. |
 | Sensitive API token to talk to a third party (Stripe, OpenAI) | **Fibe Secret** | Lives outside the template, audited, can be rotated without changing the template. |
 | Anything you want hidden in launcher UI | Template variable + `secret: true` and/or `sensitive: true` | UI cosmetic; the schema permits the flags. |
-| Per-Player or per-Prop secrets injected into job-mode runs | **Job ENV entry** | Job runs only: won't leak into long-running services. |
+| Per-Player or per-Repository secrets injected into job-mode runs | **Job ENV entry** | Job runs only: won't leak into long-running services. |
 
 ## When to use template variables
 
@@ -66,10 +66,10 @@ In job-mode templates, prefer Secrets for credentials so they aren't visible to 
 
 ## When to use Job ENV entries
 
-Only for **job-mode** templates. Job ENV entries are key→value pairs at Player scope OR Prop scope. Global entries apply broadly to the Player's job runs; Prop-scoped entries apply when the run or service is tied to that Prop. Entries marked secret are withheld from pull-request-triggered runs (so untrusted PRs cannot read them); they are injected normally for manual, scheduled, and push-triggered runs.
+Only for **job-mode** templates. Job ENV entries are key→value pairs at Player scope OR Repository scope. Global entries apply broadly to the Player's job runs; Repository-scoped entries apply when the run or service is tied to that Repository. Entries marked secret are withheld from pull-request-triggered runs (so untrusted PRs cannot read them); they are injected normally for manual, scheduled, and push-triggered runs.
 
 - Global Job ENV applies to every job-mode Playground launched by the Player.
-- Prop-scoped Job ENV applies when the job-mode run or service uses that Prop.
+- Repository-scoped Job ENV applies when the job-mode run or service uses that Repository.
 - Manage via `fibe_resource_mutate(resource: "job_env", operation: "create"|"update")` and list via `fibe_resource_list(resource: "job_env")`.
 
 Use case: "every CI job should have an `NPM_TOKEN`": set it once as a Job ENV, no need to put the value in the template.

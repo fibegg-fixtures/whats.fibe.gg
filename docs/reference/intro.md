@@ -8,7 +8,7 @@ image: /img/og/reference-intro.png
 keywords: [Fibe, reference, skills, LLM, authoring, recipes, playbooks]
 ---
 
-The reference section contains small, task-focused **skill files**. Each answers one question, such as how to add a subdomain or turn a Compose file into a Trick, then links to related topics.
+The reference section contains small, task-focused **skill files**. Each answers one question, such as how to add a subdomain or turn a Compose file into a Task, then links to related topics.
 
 Two audiences:
 
@@ -23,7 +23,7 @@ Two audiences:
 | **Compose conversion** | The master playbook for turning `docker-compose.yml` into a Fibe template, plus the publish checklist and common-errors guide. |
 | **References** | Authoritative pages for the moving parts: labels, the `x-fibe.gg` block, variables, YAML paths, implied semantics, validation. |
 | **Decision guides** | Short, opinionated frameworks for the choices you make while authoring (static vs dynamic, expose external vs internal, zero-downtime on/off, etc.). |
-| **Execution modes** | One per template shape: job-mode Tricks, cron schedules, VCS triggers. |
+| **Execution modes** | One per template shape: job-mode Tasks, cron schedules, VCS triggers. |
 | **Recipes** | Small, copy-pasteable patterns (replace `ports:` with `expose`, lift a Compose `${VAR}` into a Fibe variable, share a subdomain across services, etc.). |
 | **App playbooks** | Worked end-to-end conversions for common app shapes: nginx, Node dev mode, Rails, WordPress, Postgres app, Wiki.js, and more. |
 

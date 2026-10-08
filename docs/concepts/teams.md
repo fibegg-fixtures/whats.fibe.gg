@@ -1,86 +1,46 @@
 ---
 title: Teams
-description: Share a Marquee, manage membership, and understand what happens when access ends.
+description: Company workspaces, immutable ownership, membership and independent company automation.
 slug: /concepts/teams
 sidebar_position: 10
 image: /img/og/concepts-teams.png
-keywords: [Team, Marquee sharing, invitations, members, owner, collaboration, shared host]
+keywords: [Team, company workspace, owner context, service principal, membership]
 ---
 
-A **Team** lets you share a [Marquee](/concepts/marquees/) with other people. The owner shares a host; accepted members launch on it as if it were their own.
+A Team is a company workspace with its own resources, credentials, defaults, quotas and balances. Choose Personal or a company in the owner selector before creating work. A resource keeps that owner throughout its lifetime; switching the selector does not move existing resources.
 
-Team management is web-only. The API, CLI, and MCP tools do not manage teams, but existing Marquee and Playground operations honor accepted team access.
+This page describes the coordinated staging candidate. Production retains its previous collaboration contract until its separate cutover.
 
-Creating a team may require the collaboration preference. Accepting an invitation and using a shared Marquee do not. See [Feature Preferences](/advanced/features/#teams-collaboration).
+## Members and administrators
 
-## Roles
+Accepted members may operate company resources. Accepted administrators manage membership, company settings, credentials and billing. The creator remains historical attribution; their departure does not turn company resources into personal ones. A company must retain at least one accepted administrator.
 
-- **Owner**: creates the team, invites and removes members, changes member roles, transfers leadership, shares and unshares Marquees.
-- **Admin**: uses shared Marquees and can leave the team. Admin is a role value today, not a membership-management grant.
-- **Member**: accepts the invitation, uses shared Marquees, and can leave the team. Members can't invite people or change team membership.
+Invitations and domain enrollment establish membership through their normal acceptance or verified identity flow. Removing a person invalidates their company authority and records a durable enrollment block. An administrator may request restoration after native sensitive-action verification; the removed person must accept that request explicitly. Merely signing in again or matching an email address does not restore access.
 
-Only the owner can share resources into the team.
+## Resources and references
 
-The creator is the owner, and ownership only moves through **Transfer leadership**. Transfer leadership to another accepted member before leaving; the new owner is promoted and the previous owner becomes an Admin. A team can be deleted only after every other member has left or been removed.
+Hosts, Repositories, Specs, Playgrounds, Tasks, Agents, Library records, Secrets, Templates, webhooks and their children belong to a personal or company owner. Children retain their root owner's identity. References normally require the same owner; another company's resource ID is insufficient.
 
-The owner can assign Member or Admin. Only a leadership transfer changes the owner.
+Company runtime defaults, provider connections and Secrets come from the company. There is no fallback to a departed creator's personal credentials or defaults. Existing company work remains after that person's departure. Historical personal-sharing records retain their separate compatibility behavior and do not become company ownership.
 
-## Invitations
+## Automation credentials
 
-The owner invites people by **username or GitHub handle**. Invitations remain pending until accepted or declined and do not expire automatically. An invite for a future user attaches when they register with that username. Declined invites can be sent again.
+A new credential binds an immutable owner context and principal. A person's company credential requires live accepted membership. A company service principal supplies durable automation independent of the person who issued its key; revoking the principal or key blocks later effects.
 
-## What sharing a Marquee means
+Scopes narrow operations inside the bound owner context. Selecting a profile or passing a company ID cannot widen authority. Company GitHub automation uses the company's verified organization installation and never borrows a member's personal OAuth token.
 
-Sharing grants management access; there is no read-only role. A shared Marquee appears beside the member's own and works for launches, templates, CI, and schedules.
+## Company billing and quotas
 
-- **Playgrounds on a shared Marquee are shared in practice.** Everyone who can manage the Marquee can see and manage the Playgrounds running on it: the host is shared capacity, not isolated per member.
-- **Other resources are not implicitly shared.** Members still need their own Playspecs, Props, Agents, and Secrets. A shared Marquee doesn't expose the owner's private resources, and a member's Genie chats stay theirs.
-- **Names collide across members.** Subdomains are unique per Marquee across everyone's Playgrounds. Raw Docker host ports collide only when a template explicitly opts into preserving Compose `ports:` or when a launch provides explicit port mappings; by default Fibe strips local-only Compose host bindings.
+Company balances, payment customers, orders, subscriptions and gateway allocations are separate from personal finance. Accepted administrators manage company billing. Resource quotas count each company resource once, rather than once per member. Personal resources continue to consume personal quotas.
 
-## Funding
+Closing a company checks outstanding finance and runtime obligations, revokes admission and preserves retained financial/audit history. Queued work must recheck live authority before effects. Leaving or deleting a creator does not silently delete company-owned Playgrounds, volumes or credentials.
 
-There is no team wallet. The owner funds the Marquee, and an unfunded Marquee blocks the owner and members alike with `MARQUEE_NOT_FUNDED`. See [Billing: When your balance runs low](/concepts/billing/#when-your-balance-runs-low).
+## ENV-pack grants
 
-## When sharing ends
-
-When the owner unshares the Marquee, you leave or are removed from the team, or the owner leaves:
-
-- Your **Playgrounds on that Marquee are destroyed**.
-- Your **live Genie chats on it are stopped**.
-
-You keep your own Marquees and other resources. Leaving only ends access to shared resources.
-
-Move any work you need **before** sharing ends.
-
-## FAQ
-
-<details>
-<summary>Can members share their own Marquees into the team?</summary>
-
-No. Sharing is owner-only today: members use what the owner shares.
-</details>
-
-<details>
-<summary>Can I share anything other than a Marquee?</summary>
-
-Not today. Marquees are the only team-shareable resource; everything else stays personal. There are no team-scoped Secrets, API keys, or audit logs: those stay per-account, and team membership doesn't change them.
-</details>
-
-<details>
-<summary>Does a shared Marquee let members see my Genies or Props?</summary>
-
-No. Marquee access alone doesn't grant access to your other resources. Members see and manage the Playgrounds running on the shared host, but your Genies, their chats, your Props, and your Secrets stay private.
-</details>
-
-<details>
-<summary>What happens to my teams when I delete my account?</summary>
-
-You automatically leave every team you're a member of. Teams you own are not cleaned up automatically: transfer leadership or delete the team first.
-</details>
+People with both source-pack access and target authority may explicitly grant cross-owner ENV-pack references. Losing either authority blocks fresh use until an authorized person renews or replaces the grant. An active company service principal may grant a company pack only to that company's target. Previously applied runtime snapshots remain available for automatic repair. See [ENV packs](/concepts/env-packs/).
 
 ## Related
 
-- [Marquees](/concepts/marquees/): the resource being shared.
-- [Playgrounds](/concepts/playgrounds/): visible to everyone who can manage the shared Marquee.
-- [Wallet, Mana & Sparks](/concepts/billing/): funding stays with the owner.
-- [Feature Preferences](/advanced/features/): enabling collaboration on your account.
+- [Hosts](/concepts/hosts/), [Specs](/concepts/specs/) and [Repositories](/concepts/repositories/).
+- [Billing](/concepts/billing/): separate company and personal finance.
+- [API reference](/api/): bound credentials and owner context.

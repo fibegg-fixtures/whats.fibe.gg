@@ -1,18 +1,18 @@
 ---
 title: CLI reference
-description: Every fibe command grouped by resource family. Playgrounds, Tricks, Agents, Templates, repos, secrets, monitoring, and the lower-level utilities.
+description: Every fibe command grouped by resource family. Playgrounds, Tasks, Agents, Templates, repos, secrets, monitoring, and the lower-level utilities.
 slug: /sdk/cli-reference
 sidebar_position: 4
 sidebar_label: CLI reference
 image: /img/og/sdk-cli-reference.png
-keywords: [fibe CLI, playgrounds, tricks, agents, templates, marquees, secrets, webhooks, audit logs, JSON output]
+keywords: [fibe CLI, playgrounds, tasks, agents, templates, hosts, secrets, webhooks, audit logs, JSON output]
 ---
 
 `fibe` follows a `fibe <resource> <action> [flags]` pattern. This page is the reference for every resource family. For deep workflow stories, see [Common workflows](/sdk/workflows/).
 
 Every command supports `--help` (`fibe playgrounds --help`, `fibe playgrounds create --help`). Use it liberally; this page is the overview.
 
-Commands that launch, restart, inspect, stream from, schedule onto, stop, destroy, clean up, or message a Marquee require that Marquee to be funded. Unpaid Marquees return `MARQUEE_NOT_FUNDED`.
+Commands that launch, restart, inspect, stream from, schedule onto, stop, destroy, clean up, or message a Host require that Host to be funded. Unpaid Hosts return `HOST_NOT_FUNDED`.
 
 ## Global flags
 
@@ -39,12 +39,12 @@ Long-running environments. Full lifecycle from the command line.
 ```sh
 fibe playgrounds list
 fibe playgrounds get <id|name>
-fibe playgrounds create --name "demo" --playspec starter --marquee next
-fibe pg create --name "demo" --playspec starter --marquee next --service web.subdomain=demo
+fibe playgrounds create --name "demo" --spec starter --host next
+fibe pg create --name "demo" --spec starter --host next --service web.subdomain=demo
 fibe playgrounds update <id> -f patch.json
 fibe playgrounds delete <id>
 
-fibe playgrounds rollout <id>              # apply Playspec edits, minimal disruption
+fibe playgrounds rollout <id>              # apply Spec edits, minimal disruption
 fibe playgrounds hard-restart <id>         # stop/start everything
 fibe playgrounds stop <id>
 fibe playgrounds start <id>
@@ -61,10 +61,10 @@ fibe playgrounds debug <id>                # deployment diagnostics
 
 The shorthand `pg` works wherever `playgrounds` does: `fibe pg list`.
 
-For create, `--playspec` and `--marquee` accept IDs or names. `--service SERVICE.FIELD=VALUE` can be repeated to patch launch-time service configuration without writing a JSON file:
+For create, `--spec` and `--host` accept IDs or names. `--service SERVICE.FIELD=VALUE` can be repeated to patch launch-time service configuration without writing a JSON file:
 
 ```sh
-fibe pg create --name demo --playspec starter --marquee next \
+fibe pg create --name demo --spec starter --host next \
   --service web.subdomain=demo \
   --service web.exposure_port=3000 \
   --service web.exposure_visibility=external \
@@ -73,21 +73,21 @@ fibe pg create --name demo --playspec starter --marquee next \
 
 Supported service fields are `subdomain`, `exposure_port`, `exposure_visibility`, `path_rule`, `start_command`, `image`, `dockerfile_path`, `env_file_path`, `healthcheck_path`, `env_vars.KEY`, `git_config.branch_name`, `git_config.base_branch_name`, and `git_config.create_branch`. Service names with dots and `port_mappings` are not supported in this flag; use `-f` JSON/YAML for those. When both `-f` and `--service` are present, service flags win.
 
-## Tricks
+## Tasks
 
 One-shot jobs.
 
 ```sh
-fibe tricks list
-fibe tricks trigger --playspec 12 [--marquee <id-or-name>] [--name nightly-run] [--env-overrides KEY=value]
-fibe tricks get <id>
-fibe tricks logs <id>
-fibe tricks rerun <id-or-name>
+fibe tasks list
+fibe tasks trigger --spec 12 [--host <id-or-name>] [--name nightly-run] [--env-overrides KEY=value]
+fibe tasks get <id>
+fibe tasks logs <id>
+fibe tasks rerun <id-or-name>
 ```
 
-`fibe tricks trigger` takes `--playspec` (required), `--marquee`, `--name`, `--env-overrides`, `--only-service`, and `--except-service`. The trick's behavior comes from the job-mode Playspec; job credentials come from Job ENV. Use `--explain-errors` if a trigger fails: the error typically points at a missing variable or an unreachable repo.
+`fibe tasks trigger` takes `--spec` (required), `--host`, `--name`, `--env-overrides`, `--only-service`, and `--except-service`. The task's behavior comes from the job-mode Spec; job credentials come from Job ENV. Use `--explain-errors` if a trigger fails: the error typically points at a missing variable or an unreachable repo.
 
-## Agents (Genies)
+## Agents (Agents)
 
 ```sh
 fibe agents list
@@ -124,40 +124,40 @@ fibe agents authenticate <id>                # device-code re-auth for an agent
 
 The shorthands `agent` and `ag` work wherever `agents` does. `chat` is the primary message command; `send-message` remains as an alias for existing scripts. Use either a positional message or `--text`, not both.
 
-## Playspecs, Props, Marquees, Templates
+## Specs, Repositories, Hosts, Templates
 
 The bookkeeping resources around a launch.
 
 ```sh
-fibe playspecs list
-fibe playspecs get <id>
-fibe playspecs create -f playspec.json
+fibe specs list
+fibe specs get <id>
+fibe specs create -f spec.json
 
-fibe props list
-fibe props get <id>
-fibe props create --url https://github.com/owner/repo
-fibe props delete <id>
+fibe repositories list
+fibe repositories get <id>
+fibe repositories create --url https://github.com/owner/repo
+fibe repositories delete <id>
 
-fibe marquees list
-fibe marquees get <id>
-fibe marquees update <id> -f patch.json
+fibe hosts list
+fibe hosts get <id>
+fibe hosts update <id> -f patch.json
 
 fibe templates list
 fibe templates get <id>
 fibe templates search --query "Rails"
-fibe launch --template <id|name> --marquee <id-or-name> [--name my-playground] [--version 3]
-fibe launch --template-version <id> --name branch-a --marquee <id-or-name>
-fibe launch --playspec <id|name> --name demo --marquee <id-or-name>
-fibe launch --compose @docker-compose.yml --name demo --marquee <id-or-name>
-fibe launch owner/repo@main --name demo --marquee <id-or-name>
+fibe launch --template <id|name> --host <id-or-name> [--name my-playground] [--version 3]
+fibe launch --template-version <id> --name branch-a --host <id-or-name>
+fibe launch --spec <id|name> --name demo --host <id-or-name>
+fibe launch --compose @docker-compose.yml --name demo --host <id-or-name>
+fibe launch owner/repo@main --name demo --host <id-or-name>
 fibe templates update <id> -f patch.json     # update template metadata
 fibe templates versions create <id>          # publish a new template version
-fibe playspecs switch-template <id>          # move a Playspec to another template version
+fibe specs switch-template <id>          # move a Spec to another template version
 ```
 
-`fibe launch` is the one-shot path from one existing source: a catalog template, exact template version, existing Playspec, raw Compose YAML, or GitHub repo config. Bare positional sources resolve as repositories when they look like `owner/repo`, a URL, or `.git`; otherwise the CLI looks for a template or Playspec by name. Use explicit flags for numeric IDs because a bare number is ambiguous.
+`fibe launch` is the one-shot path from one existing source: a catalog template, exact template version, existing Spec, raw Compose YAML, or GitHub repo config. Bare positional sources resolve as repositories when they look like `owner/repo`, a URL, or `.git`; otherwise the CLI looks for a template or Spec by name. Use explicit flags for numeric IDs because a bare number is ambiguous.
 
-Template launch, greenfield, tricks, agent chat, and playground commands all require the selected Marquee to be funded.
+Template launch, greenfield, tasks, agent chat, and playground commands all require the selected Host to be funded.
 
 ## Repos & installations
 
@@ -185,7 +185,7 @@ fibe secrets update <id> -f patch.json
 fibe secrets delete <id>
 
 fibe job-env list
-fibe job-env set DEPLOY_KEY="$(pbpaste)" [--prop my-repo] [--secret]   # global scope is the default
+fibe job-env set DEPLOY_KEY="$(pbpaste)" [--repository my-repo] [--secret]   # global scope is the default
 
 fibe api-keys list
 fibe api-keys create --label "ci-deploy" --scope launch:write --expires-at 2026-01-01T00:00:00Z
@@ -221,14 +221,14 @@ fibe feedbacks get <id>
 ```sh
 fibe monitor follow                         # stream agent events live (filter with --agent, --type, -q)
 fibe monitor list                           # one-shot page of recent events
-fibe monitor logs <playground-or-trick>     # stream playground or trick logs
+fibe monitor logs <playground-or-task>     # stream playground or task logs
 
 fibe audit-logs list                        # filterable; there is no per-entry get
 
 fibe status                                 # account dashboard
 fibe server-info                            # API version, server-side build info
 fibe wait playground 12 --status running --timeout 5m
-fibe wait trick 99 --status completed --timeout 1h
+fibe wait task 99 --status completed --timeout 1h
 ```
 
 ## Greenfield & launch shortcuts
@@ -238,23 +238,23 @@ Launch one existing source, or use a repo config as a greenfield snapshot templa
 ```sh
 fibe github apps connect
 
-fibe launch --template billing-app --version 3 --name billing-staging --marquee next
-fibe launch --playspec starter --name demo --marquee next
-fibe launch --compose @docker-compose.yml --name demo --marquee next
-fibe launch owner/repo --marquee 12
+fibe launch --template billing-app --version 3 --name billing-staging --host next
+fibe launch --spec starter --name demo --host next
+fibe launch --compose @docker-compose.yml --name demo --host next
+fibe launch owner/repo --host 12
 fibe launch https://github.com/owner/repo --ref main --file deploy/fibe.yml
 
-fibe greenfield owner/repo --marquee 12
+fibe greenfield owner/repo --host 12
 fibe greenfield owner/repo@feature/foo --name custom-name
 ```
 
 For repo sources, both commands discover config files in this order: `fibe.yml`, `fibe.yaml`, `docker-compose.yml`, `docker-compose.yaml`. `--name` is optional and inferred from the repo basename after slug normalization; pass it explicitly when you want a stable custom name. If your account has multiple GitHub App installations, add `--github-account <owner>` or `--github-installation-id <id>`.
 
-When `--marquee` is omitted, launch and greenfield use `FIBE_MARQUEE_ID` or infer the only launchable Marquee. Compose/repo launch can force a Playspec-only import with `--no-create-playground`; volume persistence defaults on when the compiled Compose declares named volumes and can be overridden with `--persist-volumes=false`.
+When `--host` is omitted, launch and greenfield use `FIBE_HOST_ID` or infer the only launchable Host. Compose/repo launch can force a Spec-only import with `--no-create-playground`; volume persistence defaults on when the compiled Compose declares named volumes and can be overridden with `--persist-volumes=false`.
 
 ## Local playground inspection
 
-If you're running a Marquee locally and want to peek at `/opt/fibe/playgrounds`:
+If you're running a Host locally and want to peek at `/opt/fibe/playgrounds`:
 
 ```sh
 fibe local playgrounds info
@@ -302,7 +302,7 @@ Combine with `jq` for ad-hoc analysis, or pipe `-o yaml` to `yq` for richer quer
 The `-f` flag accepts a file path or `-` for stdin. (A few specific string flags additionally accept `@file` to read their value from a file, such as `--compose @compose.yml`.) Useful when you've assembled a payload from another tool:
 
 ```sh
-echo '{"name":"demo","playspec_id":5,"marquee_id":"next"}' | fibe playgrounds create -f -
+echo '{"name":"demo","spec_id":5,"host_id":"next"}' | fibe playgrounds create -f -
 fibe agents update sys-op -f /tmp/sys-op-patch.yaml
 ```
 

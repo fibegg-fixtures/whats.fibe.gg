@@ -7,7 +7,7 @@ description: Use when you need to stop a running Agent turn. Overseer-only.
 
 [MODE:SIDEEFFECTS] Tier: overseer. Not idempotent.
 
-Interrupting a live Genie requires the chat Marquee to be funded. Stop and cleanup flows that touch the Marquee also require funding.
+Interrupting a live Agent requires the chat Host to be funded. Stop and cleanup flows that touch the Host also require funding.
 
 Requests the runtime to interrupt the currently running Agent turn. Use this only when the user explicitly asks to stop/cancel, or when an automated controller must halt a bad loop.
 

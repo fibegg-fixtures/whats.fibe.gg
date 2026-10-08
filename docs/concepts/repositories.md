@@ -1,25 +1,25 @@
 ---
-title: Props
-description: A Prop is a connected Git repository. Fibe reads branches and files from it, mounts source into containers, and reacts to pushes.
-slug: /concepts/props
+title: Repositories
+description: A Repository is a connected Git repository. Fibe reads branches and files from it, mounts source into containers, and reacts to pushes.
+slug: /concepts/repositories
 sidebar_position: 5
-image: /img/og/concepts-props.png
-keywords: [Prop, Git repository, GitHub, GitHub App, Gitea, PAT, Personal Access Token, source control, branches, webhook, Compose detection]
+image: /img/og/concepts-repositories.png
+keywords: [Repository, Git repository, GitHub, GitHub App, Gitea, PAT, Personal Access Token, source control, branches, webhook, Compose detection]
 ---
 
-A **Prop** is a connected Git repository. Fibe clones it for builds, mounts it for dev, triggers Tricks on push.
+A **Repository** is a connected Git repository. Fibe clones it for builds, mounts it for dev, triggers Tasks on push.
 
-Without a Prop, a Template can still use static `image:` entries. A Prop adds branches, commits, live source, and push-triggered jobs.
+Without a Repository, a Template can still use static `image:` entries. A Repository adds branches, commits, live source, and push-triggered jobs.
 
-## What a Prop gives you
+## What a Repository gives you
 
 | Capability | Detail |
 | --- | --- |
 | **Branch discovery** | Every branch listed for launchers to pick. |
-| **Source for builds** | Templates that say `fibe.gg/repo_url: <this prop>` clone at launch. |
+| **Source for builds** | Templates that say `fibe.gg/repo_url: <this repository>` clone at launch. |
 | **Live source mount** | Dev services mount the working tree. Edits show up live. |
 | **Compose detection** | On connect, Fibe notices `fibe.yml`, `fibe.yaml`, `docker-compose.yml`, or `docker-compose.yaml` at the repo root and `.env.example`. Candidates for new Templates. |
-| **Push notifications** | Refresh branch list, fire source-linked Templates that track changed files, trigger listening Tricks. |
+| **Push notifications** | Refresh branch list, fire source-linked Templates that track changed files, trigger listening Tasks. |
 | **In-browser git** | Stage, commit, push from the Playground terminal. |
 | **Per-commit history** | What landed and when. |
 
@@ -30,7 +30,7 @@ Two providers, each with its own auth path:
 | Provider | URL shape | Auth |
 | --- | --- | --- |
 | **Built-in Gitea** | URL inside Fibe's Gitea host | One connection is provisioned for each Player. |
-| **GitHub** | `https://github.com/owner/repo` or `ssh://…` | GitHub App installation, or per-Prop Personal Access Token. |
+| **GitHub** | `https://github.com/owner/repo` or `ssh://…` | GitHub App installation, or per-Repository Personal Access Token. |
 
 Other providers (GitLab, Bitbucket, self-hosted) aren't supported today. The repo-URL validator only accepts the two above. To use code from another host, push a mirror into the built-in Gitea.
 
@@ -40,12 +40,12 @@ Three ways, in order of preference:
 
 ### 1. Install the Fibe GitHub App (recommended for orgs)
 
-Best when you have multiple private repos in the same org and want webhooks + CI to work without per-Prop token management.
+Best when you have multiple private repos in the same org and want webhooks + CI to work without per-Repository token management.
 
 1. Go to **Profile → Advanced Settings → GitHub Apps**, click **Install on GitHub**.
 2. GitHub asks which org/account and which repos to grant.
 3. Pick repos. Return to Fibe; the installation is registered.
-4. Create a Prop from a granted repository. Fibe creates a short-lived token when cloning.
+4. Create a Repository from a granted repository. Fibe creates a short-lived token when cloning.
 
 Multiple installations per account are supported (one per org or repo set). Detail: [Advanced → GitHub Apps](/advanced/github-apps/).
 
@@ -56,22 +56,22 @@ Best when you mostly use your own (personal) repos and want a single OAuth click
 1. Click **Connect GitHub** from the profile. GitHub OAuth flow runs.
 2. Your GitHub user is linked. Public repos clone without further setup; private ones still need an App installation or a PAT.
 
-### 3. Paste a Personal Access Token (per-Prop)
+### 3. Paste a Personal Access Token (per-Repository)
 
 Best for one-off integrations or when you can't install the App (no admin rights on the org).
 
-When creating a Prop from the **GitHub Repository** tab:
+When creating a Repository from the **GitHub Repository** tab:
 
 - **Repo URL**: `https://github.com/owner/repo` (an `ssh://…` URL also works).
 - **Default branch**: defaults to the repo default.
 - **Credentials (Personal Access Token)**: paste a PAT.
   - **Classic PAT** with the `repo` scope, **or** a **fine-grained PAT** scoped to the specific repo with the relevant permissions (contents read/write, metadata read).
   - Format `ghp_…` (classic) or `github_pat_…` (fine-grained).
-  - Stored encrypted on the Prop. Used at clone time and for the API calls the Prop needs (read/write contents, metadata).
+  - Stored encrypted on the Repository. Used at clone time and for the API calls the Repository needs (read/write contents, metadata).
 
-PATs are per-Prop and don't share across Props. Rotate from the Prop's settings page when the token expires.
+PATs are per-Repository and don't share across Repositories. Rotate from the Repository's settings page when the token expires.
 
-When **both** an App installation and a PAT are available, the PAT wins. The Prop uses what's set on its `credentials` field; if blank, it falls back to the App installation token.
+When **both** an App installation and a PAT are available, the PAT wins. The Repository uses what's set on its `credentials` field; if blank, it falls back to the App installation token.
 
 ## Connect a built-in Gitea repository
 
@@ -104,15 +104,15 @@ If you lose the password or want to rotate:
 
 1. Profile → **Reset credentials** on the Gitea card.
 2. 2FA confirmation required.
-3. Fibe generates a new password and a new access token for your Gitea account; reset tokens carry `write:repository`, `read:repository`, `write:user`, and `read:user` access. The new password appears on the card, and all your Gitea Props pick up the new token automatically. (A token you pasted into a specific Prop's Credentials field is not touched.)
+3. Fibe generates a new password and a new access token for your Gitea account; reset tokens carry `write:repository`, `read:repository`, `write:user`, and `read:user` access. The new password appears on the card, and all your Gitea Repositories pick up the new token automatically. (A token you pasted into a specific Repository's Credentials field is not touched.)
 
 ### Creating a Gitea repo
 
-From **New Prop → New Repository** tab:
+From **New Repository → New Repository** tab:
 
 - **Repo name**: letters, digits, dashes, underscores, or dots; must be unique in your Gitea account (e.g. `my-new-app`).
 - **Private**: toggle.
-- Click **Create Repository**. Fibe creates the repo in Gitea and saves the Prop.
+- Click **Create Repository**. Fibe creates the repo in Gitea and saves the Repository.
 
 The repo is owned by your Gitea user. You can push to it via HTTPS using your Gitea credentials or access token. The built-in Gitea does not offer SSH access.
 
@@ -127,7 +127,7 @@ Whatever the provider and auth path, on creation Fibe:
 1. Resolves the repo URL. Validates the format.
 2. Discovers branches.
 3. Notes useful files (`fibe.yml`, `fibe.yaml`, `docker-compose.yml`, `docker-compose.yaml`, and `.env.example`) as candidates for new Templates.
-4. Configures push notifications. Built-in Gitea repositories get them automatically. GitHub requires the Fibe GitHub App. A PAT-only Prop receives no push events.
+4. Configures push notifications. Built-in Gitea repositories get them automatically. GitHub requires the Fibe GitHub App. A PAT-only Repository receives no push events.
 
 ## Pushes
 
@@ -135,9 +135,9 @@ On commit, Fibe:
 
 1. Refreshes the branch list.
 2. Auto-publishes new Template versions for any source-linked Template tracking a changed file.
-3. Fires Tricks configured for that push or PR.
-4. Posts a commit notification when the Prop's **Notifications** toggle is on. See [Inbox Notifications](/advanced/notifications/).
-5. Pulls the commit into running Playgrounds on the same branch without a rollout. Fibe skips any service where pulling would overwrite local changes. Updates require a funded Marquee and exclude one-off jobs.
+3. Fires Tasks configured for that push or PR.
+4. Posts a commit notification when the Repository's **Notifications** toggle is on. See [Inbox Notifications](/advanced/notifications/).
+5. Pulls the commit into running Playgrounds on the same branch without a rollout. Fibe skips any service where pulling would overwrite local changes. Updates require a funded Host and exclude one-off jobs.
 
 Built-in Gitea webhooks or the Fibe GitHub App deliver push events.
 
@@ -147,29 +147,29 @@ Fibe also mirrors branch deletion. Push the branch again to restore it.
 
 Playground terminal has full git tooling. The UI exposes a diff view, commit message field, push button.
 
-Commits go back to the Prop. The push notification fires. Source-linked Templates and Tricks react.
+Commits go back to the Repository. The push notification fires. Source-linked Templates and Tasks react.
 
-## Props are personal
+## Repositories are personal
 
-Each Player owns their Props. Two people can connect the same upstream repository independently, with separate credentials, branches, and Trick configurations.
+Each Player owns their Repositories. Two people can connect the same upstream repository independently, with separate credentials, branches, and Task configurations.
 
-If you fork a Template that points at someone else's Prop, your fork doesn't get access to their repository. Connect your own Prop (or a fork of theirs).
+If you fork a Template that points at someone else's Repository, your fork doesn't get access to their repository. Connect your own Repository (or a fork of theirs).
 
 ## Source-linked Templates
 
-A Template can point to a Prop file, usually the root Compose file. This has two effects:
+A Template can point to a Repository file, usually the root Compose file. This has two effects:
 
 1. **Auto-publish on file change.** New commits touching the file → new Template version. Body is the file at that commit.
-2. **CI Trick.** Enable CI on the Template and Fibe creates a Trick that runs against the latest version on push or PR.
+2. **CI Task.** Enable CI on the Template and Fibe creates a Task that runs against the latest version on push or PR.
 
-See [Playspecs → Source-linked Templates](/concepts/playspecs/#source-linked-templates-the-strongest-pattern) for details.
+See [Specs → Source-linked Templates](/concepts/specs/#source-linked-templates-the-strongest-pattern) for details.
 
 ## FAQ
 
 <details>
 <summary>Which is better: GitHub App or PAT?</summary>
 
-App, when you can install it: installation tokens are short-lived, scoped per-installation, and webhook delivery is managed centrally. PATs are convenient when you can't install the App (no org admin rights) or for one-off Props.
+App, when you can install it: installation tokens are short-lived, scoped per-installation, and webhook delivery is managed centrally. PATs are convenient when you can't install the App (no org admin rights) or for one-off Repositories.
 </details>
 
 <details>
@@ -187,13 +187,13 @@ Both work. Prefer a fine-grained PAT scoped to one repository. A classic PAT wit
 <details>
 <summary>What happens when a PAT expires?</summary>
 
-Clones and the Prop's API calls fail. The Prop surfaces an authentication error on the next sync. Paste a fresh PAT into the Prop's Credentials field to fix.
+Clones and the Repository's API calls fail. The Repository surfaces an authentication error on the next sync. Paste a fresh PAT into the Repository's Credentials field to fix.
 </details>
 
 <details>
-<summary>Rotate credentials on a Prop?</summary>
+<summary>Rotate credentials on a Repository?</summary>
 
-Yes. Re-authenticate or paste a new PAT in Prop settings, then revoke the old token on GitHub.
+Yes. Re-authenticate or paste a new PAT in Repository settings, then revoke the old token on GitHub.
 </details>
 
 <details>
@@ -215,15 +215,15 @@ Choose with the **Private** toggle. Automation defaults built-in Gitea repositor
 </details>
 
 <details>
-<summary>Deleted Prop?</summary>
+<summary>Deleted Repository?</summary>
 
-You cannot delete a Prop referenced by a Playspec. The error names each blocker; remove or repoint them first.
+You cannot delete a Repository referenced by a Spec. The error names each blocker; remove or repoint them first.
 </details>
 
 ## Related
 
 - [Advanced → GitHub Apps](/advanced/github-apps/): install and manage GitHub App installations.
-- [Marquees](/concepts/marquees/): where source runs.
-- [Playspecs](/concepts/playspecs/): Templates and the launches they produce.
-- [Tricks](/concepts/tricks/): what fires on pushes.
+- [Hosts](/concepts/hosts/): where source runs.
+- [Specs](/concepts/specs/): Templates and the launches they produce.
+- [Tasks](/concepts/tasks/): what fires on pushes.
 - Reference: [`recipe-build-to-repo-url`](/reference/recipe-build-to-repo-url/), [`recipe-source-mount`](/reference/recipe-source-mount/), [`mode-trigger-vcs`](/reference/mode-trigger-vcs/).

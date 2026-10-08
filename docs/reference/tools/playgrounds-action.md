@@ -13,7 +13,7 @@ format: md
 
 Runs one async lifecycle action on a Playground through `POST /api/playgrounds/:id/action`. The SDK polls action status until terminal.
 
-Actions that create, recreate, start, or otherwise need live runtime on the target Marquee require it to be funded and fail with `MARQUEE_NOT_FUNDED` when unpaid. `stop` is a cleanup action and does not require funding.
+Actions that create, recreate, start, or otherwise need live runtime on the target Host require it to be funded and fail with `HOST_NOT_FUNDED` when unpaid. `stop` is a cleanup action and does not require funding.
 
 ## When to use
 - Re-deploying after code changes (`rollout`).
@@ -56,13 +56,13 @@ The Playground's updated detail JSON after the action returns terminal (success/
 6. Returns 202 with `status_url`; the SDK polls `GET /api/playgrounds/:id/action/:request_id`.
 
 ## Gotchas
-- **You almost never want `force:true`.** Use it only when you know the state guard is bogus (stuck `in_progress`, manual recovery from a failed Marquee).
+- **You almost never want `force:true`.** Use it only when you know the state guard is bogus (stuck `in_progress`, manual recovery from a failed Host).
 - `retry_compose` does NOT change source code: it just retries Compose generation. If your code changed, use `rollout`.
 - Maintenance is an overlay. It does not start, stop, retry, redeploy, or mutate Playground `status`.
 - `stop`+`start` is gentler than `hard_restart`. `hard_restart` can lose container-only state (non-volume tmpfs etc.).
 - Idempotency-Key honored: concurrent retries with the same key dedupe.
 - Action status polling has a built-in deadline; for long rollouts pair with `fibe_playgrounds_wait(status:"running")`.
-- `rollout` of a Job-mode Trick is conceptually wrong: Tricks use `trick.rerun` or `trick.trigger`.
+- `rollout` of a Job-mode Task is conceptually wrong: Tasks use `task.rerun` or `task.trigger`.
 
 ## Related
 - `fibe_resource_get(resource:"playground", ...)`: pre-flight state check.

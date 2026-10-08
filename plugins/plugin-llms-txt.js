@@ -5,7 +5,7 @@ import path from 'node:path';
 
 const SITE_TITLE = 'Fibe: user guide & skills';
 const SITE_DESCRIPTION =
-  'Fibe runs your projects in real Docker environments connected to your compute hosts and Git repositories. The guide covers Marquees, Props, Templates, Playgrounds, Tricks, Genies, and a full reference library of authoring skills.';
+  'Fibe runs your projects in real Docker environments connected to your compute hosts and Git repositories. The guide covers Hosts, Repositories, Templates, Playgrounds, Tasks, Agents, and a full reference library of authoring skills.';
 const SITE_URL = 'https://whats.fibe.gg';
 
 const CATEGORIES = [

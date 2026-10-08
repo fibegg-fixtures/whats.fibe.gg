@@ -10,7 +10,7 @@ keywords: [Fibe SDK, fibe CLI, MCP server, Go library, automation, AI agent]
 
 The Fibe SDK is the **interface to Fibe**: a single Go binary that runs in three modes depending on who's calling:
 
-- **CLI**: you, at a terminal. `fibe playgrounds list`, `fibe agent chat`, `fibe tricks trigger`.
+- **CLI**: you, at a terminal. `fibe playgrounds list`, `fibe agent chat`, `fibe tasks trigger`.
 - **Go library**: programs you write in Go that embed Fibe directly. Automate deployments, build a custom dashboard, write a control plane.
 - **MCP server**: AI agents (Claude Code, Cursor, Antigravity, anything that speaks the Model Context Protocol). Agents call `fibe_*` tools and Fibe responds.
 
@@ -27,11 +27,15 @@ All three share the same authentication, the same resource model, the same retry
 | Building CI/CD automation | The **CLI** from a workflow, with an API key |
 | Embedding Fibe in your own SaaS | The **Go library** |
 
+:::caution Candidate CLI
+This branch requires the programme’s matching untagged candidate binary. The stable Homebrew/release binary and existing production authentication profiles stay unchanged. Use a separate bound candidate profile for next.fibe.live; do not reuse a production credential against an unrelated owner context.
+:::
+
 ## The 60-second tour
 
 ```sh
-# Install (macOS / Linux)
-brew install --cask fibegg/sdk/fibe
+# Use the verified candidate binary prepared for your architecture.
+# The stable Homebrew installation continues to serve production.
 
 # First-time setup
 fibe login                # browser device-code flow
@@ -39,9 +43,9 @@ fibe doctor               # check connectivity + auth
 
 # Daily use
 fibe playgrounds list
-fibe agent chat my-genie "Hello"
-fibe pg create --name demo --playspec starter --marquee next --service web.subdomain=demo
-fibe tricks trigger --playspec 42
+fibe agent chat my-agent "Hello"
+fibe pg create --name demo --spec starter --host next --service web.subdomain=demo
+fibe tasks trigger --spec 42
 
 # Run an MCP server for your AI agent
 fibe mcp serve
@@ -52,7 +56,7 @@ That's the whole product surface, in a paragraph.
 
 ## What it talks to
 
-The SDK is a **client** to the Fibe API. It doesn't run anything itself; it tells the platform what to do. On the other end is Fibe, which orchestrates [Marquees](/concepts/marquees/) (your Docker hosts), [Props](/concepts/props/) (your Git repos), [Templates](/concepts/playspecs/#templates), [Playgrounds](/concepts/playgrounds/), [Tricks](/concepts/tricks/), and [Genies](/concepts/agents/).
+The SDK is a **client** to the Fibe API. It doesn't run anything itself; it tells the platform what to do. On the other end is Fibe, which orchestrates [Hosts](/concepts/hosts/) (your Docker hosts), [Repositories](/concepts/repositories/) (your Git repos), [Templates](/concepts/specs/#templates), [Playgrounds](/concepts/playgrounds/), [Tasks](/concepts/tasks/), and [Agents](/concepts/agents/).
 
 So the SDK is what gets you those resources from a script, an agent, or a CI job: same as the web UI gets them from a browser.
 
@@ -74,10 +78,10 @@ Read on: [Install the CLI](/sdk/install/), [Authentication](/sdk/authentication/
 import "github.com/fibegg/sdk/fibe"
 
 client := fibe.NewClient(fibe.WithAPIKey(os.Getenv("FIBE_API_KEY")))
-pg, _ := client.Playgrounds.Create(ctx, &fibe.PlaygroundCreateParams{Name: "demo", PlayspecIdentifier: "5"})
+pg, _ := client.Playgrounds.Create(ctx, &fibe.PlaygroundCreateParams{Name: "demo", SpecIdentifier: "5"})
 ```
 
-A thin Go wrapper over the Fibe HTTP API with sensible defaults: automatic retry on transient failures, an opt-in circuit breaker for when the upstream is sick, idempotency-key support for safe re-tries, rate-limit awareness, structured errors. Resource "managers" (`client.Playgrounds`, `client.Agents`, `client.Tricks`, …) mirror the REST shape.
+A thin Go wrapper over the Fibe HTTP API with sensible defaults: automatic retry on transient failures, an opt-in circuit breaker for when the upstream is sick, idempotency-key support for safe re-tries, rate-limit awareness, structured errors. Resource "managers" (`client.Playgrounds`, `client.Agents`, `client.Tasks`, …) mirror the REST shape.
 
 Read on: [Go library](/sdk/go-library/).
 

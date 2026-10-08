@@ -15,10 +15,10 @@ This page is the orientation. Per-method API docs live at [pkg.go.dev/github.com
 ## Install the library
 
 ```sh
-go get github.com/fibegg/sdk/fibe
+go get github.com/fibegg/sdk/fibe@<programme-sdk-sha>
 ```
 
-Pin to a tag for reproducible builds. The library follows semver.
+For this unpublished candidate, pin the programme SDK commit. Stable tags and Homebrew remain production-compatible until their separate release.
 
 ## Construct a client
 
@@ -29,6 +29,7 @@ import (
     "context"
     "log"
     "os"
+    "time"
     "github.com/fibegg/sdk/fibe"
 )
 
@@ -36,7 +37,7 @@ func main() {
     client := fibe.NewClient(
         fibe.WithAPIKey(os.Getenv("FIBE_API_KEY")),
         // optional:
-        fibe.WithDomain("https://fibe.gg"),
+        fibe.WithDomain("https://next.fibe.live"),
         fibe.WithTimeout(30*time.Second),   // 30s is the default
         fibe.WithUserAgent("my-app/1.2"),
     )
@@ -57,12 +58,12 @@ Each resource family hangs off the client:
 | Manager | Operates on |
 | --- | --- |
 | `client.Playgrounds` | Playgrounds (long-running environments) |
-| `client.Tricks` | One-shot job runs |
-| `client.Playspecs` | Launch blueprints |
-| `client.Agents` | Genies |
+| `client.Tasks` | One-shot job runs |
+| `client.Specs` | Launch blueprints |
+| `client.Agents` | Agents |
 | `client.ImportTemplates` | Catalog templates (plus `client.ImportTemplateVersions` for their versions) |
-| `client.Props` | Connected Git repositories |
-| `client.Marquees` | Docker hosts |
+| `client.Repositories` | Connected Git repositories |
+| `client.Hosts` | Docker hosts |
 | `client.Secrets` | Secret Vault entries |
 | `client.JobEnv` | Job ENV entries |
 | `client.APIKeys` | Your own API keys |
@@ -73,27 +74,7 @@ Each resource family hangs off the client:
 | `client.AuditLogs` | Read-only history |
 | `client.Monitor` | Live event stream |
 
-The common shape of a manager is:
-
-```go
-type PlaygroundsManager interface {
-    List(ctx context.Context, params *PlaygroundListParams) (*ListResult[Playground], error)
-    Get(ctx context.Context, id int64) (*Playground, error)
-    Create(ctx context.Context, params *PlaygroundCreateParams) (*Playground, error)
-    Update(ctx context.Context, id int64, params *PlaygroundUpdateParams) (*Playground, error)
-    Delete(ctx context.Context, id int64) error
-
-    Rollout(ctx context.Context, id int64) (*Playground, error)
-    HardRestart(ctx context.Context, id int64) (*Playground, error)
-    Stop(ctx context.Context, id int64) (*Playground, error)
-    Start(ctx context.Context, id int64) (*Playground, error)
-    Logs(ctx context.Context, id int64, service string, tail *int) (*PlaygroundLogs, error)
-    LogsStream(ctx context.Context, id int64, service string, opts *LogsStreamOptions) <-chan LogLine
-    WaitForStatus(ctx context.Context, id int64, status string, timeout, interval time.Duration) (*Playground, error)
-}
-```
-
-(Exact signatures live in godoc. The shape above is the pattern.)
+The resource service provides typed `List`, `Get`, `GetByIdentifier`, `Create`, `Update` and `Delete` operations. Playground lifecycle operations use `Action` with `PlaygroundActionParams`, while `Status`, `WaitForStatus` and `LogsStream` observe the result. Exact signatures live in the selected candidate SDK source and its generated API manifest.
 
 ## Failure handling
 
@@ -123,8 +104,8 @@ ctx := context.Background()
 
 pg, err := client.Playgrounds.Create(ctx, &fibe.PlaygroundCreateParams{
     Name:              "demo",
-    PlayspecID:        42,
-    MarqueeIdentifier: "1",
+    SpecID:        42,
+    HostIdentifier: "1",
 })
 if err != nil { log.Fatal(err) }
 
@@ -139,21 +120,24 @@ for line := range client.Playgrounds.LogsStream(ctx, pg.ID, "web", nil) {
 }
 ```
 
-## Example: trigger a Trick and report results
+## Example: trigger a Task and report results
 
 ```go
-trick, err := client.Tricks.Trigger(ctx, &fibe.TrickTriggerParams{
-    PlayspecIdentifier: "99",
+task, err := client.Tasks.Trigger(ctx, &fibe.TaskTriggerParams{
+    SpecIdentifier: "99",
 })
 if err != nil { log.Fatal(err) }
 
-// A trick runs as a job-mode playground; wait for its terminal status.
-final, err := client.Playgrounds.WaitForStatus(ctx, trick.ID, "completed", 30*time.Minute, 5*time.Second)
+// A task runs as a job-mode playground; wait for its terminal status.
+final, err := client.Playgrounds.WaitForStatus(ctx, task.ID, "completed", 30*time.Minute, 5*time.Second)
 if err != nil { log.Fatal(err) }
 
 // Then inspect the job outcome.
-if final.ExitCode != nil && *final.ExitCode != 0 {
-    log.Fatalf("trick failed: exit %d", *final.ExitCode)
+if final.JobResult == nil || final.JobResult.Success == nil {
+    log.Fatal("task finished without a recorded job outcome")
+}
+if !*final.JobResult.Success {
+    log.Fatalf("task failed: %+v", final.JobResult.Summary)
 }
 log.Printf("job result: %+v", final.JobResult)
 ```

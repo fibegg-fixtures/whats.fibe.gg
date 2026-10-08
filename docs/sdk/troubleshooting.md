@@ -29,7 +29,7 @@ The output points at the actual problem. **If `fibe doctor` is green, the cause 
 `--debug` makes the CLI dump every HTTP request, response, retry, and circuit-breaker event:
 
 ```sh
-fibe --debug playgrounds create --name "x" --playspec 5 --marquee next
+fibe --debug playgrounds create --name "x" --spec 5 --host next
 ```
 
 For the Go library, turn on debug logging:
@@ -88,23 +88,23 @@ The library opens a circuit when the upstream is sustained-failing. It re-attemp
 The resource creation or update is missing a required field. Use schema introspection to see what's needed:
 
 ```sh
-fibe schema playspec | jq '.properties | keys'
+fibe schema spec | jq '.properties | keys'
 ```
 
-Or `fibe playspecs create --help` for a CLI-formatted version.
+Or `fibe specs create --help` for a CLI-formatted version.
 
 ### "broken pipe" / "connection reset" mid-stream
 
-The Playground or Trick has stopped emitting data. For `playgrounds logs --follow`, this usually means the service ended. Run `fibe playgrounds status` to confirm.
+The Playground or Task has stopped emitting data. For `playgrounds logs --follow`, this usually means the service ended. Run `fibe playgrounds status` to confirm.
 
-### Sending a message to a Genie fails (422)
+### Sending a message to an Agent fails (422)
 
 Message delivery fails with a structured 422 whose error code tells you what to do (`--explain-errors` surfaces it):
 
-- `AGENT_BUSY`: the Genie is mid-turn. Retry, or send with a queue busy-policy.
-- `NEED_AUTH`: the Genie needs to re-authenticate: `fibe agents authenticate <id>`.
+- `AGENT_BUSY`: the Agent is mid-turn. Retry, or send with a queue busy-policy.
+- `NEED_AUTH`: the Agent needs to re-authenticate: `fibe agents authenticate <id>`.
 - `AGENT_RUNTIME_NOT_RUNNING`: start the chat first: `fibe agents start-chat <id>`.
-- `AGENT_RUNTIME_UNREACHABLE` / `AGENT_RUNTIME_ERROR`: check the Marquee and `fibe agents runtime-status <id>`.
+- `AGENT_RUNTIME_UNREACHABLE` / `AGENT_RUNTIME_ERROR`: check the Host and `fibe agents runtime-status <id>`.
 
 ### MCP: "Authorization required" but the agent set a header
 
@@ -126,7 +126,7 @@ When you don't know what shape a resource takes, ask the API:
 fibe schema --list                  # discover resource names and operations
 fibe schema playground              # JSON schema for one resource
 fibe schema playground create       # schema for one operation's payload
-fibe schema playspec | yq '.properties.metadata'  # drill down
+fibe schema spec | yq '.properties.metadata'  # drill down
 ```
 
 For agents, the same is exposed as `fibe_schema`. Use it liberally before composing a `fibe_resource_mutate` call.
@@ -157,7 +157,7 @@ If `fibe doctor` is green, your scopes are right, and you've tried with `--debug
 
 ## When you're stuck
 
-Sometimes the fastest answer is a Genie. Open one of your AI assistants with access to the [reference library](/reference/intro/), give it the error message, and have it walk the relevant tool docs. The MCP server's tools (especially [`fibe_doctor`](/reference/tools/doctor/), [`fibe_status`](/reference/tools/status/), [`fibe_schema`](/reference/tools/schema/), and [`fibe_help`](/reference/tools/help/)) are designed for exactly this: they let an agent figure out the platform with you.
+Sometimes the fastest answer is an Agent. Open one of your AI assistants with access to the [reference library](/reference/intro/), give it the error message, and have it walk the relevant tool docs. The MCP server's tools (especially [`fibe_doctor`](/reference/tools/doctor/), [`fibe_status`](/reference/tools/status/), [`fibe_schema`](/reference/tools/schema/), and [`fibe_help`](/reference/tools/help/)) are designed for exactly this: they let an agent figure out the platform with you.
 
 ## Related
 

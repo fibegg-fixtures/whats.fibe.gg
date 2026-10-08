@@ -35,7 +35,7 @@ Several services using the same repository and branch share one checkout and one
 Git synchronization. Different branches always use separate checkouts, even
 when their readable names would collide. The Core-owned source plan is an
 in-memory value: standalone Core derives a repository-digest path, while
-fibe.gg supplies its established `props/<prop_slug>/<branch>` path to the same
+fibe.gg supplies its established `repositories/<repository_slug>/<branch>` path to the same
 grouping and mount contract. The rendered Compose exposes either consumer-owned
 path to local tools through standard build contexts and bind mounts.
 

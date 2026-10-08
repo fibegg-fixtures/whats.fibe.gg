@@ -23,7 +23,7 @@ This is the canonical agent-progress channel. Players see mutters in the UI; the
 |---|---|---|---|
 | `type` | string | yes | Common values: `info`, `warning`, `error`, `success`; extensible |
 | `body` | string | yes | The note's body text |
-| `playground_id_or_name` | int or string | no | Tag to a specific Playground/Trick (auto-resolved from name) |
+| `playground_id_or_name` | int or string | no | Tag to a specific Playground/Task (auto-resolved from name) |
 
 `agent_id` is **NOT** an input: read from `FIBE_AGENT_ID` env. Without it, the tool errors before sending a request.
 

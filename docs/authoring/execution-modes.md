@@ -1,6 +1,6 @@
 ---
 title: Execution modes
-description: "A template runs in one of four shapes: long-running HTTP, Trick, scheduled Trick, triggered Trick. Decide first; everything else follows."
+description: "A template runs in one of four shapes: long-running HTTP, Task, scheduled Task, triggered Task. Decide first; everything else follows."
 slug: /authoring/execution-modes
 sidebar_position: 8
 image: /img/og/authoring-execution-modes.png
@@ -13,20 +13,20 @@ A template runs in one of four shapes. Decide first; everything else follows.
 
 The default. Just expose your services with `fibe.gg/port` and they stay up until you stop them. No special settings needed.
 
-## Trick (one-shot)
+## Task (one-shot)
 
 Required pieces:
 
 - `x-fibe.gg.metadata.job_mode: true`
 - A watched service. Dynamic source-backed services are watched by default in job mode unless they set `fibe.gg/job_watch: "false"`; static services need `fibe.gg/job_watch: "true"`.
 
-Trick rules Fibe enforces for you:
+Task rules Fibe enforces for you:
 
-- Routing labels such as `fibe.gg/port`, `fibe.gg/visibility`, and `fibe.gg/subdomain` are stripped before launch: a Trick isn't there to serve traffic.
+- Routing labels such as `fibe.gg/port`, `fibe.gg/visibility`, and `fibe.gg/subdomain` are stripped before launch: a Task isn't there to serve traffic.
 - Every service is forced to one replica and not to restart.
 - Watched services must actually exit (don't run a dev server or sleep loop).
-- The Trick succeeds when every watched service exits with status zero; non-zero on any watched service fails the run.
-- A Trick with no watched service, or with watched services that never exit, fails by timing out rather than at template validation time.
+- The Task succeeds when every watched service exits with status zero; non-zero on any watched service fails the run.
+- A Task with no watched service, or with watched services that never exit, fails by timing out rather than at template validation time.
 
 ```yaml
 services:
@@ -48,7 +48,7 @@ x-fibe.gg:
 
 ## Scheduled (cron)
 
-A Trick that fires on a recurring schedule. Add `schedule_config` with `enabled`, a cron expression, and the target Marquee.
+A Task that fires on a recurring schedule. Add `schedule_config` with `enabled`, a cron expression, and the target Host.
 
 | Cron | Meaning |
 | --- | --- |
@@ -61,7 +61,7 @@ A Trick that fires on a recurring schedule. Add `schedule_config` with `enabled`
 The `cron` field accepts standard five-field cron and plain-language schedules such as `every day at 9am` or `every 5 minutes`. Invalid expressions are rejected when the template is saved or imported. There is no minimum interval, so a schedule can run every minute.
 
 :::caution Overlap
-Jobs can overlap when they run longer than their period. **Stateful (Persist Volumes)** Tricks queue runs and execute them one at a time. Otherwise, use a period longer than the maximum job time or guard the job with a lock. The [Tricks](/concepts/tricks/) page covers runtime limits, result retention, and queueing.
+Jobs can overlap when they run longer than their period. **Stateful (Persist Volumes)** Tasks queue runs and execute them one at a time. Otherwise, use a period longer than the maximum job time or guard the job with a lock. The [Tasks](/concepts/tasks/) page covers runtime limits, result retention, and queueing.
 :::
 
 ```yaml
@@ -73,12 +73,12 @@ x-fibe.gg:
     schedule_config:
       enabled: true
       cron: "0 3 * * *"
-      marquee_id: 1
+      host_id: 1
 ```
 
 ## Triggered (push or pull request)
 
-A Trick that fires on a Git event. Add `trigger_config` with the event type (`push` or `pull_request`), the repo URL, branch, the Prop the source is connected through, and the target Marquee.
+A Task that fires on a Git event. Add `trigger_config` with the event type (`push` or `pull_request`), the repo URL, branch, the Repository the source is connected through, and the target Host.
 
 - **push** fires when the named branch itself receives a commit.
 - **pull_request** fires when a PR is opened or updated whose source (head) branch matches `branch`; that head branch is also the code under test. Set `branch` to the branch PRs are made from: matching on the PR's target branch isn't supported.
@@ -95,15 +95,15 @@ x-fibe.gg:
       event_type: push
       repo_url: https://github.com/owner/repo
       branch: main
-      prop_id: 1
-      marquee_id: 1
+      repository_id: 1
+      host_id: 1
 ```
 
 ## You can combine schedules and triggers
 
-A Trick can be both scheduled (run every night) and triggered (run on every push). Each event fires its own run.
+A Task can be both scheduled (run every night) and triggered (run on every push). Each event fires its own run.
 
 ## Related
 
-- [Tricks & automated jobs](/concepts/tricks/): the concept page.
-- Reference: [`mode-job-trick`](/reference/mode-job-trick/), [`mode-schedule-cron`](/reference/mode-schedule-cron/), [`mode-trigger-vcs`](/reference/mode-trigger-vcs/), [`decide-job-mode`](/reference/decide-job-mode/).
+- [Tasks & automated jobs](/concepts/tasks/): the concept page.
+- Reference: [`mode-job-task`](/reference/mode-job-task/), [`mode-schedule-cron`](/reference/mode-schedule-cron/), [`mode-trigger-vcs`](/reference/mode-trigger-vcs/), [`decide-job-mode`](/reference/decide-job-mode/).

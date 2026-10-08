@@ -11,7 +11,7 @@ format: md
 
 [MODE:DIALOG] Read-only, idempotent. Tier: brownfield.
 
-Live log collection requires a funded Marquee and returns `MARQUEE_NOT_FUNDED` when unpaid.
+Live log collection requires a funded Host and returns `HOST_NOT_FUNDED` when unpaid.
 
 One-shot service log fetch through async `POST /api/playgrounds/:id/logs`; the SDK sends `service` in the request body, polls the resulting request_id, and returns the final payload.
 
@@ -44,17 +44,17 @@ One-shot service log fetch through async `POST /api/playgrounds/:id/logs`; the S
 }
 ```
 
-Schema varies slightly by Marquee Docker version; the `logs` field is always populated.
+Schema varies slightly by Host Docker version; the `logs` field is always populated.
 
 ## Behavior
-1. Fibe validates `service` against the Playspec's declared services (rejects unknown).
+1. Fibe validates `service` against the Spec's declared services (rejects unknown).
 2. Clamps `tail` to the server-side maximum.
-3. Enqueues a log-snapshot job (the worker SSHes to the Marquee and runs `docker logs --tail <N>`).
+3. Enqueues a log-snapshot job (the worker SSHes to the Host and runs `docker logs --tail <N>`).
 4. Returns request_id + status_url; the SDK polls.
 
 ## Gotchas
-- "Service not found" usually means a typo: service names come from the Playspec's `services[*].name`, not always the Compose service name (Fibe sometimes prefixes/normalizes).
-- Marquee unreachable → polling eventually returns an error envelope. Re-check Marquee status.
+- "Service not found" usually means a typo: service names come from the Spec's `services[*].name`, not always the Compose service name (Fibe sometimes prefixes/normalizes).
+- Host unreachable → polling eventually returns an error envelope. Re-check Host status.
 - Logs may be truncated by Docker's own log driver (`max-size` etc.); `tail` is best-effort.
 - Container restarts reset stdout/stderr buffers: recent crashes may have logs that no longer exist.
 

@@ -143,7 +143,7 @@ x-fibe.gg:
 For one-shot job-mode behavior and zero-downtime behavior check details, see:
 
 - [decide-job-mode](decide-job-mode.md)
-- [mode-job-trick](mode-job-trick.md)
+- [mode-job-task](mode-job-task.md)
 - [decide-zero-downtime](decide-zero-downtime.md)
 - [reference-fibe-labels](reference-fibe-labels.md)
 - [recipe-strip-incompatible-keys](recipe-strip-incompatible-keys.md)

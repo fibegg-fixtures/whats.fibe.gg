@@ -7,45 +7,45 @@ description: Use to explain how Fibe resources are created, updated, launched, s
 
 Use this skill when a task depends on resource state, launch order, updates, cleanup, or safe user-facing behavior.
 
-## Marquee lifecycle
+## Host lifecycle
 
-A Marquee starts as a host connection or a platform-managed tutorial request.
+A Host starts as a host connection or a platform-managed tutorial request.
 
 Typical lifecycle:
 
-1. User adds or receives a Marquee.
+1. User adds or receives a Host.
 2. Fibe stores connection settings and root-domain information.
 3. User tests connection.
-4. Marquee becomes available for Playgrounds and standalone Genie chats.
+4. Host becomes available for Playgrounds and standalone Agent chats.
 5. User may update display name, domains, TLS settings, registry credentials, or status.
 6. If disabled or failing, new launches should avoid it.
 7. If deleted, dependent running environments must be stopped or moved first.
 
-Tutorial Marquees add provisioning progress, stricter cleanup, and fix-redeploy controls.
+Tutorial Hosts add provisioning progress, stricter cleanup, and fix-redeploy controls.
 
 Funding and unfunded behavior:
 
-- A paid Marquee is charged once per day from your balance: Mana for platform-managed tutorial Marquees, Sparks for self-hosted ones.
-- If a charge cannot be covered, the Marquee is disabled and a grace period begins. While unfunded, runtime actions (launch, rollout, restart, diagnostics refresh, logs) fail with `MARQUEE_NOT_FUNDED`; read-only and billing views still work.
-- On a self-hosted Marquee, already-running Playgrounds keep running but are no longer actively monitored, recovered, or auto-expired until funded again. On a platform-managed (tutorial) Marquee, the runtime is paused: its Playgrounds are stopped and its Genie chats are set aside, with stored data kept.
-- If grace ends while still unpaid, the Marquee is suspended. A suspended, still-unpaid platform-managed Marquee can eventually be removed, and removal takes its Playgrounds, Tricks, and their data with it. A self-hosted Marquee is never deleted by Fibe; its host machine and data are untouched.
-- Funding the balance (or auto-recharge) before removal settles the debt and re-enables the Marquee.
+- A paid Host is charged once per day from your balance: Mana for platform-managed tutorial Hosts, Sparks for self-hosted ones.
+- If a charge cannot be covered, the Host is disabled and a grace period begins. While unfunded, runtime actions (launch, rollout, restart, diagnostics refresh, logs) fail with `HOST_NOT_FUNDED`; read-only and billing views still work.
+- On a self-hosted Host, already-running Playgrounds keep running but are no longer actively monitored, recovered, or auto-expired until funded again. On a platform-managed (tutorial) Host, the runtime is paused: its Playgrounds are stopped and its Agent chats are set aside, with stored data kept.
+- If grace ends while still unpaid, the Host is suspended. A suspended, still-unpaid platform-managed Host can eventually be removed, and removal takes its Playgrounds, Tasks, and their data with it. A self-hosted Host is never deleted by Fibe; its host machine and data are untouched.
+- Funding the balance (or auto-recharge) before removal settles the debt and re-enables the Host.
 
-## Prop lifecycle
+## Repository lifecycle
 
-A Prop starts when the user creates or connects a repository.
+A Repository starts when the user creates or connects a repository.
 
 Typical lifecycle:
 
 1. User creates a built-in repository or imports an existing GitHub repository.
 2. Fibe discovers branches and repository metadata.
 3. Fibe detects useful files such as Docker Compose and example environment files.
-4. Templates and dynamic services can use the Prop as source.
+4. Templates and dynamic services can use the Repository as source.
 5. Push events refresh branches, build records, notifications, source-linked templates, and job triggers.
 6. Users may commit Playground changes back to the repository from the UI.
-7. Disabled or errored Props should not be used for new source-backed launches until fixed.
+7. Disabled or errored Repositories should not be used for new source-backed launches until fixed.
 
-Props are user-scoped. Two users can connect the same repository independently.
+Repositories are user-scoped. Two users can connect the same repository independently.
 
 ## Template lifecycle
 
@@ -56,27 +56,27 @@ Typical lifecycle:
 1. User creates, imports, forks, or discovers a Template.
 2. User publishes a new Template Version with YAML, variables, metadata, and optional automation settings.
 3. New launches default to the latest suitable version.
-4. Existing Playspecs keep their original version until the user upgrades or switches them.
+4. Existing Specs keep their original version until the user upgrades or switches them.
 5. Source-linked Templates can publish a new version when the tracked source file changes.
 6. Public versions can appear in a marketplace; private versions stay in the user's templates.
 7. Forks are independent copies for customization.
 
 Changes become new versions.
 
-## Playspec lifecycle
+## Spec lifecycle
 
-A Playspec is a launch blueprint derived from a Template Version plus launch choices.
+A Spec is a launch blueprint derived from a Template Version plus launch choices.
 
 Typical lifecycle:
 
-1. User chooses a Template, target Marquee, branch/source settings, variables, mounted files, service settings, and persistence options.
+1. User chooses a Template, target Host, branch/source settings, variables, mounted files, service settings, and persistence options.
 2. Fibe validates and compiles the template into a runnable environment plan.
-3. The Playspec can create a Playground or Trick.
-4. Playspec edits are allowed, but changes affect running Playgrounds only after rollout, restart, deploy, or reconciliation.
-5. If a Playspec uses persistent volumes, warn before renaming services or volume keys because volume names tie data to service shape.
-6. A Playspec can switch to another Template Version, with preview or bulk upgrade flows when available.
+3. The Spec can create a Playground or Task.
+4. Spec edits are allowed, but changes affect running Playgrounds only after rollout, restart, deploy, or reconciliation.
+5. If a Spec uses persistent volumes, warn before renaming services or volume keys because volume names tie data to service shape.
+6. A Spec can switch to another Template Version, with preview or bulk upgrade flows when available.
 
-A Playspec that persists volumes allows only one active Playground at a time; a second concurrent launch from the same stateful Playspec is rejected so two instances cannot share the same named data.
+A Spec that persists volumes allows only one active Playground at a time; a second concurrent launch from the same stateful Spec is rejected so two instances cannot share the same named data.
 
 ## Playground lifecycle
 
@@ -104,11 +104,11 @@ Main actions:
 - Destroy: remove the Playground.
 - Extend expiration: keep a temporary environment alive longer.
 - Retry: re-run failed creation after fixing configuration or infrastructure.
-- Attach or detach Agent: add or remove Genie support.
+- Attach or detach Agent: add or remove Agent support.
 
 Data safety:
 
-- Named volumes always survive stop, start, restart, and rollout. Destroy and expiration teardown keep them only when the Playspec is stateful ("Stateful (Persist Volumes)"); otherwise they are removed.
+- Named volumes always survive stop, start, restart, and rollout. Destroy and expiration teardown keep them only when the Spec is stateful ("Stateful (Persist Volumes)"); otherwise they are removed.
 - Restart may pull fresh images for floating tags.
 - Rollout is safer for stateful support services because unchanged containers can remain running.
 - Container-local files are disposable unless backed by a volume, repository, artefact, or mounted file.
@@ -118,33 +118,33 @@ Expiration:
 - New Playgrounds default to **never expire**. When expiration is enabled without an explicit deadline, Fibe uses an 8-hour fallback for a regular Playground and the operator-configured job fallback for a job-mode run (1 hour by default).
 - A temporary Playground can have an expiration. When it falls due, if the source has uncommitted changes the Playground is parked as `has_changes` and preserved; if it is clean, it is destroyed (containers, named volumes unless persistence is enabled, and the record).
 - Extend adds the duration to whichever is later: the current expiry or now, so extending an already-expired record counts from now. With no duration supplied, the extension is 8 hours for a regular Playground and the configured job fallback for job mode (1 hour by default).
-- Expiration and automatic recovery only run while the Marquee is funded.
+- Expiration and automatic recovery only run while the Host is funded.
 
-## Trick lifecycle
+## Task lifecycle
 
-A Trick is a job-mode Playground.
+A Task is a job-mode Playground.
 
 Typical lifecycle:
 
 1. User launches manually, schedule fires, or VCS trigger matches.
 2. Fibe starts services with job-mode constraints.
 3. Watched services run until they exit.
-4. If every watched service exits successfully, the Trick succeeds.
-5. If any watched service exits non-zero, the Trick fails.
+4. If every watched service exits successfully, the Task succeeds.
+5. If any watched service exits non-zero, the Task fails.
 6. Logs and result information are captured.
 7. Services are cleaned up automatically.
 
-Use Tricks for tasks that finish. Do not use Tricks for web apps, dashboards, dev servers, or watchers that should stay alive.
+Use Tasks for tasks that finish. Do not use Tasks for web apps, dashboards, dev servers, or watchers that should stay alive.
 
 Constraints and limits:
 
 - Job-mode services run one replica with no automatic restart. Public exposure does not happen because `fibe.gg/port` and other routing labels are stripped before launch.
-- A Trick has a maximum runtime of about 4 hours; if the watched service has not exited by then, the run is marked failed (timed out) and cleaned up.
-- Logs and the result are kept on the Trick after success, failure, or timeout. Log capture keeps the last 5000 lines per service by default. Normal completion removes the runtime containers without deleting the Trick record; deleting or expiring the Trick removes its saved result with it.
+- A Task has a maximum runtime of about 4 hours; if the watched service has not exited by then, the run is marked failed (timed out) and cleaned up.
+- Logs and the result are kept on the Task after success, failure, or timeout. Log capture keeps the last 5000 lines per service by default. Normal completion removes the runtime containers without deleting the Task record; deleting or expiring the Task removes its saved result with it.
 
 ## Agent lifecycle
 
-An Agent is a stored Genie configuration.
+An Agent is a stored Agent configuration.
 
 Common statuses:
 
@@ -160,8 +160,8 @@ Agents can be duplicated, configured, given mounted files, used for standalone c
 
 Runtime data and naming:
 
-- A running Genie keeps an on-Marquee workspace (chat working state and caches). Stop keeps the workspace (restart resumes); clean-up or purge permanently deletes it. Agent configuration, settings, mounted files, credentials, toggles, lives on the Agent itself and survives stop, restart, and clean-up.
-- Each chat gets a stable, friendly subdomain on its Marquee, with automatic HTTPS from the Marquee's wildcard certificate. There is one live chat per Genie per Marquee; restarting reuses the same name and URL.
+- A running Agent keeps an on-Host workspace (chat working state and caches). Stop keeps the workspace (restart resumes); clean-up or purge permanently deletes it. Agent configuration, settings, mounted files, credentials, toggles, lives on the Agent itself and survives stop, restart, and clean-up.
+- Each chat gets a stable, friendly subdomain on its Host, with automatic HTTPS from the Host's wildcard certificate. There is one live chat per Agent per Host; restarting reuses the same name and URL.
 
 ## Webhook lifecycle
 
@@ -171,21 +171,21 @@ Delivery attempts are recorded. Repeated failures can disable an endpoint until 
 
 ## Secret and Job ENV lifecycle
 
-Secrets are long-lived encrypted values. Create them for credentials that Genies or workflows need without putting values in source code or templates.
+Secrets are long-lived encrypted values. Create them for credentials that Agents or workflows need without putting values in source code or templates.
 
-Job ENV entries apply to job-mode runs. Use global entries for every Trick and Prop-scoped entries for one repository's job runs.
+Job ENV entries apply to job-mode runs. Use global entries for every Task and Repository-scoped entries for one repository's job runs.
 
 ## Cleanup and cascades
 
 What deleting or disabling one resource does to others:
 
-- Disable a Marquee: existing Playgrounds keep running (self-hosted) or are paused (platform-managed); live Genie chats are paused with their data kept; no new actions until re-enabled.
-- Delete a Marquee: blocked while Playgrounds or Tricks are attached. Move or remove them first. A self-hosted Marquee's host machine is never touched.
-- Delete an Agent: its Genie chats are cleaned up; Playgrounds it was attached to survive and simply lose the Agent link.
-- Rotate or revoke an API key a Genie uses: running Genies that depend on it redeploy to pick up the change.
-- Disable a Prop: does not stop Playgrounds, builds, or jobs already using it; it only blocks new source-backed launches until re-enabled.
-- Delete a Prop: blocked while a Playspec still references it. A source-linked Template does not block deletion; it simply loses its source link.
-- Cancel a subscription: a platform-managed Marquee tied to it survives as long as it stays funded.
+- Disable a Host: existing Playgrounds keep running (self-hosted) or are paused (platform-managed); live Agent chats are paused with their data kept; no new actions until re-enabled.
+- Delete a Host: blocked while Playgrounds or Tasks are attached. Move or remove them first. A self-hosted Host's host machine is never touched.
+- Delete an Agent: its Agent chats are cleaned up; Playgrounds it was attached to survive and simply lose the Agent link.
+- Rotate or revoke an API key an Agent uses: running Agents that depend on it redeploy to pick up the change.
+- Disable a Repository: does not stop Playgrounds, builds, or jobs already using it; it only blocks new source-backed launches until re-enabled.
+- Delete a Repository: blocked while a Spec still references it. A source-linked Template does not block deletion; it simply loses its source link.
+- Cancel a subscription: a platform-managed Host tied to it survives as long as it stays funded.
 
 ## Automatic recovery
 
@@ -195,7 +195,7 @@ Fibe recovers from these transient failures automatically:
 - A reachable environment stays viewable even if a single health check is missed; a missed health check never stops or errors a running environment.
 - TLS/HTTPS provisioning surfaces a pending state, not a failure, and clears once the certificate is issued.
 - A launch still `in_progress` after 30 minutes is reset and retried. Temporary network or host failures are retried instead of becoming hard failures.
-- Automatic recovery and expiration run only while the Marquee is funded.
+- Automatic recovery and expiration run only while the Host is funded.
 
 ## Related skills
 

@@ -9,6 +9,10 @@ Two things live here:
 
 GitHub Pages publishes both to `whats.fibe.gg`.
 
+## Candidate release scope
+
+The `fibe-next-all-20261007` branch prepares the coordinated next.fibe.live candidate. It uses Host, Spec, Repository, Task, Agent, Library and Audit Logs. Production fibe.gg and the published guide remain on the previous contract until their separate cutover. This branch must not deploy GitHub Pages or change guide main. Use the matching untagged candidate CLI and schema when trying these examples; the stable Homebrew release remains production-compatible.
+
 ## Local development
 
 Requires Node.js 20+.

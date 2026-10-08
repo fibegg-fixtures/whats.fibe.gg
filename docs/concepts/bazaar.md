@@ -7,7 +7,7 @@ image: /img/og/concepts-bazaar.png
 keywords: [Bazaar, marketplace, public templates, discovery, fork, launch]
 ---
 
-The **Bazaar** is the public marketplace for [Templates](/concepts/playspecs/#templates). Browse what other Players have published. Fork, launch, or both.
+The **Bazaar** is the public marketplace for [Templates](/concepts/specs/#templates). Browse what other Players have published. Fork, launch, or both.
 
 ## What's in the Bazaar
 
@@ -26,12 +26,12 @@ The Bazaar page lets you:
 
 Pick a Template, click Launch:
 
-1. Fibe creates a fresh Playspec bound to the Template's latest version.
+1. Fibe creates a fresh Spec bound to the Template's latest version.
 2. Fill in variables the Template asks for.
-3. Pick a target Marquee.
+3. Pick a target Host.
 4. Launch.
 
-The result is a normal [Playground](/concepts/playgrounds/) you fully own. The original Template stays where it was: your Playspec carries a reference to the version you launched.
+The result is a normal [Playground](/concepts/playgrounds/) you fully own. The original Template stays where it was: your Spec carries a reference to the version you launched.
 
 ## Fork from the Bazaar
 
@@ -41,7 +41,7 @@ Use forking when you want to:
 
 - Customize a published Template without publishing your own version.
 - Hold a known-good snapshot even if the publisher updates theirs.
-- Modify a Template to point at your own [Prop](/concepts/props/) instead of the publisher's.
+- Modify a Template to point at your own [Repository](/concepts/repositories/) instead of the publisher's.
 
 ## Publish to the Bazaar
 
@@ -66,7 +66,7 @@ See [Before you publish](/operate/publishing/) for the full checklist.
 
 ## Public profile
 
-Templates you publish appear on your public profile alongside any [Genies you've opted into Build in Public](/concepts/agents/#build-in-public). Visitors see what you've made without a Fibe account.
+Templates you publish appear on your public profile alongside any [Agents you've opted into Build in Public](/concepts/agents/#build-in-public). Visitors see what you've made without a Fibe account.
 
 ## FAQ
 
@@ -79,7 +79,7 @@ Fibe staff can take down Templates that are malicious, broken, or misleading. If
 <details>
 <summary>Can I make my Bazaar Template require payment?</summary>
 
-Not today. Bazaar Templates are free to launch. Hosting costs (Marquee usage) still apply to the launcher.
+Not today. Bazaar Templates are free to launch. Hosting costs (Host usage) still apply to the launcher.
 </details>
 
 <details>
@@ -91,12 +91,12 @@ Accounts hold 20 Templates by default, each with up to 100 versions. Quotas can 
 <details>
 <summary>What happens to running Playgrounds if the publisher unpublishes?</summary>
 
-Nothing. Running Playgrounds keep running. The Template version is already cloned into your Playspec. You just can't pull future versions from a Template that's no longer public.
+Nothing. Running Playgrounds keep running. The Template version is already cloned into your Spec. You just can't pull future versions from a Template that's no longer public.
 </details>
 
 ## Related
 
-- [Playspecs & Templates](/concepts/playspecs/): Template authoring lifecycle, and what a Bazaar launch produces.
-- [Scrolls](/concepts/scrolls/): Pantry is the private counterpart to the public Bazaar.
+- [Specs & Templates](/concepts/specs/): Template authoring lifecycle, and what a Bazaar launch produces.
+- [Library](/concepts/library/): Pantry is the private counterpart to the public Bazaar.
 - [Before you publish](/operate/publishing/): publishing checklist.
 - **[Fibe Templates](/authoring/overview/)**: full authoring guide.

@@ -12,10 +12,10 @@ Export account data or import from a backup file.
 
 You choose which resource types to include. The export can cover:
 
-- Props (definitions, not the repos themselves).
-- Marquees (definitions, not the host content).
-- Playspecs (the blueprints).
-- Genies with their configuration.
+- Repositories (definitions, not the repos themselves).
+- Hosts (definitions, not the host content).
+- Specs (the blueprints).
+- Agents with their configuration.
 - Playgrounds (the records, not running containers or volumes).
 - Templates with their versions.
 - Secrets (names and descriptions only: values are never exported, so there is no passphrase).

@@ -7,7 +7,7 @@ image: /img/og/authoring-compose-to-fibe.png
 keywords: [Compose, conversion, ports to expose, build to repo_url, source mount, zero-downtime, variables]
 ---
 
-A nine-step path for turning an existing `docker-compose.yml` into a Fibe template. The result remains valid Docker Compose, so you can run it locally with `docker compose up`. Fibe labels make the same file launchable on a Marquee.
+A nine-step path for turning an existing `docker-compose.yml` into a Fibe template. The result remains valid Docker Compose, so you can run it locally with `docker compose up`. Fibe labels make the same file launchable on a Host.
 
 ## Pick the shape first
 
@@ -15,9 +15,9 @@ A nine-step path for turning an existing `docker-compose.yml` into a Fibe templa
 your docker-compose.yml + intent
   ├─ HTTP service(s) someone visits  → a long-running web template
   ├─ background workers + DB only    → a long-running app template
-  ├─ one-shot task that exits        → a Trick
-  ├─ recurring on a cron schedule    → a Trick + schedule
-  └─ runs on git push / pull request → a Trick + trigger
+  ├─ one-shot task that exits        → a Task
+  ├─ recurring on a cron schedule    → a Task + schedule
+  └─ runs on git push / pull request → a Task + trigger
 ```
 
 The shape decides what you do with steps 5 to 7.
@@ -82,7 +82,7 @@ See [`recipe-ports-to-expose`](/reference/recipe-ports-to-expose/).
 
 ### 4: Drop incompatible keys
 
-Remove `container_name` to avoid cross-Playground name collisions on the same Marquee. Fibe strips `hostname:` automatically. Keep `depends_on`, `volumes`, `environment`, `healthcheck`, `networks`, and `restart` as-is.
+Remove `container_name` to avoid cross-Playground name collisions on the same Host. Fibe strips `hostname:` automatically. Keep `depends_on`, `volumes`, `environment`, `healthcheck`, `networks`, and `restart` as-is.
 
 Raw Compose `ports:` are no longer a launch blocker by default. Leave them when they make local development easier, or delete them for a cleaner template. Only opt into preserving raw host bindings with `x-fibe.gg.metadata.preserve_ports: true`; that advanced mode keeps host-port validation and still rejects reserved `80`/`443`, including published ranges containing either port.
 
@@ -133,15 +133,15 @@ See [Launch variables](/authoring/variables/).
 | Shape | Add this |
 | --- | --- |
 | Long-running HTTP | nothing: the default. |
-| Trick | `fibe.gg/job_watch: "true"` on the watched service + `x-fibe.gg.metadata.job_mode: true`. |
-| Scheduled | (Trick settings) + `metadata.schedule_config`. |
-| Triggered | (Trick settings) + `metadata.trigger_config`. |
+| Task | `fibe.gg/job_watch: "true"` on the watched service + `x-fibe.gg.metadata.job_mode: true`. |
+| Scheduled | (Task settings) + `metadata.schedule_config`. |
+| Triggered | (Task settings) + `metadata.trigger_config`. |
 
 See [Execution modes](/authoring/execution-modes/).
 
 ### 8: Add metadata
 
-Fill in the template's description and category. If the template will be launched from a Prop, opt in to source defaults so the repository and branch can be filled in automatically.
+Fill in the template's description and category. If the template will be launched from a Repository, opt in to source defaults so the repository and branch can be filled in automatically.
 
 ```yaml
 x-fibe.gg:
@@ -154,14 +154,14 @@ x-fibe.gg:
 
 ### 9: Validate & preview
 
-Validate the file first: `fibe playspecs validate-compose --compose "$(cat template.yml)"` with the CLI, or the compose validate operation via the Fibe agent tools. Write labels from this reference rather than from memory: any unrecognized `fibe.gg/*` label is rejected.
+Validate the file first: `fibe specs validate-compose --compose "$(cat template.yml)"` with the CLI, or the compose validate operation via the Fibe agent tools. Write labels from this reference rather than from memory: any unrecognized `fibe.gg/*` label is rejected.
 
 Then run a preview launch before publishing. Many issues only surface at compile or runtime: schema validity isn't the same as a successful launch.
 
 A typical iteration loop:
 
 1. Edit the Template.
-2. Click **Launch** (or **Launch this version**) targeting a test Marquee.
+2. Click **Launch** (or **Launch this version**) targeting a test Host.
 3. Watch the build logs.
 4. Open the service URL.
 5. Repeat until it's clean.
@@ -175,7 +175,7 @@ A typical iteration loop:
 | Build from your repository | `fibe.gg/repo_url` + an absolute `working_dir` (optionally `fibe.gg/dockerfile`, `fibe.gg/branch`) |
 | Live-edit dev mode | `fibe.gg/repo_url` + `working_dir: /app` + `fibe.gg/start_command` + `fibe.gg/production: "false"` |
 | Zero-downtime rollouts | `fibe.gg/zerodowntime: "true"` + the `fibe.gg/healthcheck_*` labels |
-| One-shot Trick | `fibe.gg/job_watch: "true"` on the watched service + `x-fibe.gg.metadata.job_mode: true` |
+| One-shot Task | `fibe.gg/job_watch: "true"` on the watched service + `x-fibe.gg.metadata.job_mode: true` |
 | Subdomain chosen at launch | `fibe.gg/subdomain: $$var__SUBDOMAIN` + matching variable |
 | Image tag chosen at launch | `image: ghcr.io/owner/repo:$$var__TAG` + matching variable |
 
@@ -199,7 +199,7 @@ services:
       fibe.gg/port: 80
       fibe.gg/visibility: external
     volumes:
-      - ./html:/usr/share/nginx/html:ro    # mount stays; Marquee preserves it
+      - ./html:/usr/share/nginx/html:ro    # mount stays; Host preserves it
 ```
 
 For more, see the [Playbooks](/authoring/playbooks/).

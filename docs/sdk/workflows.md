@@ -12,25 +12,25 @@ Common workflows for the [CLI](/sdk/cli-reference/), [Go library](/sdk/go-librar
 
 ## Launch: existing source to running Playground
 
-Use this when you already have a template, Playspec, Compose file, or GitHub repo config. `fibe launch` starts from exactly one source; use `fibe_greenfield_create` only when Fibe should create new app-owned repo destinations from a snapshot.
+Use this when you already have a template, Spec, Compose file, or GitHub repo config. `fibe launch` starts from exactly one source; use `fibe_greenfield_create` only when Fibe should create new app-owned repo destinations from a snapshot.
 
 ### Via the CLI
 
 ```sh
 fibe github apps connect
 
-fibe launch --template billing-app --name billing-staging --marquee next --version 3
-fibe launch --playspec starter --name demo --marquee next
-fibe launch --compose @docker-compose.yml --name demo --marquee next
-fibe launch owner/repo --marquee 1
+fibe launch --template billing-app --name billing-staging --host next --version 3
+fibe launch --spec starter --name demo --host next
+fibe launch --compose @docker-compose.yml --name demo --host next
+fibe launch owner/repo --host 1
 fibe launch https://github.com/owner/repo --ref main --file deploy/fibe.yml
 ```
 
-Bare positional sources resolve as repositories when they look like `owner/repo`, a full URL, or `.git`; otherwise the CLI looks for a template or Playspec by name. Bare numeric sources are ambiguous, so use `--template`, `--playspec`, or `--template-version`.
+Bare positional sources resolve as repositories when they look like `owner/repo`, a full URL, or `.git`; otherwise the CLI looks for a template or Spec by name. Bare numeric sources are ambiguous, so use `--template`, `--spec`, or `--template-version`.
 
 A connected GitHub credential is required because Fibe fetches the config server-side: either a GitHub App installation that covers the repo, or a connected GitHub OAuth/PAT connection (which works even for public repos without an App installation). `--ref` selects only the config-file revision; service branch behavior still comes from the template itself. If the repo basename is not the name you want, add `--name`.
 
-When `--marquee` is omitted, the CLI uses `FIBE_MARQUEE_ID` or the only launchable Marquee. Compose/repo launches default `persist_volumes` from named volumes; pass `--persist-volumes=false` to force stateless behavior.
+When `--host` is omitted, the CLI uses `FIBE_HOST_ID` or the only launchable Host. Compose/repo launches default `persist_volumes` from named volumes; pass `--persist-volumes=false` to force stateless behavior.
 
 ### Via MCP
 
@@ -43,33 +43,33 @@ For an AI agent:
     "repository_url": "owner/repo",
     "github_ref": "main",
     "config_path": "deploy/fibe.yml",
-    "marquee_id_or_name": 1
+    "host_id_or_name": 1
   }
 }
 ```
 
 See [`fibe_launch`](/reference/tools/launch/) for the full parameter list.
 
-## Playground create: existing Playspec with launch overrides
+## Playground create: existing Spec with launch overrides
 
-Use this when the Playspec already exists and you only need a new Playground with a few launch-specific service settings.
+Use this when the Spec already exists and you only need a new Playground with a few launch-specific service settings.
 
 ```sh
-fibe pg create --name demo --playspec starter --marquee next \
+fibe pg create --name demo --spec starter --host next \
   --service web.subdomain=demo \
   --service web.exposure_port=3000 \
   --service web.exposure_visibility=external \
   --service web.env_vars.RAILS_ENV=production
 ```
 
-`--playspec` and `--marquee` accept IDs or names. Repeated `--service` flags merge into the create payload and win over values loaded from `-f`.
+`--spec` and `--host` accept IDs or names. Repeated `--service` flags merge into the create payload and win over values loaded from `-f`.
 
 ## Greenfield: repo snapshot to app-owned repos
 
 Use this when the repo is a starting template. Fibe reads the selected config once, creates new app-owned destination repo(s), then launches normally.
 
 ```sh
-fibe greenfield owner/repo --marquee 1
+fibe greenfield owner/repo --host 1
 fibe greenfield owner/repo@feature/foo --name my-app --github-account me
 ```
 
@@ -81,7 +81,7 @@ For an AI agent:
   "args": {
     "repository_url": "owner/repo@feature/foo",
     "name": "my-app",
-    "marquee_id_or_name": 1,
+    "host_id_or_name": 1,
     "git_provider": "github"
   }
 }
@@ -102,14 +102,14 @@ Use [`fibe_playgrounds_switch_template`](/reference/tools/playgrounds-switch-tem
     "id_or_name": 42,
     "mode": "apply",
     "template_body": "<new compose template>",
-    "provision_missing_props": "auto",
+    "provision_missing_repositories": "auto",
     "wait": true,
     "confirm": true
   }
 }
 ```
 
-The tool provisions referenced repositories, creates a Template Version, switches the Playspec, rolls out, and waits. Tune repository handling with `provision_inputs` and `reuse_existing_props`. The Playground ID remains unchanged.
+The tool provisions referenced repositories, creates a Template Version, switches the Spec, rolls out, and waits. Tune repository handling with `provision_inputs` and `reuse_existing_repositories`. The Playground ID remains unchanged.
 
 ## Multi-step pipelines
 
@@ -126,7 +126,7 @@ The tool provisions referenced repositories, creates a Template Version, switche
         "args": {
           "repository_url": "me/auth-service",
           "github_ref": "main",
-          "marquee_id_or_name": 1
+          "host_id_or_name": 1
         }
       },
       {
@@ -166,7 +166,7 @@ Agents produce these events, so filter by agent, event type, or text. Pair the p
 
 ## CI integration
 
-Mint a scoped API key, set it as a CI secret, run `fibe` from a workflow. Example: a GitHub Actions job that triggers a Trick on push and waits for the result.
+Mint a scoped API key, set it as a CI secret, run `fibe` from a workflow. Example: a GitHub Actions job that triggers a Task on push and waits for the result.
 
 ```yaml
 name: Deploy to staging
@@ -190,54 +190,54 @@ jobs:
       - name: Pass the branch to the job
         run: fibe job-env set BRANCH=${{ github.ref_name }}
 
-      - name: Trigger deploy trick
+      - name: Trigger deploy task
         id: deploy
         run: |
           set -e
-          OUT=$(fibe tricks trigger --playspec 42 -o json)
+          OUT=$(fibe tasks trigger --spec 42 -o json)
           ID=$(echo "$OUT" | jq -r '.id')
-          echo "trick_id=$ID" >> $GITHUB_OUTPUT
+          echo "task_id=$ID" >> $GITHUB_OUTPUT
 
       - name: Wait for completion
-        run: fibe wait trick ${{ steps.deploy.outputs.trick_id }} --status completed --timeout 30m
+        run: fibe wait task ${{ steps.deploy.outputs.task_id }} --status completed --timeout 30m
 
       - name: Get logs on failure
         if: failure()
-        run: fibe tricks logs ${{ steps.deploy.outputs.trick_id }}
+        run: fibe tasks logs ${{ steps.deploy.outputs.task_id }}
 ```
 
-The API key here is intentionally small but not Playspec-confined: `launch:write` is required to trigger the run, and it is not a granular per-Playspec scope. Add only the read scopes the workflow needs, restrict those resource-backed scopes where possible, and use a short expiration for CI keys.
+The API key here is intentionally small but not Spec-confined: `launch:write` is required to trigger the run, and it is not a granular per-Spec scope. Add only the read scopes the workflow needs, restrict those resource-backed scopes where possible, and use a short expiration for CI keys.
 
-Tricks support a few per-run flags such as `--env-overrides`, `--only-service`, and `--except-service`. Use those for one-off runs; values that should survive across runs still belong in Job ENV (the `job-env set` step above) or in the job-mode Playspec.
+Tasks support a few per-run flags such as `--env-overrides`, `--only-service`, and `--except-service`. Use those for one-off runs; values that should survive across runs still belong in Job ENV (the `job-env set` step above) or in the job-mode Spec.
 
-## Babysit a long-running Trick
+## Babysit a long-running Task
 
 For a CI workflow that waits but also reports progress, use `--follow` semantics:
 
 ```sh
-fibe tricks trigger --playspec 42 -o json | jq -r '.id' | xargs -I {} sh -c '
-  fibe tricks logs {} --follow &
-  fibe wait trick {} --status completed --timeout 1h
+fibe tasks trigger --spec 42 -o json | jq -r '.id' | xargs -I {} sh -c '
+  fibe tasks logs {} --follow &
+  fibe wait task {} --status completed --timeout 1h
 '
 ```
 
-Or, from a Go program with the library: spawn the trick, then range over `client.Tricks.LogsStream(ctx, id, "", nil)` in one goroutine while waiting for the terminal status in another (or just shell out to `fibe wait trick`). Cancel one when the other returns.
+Or, from a Go program with the library: spawn the task, then range over `client.Tasks.LogsStream(ctx, id, "", nil)` in one goroutine while waiting for the terminal status in another (or just shell out to `fibe wait task`). Cancel one when the other returns.
 
 ## Webhook-driven automation
 
-Subscribe a webhook to "Trick completed" events; let the receiver decide what's next (post to Slack, file a ticket, kick off another Trick). The CLI manages webhook subscriptions:
+Subscribe a webhook to "Task completed" events; let the receiver decide what's next (post to Slack, file a ticket, kick off another Task). The CLI manages webhook subscriptions:
 
 ```sh
 fibe webhooks create -f - <<'JSON'
 {
-  "url": "https://relay.example.com/fibe-trick-done",
+  "url": "https://relay.example.com/fibe-task-done",
   "events": ["playground.completed"],
   "secret": "rotate-this-monthly"
 }
 JSON
 ```
 
-Tricks emit `playground.*` events (they're job-mode playgrounds). Use `event_filters` to pin an event to specific resource IDs, and `fibe webhooks event-types` to list every event. See [Webhooks](/advanced/webhooks/) for the full subscription model.
+Tasks emit `playground.*` events (they're job-mode playgrounds). Use `event_filters` to pin an event to specific resource IDs, and `fibe webhooks event-types` to list every event. See [Webhooks](/advanced/webhooks/) for the full subscription model.
 
 ## Switching environments
 

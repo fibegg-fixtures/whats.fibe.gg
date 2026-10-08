@@ -14,9 +14,9 @@ format: md
 Bulk repository status query. Up to 50 GitHub URLs at once through `POST /api/repo_status_checks`.
 
 ## When to use
-- Pre-flight before `prop.attach` for a list of repos.
-- Diagnosing why a Prop sync fails (repo inaccessible, invalid URL, or installation no longer covers it).
-- Bulk audit: "do I still have access to all my Props' repos?"
+- Pre-flight before `repository.attach` for a list of repos.
+- Diagnosing why a Repository sync fails (repo inaccessible, invalid URL, or installation no longer covers it).
+- Bulk audit: "do I still have access to all my Repositories' repos?"
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -42,12 +42,12 @@ Bulk repository status query. Up to 50 GitHub URLs at once through `POST /api/re
 ```
 
 ## Behavior
-- Validates each URL, checks existing Props, Player OAuth visibility, GitHub App installation access, and runtime push access, then reports a compact status per input URL.
-- `ready` means the repo already maps to one of the player's runtime-writable Props. If `runtime_writable:false` ever appears, treat it as a stale/invalid attachment that must be repaired before launch.
+- Validates each URL, checks existing Repositories, Player OAuth visibility, GitHub App installation access, and runtime push access, then reports a compact status per input URL.
+- `ready` means the repo already maps to one of the player's runtime-writable Repositories. If `runtime_writable:false` ever appears, treat it as a stale/invalid attachment that must be repaired before launch.
 - `attachable` means the player's GitHub App installation can access the repo and it can be attached.
 - `needs_fork` means Fibe can read the source but cannot attach it as runtime-writable yet; inspect `fork_url` and `mirrorable`, then attach a writable fork or install the GitHub App on a writable repo.
 - `invalid` and `not_accessible` are not usable until the URL or access problem is fixed; inspect `error` when present.
-- `requires_fork:true` means a public source should be forked or mirrored before creating a runtime-writable Playspec/Prop from it. Do not launch with read-only public Props.
+- `requires_fork:true` means a public source should be forked or mirrored before creating a runtime-writable Spec/Repository from it. Do not launch with read-only public Repositories.
 
 ## Gotchas
 - Maximum 50 URLs: extras are dropped silently. Pre-chunk if you have more.
@@ -59,4 +59,4 @@ Bulk repository status query. Up to 50 GitHub URLs at once through `POST /api/re
 ## Related
 - `fibe_find_github_repos`: discovery.
 - `fibe_get_github_token`: once you've confirmed access.
-- `fibe_resource_mutate(resource:"prop", operation:"sync")`: fix accessible-but-stale repos.
+- `fibe_resource_mutate(resource:"repository", operation:"sync")`: fix accessible-but-stale repos.

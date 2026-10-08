@@ -12,7 +12,7 @@ Every tool the [MCP server](/sdk/mcp-server/) ships, grouped by what it operates
 
 For a deep how-to, [Common workflows](/sdk/workflows/) walks through the end-to-end stories these tools support.
 
-Tools preserve unpaid Marquee failures as `MARQUEE_NOT_FUNDED` with HTTP status `402`. Funding and billing reads remain available.
+Tools preserve unpaid Host failures as `HOST_NOT_FUNDED` with HTTP status `402`. Funding and billing reads remain available.
 
 ## Auth, doctor & meta
 
@@ -35,7 +35,7 @@ The thin tools that bootstrap the rest. Every agent calls one or two of these at
 
 ## Resource CRUD
 
-The five tools that handle every resource family: Playgrounds, Tricks, Agents, Playspecs, Props, Marquees, Templates, Secrets, Webhooks, API keys, Artefacts, etc.
+The five tools that handle every resource family: Playgrounds, Tasks, Agents, Specs, Repositories, Hosts, Templates, Secrets, Webhooks, API keys, Artefacts, etc.
 
 | Tool | Purpose |
 | --- | --- |
@@ -54,20 +54,20 @@ Long-running environments: the brownfield half of the platform.
 | [`fibe_playgrounds_wait`](/reference/tools/playgrounds-wait/) | Block until a Playground reaches a status. |
 | [`fibe_playgrounds_logs`](/reference/tools/playgrounds-logs/) | Consolidated log dump. |
 | [`fibe_logs_follow`](/reference/tools/logs-follow/) | Stream live logs with progress notifications. |
-| [`fibe_playgrounds_action`](/reference/tools/playgrounds-action/) | Rollout, hard-restart, stop, start, retry, maintenance on/off. Actions that use the Marquee require funding. |
+| [`fibe_playgrounds_action`](/reference/tools/playgrounds-action/) | Rollout, hard-restart, stop, start, retry, maintenance on/off. Actions that use the Host require funding. |
 | [`fibe_playgrounds_debug`](/reference/tools/playgrounds-debug/) | Deployment diagnostics for a stuck Playground. |
 | [`fibe_playgrounds_switch_template`](/reference/tools/playgrounds-switch-template/) | Switch a Playground to another template, provision repos, rollout, wait. Preserves the Playground ID. |
 
-## Agents (Genies)
+## Agents (Agents)
 
 Configure, chat with, and observe AI assistants from inside another AI assistant.
 
 | Tool | Purpose |
 | --- | --- |
 | [`fibe_agents_duplicate`](/reference/tools/agents-duplicate/) | Clone an agent's config with a new name. |
-| [`fibe_agents_runtime_status`](/reference/tools/agents-runtime-status/) | Reachability, auth, queue depth, processing state. Live checks require a funded Marquee. |
-| [`fibe_agents_send_message`](/reference/tools/agents-send-message/) | Send a chat message (with attachments). Requires a funded Marquee. |
-| [`fibe_agents_start_chat`](/reference/tools/agents-start-chat/) | Start / reconnect a chat session. Requires a funded Marquee. |
+| [`fibe_agents_runtime_status`](/reference/tools/agents-runtime-status/) | Reachability, auth, queue depth, processing state. Live checks require a funded Host. |
+| [`fibe_agents_send_message`](/reference/tools/agents-send-message/) | Send a chat message (with attachments). Requires a funded Host. |
+| [`fibe_agents_start_chat`](/reference/tools/agents-start-chat/) | Start / reconnect a chat session. Requires a funded Host. |
 | [`fibe_agents_interrupt`](/reference/tools/agents-interrupt/) | Interrupt a long-running tool call. |
 | [`fibe_agents_messages`](/reference/tools/agents-messages/) | Read message history. |
 | [`fibe_agents_activity`](/reference/tools/agents-activity/) | Event timeline for one agent. |
@@ -84,8 +84,8 @@ For "I have nothing yet; build me the whole thing".
 
 | Tool | Purpose |
 | --- | --- |
-| [`fibe_launch`](/reference/tools/launch/) | Launch inline Compose, a local config file, a GitHub repo config, a Playspec, or a template. |
-| [`fibe_greenfield_create`](/reference/tools/greenfield-create/) | Repos → template version → Playspec → Playground → running. Single call. |
+| [`fibe_launch`](/reference/tools/launch/) | Launch inline Compose, a local config file, a GitHub repo config, a Spec, or a template. |
+| [`fibe_greenfield_create`](/reference/tools/greenfield-create/) | Repos → template version → Spec → Playground → running. Single call. |
 | [`fibe_templates_search`](/reference/tools/templates-search/) | Search the template catalog. |
 | [`fibe_templates_change`](/reference/tools/templates-change/) | Patch / overwrite a template, optionally rollout. Advanced/hidden: not advertised in the native tool list; invoke it via `fibe_call`. |
 | [`fibe_github_repos_create`](/reference/tools/github-repos-create/) | Provision a new GitHub repo (uses your GitHub App). |
@@ -119,7 +119,7 @@ For an example, see [Common workflows → Pipelines](/sdk/workflows/).
 
 ## Local dev
 
-For users running a Marquee locally and wanting to peek at what's on disk.
+For users running a Host locally and wanting to peek at what's on disk.
 
 | Tool | Purpose |
 | --- | --- |

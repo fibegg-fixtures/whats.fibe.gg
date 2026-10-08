@@ -12,7 +12,7 @@ Polls `GET /api/playgrounds/:id/status` on a fixed interval until it reaches the
 ## When to use
 - After `fibe_playgrounds_action(action_type:"rollout")` to confirm `running`.
 - After `fibe_resource_delete(resource:"playground")` to confirm `destroyed`.
-- After `fibe_resource_mutate(resource:"trick", operation:"trigger")` to wait for `completed`.
+- After `fibe_resource_mutate(resource:"task", operation:"trigger")` to wait for `completed`.
 - Inside a `fibe_pipeline` to gate later steps on a state transition.
 
 ## Inputs
@@ -41,14 +41,14 @@ Polls `GET /api/playgrounds/:id/status` on a fixed interval until it reaches the
 |---|---|
 | `running` | After `rollout`, `start`, `hard_restart`, `retry_compose` |
 | `stopped` | After `stop` |
-| `has_changes` | After Prop sync that introduced rollout-able diff |
-| `completed` | Tricks (job-mode) |
+| `has_changes` | After Repository sync that introduced rollout-able diff |
+| `completed` | Tasks (job-mode) |
 | `destroyed` | After `fibe_resource_delete(resource:"playground")` |
 
 ## Gotchas
 - Hard-coded terminal-failure shortcut: `error`, `failed`, `destroyed`. If `target == "destroyed"`, `destroyed` is the success path; otherwise it errors out.
 - `timeout` and `interval` accept bare integers as seconds (`"30"` = 30 s).
-- This polls the **DB-cached** status: the Marquee writes there asynchronously. There's a small lag between actual container state and what `wait` observes.
+- This polls the **DB-cached** status: the Host writes there asynchronously. There's a small lag between actual container state and what `wait` observes.
 - Don't call this from within `fibe_playgrounds_action`'s output: that already polls the action's request_id; `wait` is for the *post-action* state confirmation.
 
 ## Recipe (pipeline)

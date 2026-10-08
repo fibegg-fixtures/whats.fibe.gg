@@ -11,7 +11,7 @@ format: md
 
 [MODE:SIDEEFFECTS] Tier: base. Not idempotent (per resource semantics).
 
-Resource mutations that launch, rebuild, inspect, stream, schedule, SSH, restart routing, or message a Marquee require that Marquee to be funded. Unpaid Marquees return `MARQUEE_NOT_FUNDED`.
+Resource mutations that launch, rebuild, inspect, stream, schedule, SSH, restart routing, or message a Host require that Host to be funded. Unpaid Hosts return `HOST_NOT_FUNDED`.
 
 Unified mutation entry point. Validates `payload` against `fibe_schema(resource, operation)` locally, then dispatches to the SDK service for that resource. Use `dry_run:true` to validate without sending the request.
 
@@ -31,14 +31,14 @@ Payload shapes differ wildly per resource. `fibe_schema(resource:"<r>", operatio
 
 **Agents**: `create`, `update`, `restart_chat` (`restart_chat` marks the chat `pending` and redeploys with the latest configured image)
 **API keys**: `create`
-**Marquees**: `create`, `update`, `autoconnect_token`, `generate_ssh_key`, `test_connection`
+**Hosts**: `create`, `update`, `autoconnect_token`, `generate_ssh_key`, `test_connection`
 **Playgrounds**: `create`, `update`, `action` (lifecycle)
-**Playspecs**: `create`, `update`
-**Props**: `create`, `update`, `attach` (existing repo), `mirror` (clone external repo to managed Gitea), `sync` (re-pull from remote)
+**Specs**: `create`, `update`
+**Repositories**: `create`, `update`, `attach` (existing repo), `mirror` (clone external repo to managed Gitea), `sync` (re-pull from remote)
 **Secrets**: `create`, `update`
-**Templates**: `create`, `update` (incl. cover image), `fork`, `source_refresh`, `source_set`, `upgrade_playspecs`
+**Templates**: `create`, `update` (incl. cover image), `fork`, `source_refresh`, `source_set`, `upgrade_specs`
 **Template versions**: `create` (incl. patch-create), `toggle_public`
-**Tricks**: `trigger`, `rerun`
+**Tasks**: `trigger`, `rerun`
 **Webhooks**: `create`, `update`, `test`
 **Job env**: `create` (i.e., `set`), `update`
 **Memory**: `memorize` (preferred via `fibe_memorize`)
@@ -49,8 +49,8 @@ Payload shapes differ wildly per resource. `fibe_schema(resource:"<r>", operatio
 Creates a new Fibe Platform Agent record. It does not inherit provider auth from another Agent and does not start a runtime by itself. If you need a sibling Agent with existing auth material, use `fibe_agents_duplicate`. For a brand-new Agent, provide the intended provider auth through Secrets/provider-key flow (`provider_api_key_mode`/`api_key_id` where applicable) before starting chat. Do not use `fibe-mana` unless the environment explicitly reports that it is configured.
 
 ### `playground.create`
-- Required: `playspec_id_or_name` (numeric ID or playspec name).
-- `marquee_id_or_name` falls back to `FIBE_MARQUEE_ID` env if omitted.
+- Required: `spec_id_or_name` (numeric ID or spec name).
+- `host_id_or_name` falls back to `FIBE_HOST_ID` env if omitted.
 - Returns the created Playground with status `creating`.
 
 ### `playground.action`
@@ -60,14 +60,14 @@ Synchronous-ish lifecycle action. Required `confirm:true` (or `--yolo`).
 
 The API returns 202 + `request_id`; the SDK polls `GET /api/playgrounds/:id/action/:request_id` until terminal. Use `fibe_playgrounds_wait` for explicit status confirmation.
 
-### `prop.attach`
-Reuses an existing Player-owned GitHub/Gitea repo (full name like `owner/repo`); creates a Prop record without provisioning a new repository.
+### `repository.attach`
+Reuses an existing Player-owned GitHub/Gitea repo (full name like `owner/repo`); creates a Repository record without provisioning a new repository.
 
-### `prop.mirror`
-Clones an external public repo into the player's managed Gitea, returns the resulting Prop. Requires `source_url` + `name`.
+### `repository.mirror`
+Clones an external public repo into the player's managed Gitea, returns the resulting Repository. Requires `source_url` + `name`.
 
-### `prop.sync`
-Triggers a forced re-pull of the Prop's mirror from upstream.
+### `repository.sync`
+Triggers a forced re-pull of the Repository's mirror from upstream.
 
 ### `template.create` / `template.update`
 - `update` accepts metadata-only diffs (name/description/category) AND/OR a cover image (`image_data` base64, `content_base64`, or `content_path`). At least one mutation field required.
@@ -75,14 +75,14 @@ Triggers a forced re-pull of the Prop's mirror from upstream.
 ### `template_version.create`
 Creates a new versioned template body. Pass `template_body` inline OR `template_body_path` (local FS only). Optional `public:true`, `changelog`. `response_mode` defaults to `summary` (skips heavy metadata).
 
-### `trick.trigger`
-Schedule-style trigger. Required `playspec_id`; `marquee_id` defaults to env.
+### `task.trigger`
+Schedule-style trigger. Required `spec_id`; `host_id` defaults to env.
 
-### `trick.rerun`
-Re-runs an existing Trick by ID; reuses prior Playspec + Marquee.
+### `task.rerun`
+Re-runs an existing Task by ID; reuses prior Spec + Host.
 
-### `marquee.test_connection` / `marquee.generate_ssh_key`
-Long-running async; the SDK polls the returned `request_id`. Use `fibe_resource_get(resource:"marquee", id:...)` to check `status` after.
+### `host.test_connection` / `host.generate_ssh_key`
+Long-running async; the SDK polls the returned `request_id`. Use `fibe_resource_get(resource:"host", id:...)` to check `status` after.
 
 ### `webhook.test`
 Sends a `webhook.test_ping` event to verify the endpoint is reachable.
@@ -102,11 +102,11 @@ Operation-specific. Most return the affected resource's JSON. Long-running mutat
 ```
 
 ## Gotchas
-- **Named resource references are normalized through `*_id_or_name` fields.** Pass `playspec_id_or_name:"my-app-spec"` and the SDK resolves to the numeric ID. Same pattern applies to `marquee_id_or_name`, `prop_id_or_name`, `playground_id_or_name`, and `agent_id_or_name` where the target schema exposes them.
+- **Named resource references are normalized through `*_id_or_name` fields.** Pass `spec_id_or_name:"my-app-spec"` and the SDK resolves to the numeric ID. Same pattern applies to `host_id_or_name`, `repository_id_or_name`, `playground_id_or_name`, and `agent_id_or_name` where the target schema exposes them.
 - `playground.action` requires `confirm:true`; the dispatcher errors with `confirmRequiredError` otherwise.
 - `template_body_path` is local-only: fails when the MCP server runs remotely.
 - `secret.create/update` accepts plaintext in payload; the value is hashed/encrypted server-side and never returned plaintext again.
-- `playspec.update` services use `prop_id` field for slot binding (named or numeric); the SDK splits this out before binding params.
+- `spec.update` services use `repository_id` field for slot binding (named or numeric); the SDK splits this out before binding params.
 - `memorize` works but use the dedicated `fibe_memorize` for the conversation snapshot logic.
 - Generic `artefact.create` is not supported here. Use `fibe_artefact_upload`: it handles base64/file-path decoding and `FIBE_AGENT_ID` resolution.
 

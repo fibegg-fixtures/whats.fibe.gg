@@ -27,7 +27,7 @@ fibe mcp serve --http :4400 --streamable
 
 The server inherits your active CLI profile by default. For multi-tenant deployments, see "Multi-tenant auth" below.
 
-Tools preserve funding failures as structured MCP errors. When a target Marquee is unpaid, tools return `MARQUEE_NOT_FUNDED` with status `402`.
+Tools preserve funding failures as structured MCP errors. When a target Host is unpaid, tools return `HOST_NOT_FUNDED` with status `402`.
 
 ## Install into a client
 
@@ -92,7 +92,7 @@ Each family has its own group on the [Tools catalog](/sdk/tools-catalog/) page, 
 
 The full annotated list is on [Tools catalog](/sdk/tools-catalog/).
 
-Any tool that launches, rebuilds, streams, inspects, schedules, stops, deletes, cleans up, or talks to a Marquee requires that Marquee to be funded.
+Any tool that launches, rebuilds, streams, inspects, schedules, stops, deletes, cleans up, or talks to a Host requires that Host to be funded.
 
 ## Multi-tenant auth
 
@@ -132,7 +132,7 @@ The agent gets a "still going, here's what I've seen so far" experience instead 
 
 `fibe_pipeline` runs multiple Fibe calls in sequence, passes results between them with JSONPath bindings, supports parallel blocks and `for_each` loops, and caches results for 5 minutes.
 
-A typical use: "create a new Prop, then create a Playspec from a template against it, then launch a Playground from the Playspec, then wait for it to be ready, then return the URL". One tool call, one result, with full backoff and error handling under the hood.
+A typical use: "create a new Repository, then create a Spec from a template against it, then launch a Playground from the Spec, then wait for it to be ready, then return the URL". One tool call, one result, with full backoff and error handling under the hood.
 
 See [Common workflows → Pipelines](/sdk/workflows/) for an example.
 

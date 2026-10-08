@@ -1,21 +1,21 @@
 ---
 title: GitHub Apps
-description: Install GitHub Apps for private repo access, CI triggers, and Genie integration.
+description: Install GitHub Apps for private repo access, CI triggers, and Agent integration.
 slug: /advanced/github-apps
 sidebar_position: 7
 keywords: [GitHub, GitHub Apps, integration, private repos, CI, webhooks]
 ---
 
-GitHub App installations. Used for private repo access, CI triggers, and direct Genie integration.
+GitHub App installations. Used for private repo access, CI triggers, and direct Agent integration.
 
 ## What an installation grants
 
-- **Repo cloning**: Props use the installation to clone private repositories. Fibe mints a short-lived installation token at clone time, reuses it for up to 50 minutes, then refreshes it automatically: nothing to rotate.
-- **Webhooks**: push and pull-request events flow into Fibe to fire Tricks, refresh Template versions, and post [commit notifications](/advanced/notifications/).
+- **Repo cloning**: Repositories use the installation to clone private repositories. Fibe mints a short-lived installation token at clone time, reuses it for up to 50 minutes, then refreshes it automatically: nothing to rotate.
+- **Webhooks**: push and pull-request events flow into Fibe to fire Tasks, refresh Template versions, and post [commit notifications](/advanced/notifications/).
 
-Public repositories don't need an installation: they clone without one. Private repositories need one valid credential path: a GitHub App installation that covers the repo, a [Personal Access Token](/concepts/props/#3-paste-a-personal-access-token-per-prop) on the Prop, or the matching Gitea connection token for Gitea-backed Props. Fibe refuses to save a private Prop that has none of those.
+Public repositories don't need an installation: they clone without one. Private repositories need one valid credential path: a GitHub App installation that covers the repo, a [Personal Access Token](/concepts/repositories/#3-paste-a-personal-access-token-per-repository) on the Repository, or the matching Gitea connection token for Gitea-backed Repositories. Fibe refuses to save a private Repository that has none of those.
 
-Runtime Git operations can push code through an attached installation. Repository creation also needs write access. Trick results live in Fibe and can reach you via [webhooks](/advanced/webhooks/) and notifications.
+Runtime Git operations can push code through an attached installation. Repository creation also needs write access. Task results live in Fibe and can reach you via [webhooks](/advanced/webhooks/) and notifications.
 
 ## Install
 
@@ -38,19 +38,19 @@ Cloning and reading source require repository contents read plus GitHub's mandat
 Each installation appears as a card showing the GitHub account or organization it belongs to and when it was installed. Two actions:
 
 - **Configure on GitHub**: opens GitHub's installation settings to change repo selection or permissions; Fibe picks up changes via GitHub's events.
-- **Remove**: disconnects the installation from Fibe. Props using it lose access; existing Playgrounds keep running.
+- **Remove**: disconnects the installation from Fibe. Repositories using it lose access; existing Playgrounds keep running.
 
 ## Revoking
 
-Remove from Fibe or uninstall from GitHub: either side disconnects the installation and deletes it from your account. If you uninstall from GitHub, Fibe removes every connection for that installation and clears it as the default installation for affected accounts. On Props that depended on it:
+Remove from Fibe or uninstall from GitHub: either side disconnects the installation and deletes it from your account. If you uninstall from GitHub, Fibe removes every connection for that installation and clears it as the default installation for affected accounts. On Repositories that depended on it:
 
 - Token minting stops immediately. Clones and syncs of private repos fail with an authentication error.
-- Push and pull-request events stop arriving: no branch refresh, no push-triggered Tricks, no commit notifications.
-- Props on public repos keep cloning. Props with their own Personal Access Token are unaffected.
+- Push and pull-request events stop arriving: no branch refresh, no push-triggered Tasks, no commit notifications.
+- Repositories on public repos keep cloning. Repositories with their own Personal Access Token are unaffected.
 
-To recover, reinstall the App and grant the same repositories. Affected Props resume without reconfiguration. You can instead paste a [Personal Access Token](/concepts/props/#3-paste-a-personal-access-token-per-prop) into each Prop.
+To recover, reinstall the App and grant the same repositories. Affected Repositories resume without reconfiguration. You can instead paste a [Personal Access Token](/concepts/repositories/#3-paste-a-personal-access-token-per-repository) into each Repository.
 
 ## Related
 
-- [Props](/concepts/props/): what consumes installations.
-- [Tricks](/concepts/tricks/): CI consumers.
+- [Repositories](/concepts/repositories/): what consumes installations.
+- [Tasks](/concepts/tasks/): CI consumers.

@@ -7,11 +7,11 @@ description: Use to answer broad "what can Fibe do?" questions and choose the co
 
 Use this skill when a user asks what Fibe supports, where a workflow belongs, or how user-facing features relate.
 
-## Marquees and infrastructure
+## Hosts and infrastructure
 
-A Marquee is where environments run. Users can connect a Docker-capable host over SSH or receive a platform-managed tutorial Marquee.
+A Host is where environments run. Users can connect a Docker-capable host over SSH or receive a platform-managed tutorial Host.
 
-Marquees provide:
+Hosts provide:
 
 - Docker execution.
 - Public and internal routing.
@@ -21,13 +21,13 @@ Marquees provide:
 - SSH terminal access.
 - Registry credentials for private images.
 - Capacity for multiple Playgrounds.
-- Team sharing: the owner can share a Marquee with their team from the team page; members get manage access and can see and manage the Playgrounds running on it.
+- Company workspaces: immutable company resources, defaults, credentials, balances and quotas; accepted members operate resources, accepted admins govern membership and billing, and durable service principals support independent automation.
 
-## Props and source control
+## Repositories and source control
 
-Props connect Fibe to Git repositories. They support built-in repositories, GitHub imports, branch discovery, Compose detection, push notifications, code-change history, and in-browser git actions from Playgrounds.
+Repositories connect Fibe to Git repositories. They support built-in repositories, GitHub imports, branch discovery, Compose detection, push notifications, code-change history, and in-browser git actions from Playgrounds.
 
-Use Props when the question involves source code, branches, builds, repository credentials, GitHub/Gitea, webhooks from git providers.
+Use Repositories when the question involves source code, branches, builds, repository credentials, GitHub/Gitea, webhooks from git providers.
 
 ## Templates and Bazaar
 
@@ -38,11 +38,11 @@ Feature names:
 - Templates: the user's personal template collection.
 - Bazaar: public template discovery and launch.
 
-Templates can be pasted directly, imported from a Prop, source-linked to a file, refreshed from source changes, tested with a CI Marquee, and upgraded into downstream Playspecs.
+Templates can be pasted directly, imported from a Repository, source-linked to a file, refreshed from source changes, tested with a CI Host, and upgraded into downstream Specs.
 
-## Playspecs and Playgrounds
+## Specs and Playgrounds
 
-A Playspec is the configured blueprint for a launch. A Playground is the running environment.
+A Spec is the configured blueprint for a launch. A Playground is the running environment.
 
 Playgrounds support:
 
@@ -58,9 +58,9 @@ Playgrounds support:
 - Git diff and commit flows.
 - Live status updates.
 
-## Tricks and automated jobs
+## Tasks and automated jobs
 
-Tricks are job-mode Playgrounds. They run tasks that should finish, then record results and clean up.
+Tasks are job-mode Playgrounds. They run tasks that should finish, then record results and clean up.
 
 Use this area for:
 
@@ -69,19 +69,19 @@ Use this area for:
 - Backups.
 - Scheduled cron jobs.
 - Push or pull-request triggers.
-- CI repair with a Genie.
+- CI repair with an Agent.
 - Mutation-testing repair workflows.
-- Per-Prop Job ENV values.
+- Per-Repository Job ENV values.
 
 ## Agents, Bridge, artefacts, and feedback
 
-Agents, also called Genies, are persistent AI assistant configurations. They support multiple providers, stored credentials, standalone chats, Playground attachment, custom prompts, mounted files, MCP access, post-init setup, duplication, live activity, artefacts, feedback, mutters, and build-in-public timelines.
+Agents, also called Agents, are persistent AI assistant configurations. They support multiple providers, stored credentials, standalone chats, Playground attachment, custom prompts, mounted files, MCP access, post-init setup, duplication, live activity, artefacts, feedback, mutters, and build-in-public timelines.
 
-Bridge is the unified workspace for switching among Genies and active chats.
+Bridge is the unified workspace for switching among Agents and active chats.
 
 ## Secrets, API keys, and webhooks
 
-Secret Vault stores encrypted credentials for users and Genies. API keys provide scoped programmatic access. Webhooks deliver signed events to external systems.
+Secret Vault stores encrypted credentials for users and Agents. API keys provide scoped programmatic access. Webhooks deliver signed events to external systems.
 
 Use this area when the user asks about automation credentials, third-party API tokens, MCP access, event subscriptions, HMAC signatures, event filters, delivery history, or safe external callbacks.
 
@@ -93,11 +93,11 @@ Use this area when a user asks how to observe a Playground, track changes, inspe
 
 ## Data portability
 
-Users can export and import resources for backup or migration. Exportable areas include Props, Marquees, Playspecs, Agents, Playgrounds, Templates, Secrets, and Webhooks. Imports support conflict handling and rollback for created resources.
+Users can export and import resources for backup or migration. Exportable areas include Repositories, Hosts, Specs, Agents, Playgrounds, Templates, Secrets, and Webhooks. Imports support conflict handling and rollback for created resources.
 
 ## Related skills
 
 - [fibe-product-map](fibe-product-map.md) for the conceptual model.
 - [fibe-resource-lifecycles](fibe-resource-lifecycles.md) for resource behavior over time.
-- [fibe-agents-and-automation](fibe-agents-and-automation.md) for Genies and jobs.
+- [fibe-agents-and-automation](fibe-agents-and-automation.md) for Agents and jobs.
 - [fibe-security-access-and-integrations](fibe-security-access-and-integrations.md) for access and integration surfaces.

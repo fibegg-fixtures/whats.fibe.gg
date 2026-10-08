@@ -26,8 +26,8 @@ Executes an ordered list of tool steps in one MCP request. Each step's output is
 **Parallel block**: independent steps run concurrently:
 ```json
 { "parallel": [
-  { "id": "a", "tool": "fibe_resource_list", "args": {"resource":"prop"} },
-  { "id": "b", "tool": "fibe_resource_list", "args": {"resource":"marquee"} }
+  { "id": "a", "tool": "fibe_resource_list", "args": {"resource":"repository"} },
+  { "id": "b", "tool": "fibe_resource_list", "args": {"resource":"host"} }
 ]}
 ```
 
@@ -118,12 +118,12 @@ With pipeline-level `idempotency_key`, every step ID gets `sha256("<key>:<step_i
 }
 ```
 
-**Roll out every running playground in a marquee:**
+**Roll out every running playground in a host:**
 ```json
 {
   "steps": [
     { "id": "list", "tool": "fibe_resource_list",
-      "args": { "resource":"playground", "params":{"marquee_id":42,"status":"running"} } },
+      "args": { "resource":"playground", "params":{"host_id":42,"status":"running"} } },
     { "id": "rolls", "for_each":"$.list.data", "as":"pg",
       "steps":[{"id":"r","tool":"fibe_playgrounds_action",
                  "args":{"id_or_name":"$.pg.id","action_type":"rollout","confirm":true}}],

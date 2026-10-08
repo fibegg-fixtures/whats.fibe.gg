@@ -97,7 +97,7 @@ The recommended pattern is:
 
 ## Vite-specific (essential for Vite 6+)
 
-Vite 6 added `server.allowedHosts` and rejects unknown hosts. Behind Fibe/Traefik, the request arrives with the Marquee subdomain as `Host`, and Vite returns 403. Add to `vite.config.js`:
+Vite 6 added `server.allowedHosts` and rejects unknown hosts. Behind Fibe/Traefik, the request arrives with the Host subdomain as `Host`, and Vite returns 403. Add to `vite.config.js`:
 
 ```js
 export default {

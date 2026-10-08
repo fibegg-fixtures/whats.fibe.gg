@@ -10,7 +10,7 @@ description: Use when you need to mint a short-lived GitHub installation access 
 Returns a fresh GitHub App **installation** token scoped to the installation that has access to `<owner>/<repo>` through `GET /api/github_token?repo=<owner/repo>`.
 
 ## When to use
-- Need to clone/push to a Fibe-managed Prop's underlying GitHub repo from the Agent container.
+- Need to clone/push to a Fibe-managed Repository's underlying GitHub repo from the Agent container.
 - Issuing a one-off `git push` outside of the SDK's flow.
 - Webhook subscription / API call against the repo's GitHub App-managed endpoints.
 

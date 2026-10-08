@@ -12,15 +12,19 @@ This page is the dense contract reference for Fibe behavior that matters to oper
 
 Values marked as configurable are the shipped defaults. A hosted environment may raise or lower them for a specific account or deployment.
 
+## Candidate company and integration boundary
+
+New credentials and resources bind immutable personal/company owners. Live membership, service-principal state and scopes govern effects; creator attribution does not confer runtime authority. Company wallets and quotas are separate from personal ones. Runtime configuration is captured once per operation, supports explicit Clear/disabled groups and never exposes confidential values in ordinary metadata. See [Teams](/concepts/teams/), [runtime configuration](/advanced/runtime-configuration/) and [ENV packs](/concepts/env-packs/) for the candidate contracts.
+
 ## API Keys, Webhooks, Audit Log, And Backup
 
 ### API key scope families and granular restrictions
 
-API keys support 56 scopes across families (marquees, props, playspecs, playgrounds, Genies, secrets, webhooks, etc.) with read/write/delete/manage actions. Some families offer a `manage` scope combining read+write+delete. Granular restrictions allow limiting a scope to specific resource IDs (e.g. `secrets:read` restricted to secrets [42, 99]). Resource ownership is validated at save time: you cannot grant a key access to resources not owned by your account. Scope escalation is blocked: non-admin players cannot create keys with `*` (wildcard) or grant a key access to a team they don't belong to.
+API keys expose registered scopes across families (hosts, repositories, specs, playgrounds, Agents, secrets, webhooks, etc.) with read/write/delete/manage actions. Some families offer a `manage` scope combining read+write+delete. Granular restrictions allow limiting a scope to specific resource IDs (e.g. `secrets:read` restricted to secrets [42, 99]). Resource ownership is validated at save time: you cannot grant a key access to resources not owned by your account. Scope escalation is blocked: non-admin players cannot create keys with `*` (wildcard) or grant a key access to a team they don't belong to.
 
 ### API key token visibility and rotation
 
-Raw API key tokens are shown **only once** at creation and cannot be retrieved later. After creation, keys display a masked token showing the first 14 characters plus asterisks (e.g. `abc123*******...`). Exception: keys marked "For Genies (unencrypted)" store tokens unencrypted and can be revealed via the key card after re-confirming 2FA. Regular keys must be rotated to get a new token: rotation creates a new key with identical scopes/restrictions and immediately expires the old one.
+Raw API key tokens are shown **only once** at creation and cannot be retrieved later. After creation, keys display a masked token showing the first 14 characters plus asterisks (e.g. `abc123*******...`). Exception: keys marked "For Agents (unencrypted)" store tokens unencrypted and can be revealed via the key card after re-confirming 2FA. Regular keys must be rotated to get a new token: rotation creates a new key with identical scopes/restrictions and immediately expires the old one.
 
 ### Webhook HMAC-SHA256 signing and header format
 
@@ -44,7 +48,7 @@ Audit logs are write-once, immutable records: they cannot be modified or deleted
 
 ### Data export/import structure and exclusions
 
-Exports include: Props, Marquees, Playspecs, Genies, Playgrounds, Templates, Secrets (names/descriptions only, **never values**), Webhook endpoints (URL and subscriptions only, signing secrets **excluded and regenerated on import**). **Excluded from export**: profile settings, API keys, audit logs, artefacts, mutters, conversations. Exports are JSONL files. Default retention: 24 hours before download link expires (configurable). Max import file size: 50 MB (default), max 5,000 records per import. Two conflict strategies: merge (update existing) or skip (create new only). Rollback removes all records created by a completed import.
+Exports include: Repositories, Hosts, Specs, Agents, Playgrounds, Templates, Secrets (names/descriptions only, **never values**), Webhook endpoints (URL and subscriptions only, signing secrets **excluded and regenerated on import**). **Excluded from export**: profile settings, API keys, audit logs, artefacts, mutters, conversations. Exports are JSONL files. Default retention: 24 hours before download link expires (configurable). Max import file size: 50 MB (default), max 5,000 records per import. Two conflict strategies: merge (update existing) or skip (create new only). Rollback removes all records created by a completed import.
 
 ### Webhook URL validation and SSRF protection
 
@@ -56,13 +60,13 @@ Webhook delivery records are kept for 30 days, then automatically pruned. Cleanu
 
 ### Webhook event catalog and filter options
 
-73 known event types across Playgrounds, Marquees, Props, Playspecs, Genies, Templates, Artefacts, Feedback, API Keys, Secrets, Webhooks, plus a `webhook.test` event. Endpoints can subscribe to specific events or `*` (everything). Unknown event names are rejected at save time. Granular **event filters** narrow by resource ID (e.g. receive `playground.created` only for specific Playground IDs). Tool filters restrict Genie-related events to specific Genie/tool names. Filters are matched at dispatch time.
+Registered event types cover Playgrounds, Hosts, Repositories, Specs, Agents, Templates, Artefacts, Feedback, API Keys, Secrets, Webhooks, plus a `webhook.test` event. Endpoints can subscribe to specific events or `*` (everything). Unknown event names are rejected at save time. Granular **event filters** narrow by resource ID (e.g. receive `playground.created` only for specific Playground IDs). Tool filters restrict Agent-related events to specific Agent/tool names. Filters are matched at dispatch time.
 
 ### Resource quotas and per-parent caps
 
-Default quotas per account: 20 API keys, 20 webhook endpoints, 1,000 webhook deliveries per endpoint, 100 versions per template, 100 artefacts per Genie, 5 mounted files per Genie, 10 MB mounted file size per Genie, etc. Admins can override quotas per player. Super-admins have unlimited quotas. Rolling-cap pruning silently enforces per-parent limits (oldest items deleted as new ones exceed quota). One active data transfer task per player at a time. All quotas shown on the Limits & Quotas dashboard with usage/limit/status (OK/warning at 80%/exceeded).
+Default quotas per account: 20 API keys, 20 webhook endpoints, 1,000 webhook deliveries per endpoint, 100 versions per template, 100 artefacts per Agent, 5 mounted files per Agent, 10 MB mounted file size per Agent, etc. Admins can override quotas per player. Super-admins have unlimited quotas. Rolling-cap pruning silently enforces per-parent limits (oldest items deleted as new ones exceed quota). One active data transfer task per player at a time. All quotas shown on the Limits & Quotas dashboard with usage/limit/status (OK/warning at 80%/exceeded).
 
-## Bazaar, Publishing, And Scrolls
+## Bazaar, Publishing, And Library
 
 ### Publishing requires both public flag AND approved flag for system templates
 
@@ -96,35 +100,35 @@ Bazaar search matches on name/description via PostgreSQL full-text, name similar
 
 ### Grace period duration and max incidents
 
-When a Marquee cannot pay its daily fee, a grace period begins lasting 3 days by default. Players can incur a maximum of 2 unpaid incidents (grace incidents) per account before the system automatically suspends the Marquee instead of opening a new grace period. Operators can change both values; the stated defaults apply when they are not overridden.
+When a Host cannot pay its daily fee, a grace period begins lasting 3 days by default. Players can incur a maximum of 2 unpaid incidents (grace incidents) per account before the system automatically suspends the Host instead of opening a new grace period. Operators can change both values; the stated defaults apply when they are not overridden.
 
-### Tutorial marquee destruction retention window
+### Tutorial host destruction retention window
 
-A suspended, unpaid tutorial platform-managed Marquee is scheduled for destruction 7 days after suspension if still unpaid. After that window elapses, the Marquee, its Playgrounds, Tricks, and all data are permanently deleted with no recovery option. Self-hosted Marquees are never deleted by Fibe; they are only disabled and suspended. Operators can change the 7-day window.
+A suspended, unpaid tutorial platform-managed Host is scheduled for destruction 7 days after suspension if still unpaid. After that window elapses, the Host, its Playgrounds, Tasks, and all data are permanently deleted with no recovery option. Self-hosted Hosts are never deleted by Fibe; they are only disabled and suspended. Operators can change the 7-day window.
 
-### Daily marquee funding is per-service-day with service-day-end timing
+### Daily host funding is per-service-day with service-day-end timing
 
-Each Marquee is funded once per day. A service day runs from UTC midnight to UTC midnight, and a Marquee is considered paid for a day only if it is funded through that day's end. Funding checks run daily; if the wallet cannot cover the day's charge, a grace incident is opened. Monthly intervals count as 30 service days and annual intervals as 365 service days and used for plan calculations and retention windows.
+Each Host is funded once per day. A service day runs from UTC midnight to UTC midnight, and a Host is considered paid for a day only if it is funded through that day's end. Funding checks run daily; if the wallet cannot cover the day's charge, a grace incident is opened. Monthly intervals count as 30 service days and annual intervals as 365 service days and used for plan calculations and retention windows.
 
 ### Grace debt repayment happens automatically on wallet credit
 
-Whenever a wallet is credited (purchase, grant, referral reward), any outstanding grace incidents (unpaid days) for that player and currency are automatically repaid from the new credit in FIFO order (oldest incident first). The repayment is idempotent and atomic; if multiple incidents exist, they are settled sequentially until the available credit is exhausted. This happens before the player can re-enable a suspended marquee.
+Whenever a wallet is credited (purchase, grant, referral reward), any outstanding grace incidents (unpaid days) for that player and currency are automatically repaid from the new credit in FIFO order (oldest incident first). The repayment is idempotent and atomic; if multiple incidents exist, they are settled sequentially until the available credit is exhausted. This happens before the player can re-enable a suspended host.
 
 ### Mana to Sparks conversion is one-way and irreversible
 
-Mana can be converted to Sparks at a fixed rate ; the default is 100 Sparks per 1 Mana. The conversion happens immediately and atomically: the debit from Mana and credit to Sparks are a single transaction. Sparks cannot be converted back to Mana. Once converted, Sparks can only be spent on standard self-hosted Marquee daily costs.
+Mana can be converted to Sparks at a fixed rate ; the default is 100 Sparks per 1 Mana. The conversion happens immediately and atomically: the debit from Mana and credit to Sparks are a single transaction. Sparks cannot be converted back to Mana. Once converted, Sparks can only be spent on standard self-hosted Host daily costs.
 
-### Plan-level marquee limits are not subscription-gated
+### Plan-level host limits are not subscription-gated
 
-Tutorial plan holders get 1 Marquee, Single plan holders get 1, and Multiplayer plan holders get 10, but those are plan-level suggestions rather than the hard create gate. The hard limit is controlled by admin-configurable per-player quotas. Subscriptions recharge wallets; they do not directly grant Marquee allowance. Defaults are 100 standard Marquees and 1 tutorial Marquee per player, overridable per player.
+Tutorial plan holders get 1 Host, Single plan holders get 1, and Multiplayer plan holders get 10, but those are plan-level suggestions rather than the hard create gate. The hard limit is controlled by admin-configurable per-player quotas. Subscriptions recharge wallets; they do not directly grant Host allowance. Defaults are 100 standard Hosts and 1 tutorial Host per player, overridable per player.
 
 ### Subscription cancellation takes effect immediately
 
-When a player cancels a subscription via the UI, the Fibe immediately cancels on the provider (Stripe/Creem/Paddle). The cancellation does not wait for the current billing period to end; it is effective immediately. Wallets already credited remain intact; no refunds are issued for the remainder of the period. Cancelling a subscription does not stop any running marquees or playgrounds: it only stops future recharge transactions.
+When a player cancels a subscription via the UI, the Fibe immediately cancels on the provider (Stripe/Creem/Paddle). The cancellation does not wait for the current billing period to end; it is effective immediately. Wallets already credited remain intact; no refunds are issued for the remainder of the period. Cancelling a subscription does not stop any running hosts or playgrounds: it only stops future recharge transactions.
 
-### Tutorial marquees are disabled at grace start, not at suspension
+### Tutorial hosts are disabled at grace start, not at suspension
 
-When grace begins (a daily charge fails on a tutorial marquee), the marquee is immediately marked disabled status and provisioning state remains provisioned. This blocks all runtime actions (launch, rollout, restart, etc.) with a `MARQUEE_NOT_FUNDED` error. However, the marquee itself is not removed from Fibe yet. If grace passes unpaid, the status moves to suspended but the marquee is not deleted until the retention window elapses. Standard (self-hosted) marquees are never disabled: only blocked from runtime actions until the debt is repaid.
+When grace begins (a daily charge fails on a tutorial host), the host is immediately marked disabled status and provisioning state remains provisioned. This blocks all runtime actions (launch, rollout, restart, etc.) with a `HOST_NOT_FUNDED` error. However, the host itself is not removed from Fibe yet. If grace passes unpaid, the status moves to suspended but the host is not deleted until the retention window elapses. Standard (self-hosted) hosts are never disabled: only blocked from runtime actions until the debt is repaid.
 
 ### Raw Mana checkout minimum and maximum enforce purchase bounds
 
@@ -140,9 +144,9 @@ A Rune invite code has a hard redemption cap; once that many players have signed
 
 ## Cross-Cutting Limits, Flags, And User-Facing Defaults
 
-### Standard Resource Quotas: Playgrounds=1000, Props=1000, Playspecs=1000, Genies=10, API Keys=20, Webhooks=20
+### Standard Resource Quotas: Playgrounds=1000, Repositories=1000, Specs=1000, Agents=10, API Keys=20, Webhooks=20
 
-Default quotas per player: 1,000 Playgrounds, 1,000 Props, 1,000 Playspecs, 10 Genies, 20 API keys, 20 webhooks, 20 import templates, 500 scroll artefacts, 100 secrets, and 200 Job ENV entries. Marquee quotas are separate: 100 standard Marquees and 1 tutorial Marquee by default. Admins can override quotas per player. Super-admins have unlimited quotas.
+Default quotas per player: 1,000 Playgrounds, 1,000 Repositories, 1,000 Specs, 10 Agents, 20 API keys, 20 webhooks, 20 import templates, 500 scroll artefacts, 100 secrets, and 200 Job ENV entries. Host quotas are separate: 100 standard Hosts and 1 tutorial Host by default. Admins can override quotas per player. Super-admins have unlimited quotas.
 
 ### API Rate Limit: 5000 Requests Per Hour (Default, Per-Player Overridable)
 
@@ -182,7 +186,7 @@ Usernames must be 5-39 characters, start and end with alphanumeric, allow dashes
 
 ### Avatar Upload Limit: 2MB, PNG/JPEG/GIF/WebP Only
 
-Player avatars must be under 2MB and in PNG, JPEG, GIF, or WebP format. Invalid file types or oversized images are rejected at validation time. Genie avatars have the same 2MB limit.
+Player avatars must be under 2MB and in PNG, JPEG, GIF, or WebP format. Invalid file types or oversized images are rejected at validation time. Agent avatars have the same 2MB limit.
 
 ### Build Timeout: 45 Minutes; Stale In-Progress Playgrounds: 30 Minutes
 
@@ -192,109 +196,109 @@ Docker builds that remain in 'building' state for 45+ minutes are marked as fail
 
 Platform supports English by default and Ukrainian as an additional locale. All user-facing strings are translatable. Platform detects user's signup locale and stores it per player. Users can switch locale per-session via the current locale. Emails respect the player's stored locale preference.
 
-## Genies, Conversations, Pokes, And Artefacts
+## Agents, Conversations, Pokes, And Artefacts
 
-### Genie authentication statuses and usability checks
+### Agent authentication statuses and usability checks
 
-A Genie has five discrete statuses: pending (not yet authenticated), authenticated (credentials valid and working), expired (authentication token expired), revoked (credentials manually revoked and cleared), and deleting. A Genie is usable only when authenticated and not expired. Revoked Genies cannot send messages until re-authenticated.
+A Agent has five discrete statuses: pending (not yet authenticated), authenticated (credentials valid and working), expired (authentication token expired), revoked (credentials manually revoked and cleared), and deleting. A Agent is usable only when authenticated and not expired. Revoked Agents cannot send messages until re-authenticated.
 
 ### Provider authentication modes and Fibe Mana gating
 
-Genies support three authentication modes: oauth (provider-native OAuth), provider-api-key (user supplies raw API key), and fibe-mana (Fibe-hosted credentials). Cursor and Antigravity are excluded from fibe-mana mode (provider exclusion list). When provider auth fails mid-run, the Genie status moves to expired/revoked and running chats cannot send further messages. If a linked API key is broken or expired, the Genie falls back to its stored provider credentials when available.
+Agents support three authentication modes: oauth (provider-native OAuth), provider-api-key (user supplies raw API key), and fibe-mana (Fibe-hosted credentials). Cursor and Antigravity are excluded from fibe-mana mode (provider exclusion list). When provider auth fails mid-run, the Agent status moves to expired/revoked and running chats cannot send further messages. If a linked API key is broken or expired, the Agent falls back to its stored provider credentials when available.
 
-### Genie credential size limits
+### Agent credential size limits
 
-Genie stored credential payloads are each limited to 64 KB. Attempting to authenticate with a larger payload fails validation with a too-large error. This applies to any stored provider authentication credentials.
+Agent stored credential payloads are each limited to 64 KB. Attempting to authenticate with a larger payload fails validation with a too-large error. This applies to any stored provider authentication credentials.
 
 ### Artefact (skill) size limits
 
-Artefacts have two size constraints: file attachments max 10MB, and inline body text max 10MB. Skills must be text files. Attempting to exceed either limit fails validation. Genie-owned artefacts are immutable (audit-guaranteed) and can only have skill and skill flags modified; player-owned artefacts are freely editable.
+Artefacts have two size constraints: file attachments max 10MB, and inline body text max 10MB. Skills must be text files. Attempting to exceed either limit fails validation. Agent-owned artefacts are immutable (audit-guaranteed) and can only have skill and skill flags modified; player-owned artefacts are freely editable.
 
 ### Conversation management and multi-conversation support
 
-Genies support multiple named conversations. The default conversation id is `default`. The `inbox` conversation is system-reserved and read-only. External conversation IDs must match pattern [A-Za-z0-9][A-Za-z0-9._:-]{0,127} (max 128 chars). Each conversation has its own message and activity stores persisted separately. Conversation metadata such as title, creation time, last-message time, and message count is tracked. Unknown conversation IDs on WebSocket upgrade are rejected with close code 4004.
+Agents support multiple named conversations. The default conversation id is `default`. The `inbox` conversation is system-reserved and read-only. External conversation IDs must match pattern [A-Za-z0-9][A-Za-z0-9._:-]{0,127} (max 128 chars). Each conversation has its own message and activity stores persisted separately. Conversation metadata such as title, creation time, last-message time, and message count is tracked. Unknown conversation IDs on WebSocket upgrade are rejected with close code 4004.
 
-### File upload limits in Genie chat API
+### File upload limits in Agent chat API
 
-The Genie runtime limits multipart file uploads to 20 MB per file. This is a hard limit on the upload handler and applies to runtime API uploads. Exceeding it returns HTTP 413 Payload Too Large.
+The Agent runtime limits multipart file uploads to 20 MB per file. This is a hard limit on the upload handler and applies to runtime API uploads. Exceeding it returns HTTP 413 Payload Too Large.
 
 ### WebSocket message rate limiting and connection limits
 
-The Genie runtime enforces two WebSocket limits: 60 messages per minute per connection, with excess messages silently dropped, and 5 concurrent WebSocket connections per Genie runtime by default. Operators or Genie settings can change the connection limit. When the limit is reached, the oldest session is evicted with the session-taken-over close code. Clients must read the incoming `conversation_id` message after connecting.
+The Agent runtime enforces two WebSocket limits: 60 messages per minute per connection, with excess messages silently dropped, and 5 concurrent WebSocket connections per Agent runtime by default. Operators or Agent settings can change the connection limit. When the limit is reached, the oldest session is evicted with the session-taken-over close code. Clients must read the incoming `conversation_id` message after connecting.
 
-### Genie name version tracking and rename history
+### Agent name version tracking and rename history
 
-Genies track up to 100 prior name changes. Each entry records the previous name, new name, change time, and, when the rename happened during an active chat, the related conversation. Older entries beyond 100 are dropped. Rename history is audit-tracked but not shown in normal rename operations.
+Agents track up to 100 prior name changes. Each entry records the previous name, new name, change time, and, when the rename happened during an active chat, the related conversation. Older entries beyond 100 are dropped. Rename history is audit-tracked but not shown in normal rename operations.
 
-### Genie runtime deployment timeouts and reachability
+### Agent runtime deployment timeouts and reachability
 
-Genie container deployment times out after 600 seconds in production and 1,800 seconds in development. After the container reports healthy, the runtime must also be externally routable: production checks reachability up to 45 times with 2-second delays, while development checks up to 180 times. If a running Genie becomes unreachable after it has been running for more than 2 minutes, Fibe triggers automatic redeploy.
+Agent container deployment times out after 600 seconds in production and 1,800 seconds in development. After the container reports healthy, the runtime must also be externally routable: production checks reachability up to 45 times with 2-second delays, while development checks up to 180 times. If a running Agent becomes unreachable after it has been running for more than 2 minutes, Fibe triggers automatic redeploy.
 
 ### Avatar upload restrictions
 
-Genie avatars must be one of: PNG, JPEG, GIF, WebP, or SVG+XML. Max file size is 2MB. Oversized or invalid-format uploads fail with validation avatar invalid-type or too-large validation errors. If no custom avatar is set, the Genie is assigned a deterministic robot avatar (100 options, based on its id).
+Agent avatars must be one of: PNG, JPEG, GIF, WebP, or SVG+XML. Max file size is 2MB. Oversized or invalid-format uploads fail with validation avatar invalid-type or too-large validation errors. If no custom avatar is set, the Agent is assigned a deterministic robot avatar (100 options, based on its id).
 
-### Default memory and CPU limits for Genies
+### Default memory and CPU limits for Agents
 
-Genie containers default to 2G memory and 1.5 CPU. These apply to any Genie unless overridden at the player defaults level (account or platform defaults) or per-Genie level. Tutorial marquees enforce stricter limits: 1G memory, 1.0 CPU. Can be overridden via effective_memory_limit and effective_cpu_limit which cascade through per-Genie → team default → platform default → built-in default.
+Agent containers default to 2G memory and 1.5 CPU. These apply to any Agent unless overridden at the player defaults level (account or platform defaults) or per-Agent level. Tutorial hosts enforce stricter limits: 1G memory, 1.0 CPU. Can be overridden via effective_memory_limit and effective_cpu_limit which cascade through per-Agent → team default → platform default → built-in default.
 
-### OCR conversion size limits in Genie runtime
+### OCR conversion size limits in Agent runtime
 
-The Genie runtime can limit OCR conversion input and output sizes. Default input limit is 10MB (default OCR input limit), output limit is 25MB (default OCR output limit). These can be overridden per-Genie via ocr_conversion_max_bytes and ocr_conversion_max_output_bytes settings, or globally via FIBE_OCR_CONVERSION_MAX_BYTES and FIBE_OCR_CONVERSION_MAX_OUTPUT_BYTES env vars. If null, the default applies.
+The Agent runtime can limit OCR conversion input and output sizes. Default input limit is 10MB (default OCR input limit), output limit is 25MB (default OCR output limit). These can be overridden per-Agent via ocr_conversion_max_bytes and ocr_conversion_max_output_bytes settings, or globally via FIBE_OCR_CONVERSION_MAX_BYTES and FIBE_OCR_CONVERSION_MAX_OUTPUT_BYTES env vars. If null, the default applies.
 
-### Poke (scheduled Genie) minimum interval and cron scheduling
+### Poke (scheduled Agent) minimum interval and cron scheduling
 
-Genie Pokes (scheduled prompts) have a minimum interval constraint: schedule must not run more than every 5 minutes (MINIMUM_INTERVAL=5.minutes). The schedule is validated as cron-like syntax (via cron parser). If schedule is invalid or runs more frequently, validation fails with error 'must be a valid cron-like schedule' or 'must not run more often than every 5 minutes'. Pokes cannot target the INBOX conversation.
+Agent Pokes (scheduled prompts) have a minimum interval constraint: schedule must not run more than every 5 minutes (MINIMUM_INTERVAL=5.minutes). The schedule is validated as cron-like syntax (via cron parser). If schedule is invalid or runs more frequently, validation fails with error 'must be a valid cron-like schedule' or 'must not run more often than every 5 minutes'. Pokes cannot target the INBOX conversation.
 
-## Marquees, Networking, And Runtime Funding
+## Hosts, Networking, And Runtime Funding
 
-### Marquee offline behavior and Genie chat stopping
+### Host offline behavior and Agent chat stopping
 
-When a Marquee goes offline (status changes to 'error' or 'disabled'), live Genie chats automatically stop with a message indicating the Marquee became unavailable. Genie chats in 'pending' or 'running' status are quiesced. Playgrounds remain on the Marquee but become unreachable. No automatic failover occurs. Connection checks determine if a Marquee is reachable; if checks fail, the Marquee moves to error status.
+When a Host goes offline (status changes to 'error' or 'disabled'), live Agent chats automatically stop with a message indicating the Host became unavailable. Agent chats in 'pending' or 'running' status are quiesced. Playgrounds remain on the Host but become unreachable. No automatic failover occurs. Connection checks determine if a Host is reachable; if checks fail, the Host moves to error status.
 
-### Marquee statuses and billing funding requirements
+### Host statuses and billing funding requirements
 
-Marquees have three status values: 'active', 'disabled', or 'error'. A Marquee must be funded (funded through the current time) to perform runtime actions like launching, restarting, building, streaming logs, SSH access, or sending Genie messages. If unpaid, actions return `MARQUEE_NOT_FUNDED`. Billing and funding screens remain accessible even when unpaid. Super admins bypass funding checks.
+Hosts have three status values: 'active', 'disabled', or 'error'. A Host must be funded (funded through the current time) to perform runtime actions like launching, restarting, building, streaming logs, SSH access, or sending Agent messages. If unpaid, actions return `HOST_NOT_FUNDED`. Billing and funding screens remain accessible even when unpaid. Super admins bypass funding checks.
 
-### Playground launching restrictions based on Marquee state
+### Playground launching restrictions based on Host state
 
-Playgrounds can only be launched on Marquees that are: (1) active status, (2) funded, (3) SSH-accessible, and (4) have a root domain set. Marquees that are provisioning, destroying, destroyed, or failed cannot launch Playgrounds. Attempting to launch on an invalid Marquee returns the current validation failure for the missing readiness condition.
+Playgrounds can only be launched on Hosts that are: (1) active status, (2) funded, (3) SSH-accessible, and (4) have a root domain set. Hosts that are provisioning, destroying, destroyed, or failed cannot launch Playgrounds. Attempting to launch on an invalid Host returns the current validation failure for the missing readiness condition.
 
 ### Domain and subdomain rules
 
-Marquee root domains must use normal domain syntax: alphanumeric labels, hyphens, and a standard TLD. For non-routable TLDs (.test, .local, .localhost, .example, .invalid), HTTPS is automatically disabled. Subdomains are validated alphanumeric + hyphen format, max 63 chars. The platform-provided tutorial domain must be included in the domain list. Service subdomains default to service name, override with fibe.gg/subdomain label (supports @ for root domain binding).
+Host root domains must use normal domain syntax: alphanumeric labels, hyphens, and a standard TLD. For non-routable TLDs (.test, .local, .localhost, .example, .invalid), HTTPS is automatically disabled. Subdomains are validated alphanumeric + hyphen format, max 63 chars. The platform-provided tutorial domain must be included in the domain list. Service subdomains default to service name, override with fibe.gg/subdomain label (supports @ for root domain binding).
 
-### Marquee DNS providers and ACME certificate configuration
+### Host DNS providers and ACME certificate configuration
 
-Standard Marquees support 7 DNS providers for ACME challenge: Cloudflare, AWS Route53, DigitalOcean, Hetzner, OVH, Google Cloud DNS, and manual acme-dns CNAME. Tutorial Marquees use platform-managed acme-dns. HTTPS is mandatory for tutorial Marquees. For provided certificates (not ACME), both the certificate and private key are required, validated as valid OpenSSL certificates.
+Standard Hosts support 7 DNS providers for ACME challenge: Cloudflare, AWS Route53, DigitalOcean, Hetzner, OVH, Google Cloud DNS, and manual acme-dns CNAME. Tutorial Hosts use platform-managed acme-dns. HTTPS is mandatory for tutorial Hosts. For provided certificates (not ACME), both the certificate and private key are required, validated as valid OpenSSL certificates.
 
-### Marquee SSH and connectivity validation
+### Host SSH and connectivity validation
 
-Marquee hosts must be reachable via SSH and have Docker installed and running. Connection tests check: (1) SSH login succeeds, (2) Docker is available with a working daemon, (3) the base directory exists or is writable. SSH key type must be ed25519. For non-tutorial Marquees, host safety validation prevents connecting to private/internal IP ranges (unless the owner is a super admin).
+Host hosts must be reachable via SSH and have Docker installed and running. Connection tests check: (1) SSH login succeeds, (2) Docker is available with a working daemon, (3) the base directory exists or is writable. SSH key type must be ed25519. For non-tutorial Hosts, host safety validation prevents connecting to private/internal IP ranges (unless the owner is a super admin).
 
-### Marquee rate limits: Fix-Redeploy and Reboot
+### Host rate limits: Fix-Redeploy and Reboot
 
-Tutorial Marquees have two recovery rate limits: 10 fix-redeploy attempts per 4 hours, and 3 reboots per 1 hour. Both limits reset when their windows expire. Users see error messages with timing information when limits are reached. Fix-redeploys are only available after provisioning has either succeeded or failed.
+Tutorial Hosts have two recovery rate limits: 10 fix-redeploy attempts per 4 hours, and 3 reboots per 1 hour. Both limits reset when their windows expire. Users see error messages with timing information when limits are reached. Fix-redeploys are only available after provisioning has either succeeded or failed.
 
 ### Playground expiration and job mode differences
 
-Playgrounds have no expiration by default. When expiration is enabled without an explicit deadline, regular Playgrounds use an 8-hour fallback and Trick/job-mode Playgrounds use the operator-configurable job fallback (1 hour by default). Playgrounds in `in_progress` status longer than 30 minutes are considered stale. All runtime actions (start, stop, destroy, extend) require the Marquee to be funded.
+Playgrounds have no expiration by default. When expiration is enabled without an explicit deadline, regular Playgrounds use an 8-hour fallback and Task/job-mode Playgrounds use the operator-configurable job fallback (1 hour by default). Playgrounds in `in_progress` status longer than 30 minutes are considered stale. All runtime actions (start, stop, destroy, extend) require the Host to be funded.
 
 ### Tutorial provisioning timeout and steps
 
-Tutorial Marquee provisioning has a 30-minute timeout. The process moves through queued, VM creating, VM ready, SSH configured, TLS provisioning, and deploying states. SSH becomes accessible once SSH is configured. Playgrounds cannot launch on a Marquee while it is provisioning, destroying, destroyed, or failed.
+Tutorial Host provisioning has a 30-minute timeout. The process moves through queued, VM creating, VM ready, SSH configured, TLS provisioning, and deploying states. SSH becomes accessible once SSH is configured. Playgrounds cannot launch on a Host while it is provisioning, destroying, destroyed, or failed.
 
-### Genie chat connectivity lock during modifications
+### Agent chat connectivity lock during modifications
 
-When live Genie chats are running on a Marquee, host, port, SSH user, SSH key, domains, and platform-provided domain cannot be modified. Attempting to change them returns a validation error. This prevents disrupting active Genie sessions mid-conversation.
+When live Agent chats are running on a Host, host, port, SSH user, SSH key, domains, and platform-provided domain cannot be modified. Attempting to change them returns a validation error. This prevents disrupting active Agent sessions mid-conversation.
 
 ### SSH port default and host/port uniqueness
 
-Default SSH port is 22. Host and port combinations must be globally unique across active Marquees; terminal provisioning states such as destroying, destroyed, and failed do not reserve a pair forever. Duplicate host/port pairs are rejected at validation time. Host IP addresses for non-tutorial Marquees undergo private-network safety checks to prevent connecting to private/loopback ranges.
+Default SSH port is 22. Host and port combinations must be globally unique across active Hosts; terminal provisioning states such as destroying, destroyed, and failed do not reserve a pair forever. Duplicate host/port pairs are rejected at validation time. Host IP addresses for non-tutorial Hosts undergo private-network safety checks to prevent connecting to private/loopback ranges.
 
-### Tutorial Marquee field immutability and control-plane availability protection
+### Tutorial Host field immutability and control-plane availability protection
 
-Tutorial Marquees cannot have SSH credentials, host, port, or user fields changed after creation (these are system-managed). The system preserves tutorial Marquee availability during control-plane changes if live Genie chats are running, preventing accidental shutdown of chat-hosting infrastructure. Tutorial Marquees must be created by the platform (users cannot manually create them).
+Tutorial Hosts cannot have SSH credentials, host, port, or user fields changed after creation (these are system-managed). The system preserves tutorial Host availability during control-plane changes if live Agent chats are running, preventing accidental shutdown of chat-hosting infrastructure. Tutorial Hosts must be created by the platform (users cannot manually create them).
 
 ## Playground Lifecycle
 
@@ -306,9 +310,9 @@ New Playgrounds default to never expire. When an expiration is enabled without a
 
 If a playground stays in 'in_progress' status for 30+ minutes without progressing to 'running', the Playguard reconciliation job automatically recovers it by transitioning back to 'pending' and re-enqueuing the creation. This handles infrastructure stalls during launch.
 
-### Volume persistence depends on Playspec configuration and action type
+### Volume persistence depends on Spec configuration and action type
 
-When a playground expires and gets torn down, or when manually destroyed, volumes are only preserved if the parent Playspec has persist_volumes=true. On stop (graceful shutdown), volumes are always kept regardless of this setting. On destroy, volumes are removed unless persistence is explicitly enabled. Rollout and restart actions preserve volumes in all cases.
+When a playground expires and gets torn down, or when manually destroyed, volumes are only preserved if the parent Spec has persist_volumes=true. On stop (graceful shutdown), volumes are always kept regardless of this setting. On destroy, volumes are removed unless persistence is explicitly enabled. Rollout and restart actions preserve volumes in all cases.
 
 ### Extend expiration uses maximum of current expiration or now
 
@@ -328,49 +332,49 @@ Automatic rollouts for drift detection are blocked for 3 minutes after playgroun
 
 ### SSH debug terminal sessions expire after 4 hours
 
-Each SSH terminal session connected to a Marquee has a 4-hour session TTL. After 4 hours of session registration, the session becomes invalid and cannot be reconnected. Additionally, only 3 concurrent SSH terminal sessions are allowed per Marquee: attempting a 4th will fail until one of the existing three closes.
+Each SSH terminal session connected to a Host has a 4-hour session TTL. After 4 hours of session registration, the session becomes invalid and cannot be reconnected. Additionally, only 3 concurrent SSH terminal sessions are allowed per Host: attempting a 4th will fail until one of the existing three closes.
 
-## Props, Git Providers, And Source Control
+## Repositories, Git Providers, And Source Control
 
 ### GitHub App installation deletion cascades to connections
 
-When a GitHub App installation is uninstalled/deleted, all GitProviderConnection records with that installation_id are destroyed, and the player's github_app_installation_id is nullified. Props that relied on this installation lose automatic token generation and become inaccessible if they have no explicit credentials.
+When a GitHub App installation is uninstalled/deleted, all GitProviderConnection records with that installation_id are destroyed, and the player's github_app_installation_id is nullified. Repositories that relied on this installation lose automatic token generation and become inaccessible if they have no explicit credentials.
 
 ### Private repos require credentials or installation token
 
-Private Props must have either: (1) explicit credentials in the Prop record, (2) a GitHub App installation token (for GitHub), or (3) a Gitea connection token. Attempting to create/save a private Prop without any of these fails validation with credentials-required validation error.
+Private Repositories must have either: (1) explicit credentials in the Repository record, (2) a GitHub App installation token (for GitHub), or (3) a Gitea connection token. Attempting to create/save a private Repository without any of these fails validation with credentials-required validation error.
 
-### Branch deletion via webhook cascades to PropBranch records
+### Branch deletion via webhook cascades to RepositoryBranch records
 
-When a branch is deleted in the remote repository (GitHub/Gitea), a webhook fires and all corresponding PropBranch records for that Prop are automatically destroyed. This is not reversible without re-pushing the branch.
+When a branch is deleted in the remote repository (GitHub/Gitea), a webhook fires and all corresponding RepositoryBranch records for that Repository are automatically destroyed. This is not reversible without re-pushing the branch.
 
 ### GitHub App installation token TTL
 
-GitHub App installation tokens expire after 50 minutes and are cached. Tokens are automatically refreshed on expiry when creating installations or during Prop operations. This is transparent to the user and requires no manual action.
+GitHub App installation tokens expire after 50 minutes and are cached. Tokens are automatically refreshed on expiry when creating installations or during Repository operations. This is transparent to the user and requires no manual action.
 
 ### Gitea repos default to private in greenfield creation
 
 When creating a new repository via greenfield for Gitea, the default is private=true. For GitHub, the default is private=false. Users can override with repo_private parameter.
 
-### Commit notifications are opt-in per Prop
+### Commit notifications are opt-in per Repository
 
-Webhook events (push, branch creation) trigger commit notifications in Fibe only if notifications_enabled is true on the Prop. Users must explicitly enable notifications to receive commit alerts.
+Webhook events (push, branch creation) trigger commit notifications in Fibe only if notifications_enabled is true on the Repository. Users must explicitly enable notifications to receive commit alerts.
 
 ### Credentials field max size is 64 kilobytes
 
-Prop credentials are encrypted and stored in the database with a maximum size of 64 kilobytes. Attempting to save credentials larger than this fails with 'credentials_too_large' validation error.
+Repository credentials are encrypted and stored in the database with a maximum size of 64 kilobytes. Attempting to save credentials larger than this fails with 'credentials_too_large' validation error.
 
 ### Gitea connection is limited to one per player
 
 Each player can have only one Gitea connection registered. Attempting to add a second Gitea connection fails with 'provider: taken'. GitHub supports multiple connections (e.g., multiple app installations).
 
-### Prop lifecycle allows only specific state transitions
+### Repository lifecycle allows only specific state transitions
 
-Props have three states: active, disabled, error. Valid transitions are: active→disabled|error, disabled→active, error→active. Attempting invalid transitions (e.g., disabled→error directly) raises InvalidTransition error.
+Repositories have three states: active, disabled, error. Valid transitions are: active→disabled|error, disabled→active, error→active. Attempting invalid transitions (e.g., disabled→error directly) raises InvalidTransition error.
 
 ### Repository URL and default_branch length limits
 
-Prop repository_url has a max length of 2048 characters. Default_branch field has a max length of 255 characters. Both are required fields and cannot be blank.
+Repository repository_url has a max length of 2048 characters. Default_branch field has a max length of 255 characters. Both are required fields and cannot be blank.
 
 ## SDK, CLI, And MCP
 
@@ -378,9 +382,9 @@ Prop repository_url has a max length of 2048 characters. Default_branch field ha
 
 The CLI reads credentials from ~/.config/fibe/config.json (profile metadata) and credentials.json (API keys). The priority chain is: --api-key flag → --profile flag (reads from config.json/credentials.json) → FIBE_API_KEY env var → FIBE_DOMAIN env var → default profile 'default' with domain fibe.gg. Once any profile is configured, env vars are ignored. Both files must be readable by the process; permissions recommended to 0o700 and 0o644.
 
-### API key scopes and granular_scopes restrict resource access; agent_accessible flag needed for Genie exposure
+### API key scopes and granular_scopes restrict resource access; agent_accessible flag needed for Agent exposure
 
-API keys have Scopes (broad: launch:write, secrets:write, keys:manage) and optional GranularScopes (resource-specific: prop_id=[1,2], playspec_id=[5]). An API key marked agent_accessible=false is NOT visible to Genies (Genies) even if they know the key ID. Default is agent_accessible=false for human-created keys. Tokens are returned only at creation time; on updates, only the masked_token is visible.
+API keys have Scopes (broad: launch:write, secrets:write, keys:manage) and optional GranularScopes (resource-specific: repository_id=[1,2], spec_id=[5]). An API key marked agent_accessible=false is NOT visible to Agents (Agents) even if they know the key ID. Default is agent_accessible=false for human-created keys. Tokens are returned only at creation time; on updates, only the masked_token is visible.
 
 ### Circuit breaker: opens after 5 consecutive failures, re-probes after 30 seconds
 
@@ -392,7 +396,7 @@ All HTTP requests have a 30-second timeout. This is configurable via WithTimeout
 
 ### MCP server in stdio mode redirects stdout→stderr to protect JSON-RPC pipe
 
-When fibe mcp serve runs in stdio mode (default), it captures os.Stdout, replaces it with os.Stderr, and hands the original stdout to the MCP wire protocol. Any stray write to os.Stdout (fmt.Println, log output, panic trace) corrupts the JSON-RPC stream with parse errors like 'invalid message version tag'. The tool sets log output to stderr and redirects stdio writes; Genie code must not write directly to stdout.
+When fibe mcp serve runs in stdio mode (default), it captures os.Stdout, replaces it with os.Stderr, and hands the original stdout to the MCP wire protocol. Any stray write to os.Stdout (fmt.Println, log output, panic trace) corrupts the JSON-RPC stream with parse errors like 'invalid message version tag'. The tool sets log output to stderr and redirects stdio writes; Agent code must not write directly to stdout.
 
 ### Retry policy: max 3 attempts, exponential backoff with jitter, retries on 429/5xx
 
@@ -418,7 +422,7 @@ After 10 failed login attempts, the account locks for 30 minutes. A lockout emai
 
 ### Concurrent sign-in detection and de-trusting
 
-When a user signs in, the system checks for sign-ins from different IP or user-Genie within the last 30 minutes. If detected, all concurrent sessions are marked untrusted (requiring 2FA re-verification), and a notification email is sent. This prevents silent session hijacking.
+When a user signs in, the system checks for sign-ins from different IP or user-Agent within the last 30 minutes. If detected, all concurrent sessions are marked untrusted (requiring 2FA re-verification), and a notification email is sent. This prevents silent session hijacking.
 
 ### Password length and character constraints
 
@@ -484,23 +488,23 @@ The team owner/leader (creator) cannot leave or be removed from the team. Attemp
 
 ### Departing members lose access to shared resources but retain personal ownership
 
-When a member leaves a team (non-leader), all TeamResource records contributed by that member are destroyed (revoked from the team). However, the underlying PlayerResource records (personal ownership) remain intact: they own those resources individually. Playgrounds running on team-shared Marquees are terminated (set to "destroying" status) when the member departs, and their PlayerResource entry for the playground is removed. The contributing player keeps their personal Marquee resources but the team no longer has access.
+When a member leaves a team (non-leader), all TeamResource records contributed by that member are destroyed (revoked from the team). However, the underlying PlayerResource records (personal ownership) remain intact: they own those resources individually. Playgrounds running on team-shared Hosts are terminated (set to "destroying" status) when the member departs, and their PlayerResource entry for the playground is removed. The contributing player keeps their personal Host resources but the team no longer has access.
 
 ### Members can read shared resources but cannot edit or delete them
 
-When a Marquee (runtime container) is shared with a team at "manage" permission level, all accepted members get read access to it. Non-owner/admin members cannot destroy, update, or modify shared Marquees or their Props/Playspecs: only the owner/admin can manage those. Shared resources appear in the member's accessible list but are read-only. Team members can contribute (share) their own Marquees to the team, but those are also then subject to member visibility restrictions.
+When a Host (runtime container) is shared with a team at "manage" permission level, all accepted members get read access to it. Non-owner/admin members cannot destroy, update, or modify shared Hosts or their Repositories/Specs: only the owner/admin can manage those. Shared resources appear in the member's accessible list but are read-only. Team members can contribute (share) their own Hosts to the team, but those are also then subject to member visibility restrictions.
 
 ### No team-scoped secrets, API keys, or audit logs: only resource sharing
 
-Teams do not provide team-scoped secrets, API keys, webhooks, or audit logs. Teams only share Marquee resources with access control. Secrets, API keys, webhook endpoints, and audit logs remain player-scoped. When a member leaves a team, they retain all their personal secrets and keys: team membership has no effect on those resources. Team members cannot see each other's personal secrets or audit logs.
+Teams do not provide team-scoped secrets, API keys, webhooks, or audit logs. Teams only share Host resources with access control. Secrets, API keys, webhook endpoints, and audit logs remain player-scoped. When a member leaves a team, they retain all their personal secrets and keys: team membership has no effect on those resources. Team members cannot see each other's personal secrets or audit logs.
 
-### Only Marquees (container runtimes) can be shared; read-only permission is "manage"
+### Only Hosts (container runtimes) can be shared; read-only permission is "manage"
 
-Only Marquee resources can be shared with teams (SHAREABLE_RESOURCE_TYPE="Marquee"). The only permission level is "manage": there is no read-only or restricted sharing option. When a Marquee is contributed to a team at permission_level="manage", all team members get full access to run and interact with it (read/execute semantics, despite the name). Each resource can only belong to one team globally: a Marquee shared with one team cannot be re-shared to another.
+Only Host resources can be shared with teams (SHAREABLE_RESOURCE_TYPE="Host"). The only permission level is "manage": there is no read-only or restricted sharing option. When a Host is contributed to a team at permission_level="manage", all team members get full access to run and interact with it (read/execute semantics, despite the name). Each resource can only belong to one team globally: a Host shared with one team cannot be re-shared to another.
 
 ### Teams feature is optional and gated behind a feature flag
 
-Teams are an optional collaboration feature that must be enabled per player, except for super-admin accounts. Without the feature enabled, a player cannot create teams, manage memberships, or use team-based authorization rules. Accepted team Marquee access can still be honored where the product explicitly allows it.
+Teams are an optional collaboration feature that must be enabled per player, except for super-admin accounts. Without the feature enabled, a player cannot create teams, manage memberships, or use team-based authorization rules. Accepted team Host access can still be honored where the product explicitly allows it.
 
 ### Pending invitations are cleaned up when user declines, allowing re-invite
 
@@ -536,7 +540,7 @@ Version numbers are assigned sequentially at creation time (read-only :version).
 
 Templates can use YAML anchors and aliases for DRY composition. The source-file size is capped at 1MB, but after parsing YAML (which expands aliases), the result is checked against a 2MB limit. A compact template with heavy alias expansion can hit the 2MB limit even if the source is small. Users must be aware that alias chains increase the effective size for safety purposes.
 
-## Tricks, Jobs, Schedules, And Automation
+## Tasks, Jobs, Schedules, And Automation
 
 ### Job completion polling timeout and max attempts
 
@@ -544,7 +548,7 @@ Jobs poll watched services every 10 seconds by default. The default maximum is 1
 
 ### Job expiration is optional and uses a configurable fallback
 
-Job-mode Playgrounds (Tricks) default to never expire. If expiration is enabled without an explicit deadline, the operator-configured job fallback is used (1 hour by default). An expired Trick is cleaned up and removed together with its saved result.
+Job-mode Playgrounds (Tasks) default to never expire. If expiration is enabled without an explicit deadline, the operator-configured job fallback is used (1 hour by default). An expired Task is cleaned up and removed together with its saved result.
 
 ### Watched services determine job success/failure via exit codes
 
@@ -552,36 +556,36 @@ Services marked with job_watch: true (or fibe.gg/job_watch label) are watched. J
 
 ### CI trigger default max retries is unlimited; only checked at invocation
 
-Trigger playspecs can specify max_retries count (per push event). If max_retries=3, the trigger worker refuses to create playground on retry_count >= 3. Default (nil) means unlimited retries. Retries only happen via explicit webhook re-fires or manual job re-queuing: no automatic exponential backoff or retry scheduling built in.
+Trigger specs can specify max_retries count (per push event). If max_retries=3, the trigger worker refuses to create playground on retry_count >= 3. Default (nil) means unlimited retries. Retries only happen via explicit webhook re-fires or manual job re-queuing: no automatic exponential backoff or retry scheduling built in.
 
-### Job results persist with the Trick record after runtime cleanup
+### Job results persist with the Task record after runtime cleanup
 
-A job result containing service exit codes and log tails remains available after normal completion because completion tears down the runtime containers without deleting the Trick record. The result belongs to that record; deleting or expiring the Trick removes the result as well.
+A job result containing service exit codes and log tails remains available after normal completion because completion tears down the runtime containers without deleting the Task record. The result belongs to that record; deleting or expiring the Task removes the result as well.
 
 ### Schedule syntax accepts cron and human-readable schedules
 
-Schedule configuration supports cron expressions (e.g., '0 9 * * *') and human-readable formats (e.g., 'every day at 9am', 'every 5 minutes'). Invalid formats are rejected at playspec validation time. There is no minimum interval enforcement for scheduled Tricks, so very frequent schedules should be used carefully.
+Schedule configuration supports cron expressions (e.g., '0 9 * * *') and human-readable formats (e.g., 'every day at 9am', 'every 5 minutes'). Invalid formats are rejected at spec validation time. There is no minimum interval enforcement for scheduled Tasks, so very frequent schedules should be used carefully.
 
-### Scheduled jobs do not overlap: single instance per playspec
+### Scheduled jobs do not overlap: single instance per spec
 
 The schedule worker re-enqueues itself for the next cron tick only after the current run completes. If a job takes longer than the scheduled interval, the next scheduled run is skipped (no queue-stacking). No concurrency control or 'missed run' recovery exists.
 
-### Trigger disabled automatically when target Marquee becomes inactive
+### Trigger disabled automatically when target Host becomes inactive
 
-If a trigger's configured Marquee is marked 'disabled' or 'inactive' status, the trigger worker disables the trigger (updates trigger configuration enabled to false) and logs a warning. Manual re-enable required; trigger does not auto-recover when Marquee restored to 'active'.
+If a trigger's configured Host is marked 'disabled' or 'inactive' status, the trigger worker disables the trigger (updates trigger configuration enabled to false) and logs a warning. Manual re-enable required; trigger does not auto-recover when Host restored to 'active'.
 
 ### Trigger event filter supports push and pull_request; defaults to push
 
 Trigger config event_type field accepts 'push' or 'pull_request' (defined in supported event list). Missing event_type defaults to 'push'. Branch filter is required and exact-matched. Both push and PR webhooks fire independently from VCS; if both are enabled and both fire on same SHA, two playground creations may occur.
 
-### Job failure triggers optional Genie notification for CI-triggered jobs
+### Job failure triggers optional Agent notification for CI-triggered jobs
 
-When a triggered (CI) job completes with failure (exit code != 0) and a configured Genie id is set, a failure notification is queued to notify the Genie. Success jobs skip notification. This is opt-in per playspec and does not affect job status or result storage.
+When a triggered (CI) job completes with failure (exit code != 0) and a configured Agent id is set, a failure notification is queued to notify the Agent. Success jobs skip notification. This is opt-in per spec and does not affect job status or result storage.
 
 ### Log tail collection limited to 5000 lines per service
 
-The job completion worker collects only the last 5000 log lines per service by default for inclusion in job result. Logs exceeding this are truncated; full logs may still exist on the Marquee temporarily before container teardown.
+The job completion worker collects only the last 5000 log lines per service by default for inclusion in job result. Logs exceeding this are truncated; full logs may still exist on the Host temporarily before container teardown.
 
-### Tricks list paginated at 20 per page; no configurable limit
+### Tasks list paginated at 20 per page; no configurable limit
 
-The Tricks list view uses page-size limit of 20. Jobs are sorted by created_at descending, showing newest first. No API flag to change page size for UI views.
+The Tasks list view uses page-size limit of 20. Jobs are sorted by created_at descending, showing newest first. No API flag to change page size for UI views.

@@ -69,7 +69,7 @@ See [`decide-zero-downtime`](/reference/decide-zero-downtime/) and [`recipe-zero
 | App-level launch config (app name, environment label) | template variable |
 | Generated DB password unique to a launch | variable with `random: true` |
 | External API token (Stripe, OpenAI…) | Secret Vault |
-| Credential reused across many Tricks | Job ENV entry |
+| Credential reused across many Tasks | Job ENV entry |
 | Sensitive value the launcher should type each time | variable marked `sensitive` |
 
 :::caution Anti-patterns
@@ -80,14 +80,14 @@ See [`decide-zero-downtime`](/reference/decide-zero-downtime/) and [`recipe-zero
 
 See [`decide-secrets-and-randoms`](/reference/decide-secrets-and-randoms/) and [Secret Vault & Job ENV](/advanced/secrets/).
 
-## Long-running, Trick, scheduled, or triggered?
+## Long-running, Task, scheduled, or triggered?
 
 | Shape | When |
 | --- | --- |
 | Long-running HTTP | Service should stay up. Default. |
-| Trick (job mode) | Task should finish. Mark a watched service. |
-| Scheduled Trick | Trick + cron schedule for recurring runs. |
-| Triggered Trick | Trick + push/PR trigger for CI-style jobs. |
+| Task (job mode) | Task should finish. Mark a watched service. |
+| Scheduled Task | Task + cron schedule for recurring runs. |
+| Triggered Task | Task + push/PR trigger for CI-style jobs. |
 
 See [Execution modes](/authoring/execution-modes/) and [`decide-job-mode`](/reference/decide-job-mode/).
 

@@ -26,7 +26,7 @@ Internal services talk over the Compose `default` network using their service na
 
 ## Step 2: Pick internal vs external
 
-- **`fibe.gg/visibility: external`**: public HTTPS route via Traefik on `https://<subdomain>.<marquee-root-domain>`. No additional auth from Fibe. Use for the user-facing app.
+- **`fibe.gg/visibility: external`**: public HTTPS route via Traefik on `https://<subdomain>.<host-root-domain>`. No additional auth from Fibe. Use for the user-facing app.
 - **`fibe.gg/visibility: internal`**: same routing, but Fibe protects the route with Basic Auth using the Playground's internal access credentials (shown on the Playground page). Use for admin consoles (Sidekiq Dashboard, RailsAdmin, Grafana, pgAdmin) that shouldn't be public but you still want a browser URL.
 
 If you want no public surface at all (only reachable from other containers in the network), do NOT set `fibe.gg/port`. The service is then only reachable inside Compose's network.
@@ -37,14 +37,14 @@ The subdomain is the leftmost label of the public host. Default: the service nam
 
 | `fibe.gg/subdomain` value | Resulting host |
 |---|---|
-| omitted | `<service-name>.<marquee-root-domain>` |
-| `api` | `api.<marquee-root-domain>` |
-| `@` | `<marquee-root-domain>` (the root) |
+| omitted | `<service-name>.<host-root-domain>` |
+| `api` | `api.<host-root-domain>` |
+| `@` | `<host-root-domain>` (the root) |
 | `$$var__SUBDOMAIN` | configured at launch |
 
 Subdomain regex: `^[a-z0-9]([a-z0-9-]*[a-z0-9])?$`. Lowercase alphanumeric and hyphens, cannot start or end with hyphen.
 
-Use `@` when this service should answer at the root of the Marquee: typically the "front door" web app. At most one service per Marquee can use `@` for a given path; conflicts surface at launch.
+Use `@` when this service should answer at the root of the Host: typically the "front door" web app. At most one service per Host can use `@` for a given path; conflicts surface at launch.
 
 ## Step 4: Decide whether to share a subdomain with `path_rule`
 
@@ -123,7 +123,7 @@ Vite 6+ additionally needs `server.allowedHosts: true` or the explicit Fibe host
 Compose `ports:` exposes a host port directly. Fibe strips those bindings by default, so they are fine as local-only development convenience but they do not create a public route. If preserved explicitly, they bypass Traefik:
 
 - doesn't get TLS,
-- doesn't get a public URL via the Marquee root domain,
+- doesn't get a public URL via the Host root domain,
 - conflicts with `fibe.gg/zerodowntime: "true"` (validator rejects when `preserve_ports: true`).
 
 Always add `fibe.gg/port` for routed HTTP. See [recipe-ports-to-expose](recipe-ports-to-expose.md).
@@ -137,7 +137,7 @@ Should service be reachable?
    ├─ Public user-facing       → fibe.gg/port: PORT and fibe.gg/visibility: external
    │  ├─ Default service-name routing? → no extra labels
    │  ├─ Different subdomain?         → fibe.gg/subdomain: <name>
-   │  ├─ At root of Marquee?          → fibe.gg/subdomain: "@"
+   │  ├─ At root of Host?          → fibe.gg/subdomain: "@"
    │  └─ Sharing subdomain with another service? → fibe.gg/path_rule + same subdomain
    └─ Admin / staff only       → fibe.gg/port: PORT and fibe.gg/visibility: internal
       (Basic Auth with the Playground's credentials is applied automatically)

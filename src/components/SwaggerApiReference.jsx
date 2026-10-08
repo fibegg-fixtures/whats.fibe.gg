@@ -4,7 +4,7 @@ import 'swagger-ui-react/swagger-ui.css';
 import styles from './SwaggerApiReference.module.css';
 
 const SERVERS = [
-  {url: 'https://fibe.gg', description: 'Production'},
+  {url: 'https://next.fibe.live', description: 'Coordinated staging candidate; use a matching bound credential'},
 ];
 
 function methodsFor(endpoint) {
@@ -85,9 +85,10 @@ function buildSpec(sections) {
 
   for (const section of sections) {
     for (const endpoint of section.endpoints) {
-      if (!paths[endpoint.path]) paths[endpoint.path] = {};
+      const templatePath = endpoint.path.replace(/:([A-Za-z_]\w*)/g, '{$1}');
+      if (!paths[templatePath]) paths[templatePath] = {};
       for (const method of methodsFor(endpoint)) {
-        paths[endpoint.path][method.toLowerCase()] = {
+        paths[templatePath][method.toLowerCase()] = {
           tags: [section.title],
           summary: endpoint.title,
           description: endpoint.description.join('\n\n'),
@@ -105,8 +106,8 @@ function buildSpec(sections) {
     openapi: '3.1.0',
     info: {
       title: 'Fibe API',
-      version: '2026-05-20',
-      description: 'Public Fibe /api namespace. Excludes the legacy Stripe webhook, commented team routes, and internal routes outside /api.',
+      version: 'candidate-2026-10-07',
+      description: 'Candidate public /api contract. Production fibe.gg retains the previous contract. Provider callbacks and routes outside /api have separate contracts.',
     },
     servers: SERVERS,
     tags: sections.map((section) => ({name: section.title, description: section.description})),

@@ -40,7 +40,7 @@ See [Before you publish](/operate/publishing/) for the polish checklist.
 
 - **Coming from an existing `docker-compose.yml`?** Walk [Compose → Fibe](/authoring/compose-to-fibe/): a nine-step conversion.
 - **Authoring from scratch?** Skim [Service labels](/authoring/service-labels/) for the label reference, then [Settings block](/authoring/settings-block/) for variables/metadata.
-- **Choosing between modes?** Read [Execution modes](/authoring/execution-modes/): long-running, Trick, scheduled, triggered.
+- **Choosing between modes?** Read [Execution modes](/authoring/execution-modes/): long-running, Task, scheduled, triggered.
 - **Stuck on a decision?** [Decision guides](/authoring/decisions/) has short opinionated answers.
 - **Looking for a pattern?** [Recipes](/authoring/recipes/): small, copy-pasteable changes.
 - **A worked end-to-end example?** [Playbooks](/authoring/playbooks/): Rails, Node dev mode, WordPress, Wiki.js, and more.

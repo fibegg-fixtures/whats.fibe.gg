@@ -8,7 +8,7 @@ This file lists what an LLM agent can do after loading the right `fibe-skills` f
 | --- | --- |
 | Explain Fibe's user-facing product model and core nouns | [skills/fibe-product-map.md](skills/fibe-product-map.md), [skills/glossary.md](skills/glossary.md) |
 | Describe the end-to-end path from repository to running environment | [skills/fibe-product-map.md](skills/fibe-product-map.md), [skills/fibe-resource-lifecycles.md](skills/fibe-resource-lifecycles.md) |
-| Choose whether a user needs a Marquee, Prop, Template, Playspec, Playground, Trick, Agent, Secret, Webhook, or API Key | [skills/fibe-product-map.md](skills/fibe-product-map.md), [skills/fibe-feature-surface.md](skills/fibe-feature-surface.md) |
+| Choose whether a user needs a Host, Repository, Template, Spec, Playground, Task, Agent, Secret, Webhook, or API Key | [skills/fibe-product-map.md](skills/fibe-product-map.md), [skills/fibe-feature-surface.md](skills/fibe-feature-surface.md) |
 | Explain feature areas without leaking implementation details | [skills/fibe-feature-surface.md](skills/fibe-feature-surface.md) |
 | Describe safe resource lifecycle behavior, including expiration, rollouts, hard restarts, versioning, and job completion | [skills/fibe-resource-lifecycles.md](skills/fibe-resource-lifecycles.md) |
 | Explain collaboration, access, security, billing access, and integrations | [skills/fibe-security-access-and-integrations.md](skills/fibe-security-access-and-integrations.md) |
@@ -18,18 +18,18 @@ This file lists what an LLM agent can do after loading the right `fibe-skills` f
 An agent can explain or guide a user through:
 
 - Creating and managing Players, sessions, sudo verification, TOTP, recovery codes, and WebAuthn security keys.
-- Creating Teams, inviting members, assigning roles, and sharing resources with read or manage access.
+- Creating company workspaces, accepting invitations, operating immutable owned resources and governing live member/service-principal authority.
 - Managing subscriptions, plan allowances, referral or invitation access, and wallet-style platform credits at a user-facing level.
-- Connecting user-managed or platform-managed Marquees for Docker-based environments.
+- Connecting user-managed or platform-managed Hosts for Docker-based environments.
 - Configuring DNS, TLS, public routes, internal routes, wildcard certificates, and local/direct routing.
-- Connecting GitHub or built-in Git repositories as Props, selecting branches, detecting Compose files, and tracking code changes.
+- Connecting GitHub or built-in Git repositories as Repositories, selecting branches, detecting Compose files, and tracking code changes.
 - Creating reusable Templates and immutable Template Versions.
-- Launching Templates into Playspecs and Playgrounds.
+- Launching Templates into Specs and Playgrounds.
 - Publishing, discovering, forking, and launching community Templates through the Bazaar.
 - Running long-lived Playgrounds with logs, service URLs, debug terminals, rollout, hard restart, stop, retry, and expiration controls.
-- Running one-shot Tricks for tests, migrations, backups, CI repair, scheduled tasks, VCS-triggered tasks, and mutation-testing repair loops.
-- Creating AI Genies, authenticating providers, starting standalone chats, attaching Genies to Playgrounds, and using mounted files.
-- Using Bridge as a unified Genie/chat workspace.
+- Running one-shot Tasks for tests, migrations, backups, CI repair, scheduled tasks, VCS-triggered tasks, and mutation-testing repair loops.
+- Creating AI Agents, authenticating providers, starting standalone chats, attaching Agents to Playgrounds, and using mounted files.
+- Using Bridge as a unified Agent/chat workspace.
 - Handling artefacts, feedback, mutters, public build-in-public timelines, and live activity feeds.
 - Creating API keys with scopes, granular restrictions, expiry, rate limits, and optional agent access.
 - Storing sensitive values in Secret Vault and wiring Job ENV values into job-mode runs.
@@ -68,12 +68,12 @@ An agent can convert Docker Compose into Fibe templates that:
 An agent can build templates for:
 
 - Long-running web or worker stacks.
-- One-shot job-mode Tricks that complete when watched services exit.
+- One-shot job-mode Tasks that complete when watched services exit.
 - Cron-style scheduled jobs using `metadata.schedule_config`.
 - VCS-triggered jobs using `metadata.trigger_config` for push or pull-request events.
 - CI test runners that capture pass/fail results.
-- Agent-assisted CI repair flows that feed logs into a Genie.
-- Mutation-testing flows that send surviving mutations to a Genie.
+- Agent-assisted CI repair flows that feed logs into a Agent.
+- Mutation-testing flows that send surviving mutations to a Agent.
 - Database backup, cleanup, migration, and data-processing tasks.
 
 ## Security And Integration Capabilities
@@ -96,7 +96,7 @@ An agent can explain or configure:
 | `fibe-product-map` | Build a correct mental model of Fibe's product topology and normal user journey. |
 | `fibe-feature-surface` | Answer "what can Fibe do?" and choose which feature area applies. |
 | `fibe-resource-lifecycles` | Explain how resources are created, updated, shared, stopped, completed, upgraded, or retired. |
-| `fibe-agents-and-automation` | Work with Genies, chats, artefacts, mutters, feedback, job mode, schedules, triggers, CI repair, and mutation repair. |
+| `fibe-agents-and-automation` | Work with Agents, chats, artefacts, mutters, feedback, job mode, schedules, triggers, CI repair, and mutation repair. |
 | `fibe-security-access-and-integrations` | Explain auth, teams, API keys, secrets, webhooks, audit logs, data portability, notifications, and plan access. |
 | `glossary` | Resolve Fibe terms quickly without reading multiple skills. |
 | `convert-compose-to-fibe` | Orchestrate a full Compose-to-Fibe conversion. |
@@ -130,7 +130,7 @@ An agent can explain or configure:
 | `recipe-named-volumes` | Preserve durable service data with named volumes. |
 | `recipe-depends-on` | Model startup ordering and setup steps. |
 | `recipe-add-metadata` | Add publish-ready descriptions, categories, and source defaults. |
-| `mode-job-trick` | Build one-shot job templates. |
+| `mode-job-task` | Build one-shot job templates. |
 | `mode-schedule-cron` | Add cron scheduling to job templates. |
 | `mode-trigger-vcs` | Add push or pull-request triggers to job templates. |
 | `playbook-wikijs` | Convert Wiki.js plus Postgres. |

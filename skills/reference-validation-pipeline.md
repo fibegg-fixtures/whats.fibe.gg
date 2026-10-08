@@ -57,7 +57,7 @@ The public Fibe Compose schema catches:
 - `path` not matching `^[A-Za-z0-9_./\[\]-]+$`.
 - `validation` not wrapped in `/.../` or empty.
 - `trigger_config.event_type` not in `["push","pull_request"]`.
-- `schedule_config.marquee_id` / `trigger_config.prop_id|marquee_id` not a positive integer (or string form).
+- `schedule_config.host_id` / `trigger_config.repository_id|host_id` not a positive integer (or string form).
 
 Does NOT catch: repo URL provider validity, resource existence, runtime cross-label rules.
 
@@ -108,10 +108,10 @@ The compiler also performs the substitution work: it is the layer that actually 
 
 Drive through MCP, CLI, API, or UI launch/preview. Catches:
 
-- `trigger_config.prop_id` / `marquee_id` / `schedule_config.marquee_id` not found or not owned by Player.
+- `trigger_config.repository_id` / `host_id` / `schedule_config.host_id` not found or not owned by Player.
 - `trigger_config.repo_url` not authorized (no installed GitHub app, no Gitea token).
-- Source defaults can't be applied (template imported from non-existent Prop).
-- Conflicts during launch (e.g. subdomain already taken at the chosen Marquee: only surfaces at launch).
+- Source defaults can't be applied (template imported from non-existent Repository).
+- Conflicts during launch (e.g. subdomain already taken at the chosen Host: only surfaces at launch).
 
 ## Driving each layer
 
@@ -119,7 +119,7 @@ Drive through MCP, CLI, API, or UI launch/preview. Catches:
 |---|---|
 | 1-5 (everything but compile + runtime) | `fibe_schema(resource: "compose", operation: "validate", payload: { "compose_yaml": "..." })` |
 | 6 (compile / preview) | `fibe_templates_change(mode: "preview", ...)`. `fibe_launch` has no dry-run: calling it launches for real; validate first with `fibe_schema(resource: "compose", operation: "validate", ...)` |
-| 7 (runtime) | `fibe_launch` for real, or `fibe_resource_mutate(resource: "playspec", operation: "create", ...)` for import |
+| 7 (runtime) | `fibe_launch` for real, or `fibe_resource_mutate(resource: "spec", operation: "create", ...)` for import |
 
 ## Common confusion
 

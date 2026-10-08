@@ -1,6 +1,6 @@
 ---
 title: "Named Volumes"
-description: "Use to declare Compose named volumes for persistent data (databases, uploads, caches), and to replace host bind mounts that don't survive Marquee filesystem rules."
+description: "Use to declare Compose named volumes for persistent data (databases, uploads, caches), and to replace host bind mounts that don't survive Host filesystem rules."
 slug: /reference/recipe-named-volumes
 sidebar_label: "Named Volumes"
 image: /img/og/reference-recipe-named-volumes.png
@@ -9,7 +9,7 @@ tags: ["reference", "recipe"]
 format: md
 ---
 
-Stateful services (Postgres, MinIO, Redis with AOF, Git service data) need persistent storage. Use Compose **named volumes**. Host bind mounts (`./data:/var/lib/...`) generally do not work on Fibe Marquees because templates should not assume a host filesystem layout.
+Stateful services (Postgres, MinIO, Redis with AOF, Git service data) need persistent storage. Use Compose **named volumes**. Host bind mounts (`./data:/var/lib/...`) generally do not work on Fibe Hosts because templates should not assume a host filesystem layout.
 
 ## Pattern
 
@@ -47,7 +47,7 @@ The `volumes:` top-level block declares the named volumes; the per-service `volu
 |---|---|---|
 | Named volume | `postgres_data:/var/lib/postgresql/data` | YES: Fibe manages the volume |
 | Anonymous volume | `/var/lib/postgresql/data` | Works, but is unnamed and harder to manage |
-| Host bind | `./data:/var/lib/postgresql/data` | NO: Marquee filesystem doesn't have `./data` |
+| Host bind | `./data:/var/lib/postgresql/data` | NO: Host filesystem doesn't have `./data` |
 | Source mount (Fibe-injected) | (via `working_dir`) | YES: Fibe injects automatically |
 
 ## Read-only mounts
@@ -87,7 +87,7 @@ This is the standard pattern for app uploads or generated files that more than o
 
 ## Volume backups
 
-Fibe does not automatically back up named volumes. If the app's data must survive Marquee destruction:
+Fibe does not automatically back up named volumes. If the app's data must survive Host destruction:
 
 - Use external services (S3 for blobs, managed Postgres for DB) when possible.
 - For Postgres on a named volume, the application is responsible for backup. Schedule a `pg_dump` job (`mode-schedule-cron`) that uploads to S3.
@@ -107,7 +107,7 @@ volumes:
       o: "size=1g"
 ```
 
-Marquee defaults to `local` driver. Custom drivers may or may not be available: keep portable templates simple (just `<name>:` with no options).
+Host defaults to `local` driver. Custom drivers may or may not be available: keep portable templates simple (just `<name>:` with no options).
 
 ## Replacing host binds: common rewrites
 
@@ -153,7 +153,7 @@ x-fibe.gg:
 ## Pitfalls
 
 - **Forgetting the top-level `volumes:` block**: Compose treats `postgres_data` in the service array as anonymous and creates a new random volume per launch. Always declare.
-- **Bind mounts assuming repo paths**: `./Dockerfile:/app/Dockerfile` works locally but a Marquee does not guarantee that relative host path. Use `working_dir` when the service needs repository files.
+- **Bind mounts assuming repo paths**: `./Dockerfile:/app/Dockerfile` works locally but a Host does not guarantee that relative host path. Use `working_dir` when the service needs repository files.
 - **Mounting a volume into a path the image already populates**: the volume gets the image's first-write data only; subsequent image updates don't repopulate. For init data, copy from `/opt/init-data` to the volume on first start (entrypoint script pattern).
 - **Mounting a volume into multiple services with read-write**: possible but careful: Postgres specifically refuses to start if its data dir is owned by something else. Use `:ro` on the read-only consumers, leave RW only for the writer.
 

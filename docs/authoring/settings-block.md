@@ -19,7 +19,7 @@ x-fibe.gg:
     category: "..."               # a broad, discoverable category
     source_defaults: true|false   # auto-fill repo/branch on import
     preserve_ports: true|false    # keep raw Compose ports on Fibe; default strips
-    job_mode: true|false          # mark this as a Trick template
+    job_mode: true|false          # mark this as a Task template
     schedule_config: { ... }      # cron-driven launches
     trigger_config: { ... }       # VCS-triggered launches
 ```
@@ -52,9 +52,9 @@ metadata:
   preserve_ports: false
 ```
 
-`source_defaults: true` tells Fibe: when this template is launched from a connected Prop, fill in repository URLs and branches automatically on dynamic services that don't have them.
+`source_defaults: true` tells Fibe: when this template is launched from a connected Repository, fill in repository URLs and branches automatically on dynamic services that don't have them.
 
-`preserve_ports: true` tells Fibe to keep raw Docker Compose `ports:` bindings in the generated Compose. Leave it unset or `false` for normal templates: local `ports:` can remain in the file, and Fibe strips them before launch so multiple Playgrounds can run on the same Marquee without host-port collisions. Only the boolean value `true` preserves ports; strings such as `"true"` are treated as not enabled.
+`preserve_ports: true` tells Fibe to keep raw Docker Compose `ports:` bindings in the generated Compose. Leave it unset or `false` for normal templates: local `ports:` can remain in the file, and Fibe strips them before launch so multiple Playgrounds can run on the same Host without host-port collisions. Only the boolean value `true` preserves ports; strings such as `"true"` are treated as not enabled.
 
 ## schedule_config
 
@@ -62,10 +62,10 @@ metadata:
 schedule_config:
   enabled: true
   cron: "0 * * * *"
-  marquee_id: 1
+  host_id: 1
 ```
 
-Combined with `job_mode: true`. Cron is a standard 5-field expression. Fibe resolves `marquee_id` to a Marquee you can manage: one you own, or one shared with your team.
+Combined with `job_mode: true`. Cron is a standard 5-field expression. Fibe resolves `host_id` to a Host you can manage: one you own, or one shared with your team.
 
 ## trigger_config
 
@@ -75,8 +75,8 @@ trigger_config:
   event_type: push     # or "pull_request"
   repo_url: "https://github.com/owner/repo"
   branch: "main"
-  prop_id: 1
-  marquee_id: 1
+  repository_id: 1
+  host_id: 1
 ```
 
 Used with `job_mode: true`. With `source_defaults: true` and a source-backed launch, the repo URL and branch can be filled in for you.

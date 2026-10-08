@@ -52,7 +52,7 @@ services:
       CALLBACK_URL: "https://api.$$root_domain/callback"
 ```
 
-`$$root_domain` is special: always replaced with the Marquee root domain. Prefer explicit public URL variables with literal defaults and `path`/`paths` when the whole env value is a URL.
+`$$root_domain` is special: always replaced with the Host root domain. Prefer explicit public URL variables with literal defaults and `path`/`paths` when the whole env value is a URL.
 
 ### Label fragment
 
@@ -90,7 +90,7 @@ services:
 2. For every `$$var__([A-Za-z0-9_]+)` match, looks up the declared variable.
 3. Substitutes with: user-supplied value → default → random (if `random: true`) → literal string `placeholder` (only when no required validation fires).
 4. Re-parses the resulting YAML, then applies `path:` / `paths:` writes on top.
-5. `$$root_domain` is replaced separately with the Marquee root domain.
+5. `$$root_domain` is replaced separately with the Host root domain.
 
 Inline substitution happens before YAML structure is finalized. So `$$var__NAME` works anywhere in the body, including inside YAML anchors.
 
@@ -180,7 +180,7 @@ Use `path:` for whole-node bindings such as replica counts, passwords, port labe
 Practical differences:
 
 - `$$var__` integrates with `x-fibe.gg.variables` validation, `random`, `required` semantics.
-- `$$var__` is bypassed by Docker's `${...}` engine: it doesn't accidentally try to expand from the Marquee host's environment.
+- `$$var__` is bypassed by Docker's `${...}` engine: it doesn't accidentally try to expand from the Host host's environment.
 - The double-dollar `$$` in `$$var__` is also how you escape a single `$` in Compose to prevent its substitution: convenient by design.
 
 ## Escaping `$` in Compose values
@@ -197,7 +197,7 @@ If you need an actual `$$` in a final Compose value (e.g. in a shell command), w
 - **Nested defaults**: `default: "https://$$var__SUBDOMAIN.$$root_domain"` is invalid. Defaults are literal values only.
 - **Splitting `$$var__NAME` across YAML lines via line-continuation**: the literal text must appear unbroken; YAML folded scalars (`>`) might collapse the marker: quote the value.
 - **Using `$VAR` instead of `$$var__VAR`**: `$VAR` is Compose substitution from the host env; Fibe ignores it.
-- **Variable used inline only AND template imported across Marquees with different defaults**: be deliberate about defaults; they live in the template, not the launcher.
+- **Variable used inline only AND template imported across Hosts with different defaults**: be deliberate about defaults; they live in the template, not the launcher.
 
 ## Related skills
 

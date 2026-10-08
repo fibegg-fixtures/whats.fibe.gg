@@ -7,7 +7,7 @@ description: Use when you need to send one text message to a managed Agent chat.
 
 [MODE:OVERSEER] Tier: overseer. Not idempotent.
 
-Sending to an agent requires the chat Marquee to be funded. Unpaid Marquees return `MARQUEE_NOT_FUNDED`.
+Sending to an agent requires the chat Host to be funded. Unpaid Hosts return `HOST_NOT_FUNDED`.
 
 Pushes one user-style message into the Agent's chat queue. It can also pass image payloads and attachment filenames. Fibe uploads local files before sending the message and then forwards the turn to the selected Agent.
 

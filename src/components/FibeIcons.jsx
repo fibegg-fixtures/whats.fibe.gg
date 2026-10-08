@@ -15,7 +15,7 @@ const Svg = ({children, ...rest}) => (
   </svg>
 );
 
-export const MarqueeIcon = (props) => (
+export const HostIcon = (props) => (
   <Svg {...props}>
     <g strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5">
       <line x1="12" y1="1" x2="12" y2="4" />
@@ -35,7 +35,7 @@ export const MarqueeIcon = (props) => (
   </Svg>
 );
 
-export const PropsIcon = (props) => (
+export const RepositoriesIcon = (props) => (
   <Svg {...props}>
     <g strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5">
       <rect x="7" y="5" width="7" height="11" rx="0.5" />
@@ -105,7 +105,7 @@ export const PlaygroundsIcon = (props) => (
   </Svg>
 );
 
-export const TricksIcon = (props) => (
+export const TasksIcon = (props) => (
   <Svg {...props}>
     <g strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5">
       <path d="M10 3.5V1.5h4v2" />
@@ -121,7 +121,7 @@ export const TricksIcon = (props) => (
   </Svg>
 );
 
-export const GeniesIcon = (props) => (
+export const AgentsIcon = (props) => (
   <svg
     width="36"
     height="36"

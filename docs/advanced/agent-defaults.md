@@ -1,17 +1,17 @@
 ---
 title: Agent Defaults
-description: "Account-wide defaults for new Genies: CLI version, system prompt, environment, MCP servers, mounted files, post-init."
+description: "Account-wide defaults for new Agents: CLI version, system prompt, environment, MCP servers, mounted files, post-init."
 slug: /advanced/agent-defaults
 sidebar_position: 8
-keywords: [agent defaults, Genie defaults, system prompt, MCP, mounted files, CLI version]
+keywords: [agent defaults, Agent defaults, system prompt, MCP, mounted files, CLI version]
 ---
 
-Account-wide defaults for new Genies. Two levels:
+Account-wide defaults for new Agents. Two levels:
 
-- **General defaults**: apply to every new Genie regardless of provider.
-- **Per-provider defaults**: apply to new Genies of a specific provider (Claude, Gemini, OpenCode, etc.) and override the general default.
+- **General defaults**: apply to every new Agent regardless of provider.
+- **Per-provider defaults**: apply to new Agents of a specific provider (Claude, Gemini, OpenCode, etc.) and override the general default.
 
-The settings cascade for a Genie is: per-Genie → per-provider default → general default → platform default → built-in default. See [Genies → Settings cascade](/concepts/agents/#settings-cascade).
+The settings cascade for an Agent is: per-Agent → per-provider default → general default → platform default → built-in default. See [Agents → Settings cascade](/concepts/agents/#settings-cascade).
 
 ## Configurable fields
 
@@ -20,17 +20,17 @@ The settings cascade for a Genie is: per-Genie → per-provider default → gene
 | **CLI version** | Pin a provider CLI version (e.g. `v0.12.3`). Blank = latest. |
 | **Image tag** | Docker image tag. Blank = provider default. |
 | **CPU limit** | Container CPU (e.g. `1.5` or `2`). |
-| **Memory limit** | Container memory limit for new Genies. |
-| **Build in public** | Default visibility on new Genies. |
+| **Memory limit** | Container memory limit for new Agents. |
+| **Build in public** | Default visibility on new Agents. |
 | **June1815 (PTY-wrapped Claude)** | Route Claude through a PTY-driven TUI wrapper. Feature-parity transparent. |
 | **MCP JSON** | Custom MCP server configuration. Merged with admin defaults. |
 | **Custom environment** | KEY=VALUE pairs. Highest precedence in the env merge. One per line. Drop a `.env` file or type. |
 | **Agent rules** | Rules file content (e.g. `CLAUDE.md`, `GEMINI.md`). Synced to the agent workspace on every run. |
-| **System prompt** | Default system prompt for new Genies. |
-| **Mounted files** | Files auto-mounted into the Genie's workspace. |
+| **System prompt** | Default system prompt for new Agents. |
+| **Mounted files** | Files auto-mounted into the Agent's workspace. |
 | **Post-init script** | Runs once on environment setup. |
-| **CLI arguments** | Extra provider CLI flags applied to new Genies. Unsafe flags are ignored. |
-| **Skills** | Choose which built-in skills are synced into Genie workspaces; unchecked skills are not mounted. |
+| **CLI arguments** | Extra provider CLI flags applied to new Agents. Unsafe flags are ignored. |
+| **Skills** | Choose which built-in skills are synced into Agent workspaces; unchecked skills are not mounted. |
 
 ## Content modes
 
@@ -44,7 +44,7 @@ Append is the safe default. Override only when the upstream value gets in the wa
 
 ## Per-provider page
 
-Click a provider to open its defaults. The page mirrors the general defaults page with the provider's own values. Save propagates to all Genies of that provider that don't override the field per-Genie.
+Click a provider to open its defaults. The page mirrors the general defaults page with the provider's own values. Save propagates to all Agents of that provider that don't override the field per-Agent.
 
 ## Reset
 
@@ -52,5 +52,5 @@ Each field has a reset action: drop the account value and fall back to the next 
 
 ## Related
 
-- [Your Genies](/concepts/agents/): per-Genie configuration.
+- [Your Agents](/concepts/agents/): per-Agent configuration.
 - [MCP server](/sdk/mcp-server/): what custom MCP JSON points at.

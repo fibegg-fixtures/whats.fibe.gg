@@ -11,7 +11,7 @@ format: md
 
 [MODE:DIALOG] Read-only, idempotent. Tier: brownfield.
 
-Cached debug reads can remain available, but remote refresh requires a funded Marquee and returns `MARQUEE_NOT_FUNDED` when unpaid.
+Cached debug reads can remain available, but remote refresh requires a funded Host and returns `HOST_NOT_FUNDED` when unpaid.
 
 Returns the unified Playground diagnostic envelope through `GET /api/playgrounds/:id/debug`. Two paths:
 - `refresh:false`: read DB-cached diagnostics computed at last refresh (fast, returns immediately).
@@ -36,7 +36,7 @@ Returns the unified Playground diagnostic envelope through `GET /api/playgrounds
 {
   "playground": {
     "id": 42, "name": "...", "status": "running",
-    "marquee_id": 7, "playspec_id": 13,
+    "host_id": 7, "spec_id": 13,
     "compose_project": "fibe_42",
     "urls": [ ... ],
     "expires_at": "..."
@@ -54,7 +54,7 @@ Returns the unified Playground diagnostic envelope through `GET /api/playgrounds
     }
   ],
   "issues": [ { "level":"warn", "message":"..." } ],
-  "host": { "marquee_root_domain":"...", "docker_version":"..." }
+  "host": { "host_root_domain":"...", "docker_version":"..." }
 }
 ```
 
@@ -70,9 +70,9 @@ The default `refresh:true` path:
 Cached read (`refresh:false`) skips the job and computes diagnostics synchronously.
 
 ## Gotchas
-- The Marquee must be reachable via SSH for `refresh:true` to succeed; if it's down, expect `playground_debug` to error.
+- The Host must be reachable via SSH for `refresh:true` to succeed; if it's down, expect `playground_debug` to error.
 - `logs_tail` is clamped server-side to a maximum (currently a few hundred). Use `fibe_playgrounds_logs` for larger tails.
-- `service` filter narrows the response but doesn't speed up the refresh meaningfully (Marquee-side debug runs all services anyway).
+- `service` filter narrows the response but doesn't speed up the refresh meaningfully (Host-side debug runs all services anyway).
 - `summary` is what 95% of agent flows want. Use `full` only when summary's redacted/elided fields aren't enough.
 - Cached debug is per-Playground, single-slot: frequent `refresh:false` calls return identical payloads until someone refreshes.
 

@@ -1,16 +1,20 @@
 ---
 title: API Keys
-description: Scoped tokens with resource restrictions, expiration, rotation, and optional Genie access.
+description: Scoped tokens with resource restrictions, expiration, rotation, and optional Agent access.
 slug: /advanced/api-keys
 sidebar_position: 4
 keywords: [API keys, authentication, scopes, granular, programmatic access, CLI, integration, agent-accessible]
 ---
 
-API keys authenticate scripts, CLI sessions, integrations, and Genies.
+API keys authenticate scripts, CLI sessions, integrations, and Agents.
+
+## Candidate owner and principal binding
+
+New credentials bind one immutable personal/company owner and a person or durable company service principal. Scopes and live authority are separate checks. The issuer is attribution; a departed issuer cannot authorize future company effects. A selected profile or unchecked team ID cannot widen the token. Personal account deletion revokes personal authority, while company resources and durable company principals retain their own lifecycle. Historical personal credentials retain their recorded authorization version.
 
 ## Family scopes
 
-Scopes combine a resource **family** with an **action**, such as reading Marquees or managing Secrets.
+Scopes combine a resource **family** with an **action**, such as reading Hosts or managing Secrets.
 
 - **read**: list and view.
 - **write**: create and update.
@@ -23,9 +27,9 @@ Available scope families:
 
 | Area | Scopes |
 | --- | --- |
-| Hosts and runtime | `marquees:read/write/delete/manage`, `playgrounds:read/write/delete`, `launch:write` |
-| Source and blueprints | `props:read/write/delete`, `playspecs:read/write/delete`, `import_templates:read/write`, `mutations:read/write` |
-| Genies and activity | `agents:read/write/delete`, `conversations:read/write/delete/manage`, `memories:read/write/delete/manage`, `monitor:read`, `artefacts:read/write/delete`, `mutters:read/write`, `feedbacks:read/write/delete` |
+| Hosts and runtime | `hosts:read/write/delete/manage`, `playgrounds:read/write/delete`, `launch:write` |
+| Source and blueprints | `repositories:read/write/delete`, `specs:read/write/delete`, `import_templates:read/write`, `mutations:read/write` |
+| Agents and activity | `agents:read/write/delete`, `conversations:read/write/delete/manage`, `memories:read/write/delete/manage`, `monitor:read`, `artefacts:read/write/delete`, `mutters:read/write`, `feedbacks:read/write/delete` |
 | Credentials and integrations | `keys:manage`, `webhooks:read/write/delete`, `secrets:read/write/delete/manage`, `job_env:read/write/delete/manage` |
 
 The wildcard `*` scope is reserved for administrators. Team-bound keys can only be created for a team you belong to.
@@ -36,13 +40,13 @@ Narrow a family scope further to **a specific list of resources**. A key with "m
 
 Resource ownership is checked when you save the key, so you cannot grant access to resources you do not own.
 
-Granular restriction only applies to resource-backed families such as Marquees, Props, Playspecs, Playgrounds, Genies, Secrets, Webhooks, conversations, memories, and monitor events. Broad action scopes that don't map to an owned resource, such as `launch:write`, are not per-resource restricted.
+Granular restriction only applies to resource-backed families such as Hosts, Repositories, Specs, Playgrounds, Agents, Secrets, Webhooks, conversations, memories, and monitor events. Broad action scopes that don't map to an owned resource, such as `launch:write`, are not per-resource restricted.
 
 ### Example: CI key
 
 - CI needs to launch environments from automation.
 - Scope: `launch:write`.
-- Add only the resource-backed read/write scopes the automation also needs, and restrict those by ID where possible. Don't model `launch:write` as "launch only Playspec 42": that scope is not granular.
+- Add only the resource-backed read/write scopes the automation also needs, and restrict those by ID where possible. Don't model `launch:write` as "launch only Spec 42": that scope is not granular.
 
 ## Create a key
 
@@ -52,7 +56,7 @@ Fields:
 - **Scopes**: at least one required.
 - **Expires at**: optional. Blank = no expiry. Set a date for auto-expire.
 - **Restrict to specific resources**: optional granular restriction.
-- **For agents (unencrypted)**: store unencrypted for direct Genie access. Only check if a Genie needs to read the token at runtime.
+- **For agents (unencrypted)**: store unencrypted for direct Agent access. Only check if an Agent needs to read the token at runtime.
 
 Regular secrets appear **once** at creation. Copy them immediately; later, Fibe shows only the first 14 characters. Agent keys remain available through **Reveal** after second-factor confirmation.
 
@@ -60,7 +64,7 @@ Regular secrets appear **once** at creation. Copy them immediately; later, Fibe 
 
 Per-key actions:
 
-- **Rotate**: replaces the key with the same scopes and restrictions, expires the old one, and shows the new secret once. Linked Genies switch automatically.
+- **Rotate**: replaces the key with the same scopes and restrictions, expires the old one, and shows the new secret once. Linked Agents switch automatically.
 - **Expire now**: kill the key immediately.
 - **Delete**: permanent.
 
@@ -72,11 +76,11 @@ The **Gateway Mana** panel can reserve Mana for a key. Gateway spending uses onl
 
 ## Agent keys (unencrypted)
 
-Mark a key "For agents (unencrypted)" only when a Genie must read it at launch. Anyone with account access can also read the token.
+Mark a key "For agents (unencrypted)" only when an Agent must read it at launch. Anyone with account access can also read the token.
 
-A Genie can link only to a key with this flag; regular keys are rejected.
+A Agent can link only to a key with this flag; regular keys are rejected.
 
-Treat agent keys as more sensitive. Rotate aggressively. Combine with granular restriction so the Genie only has access to what it needs.
+Treat agent keys as more sensitive. Rotate aggressively. Combine with granular restriction so the Agent only has access to what it needs.
 
 ## Lifecycle and safety
 

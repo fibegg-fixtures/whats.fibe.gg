@@ -1,27 +1,27 @@
 ---
 name: fibe-tool-greenfield-create
-description: "Use when bootstrapping a greenfield app in one call: creates one or more repos/Props from a template or GitHub repo snapshot, an app-owned template version, a deployed Playground, waits for running, and links it locally to /app/playground."
+description: "Use when bootstrapping a greenfield app in one call: creates one or more repos/Repositories from a template or GitHub repo snapshot, an app-owned template version, a deployed Playground, waits for running, and links it locally to /app/playground."
 ---
 
 # fibe_greenfield_create
 
 [MODE:GREENFIELD] Tier: greenfield. Not idempotent.
 
-Deployment requires a funded Marquee. If the selected Marquee is unpaid, the tool fails with `MARQUEE_NOT_FUNDED` before deployment starts.
+Deployment requires a funded Host. If the selected Host is unpaid, the tool fails with `HOST_NOT_FUNDED` before deployment starts.
 
-The single canonical entry point for creating a new app from scratch. Bundles repo/Prop creation + Template version + Playground + wait + symlink into one round-trip. Multi-repo templates are supported: each distinct dynamic source repo becomes its own private destination repo and Prop. Calls `POST /api/greenfields`, returns a `request_id`, and polls the returned `status_url` until done.
+The single canonical entry point for creating a new app from scratch. Bundles repo/Repository creation + Template version + Playground + wait + symlink into one round-trip. Multi-repo templates are supported: each distinct dynamic source repo becomes its own private destination repo and Repository. Calls `POST /api/greenfields`, returns a `request_id`, and polls the returned `status_url` until done.
 
 It can start from an existing template selector, inline `template_body`, or a GitHub repository config snapshot. Repository snapshot mode fetches `fibe.yml`, `fibe.yaml`, `docker-compose.yml`, or `docker-compose.yaml` through the Player's GitHub App installation, validates it as-is, creates new app-owned destination repo(s), and then launches normally.
 
 ## When to use
 - Player asks to "create a new <type> app", "spin up a Tower for X", "scaffold a project".
 - Player provides a GitHub repository that contains a Fibe-compatible `fibe.yml` or Docker Compose file and wants a new app created from that snapshot.
-- After deciding template/git_provider/marquee in Greenfield mode (see `system.md`).
+- After deciding template/git_provider/host in Greenfield mode (see `system.md`).
 
 ## When NOT to use
 - Player is iterating on an existing app: use `fibe_playgrounds_switch_template` (Brownfield).
 - Just need a Playground from an existing Template: use `fibe_launch` (no repo creation).
-- Player wants to **change the stack of an already-deployed playground** while preserving its id (e.g., "rebuild this playground with FastAPI + AngularJS instead"): use `fibe_playgrounds_switch_template`. That tool is the brownfield analog of this one and provisions Gitea-backed private Props on the fly the same way.
+- Player wants to **change the stack of an already-deployed playground** while preserving its id (e.g., "rebuild this playground with FastAPI + AngularJS instead"): use `fibe_playgrounds_switch_template`. That tool is the brownfield analog of this one and provisions Gitea-backed private Repositories on the fly the same way.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -38,14 +38,14 @@ It can start from an existing template selector, inline `template_body`, or a Gi
 | `github_installation_id` | number | no | Exact GitHub App installation selector for automation or duplicate account names |
 | `git_provider` | enum | no | `gitea` (default) or `github` |
 | `private` | bool | no | Create destination repo(s) as private |
-| `marquee_id_or_name` | string/number | no | Target Marquee. Falls back to `FIBE_MARQUEE_ID` env |
+| `host_id_or_name` | string/number | no | Target Host. Falls back to `FIBE_HOST_ID` env |
 | `variables` | object | no | Template variables, e.g. `{"app_name":"Tower"}` |
 | `service_subdomains` | object | no | Per exposed service subdomain overrides, e.g. `{"app":"tower","admin":"tower-admin"}` |
 | `wait_timeout` | string | no | Go duration; default `10m` |
 
 ## What it does (under the hood)
 1. Validates inputs; reads `template_body_path` or fetches repository config if provided.
-2. Resolves the target Marquee from `marquee_id_or_name` or env if missing.
+2. Resolves the target Host from `host_id_or_name` or env if missing.
 3. Calls the server Greenfield endpoint with normalized variables.
 4. Polls request status until terminal.
 5. On `success`: re-fetches the Playground (server may have promoted state since the request finished).
@@ -54,21 +54,21 @@ It can start from an existing template selector, inline `template_body`, or a Gi
 Server-side, the greenfield request does roughly:
 - Resolve dynamic source repos from the selected template or fetched repository snapshot.
 - Create a Git repo via the chosen provider for each distinct source repo.
-- Create one Prop per created repo.
+- Create one Repository per created repo.
 - Create an Import Template version owned by the App (or use the requested template).
-- Create a Playspec from the template version.
-- Create a Playground on the resolved Marquee and trigger rollout.
+- Create a Spec from the template version.
+- Create a Playground on the resolved Host and trigger rollout.
 
 ## Output
 ```json
 {
   "name": "demo",
   "git_repo": { ... },
-  "prop": { ... },
+  "repository": { ... },
   "repos": [{ "repository_url": "...", "source_repo_url": "...", "service_names": ["app"] }],
-  "props": [{ "id": 17, "repository_url": "...", "service_names": ["app"] }],
+  "repositories": [{ "id": 17, "repository_url": "...", "service_names": ["app"] }],
   "template": { ... },
-  "playspec": { ... },
+  "spec": { ... },
   "playground": { "id": 42, "name": "...", "status": "running", ... },
   "service_urls": [{ "name": "app", "url": "https://..." }, { "name": "admin", "url": "https://..." }],
   "link": { "linked": true, "path": "/app/playground" }
@@ -78,10 +78,10 @@ Server-side, the greenfield request does roughly:
 If `wait_timeout` elapses before `running`, the call returns whatever was reached and the playground will still be in `creating`/`building`. `link` is null on link failure (e.g., volumes not yet mounted).
 
 ## Variables
-The platform's base template uses `{{var__app_name}}`-style placeholders compiled at launch. Variables you don't pass keep template defaults; the platform also automatically injects `$$root_domain` (the Marquee's base domain).
+The platform's base template uses `{{var__app_name}}`-style placeholders compiled at launch. Variables you don't pass keep template defaults; the platform also automatically injects `$$root_domain` (the Host's base domain).
 
 ## Gotchas
-- Before writing inline `template_body`, load `fibe-labels` and `fibe-services`; never infer `fibe.gg/*` labels from old playgrounds or memory. Validate the final YAML with `fibe_schema(resource:"compose", operation:"validate", payload:{compose_yaml: ..., target_type:"playspec"})`.
+- Before writing inline `template_body`, load `fibe-labels` and `fibe-services`; never infer `fibe.gg/*` labels from old playgrounds or memory. Validate the final YAML with `fibe_schema(resource:"compose", operation:"validate", payload:{compose_yaml: ..., target_type:"spec"})`.
 - Expose services with `fibe.gg/port`; never use `fibe.gg/expose`. Compose `ports:` may remain for local-only development, but Fibe strips them unless `x-fibe.gg.metadata.preserve_ports: true`.
 - `template_body` and `template_id_or_name`/`version` are mutually exclusive: error if both set.
 - `repository_url` is mutually exclusive with `template_body`, `template_body_path`, `template_id_or_name`, `template_version_id`, and `version`.
@@ -93,7 +93,7 @@ The platform's base template uses `{{var__app_name}}`-style placeholders compile
 - For multi-service templates, pass `service_subdomains` when the caller needs deterministic URLs. Overrides apply only to exposed services and are validated before repos are created.
 - A duplicate `name` collides with an existing Playground/Repo: the server returns `VALIDATION_FAILED` (handle and retry with a different name).
 - Greenfield is **not idempotent**. Re-calling produces a duplicate (or fails on naming collision). Use the request_id-based status endpoint to recover from network drops if the SDK call gets cut.
-- The Marquee must be `running` and chat_launchable for the Playground to deploy. Check `fibe_resource_get(resource:"marquee", ...)` if rollout stalls.
+- The Host must be `running` and chat_launchable for the Playground to deploy. Check `fibe_resource_get(resource:"host", ...)` if rollout stalls.
 - `wait_timeout` "0" is treated as "skip wait": the call returns as soon as initial setup finishes (status may still be `creating`).
 
 ## Related

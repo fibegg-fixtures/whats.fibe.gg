@@ -106,7 +106,7 @@ Nineteen labels are recognized. The table below summarizes each one: for the ful
 | `fibe.gg/branch` | string | dynamic services (pin to non-default branch) | `main` |
 | `fibe.gg/dockerfile` | path | dynamic services with `build:` | `./deploy/Dockerfile` |
 | `fibe.gg/start_command` | string | when overriding the image's default | `bundle exec rails s` |
-| `fibe.gg/env_file` | path inside Prop | when env values come from a non-default example | `env.example` |
+| `fibe.gg/env_file` | path inside Repository | when env values come from a non-default example | `env.example` |
 | `fibe.gg/build_target` | string | multi-stage build | `production` |
 | `fibe.gg/build_args` | `KEY=value` comma-list | when `--build-arg` values are needed | `KEY=val,K2=v2` |
 | `fibe.gg/production` | `true` / `false` | distinguish built image vs source-mounted dev | `true` |
@@ -120,7 +120,7 @@ Nineteen labels are recognized. The table below summarizes each one: for the ful
 | `fibe.gg/healthcheck_timeout` | duration | `zerodowntime: true` | `5s` |
 | `fibe.gg/healthcheck_retries` | positive integer | `zerodowntime: true` | `3` |
 | `fibe.gg/healthcheck_start_period` | duration | `zerodowntime: true` | `30s` |
-| `fibe.gg/job_watch` | `true` / `false` | the service whose exit decides a Trick's result | `true` |
+| `fibe.gg/job_watch` | `true` / `false` | the service whose exit decides a Task's result | `true` |
 
 :::tip Boolean values must be strings
 Use quoted `"true"` / `"false"`, not `yes` / `no` / `1` / `0`. The schema rejects the unquoted forms.
@@ -137,7 +137,7 @@ x-fibe.gg:
     description: "..."        # what this template launches
     category: "..."           # broad, discoverable category
     source_defaults: true     # auto-fill repo/branch on import
-    job_mode: true|false      # mark this template as a Trick
+    job_mode: true|false      # mark this template as a Task
     schedule_config: { ... }  # cron-driven launches
     trigger_config: { ... }   # VCS-triggered launches
 ```
@@ -175,7 +175,7 @@ See [Launch variables](/authoring/variables/) for the full authoring guide.
 schedule_config:
   enabled: true
   cron: "0 * * * *"
-  marquee_id: 1
+  host_id: 1
 ```
 
 ```yaml
@@ -184,11 +184,11 @@ trigger_config:
   event_type: push          # or "pull_request"
   repo_url: "https://github.com/owner/repo"
   branch: "main"
-  prop_id: 1
-  marquee_id: 1
+  repository_id: 1
+  host_id: 1
 ```
 
-`marquee_id` and `prop_id` accept either a positive integer or its string form.
+`host_id` and `repository_id` accept either a positive integer or its string form.
 
 ## The full schema
 
@@ -212,7 +212,7 @@ For an inline copy, see [the mirrored file on this site](https://whats.fibe.gg/s
 A few rules are enforced by Fibe at compile/runtime but live outside the JSON Schema:
 
 - **Required-when cross-label rules.** Example: a Compose `build:` block requires `fibe.gg/repo_url`. The schema describes individual labels but not their interdependencies.
-- **Reachability of resources.** `marquee_id: 1` is valid JSON-Schema-wise but fails at runtime if you don't own Marquee 1.
+- **Reachability of resources.** `host_id: 1` is valid JSON-Schema-wise but fails at runtime if you don't own Host 1.
 - **Variable usage.** Declared-but-never-used or referenced-but-never-declared variables are flagged by the validator after schema check, not by the schema itself.
 - **Job-mode constraints.** When `metadata.job_mode: true`, the runtime forces `restart: "no"` and `replicas: 1`, and forbids `expose:`: those are runtime enforcements, not schema constraints.
 

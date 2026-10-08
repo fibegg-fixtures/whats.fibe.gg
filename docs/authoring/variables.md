@@ -24,7 +24,7 @@ services:
       fibe.gg/path_rule: PathPrefix(`/$$var__PATH_PREFIX`)
 ```
 
-`$$root_domain` is special: Fibe always replaces it with the launching Marquee's root domain. You don't need to declare it.
+`$$root_domain` is special: Fibe always replaces it with the launching Host's root domain. You don't need to declare it.
 
 Every declared variable must be used. Either reference it inline with `$$var__NAME`, or bind it with `path:` / `paths:`. A variable declared for later but not used anywhere fails validation with `unused_var` ("declared but never used").
 

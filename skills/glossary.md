@@ -1,6 +1,6 @@
 ---
 name: glossary
-description: Use as the first reference for the meaning of any core Fibe term - Marquee, Playground, Playspec, Template, Trick, Prop, Bazaar, Agent, Mutter, Artefact, Secret, Player, and related concepts.
+description: Use as the first reference for the meaning of any core Fibe term - Host, Playground, Spec, Template, Task, Repository, Bazaar, Agent, Mutter, Artefact, Secret, Player, and related concepts.
 ---
 
 # Glossary of core Fibe concepts
@@ -11,29 +11,29 @@ If another skill needs exact YAML syntax, use the template reference skills. If 
 
 ## Alphabetical index
 
-[Agent](#agent) · [API Key](#api-key) · [Artefact](#artefact) · [Audit Log](#audit-log) · [Bazaar](#bazaar) · [Bridge](#bridge) · [Compose Template](#compose-template) · [Conversation](#conversation) · [Data Transfer](#data-transfer) · [Job ENV entry](#job-env-entry) · [Mana and Sparks](#mana-and-sparks) · [Marquee](#marquee) · [Mounted File](#mounted-file) · [Mutter](#mutter) · [Muti](#muti) · [Pantry (Templates)](#pantry-templates) · [Player](#player) · [Playground](#playground) · [Playspec](#playspec) · [Prop](#prop) · [Rune](#rune) · [Schedule config](#schedule-config) · [Scrolls](#scrolls) · [Secret](#secret) · [Source defaults](#source-defaults) · [Team](#team) · [Template](#template) · [Template Version](#template-version) · [Trick](#trick) · [Trigger config](#trigger-config) · [Variable](#variable) · [Webhook](#webhook)
+[Agent](#agent) · [API Key](#api-key) · [Artefact](#artefact) · [Audit Log](#audit-log) · [Bazaar](#bazaar) · [Bridge](#bridge) · [Compose Template](#compose-template) · [Conversation](#conversation) · [Data Transfer](#data-transfer) · [Job ENV entry](#job-env-entry) · [Mana and Sparks](#mana-and-sparks) · [Host](#host) · [Mounted File](#mounted-file) · [Mutter](#mutter) · [Muti](#muti) · [Pantry (Templates)](#pantry-templates) · [Player](#player) · [Playground](#playground) · [Spec](#spec) · [Repository](#repository) · [Rune](#rune) · [Schedule config](#schedule-config) · [Library](#library) · [Secret](#secret) · [Source defaults](#source-defaults) · [Team](#team) · [Template](#template) · [Template Version](#template-version) · [Task](#task) · [Trigger config](#trigger-config) · [Variable](#variable) · [Webhook](#webhook)
 
 ## Topology at a glance
 
 ```
 Player
-  owns Marquees
-  owns Props
+  owns Hosts
+  owns Repositories
   owns Templates
   owns Agents
   owns Secrets, API Keys, Webhooks, Job ENV entries
 
-Template Version + launch choices + Marquee
-  becomes a Playspec
+Template Version + launch choices + Host
+  becomes a Spec
     becomes a Playground
 
-Job-mode Playspec
-  becomes a Trick
+Job-mode Spec
+  becomes a Task
 ```
 
 ## Agent
 
-An AI Genie configuration. An Agent stores provider choice, credentials, prompt/settings, mounted files, and chat preferences. It runs as a standalone chat on a Marquee.
+An AI Agent configuration. An Agent stores provider choice, credentials, prompt/settings, mounted files, and chat preferences. It runs as a standalone chat on a Host.
 
 ## API Key
 
@@ -41,11 +41,11 @@ A scoped access token for API, CLI, MCP, and automation workflows. API keys can 
 
 ## Artefact
 
-A generated file or preview produced by a Genie or workflow. Examples include reports, screenshots, mockups, generated configs, data files, and interactive previews.
+A generated file or preview produced by an Agent or workflow. Examples include reports, screenshots, mockups, generated configs, data files, and interactive previews.
 
 ## Audit Log
 
-Shown as **Crumbs** in the app. A read-only event history for important resource and account actions. Audit logs help users understand who or what changed a resource and when.
+Shown as **Audit Logs** in the app. A read-only event history for important resource and account actions. Audit logs help users understand who or what changed a resource and when.
 
 ## Bazaar
 
@@ -53,7 +53,7 @@ The public template marketplace and discovery surface. Users browse, search, for
 
 ## Bridge
 
-The unified Genie workspace. Bridge lets users switch between Agents and active chats, inspect reachability, and work with Genie conversations in one place.
+The unified Agent workspace. Bridge lets users switch between Agents and active chats, inspect reachability, and work with Agent conversations in one place.
 
 ## Compose Template
 
@@ -61,7 +61,7 @@ The YAML body of a Fibe Template Version. It is valid Docker Compose plus Fibe-s
 
 ## Conversation
 
-A chat thread with an Agent. Conversations hold user messages, Genie replies, and related activity so work can be resumed later.
+A chat thread with an Agent. Conversations hold user messages, Agent replies, and related activity so work can be resumed later.
 
 ## Data Transfer
 
@@ -69,27 +69,27 @@ An export or import task for moving Fibe configuration between accounts or envir
 
 ## Job ENV entry
 
-An environment variable injected into job-mode runs. Entries can apply globally to all Tricks or only to Tricks tied to a specific Prop.
+An environment variable injected into job-mode runs. Entries can apply globally to all Tasks or only to Tasks tied to a specific Repository.
 
 ## Mana and Sparks
 
 User-facing platform credits and accounting concepts used for plan access, resource funding, grants, and usage enforcement. Explain them as account balance and usage concepts unless the user asks for exact billing behavior.
 
-## Marquee
+## Host
 
-A Docker-capable host where Fibe runs Playgrounds and standalone Genie chats. A Marquee has connection settings, one or more domains, TLS/routing behavior, registry credentials, and health status.
+A Docker-capable host where Fibe runs Playgrounds and standalone Agent chats. A Host has connection settings, one or more domains, TLS/routing behavior, registry credentials, and health status.
 
 ## Mounted File
 
-A user-provided file attached to an Agent, Playspec, or Playground so it is available inside the target workflow. Use mounted files for docs, prompts, scripts, fixtures, or config blobs that should not live in the application repository.
+A user-provided file attached to an Agent, Spec, or Playground so it is available inside the target workflow. Use mounted files for docs, prompts, scripts, fixtures, or config blobs that should not live in the application repository.
 
 ## Mutter
 
-A short progress, evidence, or issue note produced during Genie or Playground work. Mutters are useful for timelines and status reporting; they should be understandable to users.
+A short progress, evidence, or issue note produced during Agent or Playground work. Mutters are useful for timelines and status reporting; they should be understandable to users.
 
 ## Muti
 
-Fibe's mutation-testing workflow. Muti tracks surviving mutations and can ask a Genie to write or improve tests so the mutation is no longer surviving.
+Fibe's mutation-testing workflow. Muti tracks surviving mutations and can ask an Agent to write or improve tests so the mutation is no longer surviving.
 
 ## Pantry (Templates)
 
@@ -101,15 +101,15 @@ A Fibe user account. A Player owns personal resources, sessions, profile setting
 
 ## Playground
 
-A running environment created from a Playspec on a Marquee. It has services, URLs, logs, debug terminal access, expiration, lifecycle controls, and optional Agent attachment.
+A running environment created from a Spec on a Host. It has services, URLs, logs, debug terminal access, expiration, lifecycle controls, and optional Agent attachment.
 
-## Playspec
+## Spec
 
-The configured blueprint for a launch. A Playspec combines a Template Version, launch variables, service settings, mounted files, persistence choices, and automation settings. The Marquee is chosen at each launch (automation settings name one for scheduled and triggered Trick runs).
+The configured blueprint for a launch. A Spec combines a Template Version, launch variables, service settings, mounted files, persistence choices, and automation settings. The Host is chosen at each launch (automation settings name one for scheduled and triggered Task runs).
 
-## Prop
+## Repository
 
-A connected Git repository. Props provide source code, branches, Compose files, environment defaults, webhook-triggered updates, build history, and mutation targets.
+A connected Git repository. Repositories provide source code, branches, Compose files, environment defaults, webhook-triggered updates, build history, and mutation targets.
 
 ## Rune
 
@@ -117,11 +117,11 @@ An invitation or access code. Runes can gate signup, beta access, domain/email a
 
 ## Schedule config
 
-The cron-style automation block for a job-mode Template. It tells Fibe when and where to launch a Trick repeatedly.
+The cron-style automation block for a job-mode Template. It tells Fibe when and where to launch a Task repeatedly.
 
-## Scrolls
+## Library
 
-A searchable workspace of everything your Genies have produced and everything you've written: artefacts, activity, feedback, memories, and conversation messages.
+A searchable workspace of everything your Agents have produced and everything you've written: artefacts, activity, feedback, memories, and conversation messages.
 
 ## Secret
 
@@ -129,27 +129,27 @@ An encrypted user-owned credential or value. Use Secrets for long-lived sensitiv
 
 ## Source defaults
 
-A Template behavior that lets source-linked launches fill repository and branch information from the selected Prop. This makes one Template reusable across many repositories.
+A Template behavior that lets source-linked launches fill repository and branch information from the selected Repository. This makes one Template reusable across many repositories.
 
 ## Team
 
-A web-managed group for sharing Marquees. The team owner invites members (by username or GitHub handle) and shares Marquees with manage-level access; accepted members launch on shared Marquees as if they were their own. Other resources stay personal. When sharing ends, unshare, removal, or leaving, the member's Playgrounds on that Marquee are destroyed and their Genie chats on it are stopped.
+A web-managed group for sharing Hosts. The team owner invites members (by username or GitHub handle) and shares Hosts with manage-level access; accepted members launch on shared Hosts as if they were their own. Other resources stay personal. When sharing ends, unshare, removal, or leaving, the member's Playgrounds on that Host are destroyed and their Agent chats on it are stopped.
 
 ## Template
 
-A reusable, versioned environment definition. Templates can be private, public, forked, source-linked, CI-tested, and launched into Playgrounds or Tricks.
+A reusable, versioned environment definition. Templates can be private, public, forked, source-linked, CI-tested, and launched into Playgrounds or Tasks.
 
 ## Template Version
 
 An immutable snapshot of a Template's YAML, metadata, variables, and automation settings. New edits create new versions; existing launches remain tied to the version they used.
 
-## Trick
+## Task
 
-A job-mode Playground. It starts, runs watched services until they exit, records success or failure, and cleans up. Use Tricks for tests, migrations, backups, cleanup, scheduled tasks, and VCS-triggered jobs.
+A job-mode Playground. It starts, runs watched services until they exit, records success or failure, and cleans up. Use Tasks for tests, migrations, backups, cleanup, scheduled tasks, and VCS-triggered jobs.
 
 ## Trigger config
 
-The VCS-event automation block for a job-mode Template. It launches a Trick when a matching push or pull-request event arrives for a configured repository and branch.
+The VCS-event automation block for a job-mode Template. It launches a Task when a matching push or pull-request event arrives for a configured repository and branch.
 
 ## Variable
 

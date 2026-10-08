@@ -18,7 +18,7 @@ Profile → Advanced Settings holds account-level configuration. Ten sections:
 | [Secret Vault](/advanced/secrets/) | Encrypted credential storage reused across agents and integrations. |
 | [Webhooks](/advanced/webhooks/) | HTTP notifications when events occur on your account. |
 | [GitHub Apps](/advanced/github-apps/) | GitHub App installations: private repo access, CI triggers, agent integration. |
-| [Agent Defaults](/advanced/agent-defaults/) | Account-wide defaults for new Genies. |
+| [Agent Defaults](/advanced/agent-defaults/) | Account-wide defaults for new Agents. |
 | [Feature Preferences](/advanced/features/) | Account preferences and per-browser interface tuning. |
 | [Inbox Notifications](/advanced/notifications/) | Which events trigger toast notifications. |
 | [Data Backup](/advanced/backup/) | Export and import account data. |

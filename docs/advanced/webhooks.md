@@ -16,7 +16,7 @@ Each webhook has:
 - A **selection of event types** to listen for: exact names, or `*` for everything.
 - A **signing secret**: Fibe HMAC-signs every payload; verify on receipt.
 
-Available families cover **Playgrounds, Marquees, Props, Playspecs, Agents, Templates, Artefacts, Mutters, Feedback, API keys, Secrets, Webhooks**.
+Available families cover **Playgrounds, Hosts, Repositories, Specs, Agents, Templates, Artefacts, Mutters, Feedback, API keys, Secrets, Webhooks**.
 
 ## Granular event filters
 
@@ -47,7 +47,7 @@ The destination is checked again at delivery time before the request is sent, so
 ## Event types (examples)
 
 - `playground.created`, `playground.creation.completed`, `playground.creation.failed`
-- `playground.error`, `playground.completed` (a Trick / job run finished), `playground.destroyed`
+- `playground.error`, `playground.completed` (a Task / job run finished), `playground.destroyed`
 - `template.updated`
 - `agent.created`
 - `secret.updated`
@@ -93,10 +93,10 @@ Constant-time compare.
 - Logging the raw payload alongside the secret: defeats signing.
 - Skipping signature verification because the URL is "secret enough": it isn't.
 
-## Example: Slack notification on Trick failure
+## Example: Slack notification on Task failure
 
 - **Destination URL**: your Slack incoming-webhook URL.
-- **Events**: the failure event types themselves: `playground.creation.failed`, `playground.error` (Trick runs are Playground events). There is no status filter.
+- **Events**: the failure event types themselves: `playground.creation.failed`, `playground.error` (Task runs are Playground events). There is no status filter.
 - **Event filters**: optionally restrict to the specific Playgrounds you care about, by ID.
 - **Signing secret**: HMAC secret verified in your Slack-relay function.
 
@@ -126,4 +126,4 @@ No. Webhooks are outbound. To trigger a Fibe action from an external event, use 
 
 - [API Keys](/advanced/api-keys/): inbound counterpart.
 - [Audit log](/advanced/audit-log/): searchable history of changes.
-- [Tricks](/concepts/tricks/): common webhook trigger source.
+- [Tasks](/concepts/tasks/): common webhook trigger source.

@@ -203,11 +203,11 @@ Check the repository owner, selected repositories, environment, and OAuth identi
 
 ### Gitea destination exists after provisioning failed
 
-Use the same repository name to recover an authenticated, matching Fibe creation receipt or attached Prop. Fibe checks local name conflicts before remote creation, does not overwrite unrelated repositories, and does not reseed nonempty destinations during recovery. `fibe props sync <id>` reconciles its webhook as well as repository metadata when its Gitea credential has repository administration permission. Readable public or shared repositories can be indexed without that permission; push-triggered updates require a hook managed by the repository administrator. A failed webhook list on an administered repository is an error, so retries do not create blind duplicates.
+Use the same repository name to recover an authenticated, matching Fibe creation receipt or attached Repository. Fibe checks local name conflicts before remote creation, does not overwrite unrelated repositories, and does not reseed nonempty destinations during recovery. `fibe repositories sync <id>` reconciles its webhook as well as repository metadata when its Gitea credential has repository administration permission. Readable public or shared repositories can be indexed without that permission; push-triggered updates require a hook managed by the repository administrator. A failed webhook list on an administered repository is an error, so retries do not create blind duplicates.
 
 ### Mirror accepted, but source is not available yet
 
-The accepted response starts asynchronous work. Read `mirror_status` and `mirror_error` with `fibe props get <id>`, or use `fibe wait prop <id> --status completed`. A final failure persists its reason. Retrying the mirror request for that source reuses the mapped Prop and safely retries its known destination.
+The accepted response starts asynchronous work. Read `mirror_status` and `mirror_error` with `fibe repositories get <id>`, or use `fibe wait repository <id> --status completed`. A final failure persists its reason. Retrying the mirror request for that source reuses the mapped Repository and safely retries its known destination.
 
 ### Running playground still has a failed requested deployment
 
@@ -215,26 +215,26 @@ Lifecycle status describes the retained runtime. Service readiness additionally 
 
 Slow startup uses the Compose healthcheck `start_period`, `interval`, `timeout`, and `retries` to derive a readiness budget, capped at 30 minutes. Configure those per service. `state_reasons` explains a retained previous runtime and automatic rollout cooldowns; `runtime_operation` identifies the latest action, trigger, request time, and generation. A later runtime action supersedes older queued actions. In-flight external work cannot be instantly canceled.
 
-### `trigger_config.prop_id <N> not found`
+### `trigger_config.repository_id <N> not found`
 
-The Prop ID doesn't exist or you don't have access.
+The Repository ID doesn't exist or you don't have access.
 
-**Fix:** Verify with `fibe_resource_get(resource: "prop", id: N)`. Re-set the trigger to a valid Prop you own.
+**Fix:** Verify with `fibe_resource_get(resource: "repository", id: N)`. Re-set the trigger to a valid Repository you own.
 
-### `schedule_config.marquee_id <N> not found`
+### `schedule_config.host_id <N> not found`
 
-Same as above but for Marquee.
+Same as above but for Host.
 
-**Fix:** Verify with `fibe_resource_get(resource: "marquee", id: N)`.
+**Fix:** Verify with `fibe_resource_get(resource: "host", id: N)`.
 
 ### Trigger doesn't fire
 
 Possible causes:
 - `enabled: false`: set to `true`.
-- The Prop doesn't have a webhook installed (GitHub app missing / Gitea token missing).
+- The Repository doesn't have a webhook installed (GitHub app missing / Gitea token missing).
 - The event type doesn't match (PR event when you're pushing to the branch).
 
-**Fix:** Inspect Prop webhooks via Fibe MCP; check the event type spelling.
+**Fix:** Inspect Repository webhooks via Fibe MCP; check the event type spelling.
 
 ### Scheduled job doesn't fire
 
@@ -242,9 +242,9 @@ An invalid cron expression is rejected when the schedule is saved or imported (e
 
 Possible causes:
 - `enabled: false`.
-- Marquee is paused/down.
+- Host is paused/down.
 
-**Fix:** Set `enabled: true`; confirm the target Marquee is reachable and funded.
+**Fix:** Set `enabled: true`; confirm the target Host is reachable and funded.
 
 ### Runtime environment drift repeats for Compose `${VAR}` references
 

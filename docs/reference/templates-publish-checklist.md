@@ -16,7 +16,7 @@ Before a template is submitted as a public template, walk this list. If any chec
 1. **Valid YAML.** Parses cleanly as YAML.
 2. **Compose-shaped root.** Has `services:`. Every service is a mapping.
 3. **JSON Schema passes.** `fibe_schema(resource: "compose", operation: "validate", payload: {...})` returns valid.
-4. **Runtime / server validation passes.** For a no-write preview of how the template applies, use `fibe_templates_change(mode: "preview", ...)`. A `fibe_launch` is a real deployment: use a disposable Marquee for the test launch.
+4. **Runtime / server validation passes.** For a no-write preview of how the template applies, use `fibe_templates_change(mode: "preview", ...)`. A `fibe_launch` is a real deployment: use a disposable Host for the test launch.
 5. **Starts on a normal Docker host** with equivalent env values supplied. (Local `docker compose up` works if you mock the Fibe-injected bits.)
 
 Schema success alone is not enough. See [reference-validation-pipeline](reference-validation-pipeline.md).
@@ -69,7 +69,7 @@ Opt in **only** if:
 - [ ] `x-fibe.gg.metadata.description` explains what launches.
 - [ ] `category` is broad and discoverable (Web, CI, Operations, Database, Productivity, Development, AI, Storage).
 - [ ] `job_mode`, `schedule_config`, `trigger_config` only present when needed.
-- [ ] Runtime IDs (`marquee_id`, `prop_id`) are environment-specific: consider whether the template should ship these or have them filled at launch.
+- [ ] Runtime IDs (`host_id`, `repository_id`) are environment-specific: consider whether the template should ship these or have them filled at launch.
 - [ ] Trigger `event_type` is `push` or `pull_request` (no other values).
 
 ## Runtime quality
@@ -108,12 +108,12 @@ Reject / revise templates that:
 - [ ] Compare to the closest playbook listed in [Compose Conversion](convert-compose-to-fibe.md): does the structure match the convention?
 - [ ] Load [reference-fibe-labels](reference-fibe-labels.md) for any borderline label value.
 - [ ] Run `fibe_schema(resource: "compose", operation: "validate", payload: {...})` from MCP.
-- [ ] For a no-write preview, run `fibe_templates_change(mode: "preview", ...)`. A `fibe_launch` is a real deployment: use a disposable Marquee for the test launch.
+- [ ] For a no-write preview, run `fibe_templates_change(mode: "preview", ...)`. A `fibe_launch` is a real deployment: use a disposable Host for the test launch.
 - [ ] Record: launch result, exposed service URLs, required variables. Put in the submission description.
 
 ## After publish
 
-- [ ] Test launch from a fresh Player + fresh Marquee: make sure required variables are honest about what launchers must provide.
+- [ ] Test launch from a fresh Player + fresh Host: make sure required variables are honest about what launchers must provide.
 - [ ] Add a Mutter on first launch with screenshots / proof so future Players can compare.
 - [ ] Plan a maintenance window / version bump cadence: pinned image tags drift.
 

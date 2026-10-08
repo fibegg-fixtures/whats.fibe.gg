@@ -72,7 +72,7 @@ metadata:
   trigger_config: { ... }                                 # VCS-triggered launches
 ```
 
-`source_defaults: true` tells the runtime: when this template is imported from a source Prop, auto-fill `fibe.gg/repo_url`/`fibe.gg/branch` on dynamic services that lack them, and seed `trigger_config.repo_url`/`branch` when triggers are enabled.
+`source_defaults: true` tells the runtime: when this template is imported from a source Repository, auto-fill `fibe.gg/repo_url`/`fibe.gg/branch` on dynamic services that lack them, and seed `trigger_config.repo_url`/`branch` when triggers are enabled.
 
 `preserve_ports: true` tells Fibe to keep raw Docker Compose `ports:` bindings in generated playground Compose. Missing, `false`, or invalid values mean Fibe strips service-level `ports:` before launch, which lets one Compose file run locally and across many Playgrounds without host-port conflicts. Only the exact boolean `true` preserves ports; string values like `"true"` do not.
 
@@ -84,7 +84,7 @@ Boolean. `true` marks the template as job-mode (one-shot). At least one service 
 - Get `restart: "no"` forced and `deploy.replicas: 1` forced on every service at runtime.
 - Complete when all watched services exit. Non-zero exit on any watched service fails the run.
 
-See [mode-job-trick](mode-job-trick.md).
+See [mode-job-task](mode-job-task.md).
 
 ## `schedule_config`
 
@@ -92,10 +92,10 @@ See [mode-job-trick](mode-job-trick.md).
 schedule_config:
   enabled: true            # boolean
   cron: "0 * * * *"        # cron expression string (5-field POSIX)
-  marquee_id: 1            # positive integer or its string form (`^[1-9][0-9]*$`)
+  host_id: 1            # positive integer or its string form (`^[1-9][0-9]*$`)
 ```
 
-Used in combination with `job_mode: true` for scheduled jobs. Fibe resolves `marquee_id` to a Marquee the Player owns or one team-shared with them; validation first checks shape.
+Used in combination with `job_mode: true` for scheduled jobs. Fibe resolves `host_id` to a Host the Player owns or one team-shared with them; validation first checks shape.
 
 See [mode-schedule-cron](mode-schedule-cron.md).
 
@@ -107,11 +107,11 @@ trigger_config:
   event_type: push          # enum: "push" | "pull_request"
   repo_url: "https://github.com/owner/repo"
   branch: "main"
-  prop_id: 1                # positive integer or string form
-  marquee_id: 1             # positive integer or string form
+  repository_id: 1                # positive integer or string form
+  host_id: 1             # positive integer or string form
 ```
 
-Used with `job_mode: true` to fire the job on VCS events. With `source_defaults: true` and a source-backed import, `repo_url`/`branch` auto-fill from the source Prop.
+Used with `job_mode: true` to fire the job on VCS events. With `source_defaults: true` and a source-backed import, `repo_url`/`branch` auto-fill from the source Repository.
 
 See [mode-trigger-vcs](mode-trigger-vcs.md).
 
@@ -148,4 +148,4 @@ Both layers run; both must pass. See [reference-validation-pipeline](reference-v
 
 ## Related skills
 
-[reference-template-variables](reference-template-variables.md), [reference-yaml-paths](reference-yaml-paths.md), [recipe-extract-env-variables](recipe-extract-env-variables.md), [recipe-whole-node-paths](recipe-whole-node-paths.md), [recipe-inline-variables](recipe-inline-variables.md), [recipe-random-and-secrets](recipe-random-and-secrets.md), [mode-job-trick](mode-job-trick.md), [mode-schedule-cron](mode-schedule-cron.md), [mode-trigger-vcs](mode-trigger-vcs.md), [reference-validation-pipeline](reference-validation-pipeline.md).
+[reference-template-variables](reference-template-variables.md), [reference-yaml-paths](reference-yaml-paths.md), [recipe-extract-env-variables](recipe-extract-env-variables.md), [recipe-whole-node-paths](recipe-whole-node-paths.md), [recipe-inline-variables](recipe-inline-variables.md), [recipe-random-and-secrets](recipe-random-and-secrets.md), [mode-job-task](mode-job-task.md), [mode-schedule-cron](mode-schedule-cron.md), [mode-trigger-vcs](mode-trigger-vcs.md), [reference-validation-pipeline](reference-validation-pipeline.md).

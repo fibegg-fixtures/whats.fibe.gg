@@ -47,7 +47,7 @@ x-fibe.gg:
     schedule_config:
       enabled: true
       cron: "0 3 * * *"        # 03:00 UTC daily
-      marquee_id: 1
+      host_id: 1
   variables:
     PG_HOST:
       name: "Postgres host (production DB endpoint)"
@@ -92,11 +92,11 @@ x-fibe.gg:
 
 ## What this does
 
-- Every day at 03:00 UTC, Fibe creates a new Playground from this template on Marquee `1`.
+- Every day at 03:00 UTC, Fibe creates a new Playground from this template on Host `1`.
 - The `backup` container starts. It dumps Postgres, gzips, uploads to S3.
 - `fibe.gg/job_watch: "true"` says: "watch this service's exit code". Exit 0 → success. Exit non-zero → failure.
 - After the container exits, Fibe tears down the Playground.
-- The run result is logged for inspection via `fibe_resource_list(resource: "trick", ...)`.
+- The run result is logged for inspection via `fibe_resource_list(resource: "task", ...)`.
 
 ## Why this is the right shape
 
@@ -144,12 +144,12 @@ x-fibe.gg:
     schedule_config:
       enabled: true
       cron: "0 4 * * 0"        # weekly, Sunday 04:00 UTC
-      marquee_id: 1
+      host_id: 1
 ```
 
-## Variant: fan-out across props
+## Variant: fan-out across repositories
 
-If you want the same scheduled job to run for several Props (e.g. backups across multiple Player DBs), create one template per Prop, each with its own `schedule_config.marquee_id` and Prop-specific variables. There is no "for each Prop" in `schedule_config`: schedule fires one job at a time.
+If you want the same scheduled job to run for several Repositories (e.g. backups across multiple Player DBs), create one template per Repository, each with its own `schedule_config.host_id` and Repository-specific variables. There is no "for each Repository" in `schedule_config`: schedule fires one job at a time.
 
 ## Cron expressions cheat sheet
 
@@ -166,13 +166,13 @@ If you want the same scheduled job to run for several Props (e.g. backups across
 
 ## Running on demand (one-off manual)
 
-`fibe_resource_mutate(resource: "trick", operation: "trigger", payload: { playspec_id_or_name: ... })` to fire the same template outside the schedule. Useful for testing.
+`fibe_resource_mutate(resource: "task", operation: "trigger", payload: { spec_id_or_name: ... })` to fire the same template outside the schedule. Useful for testing.
 
-To re-run the last fire: `fibe_resource_mutate(resource: "trick", operation: "rerun", payload: { id_or_name: ... })`.
+To re-run the last fire: `fibe_resource_mutate(resource: "task", operation: "rerun", payload: { id_or_name: ... })`.
 
 ## Inspecting results
 
-`fibe_resource_list(resource: "trick", params: { playspec_id: ... })` shows recent runs. Each has status, started/finished timestamps, exit code, log location.
+`fibe_resource_list(resource: "task", params: { spec_id: ... })` shows recent runs. Each has status, started/finished timestamps, exit code, log location.
 
 ## Pitfalls
 
@@ -185,4 +185,4 @@ To re-run the last fire: `fibe_resource_mutate(resource: "trick", operation: "re
 
 ## Related skills
 
-[mode-job-trick](mode-job-trick.md), [mode-schedule-cron](mode-schedule-cron.md), [recipe-random-and-secrets](recipe-random-and-secrets.md), [decide-secrets-and-randoms](decide-secrets-and-randoms.md), [reference-x-fibe-gg-namespace](reference-x-fibe-gg-namespace.md).
+[mode-job-task](mode-job-task.md), [mode-schedule-cron](mode-schedule-cron.md), [recipe-random-and-secrets](recipe-random-and-secrets.md), [decide-secrets-and-randoms](decide-secrets-and-randoms.md), [reference-x-fibe-gg-namespace](reference-x-fibe-gg-namespace.md).

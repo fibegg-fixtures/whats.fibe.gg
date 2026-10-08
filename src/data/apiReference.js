@@ -48,7 +48,7 @@ const deleteResponses = [
 
 const acceptedResponses = [
   {status: '202', description: 'Queues a long-running operation and returns `{ request_id, status, status_url }`.'},
-  {status: '402', description: 'The target Marquee is not funded. Requests return code `MARQUEE_NOT_FUNDED` until the Marquee is funded.'},
+  {status: '402', description: 'The target Host is not funded. Requests return code `HOST_NOT_FUNDED` until the Host is funded.'},
   {status: '422', description: 'The request was understood but could not be queued.'},
 ];
 
@@ -151,8 +151,8 @@ function crud(path, singular, plural, example) {
   ];
 }
 
-const marqueeBody = {
-  marquee: {
+const hostBody = {
+  host: {
     name: 'staging-runner',
     host: 'captain.example.com',
     user: 'ubuntu',
@@ -160,16 +160,16 @@ const marqueeBody = {
   },
 };
 
-const propBody = {
-  prop: {
+const repositoryBody = {
+  repository: {
     name: 'web-app',
     repo_url: 'https://github.com/example/web-app',
     default_branch: 'main',
   },
 };
 
-const playspecBody = {
-  playspec: {
+const specBody = {
+  spec: {
     name: 'web-app',
     base_compose_yaml: 'services:\n  web:\n    image: nginx:alpine',
     persist_volumes: true,
@@ -179,8 +179,8 @@ const playspecBody = {
 const playgroundBody = {
   playground: {
     name: 'web-app-staging',
-    playspec_id: 123,
-    marquee_id: 123,
+    spec_id: 123,
+    host_id: 123,
   },
 };
 
@@ -230,6 +230,37 @@ const pokeBody = {
 
 export const platformSections = [
   {
+    title: 'Owner context',
+    description: 'Credentials bind immutable owner and principal authority; selectors never widen it.',
+    endpoints: [
+      endpoint({method: 'GET', path: '/api/owner_context', title: 'Read bound owner context',
+        description: ['Returns the authenticated credential owner context and principal metadata.'], responses: showResponses}),
+      endpoint({method: 'GET', path: '/api/owner_contexts', title: 'Read available owner contexts',
+        description: ['Returns contexts available to the authenticated principal. A listed context alone does not authorize an unbound credential to act in it.'], responses: showResponses}),
+    ],
+  },
+  {
+    title: 'ENV packs',
+    description: 'Ordinary readable personal/company ENV maps and explicit ordered grants.',
+    endpoints: [
+      endpoint({method: 'GET', path: '/api/env_packs', title: 'List live ENV packs',
+        description: ['Returns an array of live packs in the immutable credential owner context. Values require read authority.'], responses: showResponses}),
+      createEndpoint('/api/env_packs', 'ENV pack', {env_pack: {name: 'App defaults', env: {LOG_LEVEL: 'debug', EMPTY: ''}}}),
+      endpoint({method: 'GET', path: '/api/env_packs/:id', title: 'Read ENV pack', parameters: [pathParam()],
+        description: ['Returns authorized ordinary values and the current pack version.'], responses: showResponses}),
+      updateEndpoint('/api/env_packs/:id', 'ENV pack', {env_pack: {name: 'App defaults', env: {LOG_LEVEL: 'info'}, version: 1}}),
+      endpoint({method: 'DELETE', path: '/api/env_packs/:id', title: 'Soft-delete ENV pack', parameters: [pathParam()],
+        description: ['Returns the deleted pack metadata. Fresh use fails while recorded references and applied runtime snapshots remain retained.'], responses: showResponses}),
+      ...['specs', 'playgrounds'].flatMap(resource => [
+        endpoint({method: 'GET', path: `/api/${resource}/:id/env_pack_attachments`, title: `Read ${resource} pack references`, parameters: [pathParam()],
+          description: ['Returns ordered provenance and desired/applied state metadata without immutable snapshot values.'], responses: showResponses}),
+        endpoint({method: 'PATCH', path: `/api/${resource}/:id/env_pack_attachments`, title: `Replace ${resource} pack references`, parameters: [pathParam()],
+          description: ['Omitted/null preserves references; [] detaches. New or changed grants require source pack read and target write authority. Client grantor fields are rejected.'],
+          requestBody: body('Ordered recipient references.', {env_pack_attachments: [{env_pack_id: 42, service_names: ['web']}]}), responses: updateResponses}),
+      ]),
+    ],
+  },
+  {
     title: 'System and launch flows',
     description: 'Use these endpoints for health checks and high-level creation flows that start from templates or remote environments.',
     endpoints: [
@@ -249,10 +280,10 @@ export const platformSections = [
         path: '/api/launches',
         title: 'Launch from Compose or GitHub repo',
         description: [
-          'Creates a Playspec and optionally deploys a Playground from inline Compose/Fibe YAML or a GitHub repository config file.',
-          'Deployments require the target Marquee to be funded; unpaid Marquees return `MARQUEE_NOT_FUNDED`.',
-          '`create_playground` defaults to true when `marquee_id` is present and false when no Marquee is supplied.',
-          'If template variables, declared variable defaults, `$$var__*`, or `$$root_domain` are present, Fibe compiles the YAML before import and requires `marquee_id` for the Marquee root domain.',
+          'Creates a Spec and optionally deploys a Playground from inline Compose/Fibe YAML or a GitHub repository config file.',
+          'Deployments require the target Host to be funded; unpaid Hosts return `HOST_NOT_FUNDED`.',
+          '`create_playground` defaults to true when `host_id` is present and false when no Host is supplied.',
+          'If template variables, declared variable defaults, `$$var__*`, or `$$root_domain` are present, Fibe compiles the YAML before import and requires `host_id` for the Host root domain.',
           '`persist_volumes` is optional; when omitted, Fibe enables volume persistence if the compiled Compose declares named volumes.',
           'For repository-backed launches, Fibe fetches the config through the selected GitHub App installation and discovers `fibe.yml`, `fibe.yaml`, `docker-compose.yml`, then `docker-compose.yaml` when `config_path` is omitted.',
           '`github_ref` selects only the config file revision; service branch/ref behavior remains explicit in the YAML.',
@@ -263,7 +294,7 @@ export const platformSections = [
           github_ref: 'main',
           github_account: 'owner',
           name: 'repo',
-          marquee_id: 123,
+          host_id: 123,
           create_playground: true,
           persist_volumes: true,
           variables: {DATABASE_PASSWORD: 'change-me'},
@@ -277,8 +308,8 @@ export const platformSections = [
         title: 'Create greenfield project',
         description: [
           'Starts a new project workflow from a template, inline template body, or GitHub repository config snapshot.',
-          'Use it when automation wants Fibe to create app-owned destination repo(s), Props, an app-owned template version, a Playspec, and a Playground.',
-          'The deployment phase requires a funded Marquee; unpaid Marquees return `MARQUEE_NOT_FUNDED`.',
+          'Use it when automation wants Fibe to create app-owned destination repo(s), Repositories, an app-owned template version, a Spec, and a Playground.',
+          'The deployment phase requires a funded Host; unpaid Hosts return `HOST_NOT_FUNDED`.',
           'Repository snapshot inputs are fetched through the selected GitHub App installation and must already be Fibe-compatible.',
         ],
         requestBody: body('Greenfield project request.', {
@@ -287,7 +318,7 @@ export const platformSections = [
           github_ref: 'main',
           github_installation_id: 123,
           name: 'new-app',
-          marquee_id: 123,
+          host_id: 123,
           git_provider: 'gitea',
         }),
         responses: acceptedResponses,
@@ -297,11 +328,11 @@ export const platformSections = [
         path: '/api/autoconnect_tokens',
         title: 'Create autoconnect token',
         description: [
-          'Creates a short-lived token used by a remote Marquee host to connect itself back to Fibe.',
+          'Creates a short-lived token used by a remote Host host to connect itself back to Fibe.',
           'Use this endpoint during host bootstrap when direct SSH credentials are not yet attached.',
           'Treat the returned token as a secret because it authorizes a one-time connection flow.',
         ],
-        requestBody: body('Autoconnect target metadata.', {marquee_id: 123}),
+        requestBody: body('Autoconnect target metadata.', {host_id: 123}),
         responses: createResponses,
       }),
       endpoint({
@@ -323,18 +354,18 @@ export const platformSections = [
     ],
   },
   {
-    title: 'Marquees',
-    description: 'Marquees are remote compute targets where Fibe can deploy and manage playgrounds. Marquee actions require current funding.',
+    title: 'Hosts',
+    description: 'Hosts are remote compute targets where Fibe can deploy and manage playgrounds. Host actions require current funding.',
     endpoints: [
-      ...crud('/api/marquees', 'Marquee', 'Marquees', marqueeBody),
+      ...crud('/api/hosts', 'Host', 'Hosts', hostBody),
       endpoint({
         method: 'POST',
-        path: '/api/marquees/:id/ssh_keys',
+        path: '/api/hosts/:id/ssh_keys',
         title: 'Generate SSH key',
         description: [
-          'Creates or rotates SSH key material for a Marquee connection.',
+          'Creates or rotates SSH key material for a Host connection.',
           'Use it when bootstrapping a host that needs Fibe-managed SSH access.',
-          'The response includes the updated Marquee connection state or validation errors.',
+          'The response includes the updated Host connection state or validation errors.',
         ],
         parameters: [pathParam()],
         requestBody: body('Optional SSH key generation options.', {label: 'deploy-key'}),
@@ -342,11 +373,11 @@ export const platformSections = [
       }),
       endpoint({
         method: 'POST',
-        path: '/api/marquees/:id/connection_tests',
-        title: 'Test Marquee connection',
+        path: '/api/hosts/:id/connection_tests',
+        title: 'Test Host connection',
         description: [
-          'Runs a connection test against the Marquee host using its stored connection settings.',
-          'Use it after creating or updating SSH details to verify Fibe can reach the Marquee.',
+          'Runs a connection test against the Host host using its stored connection settings.',
+          'Use it after creating or updating SSH details to verify Fibe can reach the Host.',
           'The operation may run remotely and can return diagnostic output for failed checks.',
         ],
         parameters: [pathParam()],
@@ -355,17 +386,17 @@ export const platformSections = [
     ],
   },
   {
-    title: 'Props',
-    description: 'Props describe source repositories and source-like inputs used by playspecs, templates, and playgrounds.',
+    title: 'Repositories',
+    description: 'Repositories describe source repositories and source-like inputs used by specs, templates, and playgrounds.',
     endpoints: [
-      ...crud('/api/props', 'prop', 'props', propBody),
+      ...crud('/api/repositories', 'repository', 'repositories', repositoryBody),
       endpoint({
         method: 'POST',
-        path: '/api/props/attachments',
+        path: '/api/repositories/attachments',
         title: 'Attach GitHub repository',
         description: [
-          'Creates or returns a Prop for a GitHub repository available through your connected GitHub App installation.',
-          'Use this when a repo already exists on GitHub and Fibe should register it as a source Prop.',
+          'Creates or returns a Repository for a GitHub repository available through your connected GitHub App installation.',
+          'Use this when a repo already exists on GitHub and Fibe should register it as a source Repository.',
           'The request identifies the GitHub repository by full name, such as `owner/repo`.',
         ],
         requestBody: body('GitHub repository attachment request.', {repo_full_name: 'owner/repo'}),
@@ -373,8 +404,8 @@ export const platformSections = [
       }),
       endpoint({
         method: 'POST',
-        path: '/api/props/mirrors',
-        title: 'Mirror prop source',
+        path: '/api/repositories/mirrors',
+        title: 'Mirror repository source',
         description: [
           'Creates a new Fibe-managed mirror from a GitHub repository URL, or returns the existing mirror when one already exists.',
           'Use it when Fibe needs its own repository mirror before agents or jobs can work safely.',
@@ -382,7 +413,7 @@ export const platformSections = [
         ],
         requestBody: body('Mirror request.', {source_url: 'https://github.com/owner/repo', name: 'repo-mirror'}),
         responses: [
-          {status: '201', description: 'Creates the mirrored Prop and starts mirroring work.'},
+          {status: '201', description: 'Creates the mirrored Repository and starts mirroring work.'},
           {status: '200', description: 'Returns an existing mirror when the source was already mirrored.'},
           {status: '400', description: 'The source URL is not a valid GitHub URL.'},
           {status: '422', description: 'Validation failed.'},
@@ -390,10 +421,10 @@ export const platformSections = [
       }),
       endpoint({
         method: 'POST',
-        path: '/api/props/:id/syncs',
-        title: 'Synchronize prop',
+        path: '/api/repositories/:id/syncs',
+        title: 'Synchronize repository',
         description: [
-          'Queues synchronization for the selected prop.',
+          'Queues synchronization for the selected repository.',
           'Use it after repository changes when Fibe should refresh branches, metadata, or mirrored state.',
           'The endpoint returns an async status when remote work is queued.',
         ],
@@ -402,11 +433,11 @@ export const platformSections = [
       }),
       endpoint({
         method: 'GET',
-        path: '/api/props/:id/branches',
-        title: 'List prop branches',
+        path: '/api/repositories/:id/branches',
+        title: 'List repository branches',
         description: [
-          'Returns branch names discovered for the prop source.',
-          'Use it to populate branch pickers or validate that a requested branch exists before updating a playspec.',
+          'Returns branch names discovered for the repository source.',
+          'Use it to populate branch pickers or validate that a requested branch exists before updating a spec.',
           'The response is read-only and depends on the latest synchronized repository metadata.',
         ],
         parameters: [pathParam()],
@@ -414,11 +445,11 @@ export const platformSections = [
       }),
       endpoint({
         method: 'GET',
-        path: '/api/props/:id/env_defaults',
-        title: 'Read prop environment defaults',
+        path: '/api/repositories/:id/env_defaults',
+        title: 'Read repository environment defaults',
         description: [
-          'Returns environment defaults inferred from the prop source.',
-          'Use it before creating playspecs or playgrounds so generated configuration starts with sensible values.',
+          'Returns environment defaults inferred from the repository source.',
+          'Use it before creating specs or playgrounds so generated configuration starts with sensible values.',
           'The payload is derived from repository metadata and Fibe template conventions.',
         ],
         parameters: [pathParam()],
@@ -427,17 +458,17 @@ export const platformSections = [
     ],
   },
   {
-    title: 'Prop mutations',
-    description: 'Prop mutations track source edits that Fibe or agents apply to repositories.',
+    title: 'Repository mutations',
+    description: 'Repository mutations track source edits that Fibe or agents apply to repositories.',
     endpoints: [
-      listEndpoint('/api/props/:prop_id/mutations', 'prop mutations', {parameters: [pathParam('prop_id', 'Parent prop id.')]}),
-      createEndpoint('/api/props/:prop_id/mutations', 'prop mutation', {git_diff: 'diff --git ...', commit_sha: 'abc123', branch: 'main'}, {parameters: [pathParam('prop_id', 'Parent prop id.')]}),
-      updateEndpoint('/api/props/:prop_id/mutations/:id', 'prop mutation', {status: 'cured', cured_commit_sha: 'def456'}, [pathParam('prop_id', 'Parent prop id.'), pathParam()]),
+      listEndpoint('/api/repositories/:repository_id/mutations', 'repository mutations', {parameters: [pathParam('repository_id', 'Parent repository id.')]}),
+      createEndpoint('/api/repositories/:repository_id/mutations', 'repository mutation', {git_diff: 'diff --git ...', commit_sha: 'abc123', branch: 'main'}, {parameters: [pathParam('repository_id', 'Parent repository id.')]}),
+      updateEndpoint('/api/repositories/:repository_id/mutations/:id', 'repository mutation', {status: 'cured', cured_commit_sha: 'def456'}, [pathParam('repository_id', 'Parent repository id.'), pathParam()]),
     ],
   },
   {
     title: 'Playgrounds',
-    description: 'Playgrounds are provisioned application environments running on a Marquee.',
+    description: 'Playgrounds are provisioned application environments running on a Host.',
     endpoints: [
       ...crud('/api/playgrounds', 'playground', 'playgrounds', playgroundBody),
       endpoint({
@@ -447,7 +478,7 @@ export const platformSections = [
         description: [
           'Queues a lifecycle operation for a playground.',
           'Allowed actions include `start`, `stop`, `rollout`, `hard_restart`, `retry_compose`, `enable_maintenance`, and `disable_maintenance`.',
-          'Actions that use a Marquee require it to be funded and return `MARQUEE_NOT_FUNDED` when unpaid.',
+          'Actions that use a Host require it to be funded and return `HOST_NOT_FUNDED` when unpaid.',
           'Use the returned async request status to follow long-running remote Docker work.',
         ],
         parameters: [pathParam()],
@@ -473,7 +504,7 @@ export const platformSections = [
         title: 'Read rendered compose',
         description: [
           'Returns the Docker Compose configuration rendered for the playground.',
-          'Use it for diagnostics or to compare the final deployed config against the source playspec.',
+          'Use it for diagnostics or to compare the final deployed config against the source spec.',
           'The payload reflects Fibe transformations, injected labels, and deployment defaults.',
         ],
         parameters: [pathParam()],
@@ -510,7 +541,7 @@ export const platformSections = [
         description: [
           'GET returns cached debug information, while POST queues a fresh remote debug collection.',
           'Use this endpoint when diagnosing failed deploys, unhealthy services, or network exposure problems.',
-          'The POST form returns an async request because debug collection may contact the remote Marquee.',
+          'The POST form returns an async request because debug collection may contact the remote Host.',
         ],
         parameters: [pathParam()],
         responses: acceptedResponses,
@@ -534,7 +565,7 @@ export const platformSections = [
         description: [
           'Queues a log snapshot for a playground service.',
           'Provide `service` or `service_name` and optionally `tail` to bound the amount of log output.',
-          'The result is asynchronous because log collection reads from the remote Marquee.',
+          'The result is asynchronous because log collection reads from the remote Host.',
         ],
         parameters: [pathParam()],
         requestBody: body('Log snapshot request.', {service: 'web', tail: 200}),
@@ -543,8 +574,8 @@ export const platformSections = [
     ],
   },
   {
-    title: 'Playspecs',
-    description: 'Playspecs define application composition before it is launched into playgrounds.',
+    title: 'Specs',
+    description: 'Specs define application composition before it is launched into playgrounds.',
     endpoints: [
       endpoint({
         method: 'POST',
@@ -552,19 +583,19 @@ export const platformSections = [
         title: 'Validate compose',
         description: [
           'Validates Docker Compose input against Fibe parsing and deployment expectations.',
-          'Use it before creating or updating a playspec to catch unsupported keys and missing metadata.',
+          'Use it before creating or updating a spec to catch unsupported keys and missing metadata.',
           'The response reports validation success or structured errors that can be shown directly in tooling.',
         ],
         requestBody: body('Compose validation request.', {compose_yaml: 'services:\n  web:\n    image: nginx:alpine'}),
         responses: [{status: '200', description: 'Validation completed.'}, {status: '422', description: 'Compose validation failed.'}],
       }),
-      ...crud('/api/playspecs', 'playspec', 'playspecs', playspecBody),
+      ...crud('/api/specs', 'spec', 'specs', specBody),
       endpoint({
         method: 'GET',
-        path: '/api/playspecs/:id/services',
-        title: 'List playspec services',
+        path: '/api/specs/:id/services',
+        title: 'List spec services',
         description: [
-          'Returns the services detected in a playspec.',
+          'Returns the services detected in a spec.',
           'Use it when choosing service names for mounts, registry credentials, logs, or lifecycle actions.',
           'The response is based on the parsed compose model Fibe will use for deployment.',
         ],
@@ -573,12 +604,12 @@ export const platformSections = [
       }),
       endpoint({
         method: 'POST',
-        path: '/api/playspecs/:id/template_switch_previews',
+        path: '/api/specs/:id/template_switch_previews',
         title: 'Preview template switch',
         description: [
-          'Previews the effect of moving a playspec to a different template version.',
+          'Previews the effect of moving a spec to a different template version.',
           'Use it to show diffs and compatibility warnings before applying a template upgrade.',
-          'The response is read-only and does not mutate the playspec.',
+          'The response is read-only and does not mutate the spec.',
         ],
         parameters: [pathParam()],
         requestBody: body('Template switch preview request.', {target_template_version_id: 123, rollout_mode: 'all', confirm_warnings: false}),
@@ -586,10 +617,10 @@ export const platformSections = [
       }),
       endpoint({
         method: 'POST',
-        path: '/api/playspecs/:id/template_switches',
+        path: '/api/specs/:id/template_switches',
         title: 'Apply template switch',
         description: [
-          'Queues a template version switch for the playspec.',
+          'Queues a template version switch for the spec.',
           'Use it after reviewing the preview and accepting any migration implications.',
           'The response is an async operation envelope; poll the returned status URL for the final result.',
         ],
@@ -599,10 +630,10 @@ export const platformSections = [
       }),
       endpoint({
         method: ['POST', 'PATCH', 'DELETE'],
-        path: '/api/playspecs/:id/mounts',
-        title: 'Manage playspec mounts',
+        path: '/api/specs/:id/mounts',
+        title: 'Manage spec mounts',
         description: [
-          'Adds, updates, or removes a mounted file definition on the playspec.',
+          'Adds, updates, or removes a mounted file definition on the spec.',
           'Use mounts for generated files, config overlays, and source-backed files that must appear in the running container.',
           'The method controls whether the mount is created, changed, or removed.',
         ],
@@ -612,10 +643,10 @@ export const platformSections = [
       }),
       endpoint({
         method: ['POST', 'DELETE'],
-        path: '/api/playspecs/:id/registry_credentials',
+        path: '/api/specs/:id/registry_credentials',
         title: 'Manage registry credentials',
         description: [
-          'Adds or removes container registry credentials for a playspec.',
+          'Adds or removes container registry credentials for a spec.',
           'Use it when private images must be pulled during playground deployment.',
           'Credential values should be treated as secrets and rotated when no longer needed.',
         ],
@@ -687,11 +718,11 @@ export const platformSections = [
       endpoint({
         method: 'POST',
         path: '/api/import_templates/:id/versions/:version_id/upgrades',
-        title: 'Upgrade linked playspecs',
+        title: 'Upgrade linked specs',
         description: [
-          'Queues upgrades for playspecs linked to a template version.',
+          'Queues upgrades for specs linked to a template version.',
           'Use it when a published version should roll forward dependent application definitions.',
-          'The operation can be long-running because each linked playspec may need validation and mutation.',
+          'The operation can be long-running because each linked spec may need validation and mutation.',
         ],
         parameters: [pathParam(), pathParam('version_id', 'Template version id.')],
         responses: acceptedResponses,
@@ -718,7 +749,7 @@ export const platformSections = [
           'Provisioning may be queued and should be followed through async status or returned resource state.',
         ],
         parameters: [pathParam()],
-        requestBody: body('Template launch request.', {marquee_id: 123, variables: {APP_NAME: 'demo'}}),
+        requestBody: body('Template launch request.', {host_id: 123, variables: {APP_NAME: 'demo'}}),
         responses: acceptedResponses,
       }),
       endpoint({
@@ -764,8 +795,23 @@ export const platformSections = [
 
 export const agentsSections = [
   {
+    title: 'Agent Presets',
+    description: 'Personal authored immutable revisions; independent personal/company recipient Agents.',
+    endpoints: [
+      endpoint({method: 'GET', path: '/api/agent_presets', title: 'Browse Agent Presets',
+        description: ['Authenticated browsing returns an items collection. V1 authoring requires personal authority and agent_presets scopes.'], responses: showResponses}),
+      endpoint({method: 'GET', path: '/api/agent_presets/:id', title: 'Read Agent Preset', parameters: [pathParam()],
+        description: ['Public detail is available only during an active publication epoch; private details require author authority.'], responses: showResponses}),
+      endpoint({method: 'GET', path: '/api/agent_presets/:id/revisions/:revision_id', title: 'Read permitted preset revision', parameters: [pathParam(), pathParam('revision_id')],
+        description: ['Drafts remain private. Unpublish revokes public revision and asset reads without revoking independent recipient copies.'], responses: showResponses}),
+      endpoint({method: 'POST', path: '/api/agents', title: 'Create independent Agent from preset',
+        description: ['Requires a permitted preset revision, recipient authority/authentication and an Idempotency-Key. Provider/config overrides and client authority fields cannot replace the authored revision or server owner.'],
+        requestBody: body('Recipient inputs and own authentication.', {agent: {name: 'App helper', preset_revision_id: 42, input_bindings: {}, preset_authentication: {}}}), responses: createResponses}),
+    ],
+  },
+  {
     title: 'Agents',
-    description: 'Agent endpoints manage Genies, chat entrypoints, mounts, uploads, and lifecycle operations.',
+    description: 'Agent endpoints manage Agents, chat entrypoints, mounts, uploads, and lifecycle operations.',
     endpoints: [
       ...crud('/api/agents', 'agent', 'agents', agentBody),
       endpoint({
@@ -813,7 +859,7 @@ export const agentsSections = [
         description: [
           'Creates a new chat session for an agent.',
           'Use it when a caller wants to start a fresh task thread rather than append to existing conversation state.',
-          'The selected Marquee must be funded; unpaid Marquees return `MARQUEE_NOT_FUNDED`.',
+          'The selected Host must be funded; unpaid Hosts return `HOST_NOT_FUNDED`.',
           'The response returns the chat state needed by Fibe clients.',
         ],
         parameters: [pathParam()],
@@ -827,7 +873,7 @@ export const agentsSections = [
         description: [
           'Restarts the chat process for the selected agent.',
           'Use it after chat failure, dependency changes, or when the current process should be recreated.',
-          'Restart work may be asynchronous because it interacts with the Marquee.',
+          'Restart work may be asynchronous because it interacts with the Host.',
         ],
         parameters: [pathParam()],
         responses: acceptedResponses,
@@ -876,7 +922,7 @@ export const agentsSections = [
         description: [
           'Sends a user message to an agent chat.',
           'Use it for the primary interaction loop after the agent and chat are ready.',
-          'Message delivery requires a funded Marquee and returns `MARQUEE_NOT_FUNDED` when unpaid.',
+          'Message delivery requires a funded Host and returns `HOST_NOT_FUNDED` when unpaid.',
           'The response reflects accepted message state while actual work may continue asynchronously.',
         ],
         parameters: [pathParam()],
@@ -914,7 +960,7 @@ export const agentsSections = [
         title: 'Copy agent',
         description: [
           'Creates a copy of an existing agent.',
-          'Use it to duplicate configuration before experimenting with a different task or Marquee.',
+          'Use it to duplicate configuration before experimenting with a different task or Host.',
           'The copied agent receives its own identity and can be changed independently.',
         ],
         parameters: [pathParam()],
@@ -1238,7 +1284,7 @@ export const integrationsSections = [
         title: 'Check repository access',
         description: [
           'Checks reachability and access status for up to 50 GitHub repository URLs.',
-          'Use it before creating Props or launching from repositories to see whether the caller can access each repo.',
+          'Use it before creating Repositories or launching from repositories to see whether the caller can access each repo.',
           'The endpoint returns repository status data and does not write commit statuses or comments back to source control.',
         ],
         requestBody: body('Repository status check payload.', {github_urls: ['https://github.com/owner/repo', 'https://github.com/owner/other-repo']}),
@@ -1251,7 +1297,7 @@ export const integrationsSections = [
         title: 'Create GitHub repository',
         description: [
           "Creates a repository in the caller's OAuth-connected GitHub account.",
-          'Use it when automation needs a new GitHub repo before registering a Prop or launching a project.',
+          'Use it when automation needs a new GitHub repo before registering a Repository or launching a project.',
           'The request fields are top-level JSON keys, not wrapped in a `github_repository` object.',
         ],
         requestBody: body('GitHub repository creation request.', {name: 'app', private: true, auto_init: true, description: 'New app repository'}),
@@ -1262,9 +1308,9 @@ export const integrationsSections = [
         path: '/api/gitea_repositories',
         title: 'Create Gitea repository',
         description: [
-          "Creates a repository through the caller's connected Gitea account and registers it as a Prop.",
+          "Creates a repository through the caller's connected Gitea account and registers it as a Repository.",
           'Use top-level JSON fields; the server does not read a `gitea_repository` wrapper.',
-          'The response includes the Gitea repo summary and the linked Fibe Prop.',
+          'The response includes the Gitea repo summary and the linked Fibe Repository.',
         ],
         requestBody: body('Gitea repository creation request.', {name: 'app', private: true, auto_init: true, description: 'New app repository'}),
         responses: createResponses,

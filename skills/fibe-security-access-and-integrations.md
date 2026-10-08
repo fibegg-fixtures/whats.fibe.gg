@@ -7,9 +7,13 @@ description: Use for Fibe authentication, sessions, sudo mode, two-factor auth, 
 
 Use this skill when a user asks who can access what, how credentials are protected, how automation authenticates, or how Fibe integrates with outside systems.
 
-## Team sharing
+## Company ownership
 
-A Marquee is the only resource a team can share. A team owner shares it from the team page; accepted members can then select it for Playgrounds, template launches, CI, and schedules. Everyone with access can view and manage its Playgrounds. Ownership and billing stay with the owner, and an unfunded Marquee blocks everyone. Team sharing has no read-only grant or API, CLI, or MCP management surface. Shared Marquees still work through the normal Marquee and Playground scopes.
+Company workspaces own their Hosts, Repositories, Specs, Playgrounds, Agents, Library records, Secrets, credentials, defaults and finance independently of personal resources. Accepted members operate company resources; accepted administrators govern membership, credentials and billing. Ownership is immutable, and children inherit their root owner. Another company's ID or a creator's personal credentials cannot provide authority.
+
+Individual credentials require live membership. Durable company service principals continue independently of their issuer, but key/principal revocation and company closure block later effects. Company resources and retained history survive creator departure. Existing personal sharing remains a separate legacy contract; it does not become company ownership.
+
+Removal records a durable enrollment block. Restoration requires an audited native admin request and the removed person's explicit acceptance. Existing applied ENV-pack snapshots remain repairable after grant loss; fresh use requires valid renewed authority.
 
 ## Sessions and trust
 
@@ -35,9 +39,9 @@ API keys provide scoped programmatic access for API, CLI, MCP, and agent workflo
 
 Common scope families:
 
-- `marquees:read`, `marquees:write`, `marquees:delete`, `marquees:manage`
-- `props:read`, `props:write`, `props:delete`
-- `playspecs:read`, `playspecs:write`, `playspecs:delete`
+- `hosts:read`, `hosts:write`, `hosts:delete`, `hosts:manage`
+- `repositories:read`, `repositories:write`, `repositories:delete`
+- `specs:read`, `specs:write`, `specs:delete`
 - `playgrounds:read`, `playgrounds:write`, `playgrounds:delete`
 - `import_templates:read`, `import_templates:write`
 - `agents:read`, `agents:write`, `agents:delete`
@@ -53,19 +57,22 @@ Common scope families:
 - `conversations:read`, `conversations:write`, `conversations:delete`, `conversations:manage`
 - `memories:read`, `memories:write`, `memories:delete`, `memories:manage`
 - `monitor:read`
+- `env_packs:read`, `env_packs:write`, `env_packs:delete`, `env_packs:manage`
+- `billing:read`, `billing:write`
+- `agent_presets:read`, `agent_presets:write`
 
 Use narrow scopes for automation. Use granular restrictions when a key should only touch specific resources. The raw token is shown only at creation time. Full-access wildcard keys exist for administrator-level cases, but should not be the default recommendation.
 
 ## Secret Vault
 
-Secret Vault stores user-owned sensitive values for Genies and workflows.
+Secret Vault stores user-owned sensitive values for Agents and workflows.
 
 Use Secret Vault when:
 
 - The value is long-lived.
 - The value should not be committed to source control.
 - The value should not appear in template YAML.
-- A Genie or workflow needs to retrieve it securely.
+- A Agent or workflow needs to retrieve it securely.
 
 Do not confuse Secret Vault with template variables marked `secret` or `sensitive`; those flags shape launch UI behavior, while Secret Vault is the long-lived credential store.
 
@@ -75,9 +82,9 @@ Job ENV entries inject environment variables into job-mode runs.
 
 Use Job ENV when:
 
-- The value is only needed for Tricks.
+- The value is only needed for Tasks.
 - The same credential should be reused across job runs.
-- A Prop-specific override should beat a global value for one repository.
+- A Repository-specific override should beat a global value for one repository.
 
 ## Webhooks
 
@@ -85,7 +92,7 @@ Webhooks deliver signed HTTP callbacks when Fibe resources change.
 
 Webhook capabilities:
 
-- Subscribe to event families such as Playground, Marquee, Prop, Playspec, Agent, Template, Artefact, Feedback, Mutter, API Key, Secret, and Webhook events.
+- Subscribe to event families such as Playground, Host, Repository, Spec, Agent, Template, Artefact, Feedback, Mutter, API Key, Secret, and Webhook events.
 - Use event filters to restrict events to selected resources.
 - Test a webhook endpoint.
 - Inspect delivery history.
@@ -105,7 +112,7 @@ Audit logs provide read-only history of important actions. They help answer:
 - Who changed this?
 - What resource changed?
 - When did it happen?
-- Was the actor a user, system automation, API key, or Genie?
+- Was the actor a user, system automation, API key, or Agent?
 
 Use audit logs for investigation and accountability, not as a live message queue.
 

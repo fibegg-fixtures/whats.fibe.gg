@@ -12,15 +12,15 @@ Fibe reserves specific env vars for platform wiring. Do not write these keys fro
 | Variable | Where available | Owner | How to use |
 |---|---|---|---|
 | `FIBE_SERVICES_<SERVICE_TOKEN>_PATH` | Compose interpolation for source-backed Playground services | Fibe | Use only when a Compose value needs the absolute clone path of a source-backed service. Token is the service name uppercased with non-alphanumerics replaced by `_`. Not guaranteed inside containers. |
-| `FIBE_REPOSITORY_URL` | Job/trick runtime env | Fibe | CI scripts can read it for the resolved Prop URL. |
-| `FIBE_REPOSITORY_OWNER` | Job/trick runtime env | Fibe | Parsed owner from repository URL. |
-| `FIBE_REPOSITORY_NAME` | Job/trick runtime env | Fibe | Parsed repository name. |
-| `FIBE_BRANCH` | Job/trick runtime env | Fibe | Resolved service branch. |
-| `FIBE_COMMIT_SHA` | Job/trick runtime env | Fibe | Trigger commit SHA when available. |
-| `FIBE_TRIGGER_EVENT` | Job/trick runtime env | Fibe | `manual`, `push`, `pull_request`, `schedule`, or equivalent run source. |
-| `FIBE_PROP_ID` | Job/trick runtime env | Fibe | Prop id for the resolved service or primary Prop. |
-| `FIBE_PLAYSPEC_ID` | Job/trick runtime env | Fibe | Playspec id. |
-| `FIBE_PLAYGROUND_ID` | Job/trick runtime env | Fibe | Playground or Trick id. |
+| `FIBE_REPOSITORY_URL` | Job/task runtime env | Fibe | CI scripts can read it for the resolved Repository URL. |
+| `FIBE_REPOSITORY_OWNER` | Job/task runtime env | Fibe | Parsed owner from repository URL. |
+| `FIBE_REPOSITORY_NAME` | Job/task runtime env | Fibe | Parsed repository name. |
+| `FIBE_BRANCH` | Job/task runtime env | Fibe | Resolved service branch. |
+| `FIBE_COMMIT_SHA` | Job/task runtime env | Fibe | Trigger commit SHA when available. |
+| `FIBE_TRIGGER_EVENT` | Job/task runtime env | Fibe | `manual`, `push`, `pull_request`, `schedule`, or equivalent run source. |
+| `FIBE_REPOSITORY_ID` | Job/task runtime env | Fibe | Repository id for the resolved service or primary Repository. |
+| `FIBE_SPEC_ID` | Job/task runtime env | Fibe | Spec id. |
+| `FIBE_PLAYGROUND_ID` | Job/task runtime env | Fibe | Playground or Task id. |
 
 Template variables should not target these keys with `path`/`paths`. Use app-owned names for app config and leave platform context to Fibe.
 
@@ -38,7 +38,7 @@ Template variables should not target these keys with `path`/`paths`. Use app-own
 | `FIBE_AGENT_ID` | Agent containers | Fibe | Current Agent identity. |
 | `FIBE_API_KEY` | Agent containers and built-in Fibe MCP env | Fibe | Fibe API key for the runtime. Never put provider tokens here. |
 | `FIBE_DOMAIN` | Agent containers and built-in Fibe MCP env | Fibe | Fibe API host. |
-| `FIBE_MARQUEE_ID` | Agent containers | Fibe | Hosting Marquee id. |
+| `FIBE_HOST_ID` | Agent containers | Fibe | Hosting Host id. |
 | `FIBE_WORKSPACE_PATH` | Agent containers when workspace mirroring is enabled | Fibe | Player-visible workspace path for artefact mirroring. |
 | `FIBE_SETTINGS_JSON` | fibe-agent settings bridge | Fibe/operator | Fibe normally writes `fibe.yml`; legacy/generated agent Compose may use this JSON settings bridge. Do not use it in app templates. |
 | `MCP_CONFIG_JSON` | fibe-agent process env after settings promotion | Fibe/operator | MCP server config consumed by fibe-agent. Usually generated from Fibe settings. |
@@ -73,4 +73,4 @@ Job ENV entries reject every `FIBE_*` key because those entries are reusable run
 
 ## Related skills
 
-[reference-validation-pipeline](reference-validation-pipeline.md), [mode-job-trick](mode-job-trick.md), [fibe-agents-and-automation](fibe-agents-and-automation.md), [recipe-whole-node-paths](recipe-whole-node-paths.md).
+[reference-validation-pipeline](reference-validation-pipeline.md), [mode-job-task](mode-job-task.md), [fibe-agents-and-automation](fibe-agents-and-automation.md), [recipe-whole-node-paths](recipe-whole-node-paths.md).

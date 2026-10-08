@@ -47,7 +47,7 @@ Lists every tool registered on the Fibe MCP server, including ones not advertise
 
 ## Recipes
 - Discover all webhook-related tools: `{tier:"all", name_pattern:"webhook"}`.
-- Inspect a tool's args before calling it: `{name_pattern:"props_get", include_schema:true}`.
+- Inspect a tool's args before calling it: `{name_pattern:"repositories_get", include_schema:true}`.
 - Quick survey of admin-only tools: `{tier:"overseer"}`.
 
 ## Gotchas

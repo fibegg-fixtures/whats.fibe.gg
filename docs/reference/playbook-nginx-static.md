@@ -47,7 +47,7 @@ x-fibe.gg:
 | Before | After | Why |
 |---|---|---|
 | `ports: ["80:80"]` | `fibe.gg/port: 80` + `fibe.gg/visibility: external` | Routed through Traefik |
-| `volumes: - ./public:/usr/share/nginx/html:ro` | dropped | Host-path bind isn't portable across Marquees |
+| `volumes: - ./public:/usr/share/nginx/html:ro` | dropped | Host-path bind isn't portable across Hosts |
 
 If you have actual HTML files to ship, two options:
 
@@ -155,7 +155,7 @@ x-fibe.gg:
 
 ## Root subdomain
 
-For a "this is the marquee's only app" deployment:
+For a "this is the host's only app" deployment:
 
 ```yaml
 labels:
@@ -169,7 +169,7 @@ URL becomes `https://<root-domain>/`, no leftmost label.
 ## Pitfalls
 
 - **Forgetting to omit `ports:`**: schema accepts, but Traefik can't route until you remove it. Always remove.
-- **Mounting a host path**: won't exist on the Marquee. Use `configs:`, source mount, or pre-built image.
+- **Mounting a host path**: won't exist on the Host. Use `configs:`, source mount, or pre-built image.
 - **Bind-mounting `/etc/nginx/nginx.conf` from host**: same issue. Use `configs:` to ship the nginx config inline.
 
 ## Related skills

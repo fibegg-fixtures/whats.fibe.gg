@@ -8,7 +8,7 @@ keywords: [Fibe API, REST API, bearer token, async requests]
 
 # API reference
 
-This reference covers the public `/api` namespace exposed by Fibe. It does not cover payment-provider webhook routes, team management (not yet available over the API), or routes outside `/api`.
+This candidate reference covers the public `/api` namespace, including immutable owner context and company credentials. Payment-provider callbacks and routes outside `/api` have separate contracts. Production fibe.gg retains its previous API until its own cutover.
 
 Use the SDK, CLI, or MCP server when you want a supported automation surface with command discovery and auth profile handling. Use the HTTP API when you need direct REST integration.
 
@@ -18,7 +18,7 @@ Use the environment host plus the `/api` namespace:
 
 | Environment | Base URL |
 | --- | --- |
-| Production | `https://fibe.gg/api` |
+| Coordinated staging candidate | `https://next.fibe.live/api` |
 
 ## Authentication
 
@@ -30,7 +30,7 @@ Accept: application/json
 Content-Type: application/json
 ```
 
-API requests are authenticated as the player that owns the token. API access is limited to beta or super-admin players. Some endpoints also require scoped API keys, such as `monitor:read` for event monitoring.
+A new API credential binds one immutable owner context and principal. The principal is a person with live membership or an active company service principal; the issuer is attribution. Scopes and resource ownership are checked separately. A guessed owner ID, selected browser context or request field cannot widen a credential. Historical personal credentials retain their recorded authorization version.
 
 `GET /api/me` returns the current API identity and the scopes attached to the token.
 
@@ -78,11 +78,11 @@ Failures use the shared error envelope, except when polling a missing or expired
 }
 ```
 
-Common codes include `VALIDATION_FAILED`, `UNAUTHORIZED`, `FORBIDDEN`, `RESOURCE_NOT_FOUND`, `RATE_LIMITED`, and `MARQUEE_NOT_FUNDED` (402, selected Marquee is unfunded).
+Common codes include `VALIDATION_FAILED`, `UNAUTHORIZED`, `FORBIDDEN`, `RESOURCE_NOT_FOUND`, `RATE_LIMITED`, and `HOST_NOT_FUNDED` (402, selected Host is unfunded).
 
-Conversation, live-state, and queued-turn endpoints that talk to a live Genie return `422` with a code explaining why delivery failed: `AGENT_RUNTIME_NOT_RUNNING` (the Genie has no running session), `AGENT_RUNTIME_UNREACHABLE` (the session can't be reached), or `AGENT_RUNTIME_ERROR` (the session returned an unexpected error). The `details` object carries the agent (and conversation) involved.
+Conversation, live-state, and queued-turn endpoints that talk to a live Agent return `422` with a code explaining why delivery failed: `AGENT_RUNTIME_NOT_RUNNING` (the Agent has no running session), `AGENT_RUNTIME_UNREACHABLE` (the session can't be reached), or `AGENT_RUNTIME_ERROR` (the session returned an unexpected error). The `details` object carries the agent (and conversation) involved.
 
-Sending a chat message can fail with `422` and `AGENT_COMMUNICATION_FAILED`. `AGENT_BUSY` means the Genie is mid-turn; retry or use the `queue` busy policy. `NEED_AUTH` means its provider credentials require authentication.
+Sending a chat message can fail with `422` and `AGENT_COMMUNICATION_FAILED`. `AGENT_BUSY` means the Agent is mid-turn; retry or use the `queue` busy policy. `NEED_AUTH` means its provider credentials require authentication.
 
 ### Rate limits
 
@@ -118,7 +118,7 @@ Some write endpoints support `Idempotency-Key` for safe retries. A successful re
 
 | Group | Contents |
 | --- | --- |
-| [Platform](./platform.mdx) | Marquees, props, playgrounds, playspecs, template imports, launches, and compose validation. |
+| [Platform](./platform.mdx) | Hosts, repositories, playgrounds, specs, template imports, launches, and compose validation. |
 | [Agents and knowledge](./agents-and-knowledge.mdx) | Agents, conversations, artefacts, feedback, events, memory, uploads, and conversation synchronization. |
 | [Integrations](./integrations.mdx) | API keys, secrets, job environment, GitHub and Gitea repositories, installations, webhooks, and audit logs. |
 

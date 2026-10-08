@@ -1,6 +1,6 @@
 ---
 name: decide-job-mode
-description: Use to decide whether a template should be a long-running HTTP service, a one-shot job (Trick) with `job_watch`, a scheduled job via `schedule_config`, or a VCS-triggered job via `trigger_config`.
+description: Use to decide whether a template should be a long-running HTTP service, a one-shot job (Task) with `job_watch`, a scheduled job via `schedule_config`, or a VCS-triggered job via `trigger_config`.
 ---
 
 # Decide: long-running vs job-mode vs scheduled vs triggered
@@ -12,7 +12,7 @@ A Fibe template runs in one of four execution shapes. Pick first; everything els
 | Shape | Marker | Lifecycle |
 |---|---|---|
 | Long-running HTTP | (nothing: default) | Stays up; serves requests; healthchecks monitor. |
-| Job-mode (Trick) | `x-fibe.gg.metadata.job_mode: true` + `fibe.gg/job_watch: "true"` on at least one service | Starts, runs, all watched services exit, tear down. |
+| Job-mode (Task) | `x-fibe.gg.metadata.job_mode: true` + `fibe.gg/job_watch: "true"` on at least one service | Starts, runs, all watched services exit, tear down. |
 | Scheduled job | Job-mode + `x-fibe.gg.metadata.schedule_config` | Cron-driven launch of a job-mode template. |
 | Triggered job | Job-mode + `x-fibe.gg.metadata.trigger_config` | VCS event-driven launch (push, pull_request). |
 
@@ -26,7 +26,7 @@ input intent
 │  └─ long-running, with fibe.gg/port
 │
 ├─ "run a one-off task that exits"
-│  └─ job-mode (Trick), with fibe.gg/job_watch
+│  └─ job-mode (Task), with fibe.gg/job_watch
 │
 ├─ "run a one-off task every N minutes/hours/days"
 │  └─ job-mode + schedule_config (cron)
@@ -75,7 +75,7 @@ Job-mode constraints (runtime-enforced):
 - Fibe **forces** `restart: "no"` and `deploy.replicas: 1` on every service in a job-mode template.
 - Fibe uses service labels to prepare the run; the job itself should behave like ordinary Compose services once started.
 
-See [mode-job-trick](mode-job-trick.md).
+See [mode-job-task](mode-job-task.md).
 
 ## Scheduled (cron)
 
@@ -90,10 +90,10 @@ x-fibe.gg:
     schedule_config:
       enabled: true
       cron: "0 3 * * *"      # daily at 3:00 UTC
-      marquee_id: 1          # required, positive integer or its string form
+      host_id: 1          # required, positive integer or its string form
 ```
 
-Cron is the 5-field POSIX form. `marquee_id` must be a Marquee the Player owns or one shared with them through an accepted team membership. Fibe resolves the ID at scheduling time.
+Cron is the 5-field POSIX form. `host_id` must be a Host the Player owns or one shared with them through an accepted team membership. Fibe resolves the ID at scheduling time.
 
 See [mode-schedule-cron](mode-schedule-cron.md).
 
@@ -113,11 +113,11 @@ x-fibe.gg:
       event_type: push                              # or "pull_request"
       repo_url: https://github.com/owner/repo
       branch: main
-      prop_id: 1                                    # the Prop that wires the source
-      marquee_id: 1
+      repository_id: 1                                    # the Repository that wires the source
+      host_id: 1
 ```
 
-`event_type` is enum: `push` or `pull_request`. `source_defaults: true` on the metadata tells Fibe to auto-fill `repo_url`/`branch` from the source Prop when imported via a source-backed mechanism.
+`event_type` is enum: `push` or `pull_request`. `source_defaults: true` on the metadata tells Fibe to auto-fill `repo_url`/`branch` from the source Repository when imported via a source-backed mechanism.
 
 See [mode-trigger-vcs](mode-trigger-vcs.md).
 
@@ -138,4 +138,4 @@ See [mode-trigger-vcs](mode-trigger-vcs.md).
 
 ## Related skills
 
-[mode-job-trick](mode-job-trick.md), [mode-schedule-cron](mode-schedule-cron.md), [mode-trigger-vcs](mode-trigger-vcs.md), [reference-x-fibe-gg-namespace](reference-x-fibe-gg-namespace.md), [playbook-test-runner](playbook-test-runner.md), [playbook-cron-scheduled](playbook-cron-scheduled.md).
+[mode-job-task](mode-job-task.md), [mode-schedule-cron](mode-schedule-cron.md), [mode-trigger-vcs](mode-trigger-vcs.md), [reference-x-fibe-gg-namespace](reference-x-fibe-gg-namespace.md), [playbook-test-runner](playbook-test-runner.md), [playbook-cron-scheduled](playbook-cron-scheduled.md).

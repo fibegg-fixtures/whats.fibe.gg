@@ -16,7 +16,7 @@ Dispatches an arbitrary registered tool by name. Same dispatcher path as a direc
 ## When to use
 - Target tool is hidden by `--tools <tier>` filter.
 - Tool name is dynamic (chosen at runtime from `fibe_tools_catalog`).
-- Reaching `fibe_props_*`, `fibe_marquees_*`, `fibe_secrets_*`, `fibe_webhooks_*`, etc. when running on `core` tier.
+- Reaching `fibe_repositories_*`, `fibe_hosts_*`, `fibe_secrets_*`, `fibe_webhooks_*`, etc. when running on `core` tier.
 
 ## When NOT to use
 - The concrete tool is already advertised: call it directly for cleaner traces.
@@ -26,7 +26,7 @@ Dispatches an arbitrary registered tool by name. Same dispatcher path as a direc
 ## Inputs
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `tool` | string | yes | Full registered name, e.g. `fibe_props_get`. Case-sensitive. |
+| `tool` | string | yes | Full registered name, e.g. `fibe_repositories_get`. Case-sensitive. |
 | `args` | object | no | The target tool's argument object verbatim |
 | `confirm` | bool | no | Forwarded to `args.confirm` for destructive tools |
 
@@ -36,7 +36,7 @@ Whatever the target tool returns. Errors propagate transparently with the same c
 ## Examples
 ```json
 {
-  "tool": "fibe_props_get",
+  "tool": "fibe_repositories_get",
   "args": { "id": 123 }
 }
 ```

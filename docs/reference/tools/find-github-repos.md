@@ -15,11 +15,11 @@ Aggregates repository search across every connected GitHub App installation for 
 
 ## When to use
 - "What repos can I deploy from?" without knowing which org/installation owns them.
-- Pre-flight before `fibe_resource_mutate(resource:"prop", operation:"attach")`.
+- Pre-flight before `fibe_resource_mutate(resource:"repository", operation:"attach")`.
 - Discovering repos when you don't have the org/account name handy.
 
 ## When NOT to use
-- You already know `<owner>/<repo>`: just `prop.attach`.
+- You already know `<owner>/<repo>`: just `repository.attach`.
 - You already know the installation/repo target: search with `q` here, then use the returned repository fields.
 
 ## Inputs
@@ -59,4 +59,4 @@ Aggregates repository search across every connected GitHub App installation for 
 - `fibe_get_github_token`: short-lived token for a found repo.
 - `fibe_repo_status_check`: verify access to specific URLs.
 - `fibe_github_repos_create`: make a new repo (OAuth path).
-- `fibe_resource_mutate(resource:"prop", operation:"attach")`: register the found repo.
+- `fibe_resource_mutate(resource:"repository", operation:"attach")`: register the found repo.

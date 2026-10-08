@@ -71,7 +71,7 @@ Schema allows the empty string, `external`, `internal`, or `$$var__NAME`. Runtim
 ### `fibe.gg/subdomain`
 
 Allowed values:
-- `@`: bind the route at the root of the Marquee domain.
+- `@`: bind the route at the root of the Host domain.
 - lowercase alnum/hyphen, no leading/trailing hyphen: `^[a-z0-9]([a-z0-9-]*[a-z0-9])?$`.
 - empty string: fall back to the default (service name).
 - Variable-driven subdomain via `path`/`paths` binding.
@@ -98,7 +98,7 @@ services:
       fibe.gg/subdomain: "bad-subdomain-"
 ```
 
-If omitted, the public host is `<service-name>.<marquee-root-domain>`.
+If omitted, the public host is `<service-name>.<host-root-domain>`.
 
 ### `fibe.gg/path_rule`
 
@@ -132,7 +132,7 @@ Parsed into a key→value map.
 
 ### `fibe.gg/repo_url`
 
-Core accepts HTTP(S) URLs, full `ssh://` URLs, and scp-style SSH URLs such as `git@host:owner/repo.git`. Equivalent transport spellings normalize to one repository identity. A credential-free `https://github.com/...` URL uses standalone Core's optional host-wide `GITHUB_TOKEN`; Enterprise instead resolves the Player's Prop/provider credentials. Explicit HTTP(S) URL credentials take precedence and are supported for generic Git access, but they remain in the authored template, rendered Compose, Git origin, and backups, so prefer the deployment's managed credential path. SSH uses the server's mounted SSH configuration and normal host-key verification. Inline `$$var__NAME` interpolation is allowed and bypasses validation until compile time.
+Core accepts HTTP(S) URLs, full `ssh://` URLs, and scp-style SSH URLs such as `git@host:owner/repo.git`. Equivalent transport spellings normalize to one repository identity. A credential-free `https://github.com/...` URL uses standalone Core's optional host-wide `GITHUB_TOKEN`; Enterprise instead resolves the Player's Repository/provider credentials. Explicit HTTP(S) URL credentials take precedence and are supported for generic Git access, but they remain in the authored template, rendered Compose, Git origin, and backups, so prefer the deployment's managed credential path. SSH uses the server's mounted SSH configuration and normal host-key verification. Inline `$$var__NAME` interpolation is allowed and bypasses validation until compile time.
 
 ## Two forms accepted
 
@@ -211,9 +211,9 @@ If unset, the runtime fills:
 
 ## Source defaults (auto-fill for source-backed templates)
 
-When a template imports from a source Prop and `x-fibe.gg.metadata.source_defaults: true`, the runtime fills:
+When a template imports from a source Repository and `x-fibe.gg.metadata.source_defaults: true`, the runtime fills:
 
-- `fibe.gg/repo_url` on services that have `build:`, an explicit `working_dir`, or already declare repository/branch metadata: with the source Prop's URL. Outside an explicitly tracked `source_defaults` template, `working_dir` remains ordinary Compose.
+- `fibe.gg/repo_url` on services that have `build:`, an explicit `working_dir`, or already declare repository/branch metadata: with the source Repository's URL. Outside an explicitly tracked `source_defaults` template, `working_dir` remains ordinary Compose.
 - `fibe.gg/branch` similarly with the source ref.
 - `trigger_config.repo_url` / `branch` if the template is `job_mode: true` and a `trigger_config` exists.
 

@@ -1,6 +1,6 @@
 ---
 title: "Local Playgrounds Info"
-description: "Use when you need to get filesystem-level info about one local Playground (name, path, playspec, mounts) without an API call."
+description: "Use when you need to get filesystem-level info about one local Playground (name, path, spec, mounts) without an API call."
 slug: /reference/tools/local-playgrounds-info
 sidebar_label: "Local Playgrounds Info"
 image: /img/og/reference-tools-local-playgrounds-info.png
@@ -11,7 +11,7 @@ format: md
 
 [MODE:BROWNFIELD] Read-only, idempotent. Tier: brownfield.
 
-Returns local Playground names, URLs, source mounts, or full metadata from the local Marquee filesystem. No Fibe API call.
+Returns local Playground names, URLs, source mounts, or full metadata from the local Host filesystem. No Fibe API call.
 
 ## When to use
 - Discover local Playgrounds with `view:"names"`.
@@ -25,14 +25,14 @@ Returns local Playground names, URLs, source mounts, or full metadata from the l
 | Field | Type | Required | Notes |
 |---|---|---|---|
 | `view` | string | yes | `names`, `urls`, `mounts`, or `details` |
-| `id_or_name` | string | no | Local Playground ID, name, compose project, Playspec, or unique Playspec prefix. Omit for `view:"names"` |
+| `id_or_name` | string | no | Local Playground ID, name, compose project, Spec, or unique Spec prefix. Omit for `view:"names"` |
 
 ## Output
 Native structured MCP data, not a CLI `stdout` envelope.
 
 `view:"names"`:
 ```json
-[{ "id": "42", "name": "demo-app--42", "playspec": "demo-app", "path": "/opt/fibe/playgrounds/demo-app--42" }]
+[{ "id": "42", "name": "demo-app--42", "spec": "demo-app", "path": "/opt/fibe/playgrounds/demo-app--42" }]
 ```
 
 `view:"urls"`:
@@ -42,7 +42,7 @@ Native structured MCP data, not a CLI `stdout` envelope.
 
 `view:"mounts"`:
 ```json
-[{ "service": "web", "mount": "/opt/fibe/playgrounds/demo-app--42/props/acme--demo-app/main", "prop": "demo-app", "branch": "main" }]
+[{ "service": "web", "mount": "/opt/fibe/playgrounds/demo-app--42/repositories/acme--demo-app/main", "repository": "demo-app", "branch": "main" }]
 ```
 
 `view:"details"` returns the full local Playground object with service metadata.
@@ -51,7 +51,7 @@ Native structured MCP data, not a CLI `stdout` envelope.
 - `view:"names"` does not accept a target selector.
 - `urls`, `mounts`, and `details` require one target selector.
 - Numeric selectors match the local compose project suffix (`<name>--<id>`), not an API lookup.
-- Ambiguous playspec prefixes return an error listing candidates.
+- Ambiguous spec prefixes return an error listing candidates.
 - Filesystem-only: local data may be stale if the Playground has been remotely deleted.
 
 ## Related

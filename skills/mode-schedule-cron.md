@@ -1,6 +1,6 @@
 ---
 name: mode-schedule-cron
-description: "Use to add `x-fibe.gg.metadata.schedule_config` to a job-mode Fibe template - cron expression syntax, `marquee_id` requirement, and the relationship with `job_mode: true`."
+description: "Use to add `x-fibe.gg.metadata.schedule_config` to a job-mode Fibe template - cron expression syntax, `host_id` requirement, and the relationship with `job_mode: true`."
 ---
 
 # Mode: scheduled (cron) job templates
@@ -11,7 +11,7 @@ A scheduled template is a **job-mode** template that Fibe launches on a cron sch
 
 1. `x-fibe.gg.metadata.job_mode: true`.
 2. At least one service with `fibe.gg/job_watch: "true"`.
-3. `x-fibe.gg.metadata.schedule_config` with `enabled`, `cron`, `marquee_id`.
+3. `x-fibe.gg.metadata.schedule_config` with `enabled`, `cron`, `host_id`.
 
 ```yaml
 x-fibe.gg:
@@ -22,7 +22,7 @@ x-fibe.gg:
     schedule_config:
       enabled: true
       cron: "0 3 * * *"          # 3:00 daily, UTC by default
-      marquee_id: 1
+      host_id: 1
 ```
 
 ## `cron` field
@@ -38,22 +38,22 @@ min hour day-of-month month day-of-week
 30  6    *            *     1-5         ← 06:30 Mon-Fri
 ```
 
-Schedule is interpreted in **UTC** by default. If the runtime supports per-Marquee timezone overrides, that's a separate config; check current docs.
+Schedule is interpreted in **UTC** by default. If the runtime supports per-Host timezone overrides, that's a separate config; check current docs.
 
-## `marquee_id`
+## `host_id`
 
-The Marquee where each fired Playground runs. **Required**. Must be a Marquee you own directly or one shared with you through an accepted team membership (team-shared Marquees behave the same for scheduling). The Marquee must still be funded and launchable. Schema validates shape (positive integer, or `^[1-9][0-9]*$` string); runtime resolves and authorizes.
+The Host where each fired Playground runs. **Required**. Must be a Host you own directly or one shared with you through an accepted team membership (team-shared Hosts behave the same for scheduling). The Host must still be funded and launchable. Schema validates shape (positive integer, or `^[1-9][0-9]*$` string); runtime resolves and authorizes.
 
 ```yaml
 schedule_config:
   enabled: true
   cron: "0 3 * * *"
-  marquee_id: 1                   # integer
+  host_id: 1                   # integer
 ```
 
 ```yaml
 schedule_config:
-  marquee_id: "1"                 # string form, also valid
+  host_id: "1"                 # string form, also valid
 ```
 
 ## `enabled`
@@ -71,14 +71,14 @@ x-fibe.gg:
     schedule_config:
       enabled: true
       cron: "0 3 * * *"
-      marquee_id: 1
+      host_id: 1
     trigger_config:
       enabled: true
       event_type: push
       repo_url: https://github.com/owner/repo
       branch: main
-      prop_id: 1
-      marquee_id: 1
+      repository_id: 1
+      host_id: 1
 ```
 
 ## What runtime does
@@ -91,7 +91,7 @@ x-fibe.gg:
 
 ## Where to find run history
 
-`fibe_resource_list(resource: "trick", params: { ... })` lists past runs of job-mode templates. Filter by the playspec that was created from the template (`playspec_id`) to see only its run history. See platform skill `fibe-tool-resource-list`.
+`fibe_resource_list(resource: "task", params: { ... })` lists past runs of job-mode templates. Filter by the spec that was created from the template (`spec_id`) to see only its run history. See platform skill `fibe-tool-resource-list`.
 
 ## Worked example: nightly Postgres backup
 
@@ -128,7 +128,7 @@ x-fibe.gg:
     schedule_config:
       enabled: true
       cron: "0 3 * * *"
-      marquee_id: 1
+      host_id: 1
 
   variables:
     PG_HOST:
@@ -170,7 +170,7 @@ x-fibe.gg:
 ## Pitfalls
 
 - **`schedule_config` without `job_mode: true`**: schedule does nothing; long-running templates aren't fireable on schedule.
-- **Missing `marquee_id`**: schema accepts (no marquee_id is technically `additionalProperties: true`), but runtime requires it. Always set.
+- **Missing `host_id`**: schema accepts (no host_id is technically `additionalProperties: true`), but runtime requires it. Always set.
 - **Invalid cron expression**: rejected when the schedule is saved or imported (error: `invalid schedule format`). Test the cron with an external tool first if unsure.
 - **Cron fires while previous run is still active**: typically Fibe just spawns another Playground (parallel runs). If your job is non-idempotent (e.g. modifying a shared DB), guard with a lock or change the cadence.
 - **Long-running tasks with tight crontab**: `*/1 * * * *` for a job that takes 90 seconds = unbounded growth. Make the period > max job duration.
@@ -178,4 +178,4 @@ x-fibe.gg:
 
 ## Related skills
 
-[mode-job-trick](mode-job-trick.md), [mode-trigger-vcs](mode-trigger-vcs.md), [decide-job-mode](decide-job-mode.md), [reference-x-fibe-gg-namespace](reference-x-fibe-gg-namespace.md), [playbook-cron-scheduled](playbook-cron-scheduled.md).
+[mode-job-task](mode-job-task.md), [mode-trigger-vcs](mode-trigger-vcs.md), [decide-job-mode](decide-job-mode.md), [reference-x-fibe-gg-namespace](reference-x-fibe-gg-namespace.md), [playbook-cron-scheduled](playbook-cron-scheduled.md).

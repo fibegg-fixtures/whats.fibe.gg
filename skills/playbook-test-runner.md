@@ -56,8 +56,8 @@ x-fibe.gg:
       event_type: push
       repo_url: https://github.com/owner/repo
       branch: main
-      prop_id: 1
-      marquee_id: 1
+      repository_id: 1
+      host_id: 1
   variables:
     REPO_URL:
       name: "Repository URL"
@@ -94,7 +94,7 @@ For long test suites, split into multiple watched services running in parallel: 
 
 ## Run results
 
-Run results appear in the run history inside Fibe (list past runs and filter by the template's playspec). Fibe does not post commit status checks to GitHub or Gitea.
+Run results appear in the run history inside Fibe (list past runs and filter by the template's spec). Fibe does not post commit status checks to GitHub or Gitea.
 
 ## Caching `node_modules` / `pip` / Gemfile etc.
 
@@ -106,7 +106,7 @@ services:
       - npm_cache:/root/.npm
 ```
 
-The named volumes persist between runs across the lifetime of the Playspec on this Marquee. Tests run faster after the first invocation.
+The named volumes persist between runs across the lifetime of the Spec on this Host. Tests run faster after the first invocation.
 
 If setup time is dominated by package downloads, image pulls, or dependency extraction, design the cache first: named volumes for package caches, pinned/prebuilt images for heavy toolchains, or a registry/cache service where appropriate. Increase test timeouts only after setup has deterministic readiness and cache behavior.
 
@@ -148,8 +148,8 @@ trigger_config:
   enabled: true
   event_type: pull_request
   branch: develop        # the PR's SOURCE (head) branch — fires when a PR from develop is opened or updated
-  prop_id: 1
-  marquee_id: 1
+  repository_id: 1
+  host_id: 1
 ```
 
 The trigger's `branch` must equal the PR's **source (head) branch**: a PR merely targeting that branch does not fire the trigger. The checked-out source is the service's configured branch (`fibe.gg/branch`, or the repo default), not the PR head. If the test must run the exact commit that triggered the run, have the test command use the managed run-context variables described in [reference-fibe-managed-env](reference-fibe-managed-env.md).
@@ -176,12 +176,12 @@ x-fibe.gg:
     trigger_config:
       enabled: true
       event_type: pull_request
-      # repo_url and branch auto-filled from source Prop
-      prop_id: 1
-      marquee_id: 1
+      # repo_url and branch auto-filled from source Repository
+      repository_id: 1
+      host_id: 1
 ```
 
-When this template is imported through a source-backed Prop, the runtime fills the trigger's `repo_url`/`branch` from the Prop. Publishable to the Bazaar as a generic PR test runner template.
+When this template is imported through a source-backed Repository, the runtime fills the trigger's `repo_url`/`branch` from the Repository. Publishable to the Bazaar as a generic PR test runner template.
 
 ## Pitfalls
 
@@ -207,4 +207,4 @@ When this template is imported through a source-backed Prop, the runtime fills t
 
 ## Related skills
 
-[mode-trigger-vcs](mode-trigger-vcs.md), [mode-job-trick](mode-job-trick.md), [recipe-source-mount](recipe-source-mount.md), [recipe-depends-on](recipe-depends-on.md), [decide-job-mode](decide-job-mode.md), [reference-x-fibe-gg-namespace](reference-x-fibe-gg-namespace.md).
+[mode-trigger-vcs](mode-trigger-vcs.md), [mode-job-task](mode-job-task.md), [recipe-source-mount](recipe-source-mount.md), [recipe-depends-on](recipe-depends-on.md), [decide-job-mode](decide-job-mode.md), [reference-x-fibe-gg-namespace](reference-x-fibe-gg-namespace.md).

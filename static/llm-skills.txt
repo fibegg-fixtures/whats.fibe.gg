@@ -24,7 +24,7 @@ decide-exposure-strategy: Use to decide how a service should be reachable - exte
   web:   https://whats.fibe.gg/skills/decide-exposure-strategy.md
   local: ./skills/decide-exposure-strategy.md
 
-decide-job-mode: Use to decide whether a template should be a long-running HTTP service, a one-shot job (Trick) with `job_watch`, a scheduled job via `schedule_config`, or a VCS-triggered job via `trigger_config`.
+decide-job-mode: Use to decide whether a template should be a long-running HTTP service, a one-shot job (Task) with `job_watch`, a scheduled job via `schedule_config`, or a VCS-triggered job via `trigger_config`.
   web:   https://whats.fibe.gg/skills/decide-job-mode.md
   local: ./skills/decide-job-mode.md
 
@@ -40,7 +40,7 @@ decide-zero-downtime: Use to decide whether to enable `fibe.gg/zerodowntime` on 
   web:   https://whats.fibe.gg/skills/decide-zero-downtime.md
   local: ./skills/decide-zero-downtime.md
 
-fibe-agents-and-automation: Use for Fibe AI Genies, standalone chats, Playground sidecars, Bridge, artefacts, mutters, feedback, job-mode Tricks, CI repair, scheduled jobs, VCS triggers, and mutation-testing automation.
+fibe-agents-and-automation: Use for Fibe AI Agents, standalone chats, Playground sidecars, Bridge, artefacts, mutters, feedback, job-mode Tasks, CI repair, scheduled jobs, VCS triggers, and mutation-testing automation.
   web:   https://whats.fibe.gg/skills/fibe-agents-and-automation.md
   local: ./skills/fibe-agents-and-automation.md
 
@@ -60,19 +60,19 @@ fibe-security-access-and-integrations: Use for Fibe authentication, sessions, su
   web:   https://whats.fibe.gg/skills/fibe-security-access-and-integrations.md
   local: ./skills/fibe-security-access-and-integrations.md
 
-glossary: Use as the first reference for the meaning of any core Fibe term - Marquee, Playground, Playspec, Template, Trick, Prop, Bazaar, Agent, Mutter, Artefact, Secret, Player, and related concepts.
+glossary: Use as the first reference for the meaning of any core Fibe term - Host, Playground, Spec, Template, Task, Repository, Bazaar, Agent, Mutter, Artefact, Secret, Player, and related concepts.
   web:   https://whats.fibe.gg/skills/glossary.md
   local: ./skills/glossary.md
 
-mode-job-trick: Use to convert a Docker Compose template into a Fibe job-mode template (Trick) with `fibe.gg/job_watch`, `x-fibe.gg.metadata.job_mode: true`, and the runtime constraints around restart, replicas, and exposure.
-  web:   https://whats.fibe.gg/skills/mode-job-trick.md
-  local: ./skills/mode-job-trick.md
+mode-job-task: Use to convert a Docker Compose template into a Fibe job-mode template (Task) with `fibe.gg/job_watch`, `x-fibe.gg.metadata.job_mode: true`, and the runtime constraints around restart, replicas, and exposure.
+  web:   https://whats.fibe.gg/skills/mode-job-task.md
+  local: ./skills/mode-job-task.md
 
-mode-schedule-cron: Use to add `x-fibe.gg.metadata.schedule_config` to a job-mode Fibe template - cron expression syntax, `marquee_id` requirement, and the relationship with `job_mode: true`.
+mode-schedule-cron: Use to add `x-fibe.gg.metadata.schedule_config` to a job-mode Fibe template - cron expression syntax, `host_id` requirement, and the relationship with `job_mode: true`.
   web:   https://whats.fibe.gg/skills/mode-schedule-cron.md
   local: ./skills/mode-schedule-cron.md
 
-mode-trigger-vcs: Use to add `x-fibe.gg.metadata.trigger_config` to a job-mode template - `event_type: push|pull_request`, repo URL, branch, prop/marquee binding, and `source_defaults` auto-fill.
+mode-trigger-vcs: Use to add `x-fibe.gg.metadata.trigger_config` to a job-mode template - `event_type: push|pull_request`, repo URL, branch, repository/host binding, and `source_defaults` auto-fill.
   web:   https://whats.fibe.gg/skills/mode-trigger-vcs.md
   local: ./skills/mode-trigger-vcs.md
 
@@ -160,7 +160,7 @@ recipe-inline-variables: Use to embed `$$var__NAME` inside Compose string values
   web:   https://whats.fibe.gg/skills/recipe-inline-variables.md
   local: ./skills/recipe-inline-variables.md
 
-recipe-named-volumes: Use to declare Compose named volumes for persistent data (databases, uploads, caches), and to replace host bind mounts that don't survive Marquee filesystem rules.
+recipe-named-volumes: Use to declare Compose named volumes for persistent data (databases, uploads, caches), and to replace host bind mounts that don't survive Host filesystem rules.
   web:   https://whats.fibe.gg/skills/recipe-named-volumes.md
   local: ./skills/recipe-named-volumes.md
 
@@ -270,7 +270,7 @@ fibe-tool-agents-send-message: Use when you need to send one text message to a m
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-agents-send-message.md
   local: ./seed-skills/fibe-tool-agents-send-message.md
 
-fibe-tool-agents-start-chat: Use when you need to start (or reconnect) an Agent chat session on the current Marquee. First step before sending messages.
+fibe-tool-agents-start-chat: Use when you need to start (or reconnect) an Agent chat session on the current Host. First step before sending messages.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-agents-start-chat.md
   local: ./seed-skills/fibe-tool-agents-start-chat.md
 
@@ -306,7 +306,7 @@ fibe-tool-get-github-token: Use when you need to mint a short-lived GitHub insta
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-get-github-token.md
   local: ./seed-skills/fibe-tool-get-github-token.md
 
-fibe-tool-gitea-repos-create: Use when you need to create a new repo on the Player's connected Gitea (managed or external) and atomically register it as a Fibe Prop.
+fibe-tool-gitea-repos-create: Use when you need to create a new repo on the Player's connected Gitea (managed or external) and atomically register it as a Fibe Repository.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-gitea-repos-create.md
   local: ./seed-skills/fibe-tool-gitea-repos-create.md
 
@@ -314,7 +314,7 @@ fibe-tool-github-repos-create: Use when you need to create a new GitHub reposito
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-github-repos-create.md
   local: ./seed-skills/fibe-tool-github-repos-create.md
 
-fibe-tool-greenfield-create: Use when bootstrapping a greenfield app in one call: creates one or more repos/Props from a template or GitHub repo snapshot, an app-owned template version, a deployed Playground, waits for running, and links it locally to /app/playground.
+fibe-tool-greenfield-create: Use when bootstrapping a greenfield app in one call: creates one or more repos/Repositories from a template or GitHub repo snapshot, an app-owned template version, a deployed Playground, waits for running, and links it locally to /app/playground.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-greenfield-create.md
   local: ./seed-skills/fibe-tool-greenfield-create.md
 
@@ -322,11 +322,11 @@ fibe-tool-help: Use when you need to read the CLI long help for any fibe subcomm
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-help.md
   local: ./seed-skills/fibe-tool-help.md
 
-fibe-tool-launch: Use when launching from exactly one existing source - template, template version, playspec, Fibe-compatible Compose YAML, local YAML file, or GitHub repository config - without creating new source repos first.
+fibe-tool-launch: Use when launching from exactly one existing source - template, template version, spec, Fibe-compatible Compose YAML, local YAML file, or GitHub repository config - without creating new source repos first.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-launch.md
   local: ./seed-skills/fibe-tool-launch.md
 
-fibe-tool-local-playgrounds-info: Use when you need to get filesystem-level info about one local Playground (name, path, playspec, mounts) without an API call.
+fibe-tool-local-playgrounds-info: Use when you need to get filesystem-level info about one local Playground (name, path, spec, mounts) without an API call.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-local-playgrounds-info.md
   local: ./seed-skills/fibe-tool-local-playgrounds-info.md
 
@@ -378,7 +378,7 @@ fibe-tool-playgrounds-logs: Use when you need to fetch a bounded log snapshot fo
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-playgrounds-logs.md
   local: ./seed-skills/fibe-tool-playgrounds-logs.md
 
-fibe-tool-playgrounds-switch-template: Use when an existing deployed playground needs to be switched end-to-end to a different stack, service shape, source layout, or prop set while preserving its id. Single-call brownfield analog of fibe_greenfield_create. Authors a new template inline if needed and provisions Gitea-backed private Props on the fly for new repos.
+fibe-tool-playgrounds-switch-template: Use when an existing deployed playground needs to be switched end-to-end to a different stack, service shape, source layout, or repository set while preserving its id. Single-call brownfield analog of fibe_greenfield_create. Authors a new template inline if needed and provisions Gitea-backed private Repositories on the fly for new repos.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-playgrounds-switch-template.md
   local: ./seed-skills/fibe-tool-playgrounds-switch-template.md
 
@@ -390,15 +390,15 @@ fibe-tool-repo-status-check: Use when you need to verify Fibe's current accessib
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-repo-status-check.md
   local: ./seed-skills/fibe-tool-repo-status-check.md
 
-fibe-tool-resource-delete: Use when you need to permanently delete a Fibe resource by id (or name for playgrounds/tricks/playspecs/props/marquees/agents). Destructive: requires confirm:true.
+fibe-tool-resource-delete: Use when you need to permanently delete a Fibe resource by id (or name for playgrounds/tasks/specs/repositories/hosts/agents). Destructive: requires confirm:true.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-resource-delete.md
   local: ./seed-skills/fibe-tool-resource-delete.md
 
-fibe-tool-resource-get: Use when you need to fetch a single Fibe resource by id, or by name for playgrounds, tricks, playspecs, props, marquees, and agents. Includes artefact_attachment download.
+fibe-tool-resource-get: Use when you need to fetch a single Fibe resource by id, or by name for playgrounds, tasks, specs, repositories, hosts, and agents. Includes artefact_attachment download.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-resource-get.md
   local: ./seed-skills/fibe-tool-resource-get.md
 
-fibe-tool-resource-list: Use when you need to list any flat Fibe resource (playground, prop, marquee, agent, secret, webhook, audit_log, memory, artefact, etc.) with schema-validated filters.
+fibe-tool-resource-list: Use when you need to list any flat Fibe resource (playground, repository, host, agent, secret, webhook, audit_log, memory, artefact, etc.) with schema-validated filters.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-resource-list.md
   local: ./seed-skills/fibe-tool-resource-list.md
 
@@ -418,7 +418,7 @@ fibe-tool-status: Use when you need to dashboard the current player's resource c
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-status.md
   local: ./seed-skills/fibe-tool-status.md
 
-fibe-tool-templates-change: Use when an advanced template-author or admin workflow needs the hidden lower-level primitive for patching, overwriting, or switching template versions, including Trick reruns and global template promotion.
+fibe-tool-templates-change: Use when an advanced template-author or admin workflow needs the hidden lower-level primitive for patching, overwriting, or switching template versions, including Task reruns and global template promotion.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-templates-change.md
   local: ./seed-skills/fibe-tool-templates-change.md
 

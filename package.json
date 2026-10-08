@@ -17,6 +17,7 @@
     "import-seed-skills": "node scripts/import-seed-skills.mjs",
     "build-llm-skills": "node scripts/build-llm-skills.mjs",
     "build-brand-assets": "node scripts/build-brand-assets.mjs",
+    "check-candidate": "node scripts/check-candidate.mjs",
     "refresh-skills": "npm run import-seed-skills && npm run sync-skills && npm run build-llm-skills",
     "prestart": "node scripts/build-llm-skills.mjs",
     "prebuild": "node scripts/build-llm-skills.mjs"

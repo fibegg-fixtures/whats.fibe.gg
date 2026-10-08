@@ -5,15 +5,15 @@ description: Use Docker Compose top-level `configs:` to inline small config file
 
 # Recipe: Compose `configs:` for inline content
 
-Compose's `configs:` top-level key holds **inline content** that Compose mounts into containers as files. Unlike host bind mounts, the content lives in the template itself, so it's portable across Marquees and survives clean checkout.
+Compose's `configs:` top-level key holds **inline content** that Compose mounts into containers as files. Unlike host bind mounts, the content lives in the template itself, so it's portable across Hosts and survives clean checkout.
 
 ## Why use `configs:`
 
 - Small config snippets (5-50 lines): nginx conf, postgresql.conf, init.sh.
 - Content that should ship with the template, not the app repo.
-- Avoiding bind mounts from host paths that don't exist on Marquees.
+- Avoiding bind mounts from host paths that don't exist on Hosts.
 
-For larger/binary files use **Fibe Mounted Files** (Playspec/Agent files via `fibe_artefact_upload`), not Compose `configs`. See platform skill `fibe-mounted-files`.
+For larger/binary files use **Fibe Mounted Files** (Spec/Agent files via `fibe_artefact_upload`), not Compose `configs`. See platform skill `fibe-mounted-files`.
 
 ## Pattern
 

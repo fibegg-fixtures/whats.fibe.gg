@@ -19,7 +19,7 @@ For **investigation**, not live messaging. No notifications, no push. Open the d
 
 Every action that meaningfully changes account or resource state:
 
-- Create, update, delete on Marquees, Props, Templates, Playspecs, Playgrounds, Tricks, Agents.
+- Create, update, delete on Hosts, Repositories, Templates, Specs, Playgrounds, Tasks, Agents.
 - Issue, rotate, revoke API keys.
 - Add or modify webhooks.
 - Add, rotate, revoke Secret Vault entries.
@@ -30,7 +30,7 @@ Every action that meaningfully changes account or resource state:
 **Not** recorded:
 
 - Routine reads (browsing your own resources).
-- Per-message Genie activity (lives in Conversations).
+- Per-message Agent activity (lives in Conversations).
 - Audit-log access itself.
 
 ## Actors and channels
@@ -40,14 +40,14 @@ Every entry shows the actor plus the channel it acted through:
 - **Actor**: you, the platform's caretaker automation, the billing provider, or the system.
 - **Channel**: UI, API, System, or Webhook.
 
-Calls made with an API key, including a Genie using its agent key, appear as **you via the API channel**, with the key's label attached so you can tell which key acted.
+Calls made with an API key, including an Agent using its agent key, appear as **you via the API channel**, with the key's label attached so you can tell which key acted.
 
 ## What does notify you
 
 The audit log doesn't notify. These do, on a separate path:
 
-- **Genie messages**: in-app notification, FAB entry, browser push if enabled.
-- **Commit notifications** for Props you follow.
+- **Agent messages**: in-app notification, FAB entry, browser push if enabled.
+- **Commit notifications** for Repositories you follow.
 - **Selected activity** you've opted into via [Inbox Notifications](/advanced/notifications/).
 
 ## Live status vs audit
@@ -56,13 +56,13 @@ The Playground page shows live service status, build steps, log streams, and exp
 
 ## Export
 
-The audit log can't be exported today. [Data Backup](/advanced/backup/) covers your resources (Props, Marquees, Playspecs, Genies, Playgrounds, Templates, Secrets, Webhooks), not history: use the dashboard filters to investigate.
+The audit log can't be exported today. [Data Backup](/advanced/backup/) covers your resources (Repositories, Hosts, Specs, Agents, Playgrounds, Templates, Secrets, Webhooks), not history: use the dashboard filters to investigate.
 
 ## Example investigation
 
-"Who deleted my Trick yesterday afternoon?"
+"Who deleted my Task yesterday afternoon?"
 
-1. Open the audit log. Filter by action prefix `playground.` and set the date range to the last 24 hours: Trick runs are recorded as Playground entries (e.g. "Player deleted playground").
+1. Open the audit log. Filter by action prefix `playground.` and set the date range to the last 24 hours: Task runs are recorded as Playground entries (e.g. "Player deleted playground").
 2. Entry: the actor (you via the API channel, labelled with the CI key), timestamp, Playground ID.
 3. Drill into the key on the API Keys page to see what else it's been doing.
 4. If something's off, rotate the key and review its granular scopes.

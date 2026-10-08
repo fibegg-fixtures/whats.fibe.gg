@@ -33,7 +33,7 @@ There is no `fibe.gg/type` label; do not invent one. The classifier derives type
 - The app lives in a Git repo (GitHub or Gitea) and the user wants Fibe to clone/build/mount it.
 - You want hot-reload by mounting the working tree.
 - You want Fibe to manage build → image → rollout from a `Dockerfile` in the repo.
-- The Playspec should be reusable across branches.
+- The Spec should be reusable across branches.
 - The service exists only to expose a source tree to other services. This is still dynamic because it has `fibe.gg/repo_url`/`working_dir`, but it should usually use a tiny runner `image` and no Compose `build:` so it does not become a build-workflow service.
 
 ## What labels to add to a dynamic service

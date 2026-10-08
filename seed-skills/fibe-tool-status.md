@@ -22,9 +22,9 @@ Endpoint: `GET /api/status`. Counts match what the authenticated Player can actu
 {
   "playgrounds": { "total": 12, "active": 9, "stopped": 1 },
   "agents": { "total": 4, "authenticated": 3 },
-  "props": 7,
-  "playspecs": 11,
-  "marquees": 2,
+  "repositories": 7,
+  "specs": 11,
+  "hosts": 2,
   "secrets": 5,
   "api_keys": 3,
   "subscription": { "plan": "single", "playground_limit": 50 },

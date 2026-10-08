@@ -9,7 +9,7 @@ tags: ["reference", "recipe"]
 format: md
 ---
 
-The public URL of an exposed service is `https://<subdomain>.<marquee-root-domain>`. The Marquee owns its `root_domain` (e.g. `next.fibe.live`); the template owns the subdomain via `fibe.gg/subdomain`.
+The public URL of an exposed service is `https://<subdomain>.<host-root-domain>`. The Host owns its `root_domain` (e.g. `next.fibe.live`); the template owns the subdomain via `fibe.gg/subdomain`.
 
 ## Allowed values
 
@@ -17,7 +17,7 @@ The public URL of an exposed service is `https://<subdomain>.<marquee-root-domai
 |---|---|---|
 | omitted | Default: uses **service name** as subdomain | Service `web` → `web.<root>` |
 | `<name>` | Use `<name>` as subdomain | Lowercase alnum + hyphens, no leading/trailing hyphen |
-| `@` | Bind the route at the **root** of the Marquee | `<root>` |
+| `@` | Bind the route at the **root** of the Host | `<root>` |
 | empty string | Treated as default | Same as omitting |
 | variable-driven | Bind with `x-fibe.gg.variables.<NAME>.path` | Keeps a local placeholder and resolves at launch |
 | integer | Numeric string | E.g. `1234` |
@@ -79,7 +79,7 @@ Inline `$$var__SUBDOMAIN` is accepted by the schema, but do not use it for the w
 
 ## When to use `@`
 
-Use `@` for the **front door**: the service users hit by typing the Marquee root domain itself (no subdomain prefix). A given Marquee can only have one service at `@` (for a given path rule).
+Use `@` for the **front door**: the service users hit by typing the Host root domain itself (no subdomain prefix). A given Host can only have one service at `@` (for a given path rule).
 
 ```yaml
 services:
@@ -91,7 +91,7 @@ services:
 ```
 
 Useful when:
-- The template is THE app on this Marquee.
+- The template is THE app on this Host.
 - You want a clean public URL (`https://my-app.example.com` instead of `https://web.my-app.example.com`).
 
 Note the quotes around `@` to keep YAML from interpreting it as a YAML directive marker.

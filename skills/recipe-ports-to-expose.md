@@ -129,7 +129,7 @@ services:
     # no labels — service is reachable as "db:5432" inside the Compose network
 ```
 
-Apps in the same Compose network reach Postgres as `db:5432`. If a Player needs psql access from their laptop, do it through `fibe_playgrounds_debug` and an exec into the container. Do not preserve database host ports on Fibe unless the Marquee owner explicitly accepts that exposure.
+Apps in the same Compose network reach Postgres as `db:5432`. If a Player needs psql access from their laptop, do it through `fibe_playgrounds_debug` and an exec into the container. Do not preserve database host ports on Fibe unless the Host owner explicitly accepts that exposure.
 
 ## Variable-driven port
 

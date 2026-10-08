@@ -89,11 +89,11 @@ For Go code using the SDK directly, explicit client options win first, then `FIB
 A typical GitHub Actions step:
 
 ```yaml
-- name: Trigger nightly trick
+- name: Trigger nightly task
   env:
     FIBE_API_KEY: ${{ secrets.FIBE_API_KEY }}
   run: |
-    fibe tricks trigger --playspec 42
+    fibe tasks trigger --spec 42
 ```
 
 Mint a **scoped, expiring** API key for CI (see [Granular resource restriction](/advanced/api-keys/)). Don't reuse your personal-account key for automation; it's a bigger blast radius if it leaks.
@@ -129,9 +129,9 @@ Mint a new one in the [API keys page](/advanced/api-keys/), update your profile 
 </details>
 
 <details>
-<summary>Can a Genie use the same credentials as me?</summary>
+<summary>Can an Agent use the same credentials as me?</summary>
 
-Only if you've explicitly minted an **agent-accessible** API key: that's a key flag set at creation time. By default, your keys are not exposed to Genies. See [API keys → Keys your Genies can use](/advanced/api-keys/).
+Only if you've explicitly minted an **agent-accessible** API key: that's a key flag set at creation time. By default, your keys are not exposed to Agents. See [API keys → Keys your Agents can use](/advanced/api-keys/).
 </details>
 
 <details>

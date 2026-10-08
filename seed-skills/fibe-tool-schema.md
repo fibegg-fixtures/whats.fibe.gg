@@ -17,7 +17,7 @@ Also runs side-effect-free Compose YAML validation when called with `resource:"c
 - Before any `fibe_resource_mutate`: never guess payload shape.
 - Before `fibe_resource_list` with non-trivial filters.
 - Discovering valid resource names (singular snake_case canonical, plus aliases).
-- Validating a Compose YAML before creating a Playspec/Trick.
+- Validating a Compose YAML before creating a Spec/Task.
 
 ## Inputs
 | Field | Type | Notes |
@@ -51,7 +51,7 @@ Also runs side-effect-free Compose YAML validation when called with `resource:"c
   "operation": "validate",
   "payload": {
     "compose_yaml": "...",
-    "target_type": "trick" | "playground",
+    "target_type": "task" | "playground",
     "job_mode": true | false   // optional
   }
 }

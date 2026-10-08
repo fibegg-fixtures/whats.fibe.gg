@@ -100,7 +100,7 @@ volumes:
   - ./uploads:/app/uploads
 ```
 
-Host-path mounts depend on the host filesystem. Marquees do not guarantee arbitrary host paths. **Replace with named volumes**:
+Host-path mounts depend on the host filesystem. Hosts do not guarantee arbitrary host paths. **Replace with named volumes**:
 
 ```yaml
 services:
@@ -118,15 +118,15 @@ The exception is `working_dir`: Fibe injects the source-tree bind mount automati
 
 ### `network_mode: host`
 
-Bypasses Compose networking. Fibe runs services inside Marquee Compose networks. Current validation warns; remove and use the default network.
+Bypasses Compose networking. Fibe runs services inside Host Compose networks. Current validation warns; remove and use the default network.
 
 ### `privileged: true`
 
-Current validation warns. Avoid in public templates unless the Marquee owner explicitly expects privileged containers.
+Current validation warns. Avoid in public templates unless the Host owner explicitly expects privileged containers.
 
 ### `cap_add: [SYS_ADMIN]` / `devices:` / etc.
 
-Same caveat: host-level escapes need Marquee admin awareness. Avoid for public templates.
+Same caveat: host-level escapes need Host admin awareness. Avoid for public templates.
 
 ## "Quality but not required" cleanups
 
@@ -186,7 +186,7 @@ volumes:
 - **Forgetting to remove `ports:` on a zero-downtime service while `preserve_ports: true` is enabled**: schema/runtime hard error.
 - **Setting `preserve_ports: true` on a template with local dev ports**: preserves raw host bindings on Fibe; leave it unset unless those bindings are required.
 - **Keeping `container_name:` because "the docs said to"**: breaks replicas.
-- **Bind-mounting host paths and assuming they exist on every Marquee**: use named volumes or source mounts instead.
+- **Bind-mounting host paths and assuming they exist on every Host**: use named volumes or source mounts instead.
 - **Leaving `network_mode: host`**: Fibe relies on Compose networks for service discovery.
 - **Keeping `restart: always` in a job-mode template**: runtime forces `no` anyway, but the value is misleading. Use `restart: "no"` or omit.
 

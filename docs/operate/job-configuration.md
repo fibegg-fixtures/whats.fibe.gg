@@ -1,13 +1,13 @@
 ---
 title: Job configuration
-description: Runtime rules for one-shot Tricks, watched services, job results, and the default job Playground lifetime.
+description: Runtime rules for one-shot Tasks, watched services, job results, and the default job Playground lifetime.
 slug: /operate/job-configuration
 sidebar_position: 4
 image: /img/og/operate-job-configuration.png
-keywords: [job_mode, trick, watched service, job result, ttl]
+keywords: [job_mode, task, watched service, job result, ttl]
 ---
 
-Job-mode templates run as one-shot Tricks. Use them for tests, backups, data syncs, migrations, report generation, and other work that should finish.
+Job-mode templates run as one-shot Tasks. Use them for tests, backups, data syncs, migrations, report generation, and other work that should finish.
 
 ## Required settings
 
@@ -45,7 +45,7 @@ Unwatched helper services can still support the watched service. For example, a 
 
 New Job Playgrounds default to **Never Expire**, just like regular Playgrounds. If a job expiration is enabled without an explicit deadline, Fibe uses the operator-configured `job_playground_ttl_hours` fallback (1 hour by default). The same fallback is used when extending a job without supplying a duration.
 
-Expiration is separate from job completion: a successful job completes when all watched services exit `0`, and a failed job fails as soon as any watched service exits non-zero. Completion cleans up the runtime containers while retaining the Trick record and its captured result; deleting or expiring the Trick removes that saved result.
+Expiration is separate from job completion: a successful job completes when all watched services exit `0`, and a failed job fails as soon as any watched service exits non-zero. Completion cleans up the runtime containers while retaining the Task record and its captured result; deleting or expiring the Task removes that saved result.
 
 ## Minimal example
 
@@ -70,5 +70,5 @@ x-fibe.gg:
 ## Related
 
 - [Execution modes](/authoring/execution-modes/)
-- [Tricks](/concepts/tricks/)
+- [Tasks](/concepts/tasks/)
 - [Common problems](/operate/common-problems/)

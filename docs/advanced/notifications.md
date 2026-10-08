@@ -14,15 +14,15 @@ Notifications are grouped:
 
 - **Player & Security**: sign-ins, security changes.
 - **Playground**: launch, rollout, error, destroy.
-- **AI Agents & Apps**: Genie messages, Pokes, Build-in-Public activity.
-- **Content & Dev**: Templates, Props, Compose detection.
+- **AI Agents & Apps**: Agent messages, Pokes, Build-in-Public activity.
+- **Content & Dev**: Templates, Repositories, Compose detection.
 - **Drift & Playguard**: environment drift, healthcheck flapping.
 - **Integrations**: webhooks, GitHub Apps.
 
 Each group has its own list of event types with a per-event toggle.
 
 :::tip
-Commit notifications have a second gate on the [Prop](/concepts/props/) itself: each Prop carries a **Notifications** toggle, on by default. Flip it off on the Prop's card to silence commit alerts from that one repository without touching your account-wide toggles.
+Commit notifications have a second gate on the [Repository](/concepts/repositories/) itself: each Repository carries a **Notifications** toggle, on by default. Flip it off on the Repository's card to silence commit alerts from that one repository without touching your account-wide toggles.
 :::
 
 ## Bulk toggles
@@ -31,7 +31,7 @@ Commit notifications have a second gate on the [Prop](/concepts/props/) itself: 
 
 ## Push to your devices
 
-Besides in-app toasts, Fibe can send **browser push notifications**, so you still hear about Genie replies, Pokes, and Playground events when the Fibe tab is closed.
+Besides in-app toasts, Fibe can send **browser push notifications**, so you still hear about Agent replies, Pokes, and Playground events when the Fibe tab is closed.
 
 - Turn push on for the current browser from the notification settings.
 - Each browser or device subscribes separately and can be removed individually.
@@ -46,4 +46,4 @@ New notification types arrive disabled. You opt in explicitly. This is intention
 ## Related
 
 - [Webhooks](/advanced/webhooks/): for events that should go to an external system instead of a toast.
-- [Props](/concepts/props/): the per-Prop Notifications toggle that gates commit alerts.
+- [Repositories](/concepts/repositories/): the per-Repository Notifications toggle that gates commit alerts.

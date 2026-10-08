@@ -1,6 +1,6 @@
 ---
 title: "Gitea Repos Create"
-description: "Use when you need to create a new repo on the Player's connected Gitea (managed or external) and atomically register it as a Fibe Prop."
+description: "Use when you need to create a new repo on the Player's connected Gitea (managed or external) and atomically register it as a Fibe Repository."
 slug: /reference/tools/gitea-repos-create
 sidebar_label: "Gitea Repos Create"
 image: /img/og/reference-tools-gitea-repos-create.png
@@ -11,18 +11,18 @@ format: md
 
 [MODE:GREENFIELD] Tier: greenfield. Not idempotent.
 
-Creates a Gitea repository AND a Prop pointing at it through `POST /api/gitea_repositories`. Default greenfield git provider (used by `fibe_greenfield_create` when `git_provider` is unset).
+Creates a Gitea repository AND a Repository pointing at it through `POST /api/gitea_repositories`. Default greenfield git provider (used by `fibe_greenfield_create` when `git_provider` is unset).
 
 ## When to use
 - Default flow for Greenfield: GitHub OAuth not required.
 - Player wants a repo on the platform's managed Gitea.
-- Need a fresh Prop bound to that repo immediately (vs `fibe_github_repos_create` which leaves Prop creation to a follow-up).
+- Need a fresh Repository bound to that repo immediately (vs `fibe_github_repos_create` which leaves Repository creation to a follow-up).
 - Brownfield switch-template flows where a new source-mounted service needs real files before first rollout. For multiple new services, call this through `fibe_pipeline` so repos are created in one round-trip, then seed/commit/push all new repos before `fibe_playgrounds_switch_template`.
 
 ## When NOT to use
-- Player explicitly wants GitHub: use `fibe_github_repos_create` + `prop.attach`.
-- Already have an external repo: use `prop.mirror` or `prop.attach`.
-- You only need empty repos for switch-template and do not need to write source before rollout: let `fibe_playgrounds_switch_template` provision missing Gitea Props with `provision_inputs` instead.
+- Player explicitly wants GitHub: use `fibe_github_repos_create` + `repository.attach`.
+- Already have an external repo: use `repository.mirror` or `repository.attach`.
+- You only need empty repos for switch-template and do not need to write source before rollout: let `fibe_playgrounds_switch_template` provision missing Gitea Repositories with `provision_inputs` instead.
 
 ## Inputs
 | Field | Type | Required | Notes |
@@ -45,25 +45,25 @@ Requires a Gitea connection on the Player's account with a non-empty access toke
   "default_branch": "main",
   "private": false,
   "repo": { ... },           // alias for the same structure
-  "prop": { "id": 17, "name":"demo", "repository_url":"...", "provider":"gitea", ... },
-  "prop_id": 17
+  "repository": { "id": 17, "name":"demo", "repository_url":"...", "provider":"gitea", ... },
+  "repository_id": 17
 }
 ```
 
 ## Behavior
 1. Create repo via Gitea API.
-2. Normalize the URL and check if a Prop already exists for it.
-3. If exists: return existing Prop (de-dup).
-4. Otherwise create a new Prop owned by the current player and link via `player_resources`.
+2. Normalize the URL and check if a Repository already exists for it.
+3. If exists: return existing Repository (de-dup).
+4. Otherwise create a new Repository owned by the current player and link via `player_resources`.
 
 ## Gotchas
 - Idempotency-Key supported. A retry with the same key returns the cached prior response, even on failure.
 - Name collision returns `VALIDATION_FAILED`.
 - Gitea API errors surface as `GITEA_API_ERROR` with the upstream message.
-- The Prop is owned by the Player who triggered creation, not the Gitea owner: they may differ when a player has external Gitea credentials.
-- Cannot re-target an existing Prop: if a duplicate URL exists, the existing Prop is returned untouched.
+- The Repository is owned by the Player who triggered creation, not the Gitea owner: they may differ when a player has external Gitea credentials.
+- Cannot re-target an existing Repository: if a duplicate URL exists, the existing Repository is returned untouched.
 
 ## Related
-- `fibe_github_repos_create`: GitHub variant (no atomic Prop creation).
-- `fibe_resource_mutate(resource:"prop", ...)`: attach/mirror/sync existing repos.
+- `fibe_github_repos_create`: GitHub variant (no atomic Repository creation).
+- `fibe_resource_mutate(resource:"repository", ...)`: attach/mirror/sync existing repos.
 - `fibe_greenfield_create`: calls this internally as default `git_provider`.

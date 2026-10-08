@@ -191,7 +191,7 @@ Using both inline + path for the same variable is valid, but path writes are the
 
 ## `$$root_domain`
 
-Special, **not** declared in `variables`. Always replaced at compile time with the launching Marquee's `root_domain` (e.g. `next.fibe.live`). Use it only as an inline fragment where a fully-qualified public host cannot be represented with explicit `path`/`paths` variables. Prefer explicit public URL variables with literal defaults for app ENV:
+Special, **not** declared in `variables`. Always replaced at compile time with the launching Host's `root_domain` (e.g. `next.fibe.live`). Use it only as an inline fragment where a fully-qualified public host cannot be represented with explicit `path`/`paths` variables. Prefer explicit public URL variables with literal defaults for app ENV:
 
 ```yaml
 x-fibe.gg:

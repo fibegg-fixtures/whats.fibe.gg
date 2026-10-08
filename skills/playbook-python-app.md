@@ -207,7 +207,7 @@ services:
 
 - **`uvicorn --reload` without source mount**: `--reload` does nothing if there's no live source. Either source-mount or drop `--reload` for production.
 - **`pip install` on every start**: slow. Bake into Dockerfile; the dev variant can still `pip install -r requirements.txt` in `start_command` for active development.
-- **Django `ALLOWED_HOSTS`**: must include the Marquee subdomain. Either set `ALLOWED_HOSTS = ["*"]` for dev, or compose the env from the variable: `ALLOWED_HOSTS=$$var__SUBDOMAIN.$$root_domain`.
+- **Django `ALLOWED_HOSTS`**: must include the Host subdomain. Either set `ALLOWED_HOSTS = ["*"]` for dev, or compose the env from the variable: `ALLOWED_HOSTS=$$var__SUBDOMAIN.$$root_domain`.
 - **Flask debug mode in production**: `flask --debug run` is not production-safe. Use `gunicorn`.
 - **Missing healthcheck endpoint**: zero-downtime defaults to `/up`; if the app does not serve that path, set `fibe.gg/healthcheck_path` to a real readiness endpoint such as `/healthz`.
 

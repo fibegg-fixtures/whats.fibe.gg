@@ -9,6 +9,10 @@ keywords: [Billing, Wallet, Mana, Sparks, plan, subscription, top-up, referral, 
 
 Manage plans, balances, subscriptions, and referrals under **Profile → Billing**. Fibe uses two currencies and charges for usage.
 
+## Company billing
+
+Company workspaces have independent balances, provider customers, orders, subscriptions and gateway allocations. Accepted administrators manage company billing; personal funds and company funds are separate. Membership changes retain company finance and resource history. See [Teams](/concepts/teams/) for ownership and closure admission.
+
 ## Wallet
 
 The Wallet holds your account balance.
@@ -17,7 +21,7 @@ The Wallet holds your account balance.
 
 - **Current balance** in both currencies.
 - **History:** labeled credits and debits, with descriptions and links to the resources that caused them.
-- **Debt:** unpaid Marquee days, also reported by email. New credit settles the debt first.
+- **Debt:** unpaid Host days, also reported by email. New credit settles the debt first.
 
 ### Top up
 
@@ -35,7 +39,7 @@ Balance can also arrive without a checkout: a **[referral](#referrals)** reward,
 
 Auto-recharge buys a fixed amount every 30 or 365 days. Enable it on the Mana purchase form; bundle checkout enables it automatically. It does not react to your balance, so choose an amount above your daily use.
 
-Use a sufficient auto-recharge to keep production Marquees funded.
+Use a sufficient auto-recharge to keep production Hosts funded.
 
 ## Mana
 
@@ -43,20 +47,20 @@ Mana is the **primary** currency. Use it for anything persistent.
 
 ### What Mana pays for
 
-- **Tutorial Marquees:** their daily cost is charged in Mana.
-- **Sparks:** a one-way conversion used to fund standard, self-hosted Marquees. Bundle checkout converts automatically.
+- **Tutorial Hosts:** their daily cost is charged in Mana.
+- **Sparks:** a one-way conversion used to fund standard, self-hosted Hosts. Bundle checkout converts automatically.
 
 ### Bundles
 
-Buy bundles from Billing. Each Marquee shows its daily cost, available balance, and a **Fund until** date. Fibe charges one day at a time through that date.
+Buy bundles from Billing. Each Host shows its daily cost, available balance, and a **Fund until** date. Fibe charges one day at a time through that date.
 
 ## Sparks
 
-Sparks are the **second** currency: they pay the daily running cost of standard (self-hosted) Marquees.
+Sparks are the **second** currency: they pay the daily running cost of standard (self-hosted) Hosts.
 
 ### What Sparks pay for
 
-Sparks pay the daily cost of standard, self-hosted Marquees. Convert Mana manually in the Wallet or automatically through bundle checkout.
+Sparks pay the daily cost of standard, self-hosted Hosts. Convert Mana manually in the Wallet or automatically through bundle checkout.
 
 ### Mana → Sparks conversion
 
@@ -102,7 +106,7 @@ You don't need to spend anything to:
 - Author Templates privately.
 - Browse the [Bazaar](/concepts/bazaar/).
 
-Spending starts when you fund a Marquee. Tutorial Marquees charge Mana daily, and Genie chats require a funded Marquee.
+Spending starts when you fund a Host. Tutorial Hosts charge Mana daily, and Agent chats require a funded Host.
 
 :::info Staging update: 13 September 2026
 On [next.fibe.live](https://next.fibe.live), delayed or repeated subscription
@@ -116,34 +120,34 @@ this is not a promise of indefinite hosting or storage without payment.
 
 ## When your balance runs low
 
-A funded Marquee is charged daily: Mana for tutorial Marquees and Sparks for standard ones. A service day runs from midnight to midnight UTC and is paid only when funded through its end. Billing intervals contain 30 service days per month or 365 per year. Each Marquee shows its daily rate, projected cost, and **Fund until** date. If a charge fails, the Marquee enters the recovery process below.
+A funded Host is charged daily: Mana for tutorial Hosts and Sparks for standard ones. A service day runs from midnight to midnight UTC and is paid only when funded through its end. Billing intervals contain 30 service days per month or 365 per year. Each Host shows its daily rate, projected cost, and **Fund until** date. If a charge fails, the Host enters the recovery process below.
 
 ### 1. Runtime blocked, grace starts
 
 When a daily charge fails, runtime actions are blocked and a grace period begins. The default is three days; the grace email gives the deadline.
 
-- **New runtime actions are blocked.** Launching, rolling out, restarting, refreshing diagnostics, and pulling logs return a **`MARQUEE_NOT_FUNDED`** message. Read-only views and your Billing pages keep working.
-- **Self-hosted workloads keep running** without automatic recovery, expiration, or updates. A tutorial Marquee goes out of service: Playgrounds become unavailable and Genie chats stop. Stored data remains until removal.
+- **New runtime actions are blocked.** Launching, rolling out, restarting, refreshing diagnostics, and pulling logs return a **`HOST_NOT_FUNDED`** message. Read-only views and your Billing pages keep working.
+- **Self-hosted workloads keep running** without automatic recovery, expiration, or updates. A tutorial Host goes out of service: Playgrounds become unavailable and Agent chats stop. Stored data remains until removal.
 
-Nothing is deleted yet; the unpaid amount is tracked as a debt on the Marquee.
+Nothing is deleted yet; the unpaid amount is tracked as a debt on the Host.
 
 ### 2. Grace ends and suspension begins
 
-If the balance still cannot cover the Marquee after grace, it becomes **suspended**. After two grace incidents, the next failed charge suspends it immediately. The Marquee stays off and keeps its debt. Fibe sends email during this process.
+If the balance still cannot cover the Host after grace, it becomes **suspended**. After two grace incidents, the next failed charge suspends it immediately. The Host stays off and keeps its debt. Fibe sends email during this process.
 
-### 3. Managed Marquee removal
+### 3. Managed Host removal
 
-An unpaid platform-managed Marquee may be removed after its retention window, seven days after suspension by default. Destruction permanently removes its Playgrounds, Tricks, and their data.
+An unpaid platform-managed Host may be removed after its retention window, seven days after suspension by default. Destruction permanently removes its Playgrounds, Tasks, and their data.
 
 Fibe never deletes a self-hosted server. An unpaid one becomes disabled and suspended, but its machine and data remain yours. Fibe management resumes after re-enabling it.
 
 ### Getting back to normal
 
-- **Top up** before removal. As soon as the credit lands, outstanding charges settle first, then the Marquee can be re-enabled: a self-hosted Marquee's apps were never touched, and on a managed Marquee your Playgrounds and Genie chats can be started again.
+- **Top up** before removal. As soon as the credit lands, outstanding charges settle first, then the Host can be re-enabled: a self-hosted Host's apps were never touched, and on a managed Host your Playgrounds and Agent chats can be started again.
 - **Enable [auto-recharge](#auto-recharge)** with enough credit to cover daily use.
 
 :::warning Grace is a safety net, not a plan
-For any Marquee running real work, keep a buffer or enable auto-recharge. A removed managed Marquee takes its data with it.
+For any Host running real work, keep a buffer or enable auto-recharge. A removed managed Host takes its data with it.
 :::
 
 ## FAQ
@@ -163,7 +167,7 @@ Unused balance is refundable within a reasonable window after purchase. Specific
 <details>
 <summary>Cheapest way to start?</summary>
 
-The Tutorial bundle provides a managed Marquee billed daily in Mana, with no server required.
+The Tutorial bundle provides a managed Host billed daily in Mana, with no server required.
 </details>
 
 <details>
@@ -175,7 +179,7 @@ Convert on the Wallet page at the fixed rate. Immediate. One-way.
 <details>
 <summary>What happens if my balance hits zero?</summary>
 
-Runtime actions return `MARQUEE_NOT_FUNDED` and grace begins. A managed Marquee becomes disabled. Workloads on a self-hosted Marquee keep running without Fibe management. Continued nonpayment causes suspension and may eventually remove a managed Marquee and its environments. Fibe never deletes a self-hosted server. See [When your balance runs low](#when-your-balance-runs-low).
+Runtime actions return `HOST_NOT_FUNDED` and grace begins. A managed Host becomes disabled. Workloads on a self-hosted Host keep running without Fibe management. Continued nonpayment causes suspension and may eventually remove a managed Host and its environments. Fibe never deletes a self-hosted server. See [When your balance runs low](#when-your-balance-runs-low).
 </details>
 
 <details>
@@ -186,7 +190,7 @@ The Wallet history shows the order reference for each purchase; the invoice/rece
 
 ## Related
 
-- [Marquees](/concepts/marquees/): daily charges in Mana or Sparks.
-- [Agents](/concepts/agents/): run on funded Marquees.
+- [Hosts](/concepts/hosts/): daily charges in Mana or Sparks.
+- [Agents](/concepts/agents/): run on funded Hosts.
 - [Advanced → Limits & Quotas](/advanced/limits/): plan quotas.
 - [Advanced → Data Backup](/advanced/backup/): included with plans rather than charged in Sparks.

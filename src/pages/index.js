@@ -22,12 +22,12 @@ export default function Home() {
   return (
     <Layout
       title="Fibe user guide"
-      description="Docker environments, AI Genies, and reusable templates. The full user guide for Fibe."
+      description="Docker environments, AI Agents, and reusable templates. The full user guide for Fibe."
     >
       <Head>
         <link rel="canonical" href="https://whats.fibe.gg/" />
         <meta property="og:title" content="Fibe user guide" />
-        <meta property="og:description" content="Docker environments, AI Genies, and reusable templates." />
+        <meta property="og:description" content="Docker environments, AI Agents, and reusable templates." />
         <meta property="og:url" content="https://whats.fibe.gg/" />
       </Head>
       <Hero />
