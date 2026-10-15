@@ -7,7 +7,7 @@ description: Use when you need to search the Fibe Import Template catalog (own +
 
 [MODE:GREENFIELD] Read-only, idempotent. Tier: greenfield.
 
-Searches Templates the current Player can read, own templates, public templates, team-shared templates, through `GET /api/import_templates`.
+Searches Templates the current Player can read, templates owned by the selected Personal or Team context, and public templates, through `GET /api/import_templates`.
 
 ## When to use
 - Greenfield mode, choosing a starting template.
