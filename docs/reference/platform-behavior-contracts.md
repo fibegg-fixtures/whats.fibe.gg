@@ -12,9 +12,9 @@ This page is the dense contract reference for Fibe behavior that matters to oper
 
 Values marked as configurable are the shipped defaults. A hosted environment may raise or lower them for a specific account or deployment.
 
-## Candidate company and integration boundary
+## Candidate Team and integration boundary
 
-New credentials and resources bind immutable personal/company owners. Live membership, service-principal state and scopes govern effects; creator attribution does not confer runtime authority. Company wallets and quotas are separate from personal ones. Runtime configuration is captured once per operation, supports explicit Clear/disabled groups and never exposes confidential values in ordinary metadata. See [Teams](/concepts/teams/), [runtime configuration](/advanced/runtime-configuration/) and [ENV packs](/concepts/env-packs/) for the candidate contracts.
+New credentials and resources bind immutable Personal/Team owners. Live membership, service-account state and scopes govern effects; creator attribution does not confer runtime authority. Team wallets and quotas are separate from Personal ones. Runtime configuration is captured once per operation, supports explicit Clear/disabled groups and never exposes confidential values in ordinary metadata. See [Teams](/concepts/teams/), [runtime configuration](/advanced/runtime-configuration/) and [ENV packs](/concepts/env-packs/) for the candidate contracts.
 
 ## API Keys, Webhooks, Audit Log, And Backup
 
@@ -166,7 +166,7 @@ Signup confirmation tokens are encrypted and signed with a 24-hour expiration wi
 
 ### Feature Flags: Teams and Beta Access
 
-Teams enable team membership and shared resource management. Beta controls early-access participation. Both are selected per account by platform administrators.
+Teams enable creating Team workspaces that own their own resources. Beta controls early-access participation. Both are selected per account by platform administrators.
 
 ### Password Reset Links Expire in 2 Hours
 
@@ -464,55 +464,43 @@ Usernames must be 5 to 39 characters, start and end with alphanumeric, and conta
 
 WebAuthn credentials store external ID, public key, and signature counter. Multiple credentials can be registered per user; any one can authenticate. Registration is gated behind 2FA. Signature counter is incremented on each assertion to detect cloned authenticators.
 
-## Teams And Sharing
+## Teams
 
-### Account deletion auto-leaves all teams (except as leader); leader teams are problematic
+### Every resource has one immutable owner: Personal or a Team
 
-When a player deletes their account, the account deletion flow iterates all accepted team memberships and calls the team departure flow on each one (except where the player is the team leader). If a player is the leader of any team, the departure call is skipped with a warning logged, and the team remains orphaned with a an orphaned owner reference. This means deleting a leader account does not clean up their teams or transfer leadership: the team becomes inaccessible.
+The Team pill selects the owner for new work. Hosts, Repositories, Specs, Playgrounds, Tasks, Agents, Library records, Secrets, Templates, webhooks, API keys and ENV packs belong to that Personal or Team owner for life, and children inherit their root owner. Switching the pill never moves an existing resource. New references require the same owner; another Team's resource ID grants nothing.
 
-### Only owner and admin can invite members; only owner and admin can manage team
+### Roles are admin and member; a Team keeps at least one accepted admin
 
-Regular members (role="member") can only read team data; they cannot invite others, manage members, or change settings. Only users with role="owner" or role="admin" can manage team membership records. When inviting members, only the non-owner roles ("member", "admin") can be assigned: the contract explicitly restricts this. Changing a member's role is limited to these two roles, not owner.
-
-### Team creator is always the owner and cannot be changed
-
-The player who creates a team automatically becomes the team owner (role="owner", immutable). When a team is created, an owner membership record is created automatically with the creator. The owner role can ONLY be assigned to the team creator via validation (owner_role_matches_creator). The owner cannot be demoted or changed: they can only transfer the owner role to another accepted member, which promotes them to owner and demotes the current owner to admin.
+Accepted members operate Team resources. Accepted admins also manage invitations, membership, Team settings, credentials, service accounts and billing. The creator becomes the first admin and afterwards is attribution only. An admin can leave only while another active admin remains, and the last admin cannot be removed or demoted.
 
 ### Team invitations are username-based and auto-resolve on signup
 
 Teams invite members by GitHub username, not email. Invitations can be pending before the invited person has signed up. When a new player signs up with that username, pending invites automatically attach to the account and remain pending for the player to accept or decline. If a player is invited before signup, they must create a Fibe account with that exact username for the invite to resolve. Pending invitations do not expire automatically.
 
-### Team leader cannot leave; must transfer leadership first
+### Team resources stay with the Team when a member leaves
 
-The team owner/leader (creator) cannot leave or be removed from the team. Attempting to call the team departure flow on the leader raises a departure error with message "Team leader must transfer leadership before leaving. Use transfer_leadership! first." The owner must explicitly transfer the owner role to another accepted member before departing.
+Leaving, removal or account deletion ends that person's Team authority and records an enrollment block for removed members. Team-owned Hosts, Playgrounds, volumes, credentials and service accounts are not destroyed or moved to anyone's Personal owner. Restoring a removed member needs an admin request after sensitive-action verification and the member's explicit acceptance.
 
-### Departing members lose access to shared resources but retain personal ownership
+### Teams have their own Secrets, API keys, defaults, quotas and finance
 
-When a member leaves a team (non-leader), all TeamResource records contributed by that member are destroyed (revoked from the team). However, the underlying PlayerResource records (personal ownership) remain intact: they own those resources individually. Playgrounds running on team-shared Hosts are terminated (set to "destroying" status) when the member departs, and their PlayerResource entry for the playground is removed. The contributing player keeps their personal Host resources but the team no longer has access.
+Team runtime defaults, provider connections, Secrets, API keys, GitHub installation and balances come from the Team, with no fallback to a creator's Personal configuration. Team quotas count each Team resource once, not once per member. A Team service account keeps automation running after the person who created it leaves; revoking it blocks later effects.
 
-### Members can read shared resources but cannot edit or delete them
+### There is no per-resource sharing
 
-When a Host (runtime container) is shared with a team at "manage" permission level, all accepted members get read access to it. Non-owner/admin members cannot destroy, update, or modify shared Hosts or their Repositories/Specs: only the owner/admin can manage those. Shared resources appear in the member's accessible list but are read-only. Team members can contribute (share) their own Hosts to the team, but those are also then subject to member visibility restrictions.
-
-### No team-scoped secrets, API keys, or audit logs: only resource sharing
-
-Teams do not provide team-scoped secrets, API keys, webhooks, or audit logs. Teams only share Host resources with access control. Secrets, API keys, webhook endpoints, and audit logs remain player-scoped. When a member leaves a team, they retain all their personal secrets and keys: team membership has no effect on those resources. Team members cannot see each other's personal secrets or audit logs.
-
-### Only Hosts (container runtimes) can be shared; read-only permission is "manage"
-
-Only Host resources can be shared with teams (SHAREABLE_RESOURCE_TYPE="Host"). The only permission level is "manage": there is no read-only or restricted sharing option. When a Host is contributed to a team at permission_level="manage", all team members get full access to run and interact with it (read/execute semantics, despite the name). Each resource can only belong to one team globally: a Host shared with one team cannot be re-shared to another.
+Access to a Team resource comes only from Team ownership. The older model of sharing a personal Host with a Team (legacy shared resources) was removed together with its records.
 
 ### Teams feature is optional and gated behind a feature flag
 
-Teams are an optional collaboration feature that must be enabled per player, except for super-admin accounts. Without the feature enabled, a player cannot create teams, manage memberships, or use team-based authorization rules. Accepted team Host access can still be honored where the product explicitly allows it.
+Creating a Team must be enabled per player, except for super-admin accounts. Without it, a player can still accept an invitation and work in a Team they belong to.
 
 ### Pending invitations are cleaned up when user declines, allowing re-invite
 
 When a team member declines an invitation, re-inviting them creates a fresh pending invitation. Accepted and currently pending invitations prevent duplicate re-invites for the same team.
 
-### Team deletion requires no other accepted members; owner can delete their solo team
+### Teams are closed, not deleted
 
-A team is deletable (deletable? returns true) only when there is 1 or fewer accepted members remaining. When a team has multiple accepted members, it cannot be deleted. The creator/owner can delete an empty team (just themselves as the only accepted member). Once a team has any accepted member besides the owner, deletion is blocked until all non-owner members leave or are removed.
+Closing a Team requires an accepted admin and refuses while live infrastructure, resources, volumes, Agents, unsettled work or pending cleanup remain. Closure disables domain enrollment and credentials, ends member access and keeps memberships, ownership, financial and audit history.
 
 ### Team names must be unique only within a slug; slug format is strict
 

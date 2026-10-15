@@ -22,7 +22,6 @@ The settings cascade for an Agent is: per-Agent → per-provider default → gen
 | **CPU limit** | Container CPU (e.g. `1.5` or `2`). |
 | **Memory limit** | Container memory limit for new Agents. |
 | **Build in public** | Default visibility on new Agents. |
-| **June1815 (PTY-wrapped Claude)** | Route Claude through a PTY-driven TUI wrapper. Feature-parity transparent. |
 | **MCP JSON** | Custom MCP server configuration. Merged with admin defaults. |
 | **Custom environment** | KEY=VALUE pairs. Highest precedence in the env merge. One per line. Drop a `.env` file or type. |
 | **Agent rules** | Rules file content (e.g. `CLAUDE.md`, `GEMINI.md`). Synced to the agent workspace on every run. |

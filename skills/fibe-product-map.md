@@ -27,7 +27,7 @@ Job-mode Template
     runs watched services to completion, records result, then cleans up
 ```
 
-A selected company owner provides the same resource families with independent defaults, credentials, quotas and finance. The creator is attribution, not a fallback owner. Tasks remain job-mode Playgrounds, with no separate Task storage table.
+A selected Team owner provides the same resource families with independent defaults, credentials, quotas and finance. The creator is attribution, not a fallback owner. Tasks remain job-mode Playgrounds, with no separate Task storage table.
 
 ## Core resources
 

@@ -33,6 +33,7 @@ const sidebars = {
         'advanced/overview',
         'advanced/runtime-configuration',
         'advanced/security',
+        'advanced/google-sign-in',
         'advanced/limits',
         'advanced/api-keys',
         'advanced/secrets',

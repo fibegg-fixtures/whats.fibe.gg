@@ -46,7 +46,7 @@ Schedule is interpreted in **UTC** by default. If the runtime supports per-Host 
 
 ## `host_id`
 
-The Host where each fired Playground runs. **Required**. Must be a Host you own directly or one shared with you through an accepted team membership (team-shared Hosts behave the same for scheduling). The Host must still be funded and launchable. Schema validates shape (positive integer, or `^[1-9][0-9]*$` string); runtime resolves and authorizes.
+The Host where each fired Playground runs. **Required**. Must be a Host with the same owner as the Spec: your Personal Host for a Personal Spec, or a Host owned by the same Team for a Team Spec. The Host must still be funded and launchable. Schema validates shape (positive integer, or `^[1-9][0-9]*$` string); runtime resolves and authorizes.
 
 ```yaml
 schedule_config:

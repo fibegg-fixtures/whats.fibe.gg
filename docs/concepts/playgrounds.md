@@ -50,6 +50,7 @@ If a Playground expires with uncommitted changes, Fibe keeps it running in **has
 - **Live logs** per service.
 - **In-browser terminal** per service.
 - **Environment overrides:** change values without rebuilding the image.
+- **ENV packs:** pick [ENV packs](/concepts/env-packs/) from Library when you create the Playground; the **ENV packs** link reorders, detaches or renews them later.
 - **Service discovery:** containers use service names inside the Compose network.
 - **Status timeline:** from build to ready.
 - **Agent side panel:** chat with any configured [Agent](/concepts/agents/) in context.
@@ -89,7 +90,7 @@ Until you stop or destroy it. New Playgrounds default to **Never Expire**, but y
 
 Yes. Limited by Host capacity and your account quota. The default account-level quota is high (1,000 Playgrounds and 1,000 Specs), so host capacity is usually what you hit first.
 
-If a [team](/concepts/teams/) shares the Host, teammates can see and manage its Playgrounds.
+If the Host belongs to a [Team](/concepts/teams/), accepted members of that Team can see and manage its Playgrounds.
 </details>
 
 <details>

@@ -40,6 +40,10 @@ Some operations require re-confirmation of the second factor: managing API keys,
 
 The confirmation lasts 15 minutes. Subsequent sensitive actions inside the window go through without re-prompting.
 
+Platform administrators find **Jobs** and **Maintenance tasks** as links in the admin sidebar. Without a current confirmation, opening either one sends you to the confirmation challenge and then on to the page.
+
+Accounts that sign in only with [Google](/advanced/google-sign-in/) set up an authenticator app before their first protected action, because a Google sign-in never counts as this confirmation.
+
 ## Removing 2FA
 
 Disabling 2FA or removing a registered security key requires confirmation first. A leaked session can't quietly weaken your account's protection.
@@ -81,6 +85,7 @@ No. The API authenticates via API keys, which are themselves protected by 2FA at
 
 ## Related
 
+- [Google sign-in](/advanced/google-sign-in/): linking, removing and TOTP for Google-only accounts.
 - [API Keys](/advanced/api-keys/): managing them requires 2FA confirmation.
 - [Secret Vault](/advanced/secrets/): creating, deleting, or revealing entries requires confirmation.
 - [Audit log](/advanced/audit-log/): sign-in and security events appear there.

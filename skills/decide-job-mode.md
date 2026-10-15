@@ -93,7 +93,7 @@ x-fibe.gg:
       host_id: 1          # required, positive integer or its string form
 ```
 
-Cron is the 5-field POSIX form. `host_id` must be a Host the Player owns or one shared with them through an accepted team membership. Fibe resolves the ID at scheduling time.
+Cron is the 5-field POSIX form. `host_id` must be a Host with the same owner as the Spec (Personal, or the same Team). Fibe resolves the ID at scheduling time.
 
 See [mode-schedule-cron](mode-schedule-cron.md).
 

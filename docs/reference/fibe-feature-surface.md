@@ -25,7 +25,7 @@ Hosts provide:
 - SSH terminal access.
 - Registry credentials for private images.
 - Capacity for multiple Playgrounds.
-- Company workspaces: immutable company resources, defaults, credentials, balances and quotas; accepted members operate resources, accepted admins govern membership and billing, and durable service principals support independent automation.
+- Teams: immutable Team resources, defaults, credentials, balances and quotas; the Team pill picks the owner, accepted members operate resources, accepted admins govern members, billing, service accounts and GitHub in Team settings, and durable service accounts support independent automation.
 
 ## Repositories and source control
 
@@ -81,11 +81,13 @@ Use this area for:
 
 Agents, also called Agents, are persistent AI assistant configurations. They support multiple providers, stored credentials, standalone chats, Playground attachment, custom prompts, mounted files, MCP access, post-init setup, duplication, live activity, artefacts, feedback, mutters, and build-in-public timelines.
 
-Bridge is the unified workspace for switching among Agents and active chats.
+Bridge is the unified workspace for switching among Agents and active chats. **Create Agent** sits below the Agent list; an empty Bridge shows "No agents yet". The step-by-step setup wizard lives at Profile → Advanced Settings → Setup guide (`/wizard`).
 
 ## Secrets, API keys, and webhooks
 
 Secret Vault stores encrypted credentials for users and Agents. API keys provide scoped programmatic access. Webhooks deliver signed events to external systems.
+
+ENV packs are readable, non-secret ENV maps kept in Library → ENV packs. Users pick them when creating a Playground; only job-mode Specs keep packs, as packs for scheduled runs.
 
 Use this area when the user asks about automation credentials, third-party API tokens, MCP access, event subscriptions, HMAC signatures, event filters, delivery history, or safe external callbacks.
 

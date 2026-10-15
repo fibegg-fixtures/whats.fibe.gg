@@ -24,6 +24,7 @@ A Spec points at a Template version, holds variable values, and lists mounted fi
 | **Host** | Chosen at each launch: not stored on the Spec. The Playground records which Host it runs on. Scheduled and CI-triggered Tasks name their target Host in the automation settings. |
 | **Mounted files** | Optional uploads attached at launch (e.g. seed data, credentials). |
 | **Schedule / triggers** | Optional automation (cron, VCS push). Applies to Tasks. |
+| **ENV packs for scheduled runs** | Job-mode Specs only, set in the Triggers modal. Service Specs carry no packs; pick [ENV packs](/concepts/env-packs/) when you create each Playground. |
 
 Relaunching a Spec produces an equivalent environment because its Template Version and variables are fixed. You choose the Host at launch.
 

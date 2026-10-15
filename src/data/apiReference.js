@@ -241,7 +241,7 @@ export const platformSections = [
   },
   {
     title: 'ENV packs',
-    description: 'Ordinary readable personal/company ENV maps and explicit ordered grants.',
+    description: 'Ordinary readable Personal/Team ENV maps and explicit ordered grants. Playgrounds pick packs at creation; only job-mode Specs keep packs, for scheduled runs.',
     endpoints: [
       endpoint({method: 'GET', path: '/api/env_packs', title: 'List live ENV packs',
         description: ['Returns an array of live packs in the immutable credential owner context. Values require read authority.'], responses: showResponses}),
@@ -796,7 +796,7 @@ export const platformSections = [
 export const agentsSections = [
   {
     title: 'Agent Presets',
-    description: 'Personal authored immutable revisions; independent personal/company recipient Agents.',
+    description: 'Personal authored immutable revisions; independent Personal/Team recipient Agents.',
     endpoints: [
       endpoint({method: 'GET', path: '/api/agent_presets', title: 'Browse Agent Presets',
         description: ['Authenticated browsing returns an items collection. V1 authoring requires personal authority and agent_presets scopes.'], responses: showResponses}),

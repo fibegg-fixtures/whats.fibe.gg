@@ -9,9 +9,9 @@ keywords: [Billing, Wallet, Mana, Sparks, plan, subscription, top-up, referral, 
 
 Manage plans, balances, subscriptions, and referrals under **Profile → Billing**. Fibe uses two currencies and charges for usage.
 
-## Company billing
+## Team billing
 
-Company workspaces have independent balances, provider customers, orders, subscriptions and gateway allocations. Accepted administrators manage company billing; personal funds and company funds are separate. Membership changes retain company finance and resource history. See [Teams](/concepts/teams/) for ownership and closure admission.
+Teams have independent balances, provider customers, orders, subscriptions and gateway allocations. Accepted administrators manage them under **Team settings → Billing** (open the gear next to the Team pill): Wallet, Add funds, Plans, Subscriptions, Recent purchases, and the billing contact and provider. Other members see the same cards read-only. Personal funds and Team funds are separate. Membership changes retain Team finance and resource history. See [Teams](/concepts/teams/) for ownership and closure admission.
 
 ## Wallet
 
@@ -91,7 +91,7 @@ The Billing page shows:
 
 ## Runes
 
-A **Rune** is an invite code with a redemption limit. It stops working at that limit. A Rune may be restricted to one email address or one email domain, but not both.
+A **Rune** is an invite code with a redemption limit. It stops working at that limit. A Rune may be restricted to one email address or one email domain, but not both. Staff can map an exact-domain Rune to a Team so that [Google sign-in](/advanced/google-sign-in/) admits people from that domain straight into the Team as members.
 
 The page shows:
 

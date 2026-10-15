@@ -11,17 +11,17 @@ If another skill needs exact YAML syntax, use the template reference skills. If 
 
 ## Alphabetical index
 
-[Agent](#agent) · [API Key](#api-key) · [Artefact](#artefact) · [Audit Log](#audit-log) · [Bazaar](#bazaar) · [Bridge](#bridge) · [Compose Template](#compose-template) · [Conversation](#conversation) · [Data Transfer](#data-transfer) · [Job ENV entry](#job-env-entry) · [Mana and Sparks](#mana-and-sparks) · [Host](#host) · [Mounted File](#mounted-file) · [Mutter](#mutter) · [Muti](#muti) · [Pantry (Templates)](#pantry-templates) · [Player](#player) · [Playground](#playground) · [Spec](#spec) · [Repository](#repository) · [Rune](#rune) · [Schedule config](#schedule-config) · [Library](#library) · [Secret](#secret) · [Source defaults](#source-defaults) · [Team](#team) · [Template](#template) · [Template Version](#template-version) · [Task](#task) · [Trigger config](#trigger-config) · [Variable](#variable) · [Webhook](#webhook)
+[Agent](#agent) · [API Key](#api-key) · [Artefact](#artefact) · [Audit Log](#audit-log) · [Bazaar](#bazaar) · [Bridge](#bridge) · [Compose Template](#compose-template) · [Conversation](#conversation) · [Data Transfer](#data-transfer) · [ENV pack](#env-pack) · [Job ENV entry](#job-env-entry) · [Mana and Sparks](#mana-and-sparks) · [Host](#host) · [Mounted File](#mounted-file) · [Mutter](#mutter) · [Muti](#muti) · [Pantry (Templates)](#pantry-templates) · [Player](#player) · [Playground](#playground) · [Spec](#spec) · [Repository](#repository) · [Rune](#rune) · [Schedule config](#schedule-config) · [Library](#library) · [Secret](#secret) · [Source defaults](#source-defaults) · [Team](#team) · [Template](#template) · [Template Version](#template-version) · [Task](#task) · [Trigger config](#trigger-config) · [Variable](#variable) · [Webhook](#webhook)
 
 ## Topology at a glance
 
 ```
-Player
+Personal owner (a Player) or a Team
   owns Hosts
   owns Repositories
   owns Templates
   owns Agents
-  owns Secrets, API Keys, Webhooks, Job ENV entries
+  owns Secrets, API Keys, Webhooks, Job ENV entries, ENV packs
 
 Template Version + launch choices + Host
   becomes a Spec
@@ -53,7 +53,7 @@ The public template marketplace and discovery surface. Users browse, search, for
 
 ## Bridge
 
-The unified Agent workspace. Bridge lets users switch between Agents and active chats, inspect reachability, and work with Agent conversations in one place.
+The unified Agent workspace. Bridge lets users switch between Agents and active chats, inspect reachability, and work with Agent conversations in one place. Create Agent sits below the Agent list.
 
 ## Compose Template
 
@@ -66,6 +66,10 @@ A chat thread with an Agent. Conversations hold user messages, Agent replies, an
 ## Data Transfer
 
 An export or import task for moving Fibe configuration between accounts or environments. Data transfers can include repositories, hosts, launch blueprints, running-environment configuration, templates, agents, secrets, webhooks, and related configuration.
+
+## ENV pack
+
+A named map of ordinary readable environment values kept in Library. Pick packs when you create a Playground; only job-mode Specs keep packs, as packs for scheduled runs. Packs are not a secret vault.
 
 ## Job ENV entry
 
@@ -113,7 +117,7 @@ A connected Git repository. Repositories provide source code, branches, Compose 
 
 ## Rune
 
-An invitation or access code. Runes can gate signup, beta access, domain/email access, or special onboarding flows.
+An invitation or access code. Runes can gate signup, beta access, domain/email access, or special onboarding flows. Staff can map an exact-domain Rune to a Team so Google sign-in admits people from that domain into the Team as members.
 
 ## Schedule config
 
@@ -121,7 +125,7 @@ The cron-style automation block for a job-mode Template. It tells Fibe when and 
 
 ## Library
 
-A searchable workspace of everything your Agents have produced and everything you've written: artefacts, activity, feedback, memories, and conversation messages.
+A searchable workspace of everything your Agents have produced and everything you've written: artefacts, activity, feedback, memories, conversation messages, Pantry templates and ENV packs.
 
 ## Secret
 
@@ -133,7 +137,7 @@ A Template behavior that lets source-linked launches fill repository and branch 
 
 ## Team
 
-A web-managed group for sharing Hosts. The team owner invites members (by username or GitHub handle) and shares Hosts with manage-level access; accepted members launch on shared Hosts as if they were their own. Other resources stay personal. When sharing ends, unshare, removal, or leaving, the member's Playgrounds on that Host are destroyed and their Agent chats on it are stopped.
+A shared workspace that owns its own Hosts, Repositories, Specs, Playgrounds, Agents, Library records, Secrets, credentials, quotas and balances. Pick Personal or a Team in the Team pill before creating work; a resource keeps its owner for life. Accepted members operate Team resources; accepted administrators manage members, billing, service accounts and the GitHub installation in Team settings. Team resources stay with the Team when a member leaves.
 
 ## Template
 

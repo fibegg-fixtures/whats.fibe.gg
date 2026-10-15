@@ -1,19 +1,23 @@
 ---
 name: fibe-security-access-and-integrations
-description: Use for Fibe authentication, sessions, sudo mode, two-factor auth, WebAuthn, API keys, Secret Vault, Job ENV, webhooks, audit logs, data portability and notifications.
+description: Use for Fibe authentication, Google sign-in, Team ownership, sessions, sudo mode, two-factor auth, WebAuthn, API keys, Secret Vault, Job ENV, webhooks, audit logs, data portability and notifications.
 ---
 
 # Fibe security, access, and integrations
 
 Use this skill when a user asks who can access what, how credentials are protected, how automation authenticates, or how Fibe integrates with outside systems.
 
-## Company ownership
+## Team ownership
 
-Company workspaces own their Hosts, Repositories, Specs, Playgrounds, Agents, Library records, Secrets, credentials, defaults and finance independently of personal resources. Accepted members operate company resources; accepted administrators govern membership, credentials and billing. Ownership is immutable, and children inherit their root owner. Another company's ID or a creator's personal credentials cannot provide authority.
+Teams own their Hosts, Repositories, Specs, Playgrounds, Agents, Library records, Secrets, credentials, defaults and finance independently of Personal resources. Users pick Personal or a Team in the Team pill under their avatar before creating work. Accepted members operate Team resources; accepted administrators govern membership, credentials and billing in Team settings (`/teams/:id/settings`, tabs Members, Billing, Service accounts, GitHub). Ownership is immutable, and children inherit their root owner. Another Team's ID or a creator's personal credentials cannot provide authority. Team access comes only from Team ownership; there is no per-resource sharing.
 
-Individual credentials require live membership. Durable company service principals continue independently of their issuer, but key/principal revocation and company closure block later effects. Company resources and retained history survive creator departure. Existing personal sharing remains a separate legacy contract; it does not become company ownership.
+Individual credentials require live membership. Durable Team service accounts continue independently of their issuer, but key/service-account revocation and Team closure block later effects. Team resources and retained history survive creator departure.
 
 Removal records a durable enrollment block. Restoration requires an audited native admin request and the removed person's explicit acceptance. Existing applied ENV-pack snapshots remain repairable after grant loss; fresh use requires valid renewed authority.
+
+## Google sign-in
+
+Google sign-in works with any Google account; Runes govern admission. A new account needs a valid invitation Rune. Staff can map an exact-domain Rune to a Team, so a verified Google Workspace account from that domain joins the Team as a member. Existing accounts link Google from Security & Sessions; a matching email never links automatically. A Google session never grants native trust or sudo: Google-only accounts set up TOTP before protected actions.
 
 ## Sessions and trust
 

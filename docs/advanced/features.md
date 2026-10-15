@@ -12,7 +12,7 @@ Account-wide preferences and per-browser interface tuning.
 
 ### Teams (Collaboration)
 
-Unlocks creating and managing [Teams](/concepts/teams/). It is off by default and an admin enables it per account. Without it, the Teams page is hidden, but you can still accept an invitation and use a shared Host.
+Unlocks creating and managing [Teams](/concepts/teams/). It is off by default and an admin enables it per account. Without it, you cannot create a Team, but you can still accept an invitation and work in a Team you belong to through the Team pill.
 
 ### Beta program
 

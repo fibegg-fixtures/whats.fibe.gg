@@ -96,6 +96,8 @@ A Task is a Docker Compose file with Fibe additions on top. `docker compose up` 
 
 A Task can use both; every event starts a separate run.
 
+The gear on a `/tasks` row opens the Spec's Triggers modal. There you can also choose **ENV packs for scheduled runs**; every run from that job-mode Spec inherits them. See [ENV packs](/concepts/env-packs/).
+
 See [Authoring → Execution modes](/authoring/execution-modes/), [`mode-schedule-cron`](/reference/mode-schedule-cron/), [`mode-trigger-vcs`](/reference/mode-trigger-vcs/).
 
 ## Job ENV: credentials for Task runs

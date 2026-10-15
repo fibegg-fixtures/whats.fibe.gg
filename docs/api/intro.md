@@ -8,7 +8,7 @@ keywords: [Fibe API, REST API, bearer token, async requests]
 
 # API reference
 
-This candidate reference covers the public `/api` namespace, including immutable owner context and company credentials. Payment-provider callbacks and routes outside `/api` have separate contracts. Production fibe.gg retains its previous API until its own cutover.
+This candidate reference covers the public `/api` namespace, including immutable owner context and Team credentials. Payment-provider callbacks and routes outside `/api` have separate contracts. Production fibe.gg retains its previous API until its own cutover.
 
 Use the SDK, CLI, or MCP server when you want a supported automation surface with command discovery and auth profile handling. Use the HTTP API when you need direct REST integration.
 
@@ -30,7 +30,7 @@ Accept: application/json
 Content-Type: application/json
 ```
 
-A new API credential binds one immutable owner context and principal. The principal is a person with live membership or an active company service principal; the issuer is attribution. Scopes and resource ownership are checked separately. A guessed owner ID, selected browser context or request field cannot widen a credential. Historical personal credentials retain their recorded authorization version.
+A new API credential binds one immutable owner context and principal. The principal is a person with live membership or an active Team service account; the issuer is attribution. Scopes and resource ownership are checked separately. A guessed owner ID, selected browser context or request field cannot widen a credential. Historical personal credentials retain their recorded authorization version.
 
 `GET /api/me` returns the current API identity and the scopes attached to the token.
 

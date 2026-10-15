@@ -18,7 +18,8 @@ This file lists what an LLM agent can do after loading the right `fibe-skills` f
 An agent can explain or guide a user through:
 
 - Creating and managing Players, sessions, sudo verification, TOTP, recovery codes, and WebAuthn security keys.
-- Creating company workspaces, accepting invitations, operating immutable owned resources and governing live member/service-principal authority.
+- Signing in with Google, including invitation Runes, exact-domain Runes that admit people into a Team, and the TOTP enrollment Google-only accounts need for protected actions.
+- Creating Teams, switching owner with the Team pill, accepting invitations, operating immutable owned resources and governing live member/service-account authority in Team settings.
 - Managing subscriptions, plan allowances, referral or invitation access, and wallet-style platform credits at a user-facing level.
 - Connecting user-managed or platform-managed Hosts for Docker-based environments.
 - Configuring DNS, TLS, public routes, internal routes, wildcard certificates, and local/direct routing.
@@ -29,10 +30,10 @@ An agent can explain or guide a user through:
 - Running long-lived Playgrounds with logs, service URLs, debug terminals, rollout, hard restart, stop, retry, and expiration controls.
 - Running one-shot Tasks for tests, migrations, backups, CI repair, scheduled tasks, VCS-triggered tasks, and mutation-testing repair loops.
 - Creating AI Agents, authenticating providers, starting standalone chats, attaching Agents to Playgrounds, and using mounted files.
-- Using Bridge as a unified Agent/chat workspace.
+- Using Bridge as a unified Agent/chat workspace, with Create Agent below the Agent list and the setup wizard under Profile → Advanced Settings → Setup guide.
 - Handling artefacts, feedback, mutters, public build-in-public timelines, and live activity feeds.
 - Creating API keys with scopes, granular restrictions, expiry, rate limits, and optional agent access.
-- Storing sensitive values in Secret Vault and wiring Job ENV values into job-mode runs.
+- Storing sensitive values in Secret Vault, keeping readable ENV packs in Library, picking them per Playground, and wiring Job ENV values into job-mode runs.
 - Creating webhooks with event filters, HMAC signatures, delivery history, retries, and SSRF-safe delivery rules.
 - Reading audit logs, monitoring live status, receiving notifications, and using data export/import for portability.
 
@@ -82,7 +83,7 @@ An agent can explain or configure:
 
 - Session expiry, trust, sudo mode, 2FA, WebAuthn, and recovery behavior.
 - API key scope families and granular restrictions.
-- Team roles and shared-resource permissions.
+- Team roles and Team-owned resource permissions.
 - Secret Vault versus template variables versus Job ENV.
 - Webhook event families, filters, signatures, retries, and safety rules.
 - Audit logs and actor context at a product level.

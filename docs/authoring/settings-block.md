@@ -65,7 +65,7 @@ schedule_config:
   host_id: 1
 ```
 
-Combined with `job_mode: true`. Cron is a standard 5-field expression. Fibe resolves `host_id` to a Host you can manage: one you own, or one shared with your team.
+Combined with `job_mode: true`. Cron is a standard 5-field expression. Fibe resolves `host_id` to a Host with the same owner as the Spec: your Personal Host, or a Host owned by the same Team.
 
 ## trigger_config
 

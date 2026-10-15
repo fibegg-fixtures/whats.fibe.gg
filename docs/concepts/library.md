@@ -1,13 +1,13 @@
 ---
 title: Library
-description: "Search artefacts, notes, messages, provider traces, memories, and Pantry templates."
+description: "Search artefacts, notes, messages, provider traces, memories, Pantry templates and ENV packs."
 slug: /concepts/library
 sidebar_position: 3
 image: /img/og/concepts-library.png
-keywords: [Library, artefacts, mutters, memories, Pantry, provider traces, raw logs]
+keywords: [Library, artefacts, mutters, memories, Pantry, ENV packs, provider traces, raw logs]
 ---
 
-**Library** collects your artefacts, mutters, messages, feedback, activity, conversations, provider traces, memories, and Pantry templates. Browse by section or filter by Agent.
+**Library** collects your artefacts, mutters, messages, feedback, activity, conversations, provider traces, memories, Pantry templates and ENV packs. Browse by section or filter by Agent.
 
 Open Library for notes and files, inspect raw provider logs when an AI session needs debugging, or pull a reusable template out of the Pantry.
 
@@ -24,6 +24,7 @@ Open Library for notes and files, inspect raw provider logs when an AI session n
 | **Raw provider traces** | The exact request/response logs from an Agent's provider. For debugging an AI session. |
 | **Memories** | Persistent notes the Agent or the user marked as worth remembering. |
 | **Pantry templates** | Your saved reusable Templates. |
+| **ENV packs** | Named maps of readable environment values that you pick when creating a Playground. |
 
 Each section is searchable, and any section can be narrowed to a single Agent with the Agent filter.
 
@@ -52,6 +53,10 @@ Pantry templates can be:
 - Edited in place (name, description, image, category).
 - Versioned: publish a new version whenever you want to change the body; each version is an immutable snapshot, and editing the template's name or description doesn't create one.
 - Imported into a Spec at launch time.
+
+## ENV packs
+
+The ENV packs section lists the packs of the owner selected in the Team pill, with an owner column showing Personal or the Team name. Create, edit and delete packs here, then pick them when you create a Playground, or as packs for scheduled runs on a job-mode Spec. Packs are readable values, not a secret vault. See [ENV packs](/concepts/env-packs/).
 
 ## Memories
 
@@ -87,4 +92,5 @@ No. Pantry templates are private to your account until you publish a version. Pu
 
 - [Agents](/concepts/agents/): where most of the library's content originates.
 - [Bazaar](/concepts/bazaar/): public counterpart to private Pantry.
+- [ENV packs](/concepts/env-packs/): picking packs per Playground and grants.
 - [Specs & Templates](/concepts/specs/): Templates can be authored into the Pantry first, then promoted to the Bazaar.

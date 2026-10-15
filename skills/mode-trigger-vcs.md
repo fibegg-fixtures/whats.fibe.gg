@@ -70,7 +70,7 @@ The Repository resource that wires the repo. Repositories are Fibe's representat
 
 ## `host_id`
 
-The Host where each triggered Playground launches. Must be a Host you own or one shared with you through an accepted team membership. Note: team sharing covers Hosts only: the Repository (and optional agent) must still be yours.
+The Host where each triggered Playground launches. Must be a Host with the same owner as the Spec (Personal, or the same Team). The Repository and the optional Agent must have that owner too.
 
 ## What runtime does on each event
 

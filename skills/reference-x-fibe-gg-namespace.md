@@ -91,7 +91,7 @@ schedule_config:
   host_id: 1            # positive integer or its string form (`^[1-9][0-9]*$`)
 ```
 
-Used in combination with `job_mode: true` for scheduled jobs. Fibe resolves `host_id` to a Host the Player owns or one team-shared with them; validation first checks shape.
+Used in combination with `job_mode: true` for scheduled jobs. Fibe resolves `host_id` to a Host with the same owner as the Spec (Personal, or the same Team); validation first checks shape.
 
 See [mode-schedule-cron](mode-schedule-cron.md).
 

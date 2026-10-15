@@ -46,6 +46,8 @@ Typical chat lifecycle:
 
 Bridge is the unified Agent workspace. It helps users switch among Agents and active chats, inspect reachability, open chat panes, and receive live updates from Agent work.
 
+**Create Agent** is the row below the Agent list. With no Agents, Bridge shows "No agents yet" and the same Create Agent action. The guided setup wizard is not part of Bridge: open it from Profile → Advanced Settings → Setup guide (`/wizard`).
+
 Use Bridge language when a user asks for "the agent hub", "all chats", "the floating agent workspace", or "switching between agents".
 
 ## Artefacts, mutters, feedback, and public activity

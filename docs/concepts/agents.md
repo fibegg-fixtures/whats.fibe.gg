@@ -14,6 +14,12 @@ Two ways to use one:
 - **Standalone chat:** Fibe starts a chat with its own URL on a chosen Host.
 - **Inside a Playground:** open the Agent in a side panel to read logs, run commands, and edit source.
 
+## Create an Agent
+
+Open Bridge and click **Create Agent**, the row below your Agent list. With no Agents yet, Bridge shows "No agents yet" and the same Create Agent action. A new Agent that still needs credentials shows **Authenticate** in its pane.
+
+For a guided first run through Hosts, Specs, Playgrounds and Agents, open **Profile → Advanced Settings → Setup guide** and click **Start setup wizard** (`/wizard`). The wizard runs on its own page; **Exit** returns you to the Setup guide, and its last step opens the new Agent in Bridge.
+
 ## Configure an Agent
 
 - **Provider:** Gemini, Antigravity, Claude Code, OpenAI Codex, Cursor, or OpenCode.

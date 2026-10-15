@@ -10,7 +10,7 @@ API keys authenticate scripts, CLI sessions, integrations, and Agents.
 
 ## Candidate owner and principal binding
 
-New credentials bind one immutable personal/company owner and a person or durable company service principal. Scopes and live authority are separate checks. The issuer is attribution; a departed issuer cannot authorize future company effects. A selected profile or unchecked team ID cannot widen the token. Personal account deletion revokes personal authority, while company resources and durable company principals retain their own lifecycle. Historical personal credentials retain their recorded authorization version.
+New credentials bind one immutable Personal/Team owner and a person or durable Team service account. Scopes and live authority are separate checks. The issuer is attribution; a departed issuer cannot authorize future Team effects. A selected profile or unchecked team ID cannot widen the token. Personal account deletion revokes personal authority, while Team resources and durable Team service accounts retain their own lifecycle. Historical personal credentials retain their recorded authorization version.
 
 ## Family scopes
 

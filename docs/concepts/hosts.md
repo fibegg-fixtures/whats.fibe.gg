@@ -132,9 +132,9 @@ No. A Playground stays on the Host it was created on. To change hosts, launch a 
 <details>
 <summary>Can two people share a Host?</summary>
 
-Create a company-owned Host in a [Team workspace](/concepts/teams/). Accepted members may operate that company's Host and Playgrounds; accepted administrators govern the company. Company ownership, funding and quotas are independent of a creator's personal account.
+Create a Team-owned Host in a [Team](/concepts/teams/). Accepted members may operate that Team's Host and Playgrounds; accepted administrators govern the Team. Team ownership, funding and quotas are independent of a creator's personal account.
 
-Leaving or removing a creator does not destroy company-owned Playgrounds or their volumes. Their personal authority ends, while durable company automation and retained company resources remain subject to live entitlement and revocation checks. A personal Host does not change owner merely because the browser selects a company.
+Leaving or removing a creator does not destroy Team-owned Playgrounds or their volumes. Their personal authority ends, while durable Team automation and retained Team resources remain subject to live entitlement and revocation checks. A personal Host does not change owner merely because the Team pill selects a Team.
 </details>
 
 <details>
