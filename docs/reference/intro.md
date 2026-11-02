@@ -32,12 +32,12 @@ Two audiences:
 Each file follows a consistent shape:
 
 1. **Frontmatter** with `description`: a one-line summary the user (or an agent) can match against.
-2. **A short body**: usually 100 to 400 lines, with code examples and cross-links.
+2. **A concise body**: task guidance or exact tool inputs, with examples and cross-links where useful.
 3. **Related skills** at the bottom: a small graph you can follow when one skill leads naturally to another.
 
 ## How agents use these
 
-The public Native tool guides are mirrored from the pinned API Skill catalog. Agent prompts and installation-specific runtime instructions are not part of this public reference. An assistant can use [`llms.txt`](https://whats.fibe.gg/llms.txt) to find relevant guides, then follow their cross-links for Compose and resource details.
+The public tool set follows the pinned Native API Skill catalog. Its input names, required fields and enums are generated from the reviewed released SDK schemas, available in [machine-readable form](https://whats.fibe.gg/native/sdk-tool-schemas.json). Agent prompts and installation-specific runtime instructions are not part of this public reference. An assistant can use [`llms.txt`](https://whats.fibe.gg/llms.txt) to find relevant guides, then follow their cross-links for Compose and resource details.
 
 If you're building your own agent that should know Fibe, point it at [`whats.fibe.gg/llms.txt`](https://whats.fibe.gg/llms.txt) for an index, [`whats.fibe.gg/llms-full.txt`](https://whats.fibe.gg/llms-full.txt) for the entire library concatenated, or [`whats.fibe.gg/llm-skills.txt`](https://whats.fibe.gg/llm-skills.txt) for a compact `name: description` table of every skill and tool.
 

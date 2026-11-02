@@ -2,7 +2,7 @@
 
 The guide was copied from `~/fibe/whats.fibe.gg` to `whats.fibe.gg/` in the Native
 workspace. The original checkout is unchanged. The destination retains the
-`fibegg-fixtures/whats.fibe.gg` origin and is prepared for canonical `main`.
+`fibegg-fixtures/whats.fibe.gg` origin and publishes from canonical `main`.
 
 Every repository file is accounted for in [content-review.json](content-review.json),
 with its disposition, current digest and review method. Existing styles, layouts,
@@ -17,9 +17,9 @@ part of the public seed corpus.
 `2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29`, React
 `365f0c346a940c450fb256dabe916b854f1edc55` and released SDK v0.3.3. The review
 covers 55 guide pages, 52 canonical product/authoring skills, 53 public tool seed
-guides, and 108 curated/generated reference pages. Source-path checks resolve all
-57 distinct cited API/UI/site paths. All 53 tool guides match their selected
-committed Native source bytes.
+guides, and 108 curated/generated reference pages. The follow-up review checks public tool fields against the selected SDK release,
+not against seed prose alone. Exact upstream seed text is retained source-only;
+all 53 public guides are generated from reviewed released tool schemas.
 
 The content now describes self-hosted Hosts, Specs, Repositories, Teams, Tasks,
 Agents, Library, Audit Logs and long-running Playgrounds. It removes hosted
@@ -42,7 +42,7 @@ claim that every route or released consumer tool is qualified.
 
 - Production build passes, including strict broken-link checks for all 163 pages.
 - Seven generated-content checks pass: Native contract identity digests, exact
-  built mirrors, 53 tool mirrors, search/LLM vocabulary, all 170 `llms.txt` targets,
+  built mirrors, 53 tool mirrors, search/LLM vocabulary, all linked `llms.txt` targets,
   163 social cards, canonical routes and current self-hosted content.
 - `llms.txt`, `llms-full.txt`, `llm-skills.txt`, 105 raw Markdown mirrors and the
   search index are regenerated from the updated sources. Native source pins and
@@ -79,3 +79,29 @@ search and all LLM exports even when their source cleanup is incomplete. The old
 `/concepts/billing` route is removed; current operational guidance is published at
 `/concepts/self-hosted`. Historical tombstones stay in the capability catalog, not
 the public guide. The complete per-file inventory reflects this follow-up.
+
+## Independent follow-up audit
+
+The first review established file coverage, but missed semantic contradictions.
+An independent follow-up found invalid or missing required inputs in 42 of the
+53 upstream tool guides. All 53 public guides now come from offline introspection
+of the released SDK v0.3.3, captured with an empty isolated configuration and no
+API credentials or product-operation calls. The committed schema capture and
+reviewed Native notes regenerate the guides, tool catalogue and public
+`native/sdk-tool-schemas.json`. Offline freshness checks run during Pages
+verification; `--check-source` additionally checks upstream seed provenance.
+A future seed import cannot overwrite the reviewed guides with stale prose.
+
+The follow-up also corrects the bounded Agent health/recovery claim, the
+switch-template provisioning enum and Host input type, SDK profile resolution,
+retry and circuit-breaker behavior, scalar subdomain examples and canonical
+deployment-guide repository links. Browser review also caught and fixed malformed
+JSON download URLs; every rendered page is checked for that regression. These fixes propagate to reference pages,
+raw Markdown, search and every LLM export. Existing FIBE-specific Compose
+transformations were checked separately from the latest unhandled-field
+pass-through requirement; no blanket unsupported-Compose claim is introduced.
+
+Historical source-only snapshots can contain old wording; they are excluded from
+the published build. Current public guidance and reproducible checks are the
+publication authority. A complete file inventory is coverage evidence, not a
+proof that no future semantic error can be found.

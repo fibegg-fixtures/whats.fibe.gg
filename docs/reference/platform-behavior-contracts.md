@@ -8,7 +8,7 @@ keywords: [Fibe, Native, API, Compose, contracts, reference]
 
 # Native behavior reference
 
-This page summarizes behavior visible in the Native API and Compose implementation. The published [OpenAPI contract](/native/openapi.json), [route manifest](/native/route-manifest.json), and [Compose schema](/schemas/fibe-compose.v1.schema.json) carry the precise operation and field shapes. The website source manifest records the reviewed source revisions. A source review describes those commits; it does not qualify an installed runtime or a released consumer.
+This page summarizes behavior visible in the Native API and Compose implementation. The published [OpenAPI contract](https://whats.fibe.gg/native/openapi.json), [route manifest](https://whats.fibe.gg/native/route-manifest.json), and [Compose schema](https://whats.fibe.gg/schemas/fibe-compose.v1.schema.json) carry the precise operation and field shapes. The website source manifest records the reviewed source revisions. A source review describes those commits; it does not qualify an installed runtime or a released consumer.
 
 ## Product resources
 
@@ -22,13 +22,13 @@ Fibe adds a supported label namespace to Compose service definitions. The Native
 
 `repo_url`, `source_mount`, `job_watch`, `dockerfile`, `env_file`, `start_command`, `port`, `visibility`, `production`, `zerodowntime`, `branch`, `subdomain`, `path_rule`, `build_target`, `build_args`, `healthcheck_path`, `healthcheck_interval`, `healthcheck_timeout`, `healthcheck_retries`, and `healthcheck_start_period`.
 
-Unknown labels in the configured Fibe namespace fail parsing. Fibe validates values and cross-field rules before generating runtime Compose. Use the [label guide](/reference/reference-fibe-labels) for examples and the [versioned schema](/schemas/fibe-compose.v1.schema.json) for the accepted shape.
+Unknown labels in the configured Fibe namespace fail parsing. Fibe validates values and cross-field rules before generating runtime Compose. Use the [label guide](/reference/reference-fibe-labels) for examples and the [versioned schema](https://whats.fibe.gg/schemas/fibe-compose.v1.schema.json) for the accepted shape.
 
 Compose variables are declared under `x-fibe.gg.variables` and can bind values to YAML paths. Native validation checks variable names, references, defaults, and target service paths. See [template variables](/reference/reference-template-variables) and the [validation pipeline](/reference/reference-validation-pipeline).
 
 ## Tasks and automation
 
-The Native API represents finite work as Tasks and exposes operations to list, retrieve, trigger, rerun, and cancel Task runs. Spec configuration also includes schedule and repository-trigger operations. Exact request fields and authorization requirements are in the [OpenAPI contract](/native/openapi.json).
+The Native API represents finite work as Tasks and exposes operations to list, retrieve, trigger, rerun, and cancel Task runs. Spec configuration also includes schedule and repository-trigger operations. Exact request fields and authorization requirements are in the [OpenAPI contract](https://whats.fibe.gg/native/openapi.json).
 
 Compose's `fibe.gg/job_watch` label identifies services whose exit is used to determine a Task outcome. Configure the command to finish when its work is done. Keep long-running application services in a Playground workload.
 

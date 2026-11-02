@@ -43,7 +43,7 @@ For an AI agent:
     "repository_url": "owner/repo",
     "github_ref": "main",
     "config_path": "deploy/fibe.yml",
-    "host_id_or_name": 1
+    "host_id_or_name": "1"
   }
 }
 ```
@@ -81,7 +81,7 @@ For an AI agent:
   "args": {
     "repository_url": "owner/repo@feature/foo",
     "name": "my-app",
-    "host_id_or_name": 1,
+    "host_id_or_name": "1",
     "git_provider": "github"
   }
 }
@@ -102,7 +102,7 @@ Use [`fibe_playgrounds_switch_template`](/reference/tools/playgrounds-switch-tem
     "id_or_name": 42,
     "mode": "apply",
     "template_body": "<new compose template>",
-    "provision_missing_repositories": "auto",
+    "provision_missing_repositories": "gitea",
     "wait": true,
     "confirm": true
   }
@@ -126,7 +126,7 @@ The tool provisions referenced repositories, creates a Template Version, switche
         "args": {
           "repository_url": "me/auth-service",
           "github_ref": "main",
-          "host_id_or_name": 1
+          "host_id_or_name": "1"
         }
       },
       {

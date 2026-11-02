@@ -15,7 +15,7 @@ Fibe is a self-hosted application. You operate the Fibe server and the Docker Ho
 - Each registered Host and its Docker daemon, network access, storage, DNS, and TLS routing.
 - External services used by your workloads, such as registries, Git providers, email, or object storage, when configured.
 
-The official distribution is one Fibe application image plus the documented routing layer. Follow the [deployment guide](https://github.com/fibegg/fibe-api/tree/main/deploy) for installation and upgrade procedures. Back up the complete stopped data directory before migrations; an older image cannot reverse a newer database schema. Host workload volumes and external provider data have their own backup requirements.
+The official distribution is one Fibe application image plus the documented routing layer. Follow the [deployment guide](https://github.com/viktorvsk/fibe-api/tree/main/deploy) for installation and upgrade procedures. Back up the complete stopped data directory before migrations; an older image cannot reverse a newer database schema. Host workload volumes and external provider data have their own backup requirements.
 
 ## Resource quotas
 

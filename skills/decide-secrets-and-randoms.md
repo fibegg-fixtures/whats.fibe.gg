@@ -43,7 +43,7 @@ The Compose compiler generates a value if one was not supplied. It uses one gene
 
 Create an owner-bound Secret in the Secret Vault, then create a secret Job ENV entry that references its Secret ID. Scope the entry to a Repository when only that Repository's Tasks should receive it. Native Task admission captures eligible values for the run. Secret entries are withheld from pull-request-triggered Tasks.
 
-The API rejects Job ENV names beginning with `FIBE_`. Use the generated [OpenAPI contract](/native/openapi.json) for the current request fields and scopes.
+The API rejects Job ENV names beginning with `FIBE_`. Use the generated [OpenAPI contract](https://whats.fibe.gg/native/openapi.json) for the current request fields and scopes.
 
 ## ENV pack for reusable application settings
 

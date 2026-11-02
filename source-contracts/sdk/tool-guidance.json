@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "sdk_release": "v0.3.3",
+  "reviewed_at": "2026-11-02",
+  "description_overrides": {
+    "fibe_repo_status_check": "Check Git repository access and readiness for the configured installation.",
+    "fibe_get_github_token": "Get the server-provided GitHub credential for an authorized repository.",
+    "fibe_artefact_upload": "Upload and save an artefact from inline text or file content.",
+    "fibe_templates_search": "Search available Templates by text or a bounded regular expression."
+  },
+  "notes": {
+    "fibe_agent_defaults_get": [
+      "Reads the authenticated account’s personal overrides; it does not select a Team scope."
+    ],
+    "fibe_agent_defaults_reset": [
+      "Clears personal overrides so installation defaults apply. Read the defaults again after resetting."
+    ],
+    "fibe_agent_defaults_update": [
+      "Send the complete `agent_defaults` object to replace personal overrides. Use the profile form’s canonical shape, including `provider_overrides` and `default_mounted_files` where needed."
+    ],
+    "fibe_agents_activity": [
+      "Use `conversation_id` to scope the activity read to one conversation."
+    ],
+    "fibe_agents_create_conversation": [
+      "`conversation_id` is caller-supplied and required. This operation creates or upserts that conversation; `title` is optional."
+    ],
+    "fibe_agents_delete_conversation": [
+      "Deletion requires explicit user intent and MCP confirmation. This release marks the tool destructive but omits `confirm` from its advertised input schema; clients that enforce that schema can call it through `fibe_call` with top-level `confirm: true`."
+    ],
+    "fibe_agents_duplicate": [
+      "Duplicates configuration for the Agent identified by `id_or_name`; this tool does not accept a replacement name. Inspect the returned Agent before using it."
+    ],
+    "fibe_agents_interrupt": [
+      "Use `conversation_id` when the interruption must target a particular conversation. Inspect runtime state afterward."
+    ],
+    "fibe_agents_live_state": [
+      "Use `conversation_id` to read one conversation’s live stream state."
+    ],
+    "fibe_agents_messages": [
+      "The Agent identifier is `id_or_name`. Use `conversation_id` to select a conversation."
+    ],
+    "fibe_agents_runtime_status": [
+      "Live runtime checks depend on the Agent’s Host being reachable."
+    ],
+    "fibe_agents_send_message": [
+      "Send text with `text` and identify the Agent with `id_or_name`. Local `attachment_paths` are uploaded before the chat request; already uploaded files use `attachment_filenames`.",
+      "Message acceptance is asynchronous. Read messages or live state to observe the reply."
+    ],
+    "fibe_agents_start_chat": [
+      "The tool reads its Host from `FIBE_HOST_ID`; it does not accept an initial message. Start the chat, then use `fibe_agents_send_message` to send text."
+    ],
+    "fibe_artefact_upload": [
+      "`name` is required. Supply body text with `body`/`content_text`, or file content with `content_base64`/`content_path`.",
+      "Local file reads require local MCP access. Never upload secrets or credential files."
+    ],
+    "fibe_auth_set": [
+      "Use `domain` for the origin of your self-hosted installation. `validate` defaults to true and checks `/api/me` before saving the credential in the MCP session.",
+      "Keep the API key out of transcripts and source files."
+    ],
+    "fibe_call": [
+      "Prefer a directly advertised tool. Use `tool` and `args` to reach a registered hidden tool; `confirm` is forwarded to it.",
+      "Discover names and input schemas with `fibe_tools_catalog`."
+    ],
+    "fibe_doctor": [
+      "Inspects the configured client environment and API connectivity. Run it against your own installation origin."
+    ],
+    "fibe_feedbacks_get": [
+      "`feedback_id` selects the feedback record."
+    ],
+    "fibe_feedbacks_list": [
+      "Filter by the supported source, Playground, time, query, sort, and pagination fields listed above."
+    ],
+    "fibe_find_github_repos": [
+      "The search text field is `q`. Use `github_installation_id` when a particular connected installation is required."
+    ],
+    "fibe_get_github_token": [
+      "Use `repo` in `owner/repo` form. The credential comes from the installation’s authorized GitHub connection.",
+      "Never print, log, or commit the returned credential; use it only for the intended Git operation."
+    ],
+    "fibe_gitea_repos_create": [
+      "Creates a managed Gitea repository and its matching Fibe Repository using the installation’s configured Gitea integration."
+    ],
+    "fibe_github_repos_create": [
+      "Use `github_installation_id` to select a connected installation when needed. The tool does not accept an `owner` argument."
+    ],
+    "fibe_greenfield_create": [
+      "Choose a template, exact template version, inline template body, or repository config as the source. Use `git_provider` to choose `gitea` or `github` for destination repositories.",
+      "Source selectors are mutually exclusive where described by the schema. Deployment needs an accessible Host and the required repository permissions."
+    ],
+    "fibe_help": [
+      "`path` is a space-separated CLI command path such as `playgrounds create`; omit it for root help."
+    ],
+    "fibe_launch": [
+      "Choose exactly one source: `template_id_or_name`, `template_version_id`, `spec_id_or_name`, `compose_yaml`/`compose_yaml_path`, or `repository_url`.",
+      "Use `compose_yaml` for inline Compose content. Repository config revision and service source branches are separate choices."
+    ],
+    "fibe_local_playgrounds_info": [
+      "This reads local Host files rather than querying a remote Host. Select the required `view`; local filesystem access must be enabled for the transport."
+    ],
+    "fibe_local_playgrounds_link": [
+      "Creates local links in `link_dir`, defaulting to `PLAYGROUNDS_DIR` and then `/app/playground`. It operates on files available to the MCP process."
+    ],
+    "fibe_logs_follow": [
+      "Use `target` to select Playground or Task logs, and `duration` to bound observation. Streaming does not change the workload’s lifecycle."
+    ],
+    "fibe_memorize": [
+      "`conversation_id` is the local source conversation UUID, not a server row ID. The SDK reads that conversation locally and attaches its archive.",
+      "Use `memory_key` for an explicit memory identity; `groundings` can link the memory to normalized messages or raw events."
+    ],
+    "fibe_monitor_follow": [
+      "Use `type` for event types and `duration`/`max_events` to bound the stream."
+    ],
+    "fibe_monitor_list": [
+      "Use `type` for event types, `q` for text, and `page`/`per_page` for pagination."
+    ],
+    "fibe_mutter": [
+      "Requires `FIBE_AGENT_ID` in the MCP process environment. Send the note in `body` and its label in `type`; the Agent identity is supplied from that environment."
+    ],
+    "fibe_mutters_get": [
+      "`id_or_name` identifies the Agent. Optional Playground, query, status, severity, and pagination filters narrow the stream."
+    ],
+    "fibe_pipeline_result": [
+      "Use the returned `pipeline_id` to read a cached result; the release’s pipeline cache has a five-minute result TTL. `path` can select part of that result."
+    ],
+    "fibe_pipeline": [
+      "Steps can call tools, group independent steps with `parallel`, or iterate with `for_each`. References beginning with `$.` resolve against prior step outputs.",
+      "Use `dry_run` to validate references and schemas. Each actual tool invocation retains its authorization and confirmation requirements."
+    ],
+    "fibe_playgrounds_action": [
+      "Use `action_type` with one of the enumerated lifecycle actions. Deletion is a separate resource-delete operation.",
+      "This tool requires MCP confirmation unless the server’s confirmation gate has been explicitly disabled. Check status after acceptance."
+    ],
+    "fibe_playgrounds_debug": [
+      "Defaults to `mode: summary` and `refresh: true`; use `service` and `logs_tail` to focus diagnostics."
+    ],
+    "fibe_playgrounds_logs": [
+      "The log count field is `tail`; omit `service` to request logs across services."
+    ],
+    "fibe_playgrounds_switch_template": [
+      "Use `mode: preview` to inspect changes before applying them. Apply mode requires confirmation unless the MCP gate has been disabled.",
+      "`provision_missing_repositories` accepts `off`, `gitea`, or `github`; this tool defaults to `gitea`. Inspect the preview’s repository and variable requirements."
+    ],
+    "fibe_playgrounds_wait": [
+      "Both `id_or_name` and `status` are required. For `status: running`, readiness defaults to service readiness; other target statuses default to lifecycle readiness.",
+      "A timeout means the target was not observed in time. Inspect status and diagnostics before deciding whether to retry an effect."
+    ],
+    "fibe_repo_status_check": [
+      "Pass one or more repository URLs in the required `github_urls` array."
+    ],
+    "fibe_resource_delete": [
+      "Choose a supported `resource` and the identifier form it uses. Some nested resources also require `agent_id_or_name` or `template_id_or_name`.",
+      "Deletion requires explicit user intent and MCP confirmation unless the gate has been disabled."
+    ],
+    "fibe_resource_get": [
+      "Choose a supported `resource` and the identifier form it uses. Attachment reads also need the applicable Agent, filename, or conversation fields."
+    ],
+    "fibe_resource_list": [
+      "Place resource-specific filters and pagination inside `params`; inspect them with `fibe_schema(resource:<name>, operation:list)`."
+    ],
+    "fibe_resource_mutate": [
+      "Use `fibe_schema` for the selected resource and operation, then put identifiers and fields inside `payload`. There is no top-level `id_or_name`.",
+      "`dry_run: true` validates the payload without sending an API request. Supported resource actions extend beyond create/update."
+    ],
+    "fibe_run": [
+      "Runs the Fibe CLI using the supplied `args` tokens. It is an escape hatch for CLI operations, not a shell command inside a Playground.",
+      "Prefer a dedicated tool when available. Destructive CLI operations retain the confirmation gate."
+    ],
+    "fibe_schema": [
+      "Omit `resource` to discover resources. Supply `resource` and `operation` for the specific operation schema; `payload` can be checked against it."
+    ],
+    "fibe_status": [
+      "Reads the configured account’s server-reported dashboard information. It does not prove that remote workloads are healthy."
+    ],
+    "fibe_templates_change": [
+      "This is a hidden advanced tool. Discover its schema with `fibe_tools_catalog` and invoke it through `fibe_call` when it is not advertised.",
+      "The required selector fields are `target_type`, `target_id_or_name`, `mode`, and `change_type`. Preview before apply; apply requires confirmation."
+    ],
+    "fibe_templates_search": [
+      "Use `query` or `regex` to search; `template_id_or_name` can limit the search to a particular template.",
+      "Native regex search is case-insensitive, accepts at most 160 characters, and requires a literal token of at least three characters."
+    ],
+    "fibe_tools_catalog": [
+      "Set `include_schema: true` to return exact input contracts, including hidden tools. `tier` and `name_pattern` narrow the results."
+    ],
+    "fibe_update_name": [
+      "Renames the current Agent identified by `FIBE_AGENT_ID`; it does not take an arbitrary Agent identifier."
+    ]
+  }
+}

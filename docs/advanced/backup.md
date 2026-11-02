@@ -28,7 +28,7 @@ Imported Secret metadata has no secret value. Add a usable value in **Secret Vau
 
 ## Back up the whole installation
 
-For an upgrade, disaster recovery, or a full migration, back up the complete stopped Fibe data directory with the operator command documented in the [deployment guide](https://github.com/fibegg/fibe-api/tree/main/deploy):
+For an upgrade, disaster recovery, or a full migration, back up the complete stopped Fibe data directory with the operator command documented in the [deployment guide](https://github.com/viktorvsk/fibe-api/tree/main/deploy):
 
 From the Compose deployment directory, stop Fibe and run the operator backup against the stopped data volume. The host backup directory must be writable by the container's Fibe user:
 
@@ -40,7 +40,7 @@ docker compose run --rm --no-deps -v /srv/fibe-backups:/backup fibe \
 docker compose start fibe
 ```
 
-The command writes an archive and a `.tar.manifest.json` sidecar. Keep both securely: the archive contains the installation encryption key. Verify the archive with `fibe-api operator verify-backup --archive <archive>`. The archive contains the database and remaining WAL, installation identity, key material, SSH state, persistent files, and a manifest of referenced blobs. For S3-compatible storage, object bytes are included by default only up to the configured size limit; otherwise snapshot the bucket at the same stopped moment or explicitly include the objects. See the [deployment guide](https://github.com/fibegg/fibe-api/tree/main/deploy) for backup options and verification.
+The command writes an archive and a `.tar.manifest.json` sidecar. Keep both securely: the archive contains the installation encryption key. Verify the archive with `fibe-api operator verify-backup --archive <archive>`. The archive contains the database and remaining WAL, installation identity, key material, SSH state, persistent files, and a manifest of referenced blobs. For S3-compatible storage, object bytes are included by default only up to the configured size limit; otherwise snapshot the bucket at the same stopped moment or explicitly include the objects. See the [deployment guide](https://github.com/viktorvsk/fibe-api/tree/main/deploy) for backup options and verification.
 
 If a rollback is needed, restore the full archive before starting the older image; changing the image alone does not reverse a migrated SQLite schema.
 

@@ -12,8 +12,18 @@ const base = '323bd57ad3a30cc6fdcb6ee0fb421c91ccdc28b5';
 const git = (...args) => execFileSync('git', ['-C', root, ...args], {maxBuffer: 16 * 1024 * 1024});
 const sources = JSON.parse(fs.readFileSync(path.join(root, 'content-sources.json'), 'utf8'));
 const reviews = new Map();
+// The committed inventory makes regeneration possible in a fresh clone; local
+// reviewer notes can add detail without becoming a hidden build dependency.
+const previousInventory = path.join(root, 'content-review.json');
+if (fs.existsSync(previousInventory)) {
+  for (const entry of JSON.parse(fs.readFileSync(previousInventory, 'utf8')).files) {
+    reviews.set(entry.path, {reviewed: true, previous_review: entry.review});
+  }
+}
 for (const file of ['.audit-guides.json', '.audit-skills.json']) {
-  const data = JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
+  const audit = path.join(root, file);
+  if (!fs.existsSync(audit)) continue;
+  const data = JSON.parse(fs.readFileSync(audit, 'utf8'));
   for (const entry of data.files) reviews.set(entry.path, entry);
 }
 const paths = new Set(git('ls-files', '-z', '--cached', '--others', '--exclude-standard').toString().split('\0').filter(Boolean));
@@ -35,14 +45,16 @@ for (const file of [...paths].sort()) {
   if (file.endsWith('.css')) {
     assert(previous && previous.equals(bytes), `Style changed: ${file}`);
     review = 'Style reviewed and retained byte-for-byte, as requested.';
+  } else if (file.startsWith('seed-skills/') || file.startsWith('docs/reference/tools/') || file === 'docs/sdk/tools-catalog.md' || file === 'scripts/import-seed-skills.mjs') {
+    review = {method: 'Released SDK schema and Native content re-audit', source_evidence: ['source-contracts/sdk/tool-schemas.json', 'source-contracts/sdk/tool-guidance.json', 'source-contracts/native/tool-skill-seeds.json'], findings: ['Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool.']};
+  } else if (file.startsWith('static/native/') || file === 'static/schema.json' || file.startsWith('static/schemas/')) {
+    review = 'Native source/public projection or released SDK input contract; the owning importer and build checks verify provenance, reviewed product scope and deterministic output.';
   } else if (reviews.has(file)) {
     const sourceReview = reviews.get(file);
     assert(sourceReview.reviewed !== false, `Unreviewed content: ${file}`);
-    review = {method: sourceReview.class || 'Native guide review', findings: sourceReview.findings || [sourceReview.content_change].filter(Boolean), source_evidence: sourceReview.source_evidence || sourceReview.source_paths || sourceReview.sources || []};
+    review = sourceReview.previous_review || {method: sourceReview.class || 'Native guide review', findings: sourceReview.findings || [sourceReview.content_change].filter(Boolean), source_evidence: sourceReview.source_evidence || sourceReview.source_paths || sourceReview.sources || []};
   } else if ((file.startsWith('docs/') || file.startsWith('skills/') || file.startsWith('seed-skills/')) && /\.mdx?$/.test(file)) {
     throw new Error(`Missing individual content review: ${file}`);
-  } else if (file.startsWith('static/native/') || file === 'static/schema.json' || file.startsWith('static/schemas/')) {
-    review = 'Exact Native committed contract mirror; importer and build checks verify source bytes and identity digests.';
   } else if (/\.(png|ico|svg)$/.test(file)) {
     assert(previous && previous.equals(bytes), `Unexpected brand asset change: ${file}`);
     review = 'Existing branding retained; SVG copy uses current Agent vocabulary.';

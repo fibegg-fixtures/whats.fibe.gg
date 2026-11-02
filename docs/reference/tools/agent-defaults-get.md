@@ -1,6 +1,6 @@
 ---
 title: "Agent Defaults Get"
-description: "Use when you need to read the installation or Team default Agent configuration before creating or changing an Agent."
+description: "Read the authenticated player's agent default overrides."
 slug: /reference/tools/agent-defaults-get
 sidebar_label: "Agent Defaults Get"
 image: /img/og/reference-tools-agent-defaults-get.png
@@ -9,12 +9,18 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-Returns the effective default Agent settings: provider, model, enabled skills, mounted files and prompt defaults.
+Read the authenticated player's agent default overrides.
+
+This guide uses the released SDK **v0.3.3** input contract. The installation’s Native API routes and authorization determine which server operations are available.
 
 ## Inputs
 
-- `scope` (optional): personal or Team owner of the defaults.
+This tool takes no input fields.
+
+The [complete tool schemas](https://whats.fibe.gg/native/sdk-tool-schemas.json) include nested fields and constraints. Fields marked optional can still be required by a particular resource, mode, or source selection.
 
 ## Notes
 
-- Read before `fibe_agent_defaults_update` so an update starts from current values.
+- Reads the authenticated account’s personal overrides; it does not select a Team scope.
+
+Read-only: **yes**. Destructive: **no**. Idempotent: **yes**. These are the released tool’s annotations; operation-specific guards still apply.

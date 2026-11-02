@@ -49,7 +49,7 @@ func main() {
 }
 ```
 
-`NewClient` reads from the same `~/.config/fibe/` profile system the CLI uses when no `WithAPIKey` is supplied. So the same machine, with the same profile active, gives you the same identity.
+Without explicit credentials, the client resolves credentials from its configured store for the selected API domain. It does not automatically inherit the CLI's active profile; pass the API key and domain explicitly when you need to match a CLI profile.
 
 ## Resource managers
 
@@ -81,9 +81,9 @@ The resource service provides typed `List`, `Get`, `GetByIdentifier`, `Create`, 
 The release documents these client behaviors; they do not establish that a native workflow is available:
 
 - **Request timeout**: every request times out after 30 seconds by default; change it with `WithTimeout`.
-- **Automatic retry** is on by default for transient errors. The client retries 429, 500, 502, 503, and 504 responses up to three times with exponential backoff and full jitter (a random fraction of 500 ms × 2^attempt, capped at 30 s). A `Retry-After` header overrides that delay. Network timeouts and cancelled contexts return immediately.
+- **Automatic retry** is on by default for transient errors. The client retries 429, 500, 502, 503, and 504 responses up to three times with exponential backoff and full jitter (a random fraction of 500 ms × 2^attempt, capped at 30 s). A `Retry-After` header can override the backoff, subject to the client's 30-second cap. Network timeouts and cancelled contexts return immediately.
 - **Idempotency keys**: for safe re-tries of the same mutation, pass your own key: `ctx = fibe.WithIdempotencyKey(ctx, fibe.NewIdempotencyKey())`; the platform replays the cached response for 24 hours. Without one, each call gets a fresh key, so two separate `Create` calls create two resources.
-- **Circuit breaker** (opt-in; off by default in the library, on by default in the [MCP server](/sdk/mcp-server/)): `fibe.WithCircuitBreaker(fibe.DefaultBreakerConfig)` opens after 5 consecutive failures, so your program doesn't hammer a sick API. After 30s it goes half-open and lets 2 test requests through: a success closes the circuit, any failure reopens it.
+- **Circuit breaker** (opt-in; off by default in the library, on by default in the [MCP server](/sdk/mcp-server/)): `fibe.WithCircuitBreaker(fibe.DefaultBreakerConfig)` opens after 5 consecutive failures, so your program doesn't hammer a sick API. After 30s it goes half-open and lets 2 test requests through; the circuit closes after both succeed, and reopens if either fails.
 - **Rate-limit awareness**: when the server returns a rate-limit header, the client sleeps for the indicated retry-after window.
 - **Structured errors**: every error implements an interface that lets you ask `IsNotFound(err)`, `IsRateLimited(err)`, `RequestID(err)`, etc., instead of string-matching.
 

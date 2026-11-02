@@ -16,7 +16,7 @@ Fibe recovers from several transient failures automatically. This page separates
 - **"TLS pending" / "HTTPS provisioning"** is a normal state, **not a failure**: a certificate is being issued. It clears on its own, usually within a few minutes of a service first being exposed.
 - **A stuck launch** is picked back up automatically: a launch that sits "in progress" for **30 minutes** is re-queued. A temporary infrastructure wobble, a brief network or host-connectivity blip, is **retried**, not treated as a hard failure.
 - A build still running after **45 minutes** fails with a timeout.
-- **A Agent that momentarily can't be reached** is left viewable and quietly redeployed if the outage holds; a mid-provisioning SSL handshake shows as "pending," never an error.
+- **Agent chat recovery is bounded and observation-based.** A Host cycle can queue one repair for an eligible stored-running chat after a positive HTTP 404 health response, under the chat's captured start authority. Timeouts and unknown observations do not queue repair. An explicit health probe reports a TLS handshake failure as `ssl_pending` without queueing a redeploy. This is not a general promise that an Agent redeploys after any sustained outage. See [Agents](/concepts/agents/) and the current API contract for the installed build.
 - **Task runs are the exception**: a finished or failed run stays that way. Fibe does not redeploy it. Run the Task again instead. A launch that stalls before execution still recovers automatically.
 
 ## Needs you: act

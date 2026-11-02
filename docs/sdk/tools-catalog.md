@@ -1,152 +1,104 @@
 ---
 title: Tools catalog
-description: An orientation to the released SDK v0.3.3 MCP tools, with links to the corresponding tool descriptions.
+description: Reviewed public tool guides and exact input schemas for the released SDK v0.3.3.
 slug: /sdk/tools-catalog
 sidebar_position: 7
 sidebar_label: Tools catalog
 image: /img/og/sdk-tools-catalog.png
-keywords: [MCP tools, fibe tools, tool catalog, resource_mutate, greenfield_create, playgrounds_transform, pipeline]
+keywords: [MCP tools, fibe tools, tool catalog, resource_mutate, greenfield_create, pipeline]
 ---
 
-This catalog describes the released SDK v0.3.3 MCP client surface. It is not a native server capability or qualification list. Check the installation OpenAPI contract for available endpoints and `fibe --help` for the commands supported by the installed client.
+These **53 public tool guides** describe the released SDK **v0.3.3** input contracts. Their parameter names, required fields, enums, and nested schemas are generated from an offline inspection of that release. Reviewed descriptions follow the current Native product scope. Server availability and permissions still depend on your installation.
 
-For a deep how-to, [Common workflows](/sdk/workflows/) walks through the end-to-end stories these tools support.
+Use the [complete JSON tool schemas](https://whats.fibe.gg/native/sdk-tool-schemas.json) for machine-readable contracts. To discover every registered tool on your running MCP server, including tools without a guide here, call `fibe_tools_catalog` with `include_schema: true`. A hidden tool can be reached with `fibe_call` using its `tool` and `args` fields.
 
-Tool calls return the responses of the configured installation. Their availability and authorization depend on the corresponding native route and credential scopes.
-
-## Auth, doctor & meta
-
-The thin tools that bootstrap the rest. Every agent calls one or two of these at the start of a session.
+## Discovery and orchestration
 
 | Tool | Purpose |
 | --- | --- |
-| [`fibe_auth_set`](/reference/tools/auth-set/) | Set credentials for this session (multi-tenant). |
-| `fibe_auth_list` | List saved credential profiles. (No detail page yet.) |
-| `fibe_auth_status` | Show the active profile and identity. (No detail page yet.) |
-| `fibe_auth_use` | Switch the active profile. (No detail page yet.) |
-| [`fibe_doctor`](/reference/tools/doctor/) | Self-diagnostic: connectivity, auth, environment sanity. |
-| [`fibe_status`](/reference/tools/status/) | Account dashboard: resource counts, quotas, rate-limit headroom. |
-| [`fibe_schema`](/reference/tools/schema/) | Introspect a resource's JSON schema. |
-| [`fibe_help`](/reference/tools/help/) | Equivalent of `fibe ... --help` for any command. |
-| [`fibe_tools_catalog`](/reference/tools/tools-catalog/) | This catalog, but as a tool the agent can call. |
-| [`fibe_call`](/reference/tools/call/) | Dynamic invocation of hidden tools (escape hatch). |
-| [`fibe_run`](/reference/tools/run/) | Run any CLI command (last-resort escape hatch). |
-| [`fibe_update_name`](/reference/tools/update-name/) | Rename your own Agent. |
+| [`fibe_call`](/reference/tools/call/) | Invoke a registered Fibe tool that is hidden by the current tool tier. Prefer direct tool calls when the concrete tool is advertised; use fibe_tools_catalog/fibe_schema only when the hidden tool name or args are unclear. |
+| [`fibe_doctor`](/reference/tools/doctor/) | Run self-diagnostic checks: verify API key, connectivity, and display user profile |
+| [`fibe_help`](/reference/tools/help/) | Display detailed CLI help documentation for a specific Fibe command path. Extremely useful to look up flag descriptions or expected payload shapes. |
+| [`fibe_pipeline`](/reference/tools/pipeline/) | Execute multiple tool calls in one round trip and pass results between them with JSONPath bindings. Use it to reduce round trips when creating and waiting for jobs. |
+| [`fibe_pipeline_result`](/reference/tools/pipeline-result/) | Look up a cached result from an earlier pipeline execution. |
+| [`fibe_run`](/reference/tools/run/) | Last-resort escape hatch: invoke an arbitrary Fibe CLI command when no dedicated MCP tool fits. Use sparingly. |
+| [`fibe_schema`](/reference/tools/schema/) | Return JSON Schema definitions and the schema resource catalog. |
+| [`fibe_status`](/reference/tools/status/) | Show resource counts, quotas, and rate limits for the account. |
+| [`fibe_tools_catalog`](/reference/tools/tools-catalog/) | List every registered Fibe MCP tool, including hidden tools that cannot all be advertised directly. |
 
-## Resource CRUD
-
-The five tools that handle every resource family: Playgrounds, Tasks, Agents, Specs, Repositories, Hosts, Templates, Secrets, Webhooks, API keys, Artefacts, etc.
+## Resources and account settings
 
 | Tool | Purpose |
 | --- | --- |
-| [`fibe_resource_list`](/reference/tools/resource-list/) | List resources of a family with filters. |
-| [`fibe_resource_get`](/reference/tools/resource-get/) | Fetch one resource by ID/name. Supports file downloads (agent / artefact attachments). |
-| [`fibe_resource_mutate`](/reference/tools/resource-mutate/) | Create / update / run resource-scoped operations. |
-| [`fibe_resource_delete`](/reference/tools/resource-delete/) | Delete by ID/name. |
-| `fibe_resource_watch` | Watch events on a resource. (Listed in the upstream catalog; no detail page yet.) |
+| [`fibe_agent_defaults_get`](/reference/tools/agent-defaults-get/) | Read the authenticated player's agent default overrides. |
+| [`fibe_agent_defaults_reset`](/reference/tools/agent-defaults-reset/) | Clear all player agent default overrides so admin defaults apply. |
+| [`fibe_agent_defaults_update`](/reference/tools/agent-defaults-update/) | Replace the authenticated player's agent default overrides. Use the same agent_defaults JSON shape as the profile UI. |
+| [`fibe_artefact_upload`](/reference/tools/artefact-upload/) | Upload and save an artefact from inline text or file content. |
+| [`fibe_memorize`](/reference/tools/memorize/) | Create or update agent-generated memories grounded in one local source conversation. |
+| [`fibe_mutter`](/reference/tools/mutter/) | Create one short mutter for an agent: a visible internal note used for progress, proof, blocker, or problem updates. |
+| [`fibe_resource_delete`](/reference/tools/resource-delete/) | Delete a supported flat Fibe resource by ID, name, or key where supported. |
+| [`fibe_resource_get`](/reference/tools/resource-get/) | Get a supported Fibe resource by ID, name, or key where supported. Playground reads include service_urls and service runtime status. Use artefact_attachment or agent_attachment to download attached runtime file content. |
+| [`fibe_resource_list`](/reference/tools/resource-list/) | List a supported flat Fibe resource. Use fibe_schema with resource=list to discover resource names, aliases, and list params. |
+| [`fibe_resource_mutate`](/reference/tools/resource-mutate/) | Create, update, or run a supported resource-scoped mutation with a payload validated against fibe_schema before any API request. |
+| [`fibe_update_name`](/reference/tools/update-name/) | Update your own agent name. |
 
-## Playgrounds
-
-Long-running environments: the brownfield half of the platform.
-
-| Tool | Purpose |
-| --- | --- |
-| [`fibe_playgrounds_wait`](/reference/tools/playgrounds-wait/) | Block until a Playground reaches a status. |
-| [`fibe_playgrounds_logs`](/reference/tools/playgrounds-logs/) | Consolidated log dump. |
-| [`fibe_logs_follow`](/reference/tools/logs-follow/) | Stream live logs with progress notifications. |
-| [`fibe_playgrounds_action`](/reference/tools/playgrounds-action/) | Rollout, hard-restart, stop, start, retry, maintenance on/off. Actions that use the Host require it to be reachable. |
-| [`fibe_playgrounds_debug`](/reference/tools/playgrounds-debug/) | Deployment diagnostics for a stuck Playground. |
-| [`fibe_playgrounds_switch_template`](/reference/tools/playgrounds-switch-template/) | Switch a Playground to another template, provision repos, rollout, wait. Preserves the Playground ID. |
-
-## Agents (Agents)
-
-Configure, chat with, and observe AI assistants from inside another AI assistant.
+## Launch and repository creation
 
 | Tool | Purpose |
 | --- | --- |
-| [`fibe_agents_duplicate`](/reference/tools/agents-duplicate/) | Clone an agent's config with a new name. |
-| [`fibe_agents_runtime_status`](/reference/tools/agents-runtime-status/) | Reachability, auth, queue depth, processing state. Live checks require a reachable Host. |
-| [`fibe_agents_send_message`](/reference/tools/agents-send-message/) | Send a chat message (with attachments). Requires a reachable Host. |
-| [`fibe_agents_start_chat`](/reference/tools/agents-start-chat/) | Start / reconnect a chat session. Requires a reachable Host. |
-| [`fibe_agents_interrupt`](/reference/tools/agents-interrupt/) | Interrupt a long-running tool call. |
-| [`fibe_agents_messages`](/reference/tools/agents-messages/) | Read message history. |
-| [`fibe_agents_activity`](/reference/tools/agents-activity/) | Event timeline for one agent. |
-| [`fibe_agents_live_state`](/reference/tools/agents-live-state/) | Current in-flight tools, status, scratchpad. |
-| [`fibe_agents_create_conversation`](/reference/tools/agents-create-conversation/) | Start a new conversation thread. |
-| [`fibe_agents_delete_conversation`](/reference/tools/agents-delete-conversation/) | Tear one down. |
-| [`fibe_agent_defaults_get`](/reference/tools/agent-defaults-get/) | Read your Personal Agent defaults. |
-| [`fibe_agent_defaults_update`](/reference/tools/agent-defaults-update/) | Write Personal Agent defaults. |
-| [`fibe_agent_defaults_reset`](/reference/tools/agent-defaults-reset/) | Reset defaults to platform values. |
+| [`fibe_gitea_repos_create`](/reference/tools/gitea-repos-create/) | Create a managed Gitea repo and matching Repository. For multi-service switches, batch independent repo creation with fibe_pipeline before seeding source and applying fibe_playgrounds_switch_template. |
+| [`fibe_github_repos_create`](/reference/tools/github-repos-create/) | Register and connect a new GitHub repository |
+| [`fibe_greenfield_create`](/reference/tools/greenfield-create/) | Create one or more repositories and Fibe Repositories, an app-owned template version, deployed playground, wait for running, and link it locally. |
+| [`fibe_launch`](/reference/tools/launch/) | Launch from exactly one source: template, template version, spec, compose YAML, or repository config. |
+| [`fibe_templates_search`](/reference/tools/templates-search/) | Search available Templates by text or a bounded regular expression. |
 
-## Greenfield: one-call setup
-
-For "I have nothing yet; build me the whole thing".
+## Playground operations
 
 | Tool | Purpose |
 | --- | --- |
-| [`fibe_launch`](/reference/tools/launch/) | Launch inline Compose, a local config file, a GitHub repo config, a Spec, or a template. |
-| [`fibe_greenfield_create`](/reference/tools/greenfield-create/) | Repos → template version → Spec → Playground → running. Single call. |
-| [`fibe_templates_search`](/reference/tools/templates-search/) | Search the template catalog. |
-| [`fibe_templates_change`](/reference/tools/templates-change/) | Patch / overwrite a template, optionally rollout. Advanced/hidden: not advertised in the native tool list; invoke it via `fibe_call`. |
-| [`fibe_github_repos_create`](/reference/tools/github-repos-create/) | Provision a new GitHub repo (uses your GitHub App). |
-| [`fibe_gitea_repos_create`](/reference/tools/gitea-repos-create/) | Same for Gitea. |
+| [`fibe_feedbacks_get`](/reference/tools/feedbacks-get/) | Get one feedback entry for an agent, including player comments about artefacts or mutters. |
+| [`fibe_feedbacks_list`](/reference/tools/feedbacks-list/) | List all feedback entries associated with an agent. |
+| [`fibe_local_playgrounds_info`](/reference/tools/local-playgrounds-info/) | Inspect local playground names, current link state, repo roots, URLs, mounts, or details from /opt/fibe/playgrounds or HOST_ROOT. |
+| [`fibe_local_playgrounds_link`](/reference/tools/local-playgrounds-link/) | Link local playground mounts into a working directory. |
+| [`fibe_logs_follow`](/reference/tools/logs-follow/) | Stream live playground or task logs as progress notifications. Omitting service streams all services. |
+| [`fibe_playgrounds_action`](/reference/tools/playgrounds-action/) | Run one playground lifecycle action: rollout, hard_restart, stop, start, retry_compose, enable_maintenance, or disable_maintenance. |
+| [`fibe_playgrounds_debug`](/reference/tools/playgrounds-debug/) | Retrieve Playground service, container, port, path, label, status, URL, and recent-log diagnostics. |
+| [`fibe_playgrounds_logs`](/reference/tools/playgrounds-logs/) | Retrieve playground logs. Omitting service returns all services. |
+| [`fibe_playgrounds_switch_template`](/reference/tools/playgrounds-switch-template/) | Switch a deployed playground end-to-end: preserve the playground id, swap it onto a new template shape, provision missing private Gitea/GitHub-backed Repositories for new repos, roll it out, wait, and diagnose failures. Single-call brownfield analog of fibe_greenfield_create. |
+| [`fibe_playgrounds_wait`](/reference/tools/playgrounds-wait/) | Block and poll until a playground reaches a specified target state and, for running playgrounds by default, reported services are ready. |
+| [`fibe_templates_change`](/reference/tools/templates-change/) | Advanced template change primitive: preview or apply template patches/overwrites, switch specs/playgrounds/tasks to existing template versions, and optionally roll out or trigger a fresh task run. Hidden advanced tool; invoke through `fibe_call`. |
 
-## Monitoring, mutters, feedback, artefacts
-
-The trail your work leaves and the live event stream that surfaces it.
-
-| Tool | Purpose |
-| --- | --- |
-| [`fibe_monitor_list`](/reference/tools/monitor-list/) | List recent events. |
-| [`fibe_monitor_follow`](/reference/tools/monitor-follow/) | Stream events live. |
-| [`fibe_memorize`](/reference/tools/memorize/) | Save a memory for later runs. |
-| [`fibe_mutter`](/reference/tools/mutter/) | Post a mutter (progress / evidence / blocker note). |
-| [`fibe_mutters_get`](/reference/tools/mutters-get/) | Read mutters for a resource. |
-| [`fibe_feedbacks_list`](/reference/tools/feedbacks-list/) | List feedback on artefacts. |
-| [`fibe_feedbacks_get`](/reference/tools/feedbacks-get/) | Read one feedback. |
-| [`fibe_artefact_upload`](/reference/tools/artefact-upload/) | Upload a file as an artefact attached to a resource. |
-
-## Pipelines
-
-Run multiple calls in sequence, parallel, or for-each, with JSONPath bindings between steps.
+## Agent observation and conversations
 
 | Tool | Purpose |
 | --- | --- |
-| [`fibe_pipeline`](/reference/tools/pipeline/) | Execute a multi-step plan with bindings, parallel blocks, for-each loops, caching. |
-| [`fibe_pipeline_result`](/reference/tools/pipeline-result/) | Look up a cached pipeline result (5-min TTL). |
+| [`fibe_agents_activity`](/reference/tools/agents-activity/) | Read agent activity, optionally scoped to a conversation. |
+| [`fibe_agents_create_conversation`](/reference/tools/agents-create-conversation/) | Create or upsert an agent conversation. |
+| [`fibe_agents_delete_conversation`](/reference/tools/agents-delete-conversation/) | Delete an agent conversation. |
+| [`fibe_agents_duplicate`](/reference/tools/agents-duplicate/) | Duplicate an agent configuration. |
+| [`fibe_agents_interrupt`](/reference/tools/agents-interrupt/) | Interrupt a running agent turn. |
+| [`fibe_agents_live_state`](/reference/tools/agents-live-state/) | Check conversation-scoped agent live stream state. |
+| [`fibe_agents_messages`](/reference/tools/agents-messages/) | Read agent messages, optionally scoped to a conversation. |
+| [`fibe_agents_runtime_status`](/reference/tools/agents-runtime-status/) | Check agent reachability, authentication, queue, and processing state. |
+| [`fibe_agents_send_message`](/reference/tools/agents-send-message/) | Send one text message to an agent chat. |
+| [`fibe_agents_start_chat`](/reference/tools/agents-start-chat/) | Start or reconnect an agent chat on the current Host. |
+| [`fibe_monitor_follow`](/reference/tools/monitor-follow/) | Stream agent-produced events as live MCP progress notifications |
+| [`fibe_monitor_list`](/reference/tools/monitor-list/) | List agent-produced monitor events |
+| [`fibe_mutters_get`](/reference/tools/mutters-get/) | Retrieve an agent's mutter stream by id_or_name, with optional query/status/severity/playground filters. |
 
-For an example, see [Common workflows → Pipelines](/sdk/workflows/).
-
-## Local dev
-
-For users running a Host locally and wanting to peek at what's on disk.
-
-| Tool | Purpose |
-| --- | --- |
-| [`fibe_local_playgrounds_info`](/reference/tools/local-playgrounds-info/) | Inspect `/opt/fibe/playgrounds/...` on the local host. |
-| [`fibe_local_playgrounds_link`](/reference/tools/local-playgrounds-link/) | Mount a local Playground into the current dir. |
-| `fibe_local_conversations_list` / `_get` / `_get_message` | Inspect local AI conversations on the host. (No detail pages yet.) |
-
-## Repos
-
-Connect Fibe to source-control providers.
+## Repository credentials
 
 | Tool | Purpose |
 | --- | --- |
-| [`fibe_find_github_repos`](/reference/tools/find-github-repos/) | Search GitHub across your installations. |
-| [`fibe_get_github_token`](/reference/tools/get-github-token/) | Get the server-provided GitHub credential for a repository. |
-| [`fibe_repo_status_check`](/reference/tools/repo-status-check/) | Verify access / privacy / fork status for a repo URL. |
+| [`fibe_auth_set`](/reference/tools/auth-set/) | Set the API key and domain for this MCP session. |
+| [`fibe_find_github_repos`](/reference/tools/find-github-repos/) | Search Personal installations or a selected verified Team installation. |
+| [`fibe_get_github_token`](/reference/tools/get-github-token/) | Get the server-provided GitHub credential for an authorized repository. |
+| [`fibe_repo_status_check`](/reference/tools/repo-status-check/) | Check Git repository access and readiness for the configured installation. |
 
-## Annotations
+## Input and confirmation rules
 
-Every tool's detail page surfaces three annotations from the canonical catalog:
+Each guide lists the actual input fields. Resource-specific identifiers and filters may belong inside a payload or `params` object rather than at the top level. Consult `fibe_schema` for resource-operation payloads.
 
-- **Destructive**: can permanently change or delete data. The MCP server requires a `confirm: true` argument on these by default.
-- **Idempotent**: calling twice has the same effect as calling once (good for retries).
-- **Read-only**: never modifies state. Safe to call freely.
+Destructive tools require explicit confirmation unless the MCP confirmation gate has been disabled. Where a release’s advertised tool schema omits the confirmation field, use `fibe_call` with top-level `confirm: true` to forward confirmation. The read-only, destructive, and idempotent annotations describe the tool; they do not grant authority or establish a successful remote result.
 
-The annotations come from the live catalog: call the `fibe_tools_catalog` tool against a running MCP server to see the authoritative, up-to-date list.
-
-## Next step
-
-For end-to-end usage of these tools, head to [Common workflows](/sdk/workflows/): greenfield, brownfield, pipelines, monitoring, CI integration.
+See [Common workflows](/sdk/workflows/) for launch, template switching, pipelines, and monitoring examples.

@@ -1,15 +1,26 @@
 ---
 name: fibe-tool-agents-live-state
-description: Use when you need the current status of an Agent: idle, running, waiting for input or failed.
+description: "Check conversation-scoped agent live stream state."
 ---
 # fibe_agents_live_state
 
-Returns the live state of an Agent and its current run.
+Check conversation-scoped agent live stream state.
+
+This guide uses the released SDK **v0.3.3** input contract. The installation’s Native API routes and authorization determine which server operations are available.
 
 ## Inputs
 
-- `agent_id_or_name`: Agent ID or name.
+| Input | Required | Type | Meaning |
+| --- | --- | --- | --- |
+| `id_or_name` | Yes | integer or string | Agent ID or name. |
+| `conversation_id` | No | string | Specific conversation/thread ID. |
+| `only` | No | array of string | Fields to keep in each result item. Example: ["uuid","title","project"]. Envelope metadata remains. |
+| `output_path` | No | string | JSONPath into the tool result, not a filesystem path. Example: "$.conversations[0].uuid" returns the first UUID; "$.conversations" returns only the array. |
+
+The [complete tool schemas](https://whats.fibe.gg/native/sdk-tool-schemas.json) include nested fields and constraints. Fields marked optional can still be required by a particular resource, mode, or source selection.
 
 ## Notes
 
-- Poll sparingly; prefer `fibe_monitor_follow` for streams.
+- Use `conversation_id` to read one conversation’s live stream state.
+
+Read-only: **yes**. Destructive: **no**. Idempotent: **yes**. These are the released tool’s annotations; operation-specific guards still apply.

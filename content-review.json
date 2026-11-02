@@ -16,7 +16,7 @@
   },
   "summary": {
     "updated": 249,
-    "added": 12,
+    "added": 16,
     "retained": 71,
     "removed": 2
   },
@@ -53,7 +53,7 @@
     {
       "path": "README.md",
       "disposition": "updated",
-      "sha256": "d92c4d4954c577fa6833a30c2a511f9212efffd03bf2a71eebc6c774e1ea74c8",
+      "sha256": "804eb022b291b374545fb30c06548f427a2e6f8aa66165e981f9183d42c09e52",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
@@ -116,11 +116,14 @@
     {
       "path": "docs/advanced/backup.md",
       "disposition": "updated",
-      "sha256": "715595291f17a8a110e38c9d036ce13330f05abd584d03a4f6914ed9b4bfddfd",
+      "sha256": "2385fcb9f74218c1e49f89f04faed4b119a1c74ae9dc80bae3bd74110ef1db78",
       "review": {
-        "method": "Native guide review",
+        "method": "Native source and released SDK semantic re-audit",
         "findings": [
-          "Updated the self-hosted operations cross-link to `/concepts/self-hosted/`."
+          {
+            "kind": "independent_followup_correction",
+            "summary": "Installation backup/deployment link names the canonical API repository."
+          }
         ],
         "source_evidence": [
           "fibe-ui/src/app/route-paths.ts",
@@ -677,11 +680,14 @@
     {
       "path": "docs/concepts/self-hosted.md",
       "disposition": "added",
-      "sha256": "ad112dd9e82d5dbe9fe135fd79ca94eb0b9f6878b9078bdf27811a58b9620bb6",
+      "sha256": "fd12a39d97dfc40fb13a2ad04f069b5711b9051995fad847f2a724c2ff50bbc4",
       "review": {
-        "method": "Native guide review",
+        "method": "Native source and released SDK semantic re-audit",
         "findings": [
-          "Moved the positive installation, backup, quota and Team operations guide to `/concepts/self-hosted`; removed the former billing route and all finance/removed-feature copy. Updated frontmatter slug and image name."
+          {
+            "kind": "independent_followup_correction",
+            "summary": "Self-hosted installation link names the canonical API repository."
+          }
         ],
         "source_evidence": [
           "fibe-api/crates/fibe-kernel/src/quotas.rs",
@@ -747,11 +753,14 @@
     {
       "path": "docs/intro.md",
       "disposition": "updated",
-      "sha256": "36bb16d1ce47d8e17f1bff4bba3ca9861c78aa3ebcbe9d73ec067ca052d36dda",
+      "sha256": "bd7aa593ceb4e6f50eda390b48a710cf742f1e4ba64e8cf48589bba772800b47",
       "review": {
-        "method": "Native guide review",
+        "method": "Native source and released SDK semantic re-audit",
         "findings": [
-          "Removed references to retired hosted compute, paid tutorial Host, billing and model-credit concepts; kept current self-hosted first-run workflow."
+          {
+            "kind": "independent_followup_correction",
+            "summary": "Installation deployment link names the canonical API repository."
+          }
         ],
         "source_evidence": [
           "fibe-api/deploy/README.md",
@@ -764,11 +773,14 @@
     {
       "path": "docs/operate/automatic-recovery.md",
       "disposition": "updated",
-      "sha256": "9a90d6b8ab94dae7b3b2173fd4f9ed0d446ce2cedae0a1cc07e97d0ce8f871a7",
+      "sha256": "4ede9432274678ab11b371f3c623d518f5f877164b272fb89dab91edc4c2db53",
       "review": {
-        "method": "Native guide review",
+        "method": "Native source and released SDK semantic re-audit",
         "findings": [
-          "Updated repair guidance around native durable work and Host reachability."
+          {
+            "kind": "independent_followup_correction",
+            "summary": "Bounded positive-observation Agent repair, grace periods and unknown/timeout handling checked against current host_chats/browser_runtime and Playguard."
+          }
         ],
         "source_evidence": [
           "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
@@ -924,7 +936,7 @@
     {
       "path": "docs/reference/decide-secrets-and-randoms.md",
       "disposition": "updated",
-      "sha256": "df53ca7838334b7f9b12b8a3f25c4230d2477430e7b222a85edd072b23644955",
+      "sha256": "003103dc28b531476977242c46c8324cd2d38bbb5f5ab9bc88c61fccca38f40f",
       "review": {
         "method": "generated_reference_mirror",
         "findings": [
@@ -1104,13 +1116,13 @@
     {
       "path": "docs/reference/intro.md",
       "disposition": "updated",
-      "sha256": "ad87b50d4c3997161520bc56c545c22e3347c637f36d3118a86cddc2a6cdd26e",
+      "sha256": "fb195a7a2ad00af423626e6313ea93c37f49bbcf357f1a4940113525a7a93127",
       "review": {
-        "method": "curated_reference",
+        "method": "Native source and released SDK semantic re-audit",
         "findings": [
           {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
+            "kind": "independent_followup_correction",
+            "summary": "Public tools are schema-derived reviewed guidance, rather than an exact copy of potentially stale API seed prose."
           }
         ],
         "source_evidence": [
@@ -1124,7 +1136,7 @@
     {
       "path": "docs/reference/json-schema.md",
       "disposition": "updated",
-      "sha256": "cce05459d5a9d7aed3f882623b2ace9033ae57761939c199da87f32c0d3634fc",
+      "sha256": "03f80ccada9d8d6af64eca3dbeee08c9302aeecc26eb888ee766c3d9f9be777b",
       "review": {
         "method": "curated_reference",
         "findings": [
@@ -1215,7 +1227,7 @@
     {
       "path": "docs/reference/platform-behavior-contracts.md",
       "disposition": "updated",
-      "sha256": "fe79ec99eda27c6bde534940f448fbeeab9d95a7fd862a5d67a0726ef0a28de8",
+      "sha256": "9a6d260b3616531a210f81dedb3d6fd05f1b74d735dbd41aa5660327a0167614",
       "review": {
         "method": "curated_reference",
         "findings": [
@@ -1839,7 +1851,7 @@
     {
       "path": "docs/reference/reference-fibe-labels.md",
       "disposition": "updated",
-      "sha256": "4e2f126cc0e9259e4c1b68a777e6146a2e1692723e6d67471bc24fab20baf475",
+      "sha256": "b8af96dd995cdc70712bbdca2e940cda307ca984a77d7b74398fe7a9ac161b9f",
       "review": {
         "method": "generated_reference_mirror",
         "findings": [
@@ -1859,7 +1871,7 @@
     {
       "path": "docs/reference/reference-fibe-managed-env.md",
       "disposition": "updated",
-      "sha256": "f84cba6465ed1de82c4cbcb00b01ced7dda87ca48972e2fe8f460126e0adb391",
+      "sha256": "40f00abd44cf354bfe9b0846d3319082029b0cecbf2fdf828d31838c6c2c3bbf",
       "review": {
         "method": "generated_reference_mirror",
         "findings": [
@@ -1999,1166 +2011,848 @@
     {
       "path": "docs/reference/tools/agent-defaults-get.md",
       "disposition": "updated",
-      "sha256": "564075ed6798ec8387fdc5c2da236107943e0516c0ee8f2e8407f40e6b2f56e3",
+      "sha256": "66b41e9fca4c13e2fdaa851475868cacab4e61ce0c5d702ec6ec500ed9df3683",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agent-defaults-get.md",
-            "blob": "71527685c0ce76cecd41aba7fa13b693319ed7a4"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/agent-defaults-reset.md",
       "disposition": "updated",
-      "sha256": "6dbe5d80a0bd9738c0cf99a624115ac89065c06532a7687ea28d85c650288328",
+      "sha256": "5d0d8a4ec11ea4f66bdad4cf157d544cbb92d13c74b9640d8c51b3b9b39c65b8",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agent-defaults-reset.md",
-            "blob": "c295528415bd9109b427e1b85b2100e789e574f3"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/agent-defaults-update.md",
       "disposition": "updated",
-      "sha256": "db194f822dd91908c8f0f64d2d6660c1b3a5c8afe7bda98856f7b32219f87741",
+      "sha256": "414dcada5aa8561926a46ebe58e5ce4f97c9d751977e8147d0425b34b8c69547",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agent-defaults-update.md",
-            "blob": "657cbd2423663158d297f9d9dec6c0d19925c90b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/agents-activity.md",
       "disposition": "updated",
-      "sha256": "cad7aec14ca3d33180190bc75996eeac9e3e9e98196e44230c3e47a709169d0b",
+      "sha256": "10e44cbcd39ecbd3c71a9039e7a523c75e1c2ced82e0682f5863f6596e72d0bd",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-activity.md",
-            "blob": "9aa396e74c6affbf9e8635a4969daccdaabaf6ba"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/agents-create-conversation.md",
       "disposition": "updated",
-      "sha256": "9f73eac161c6d53ee248214131fe83f952b08a335a3911206641bc13a22da557",
+      "sha256": "95bac5290eb53320182701674ab1234390e6805e86b2154a422e1e283fef4872",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-create-conversation.md",
-            "blob": "f16a10c141e545420b940986c17bd479297a6f7b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/agents-delete-conversation.md",
       "disposition": "updated",
-      "sha256": "06f579853af3489de79e40f70a25e8ec9df4c243e68c32bdaef8e672312a6807",
+      "sha256": "b6a86324b9323ffe7119c1ee9bf1331b54970c8e033ebdd7ce2ec242b87e8953",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-delete-conversation.md",
-            "blob": "158feb09f85628b361f6cbe87b408bcd4c6f523d"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/agents-duplicate.md",
       "disposition": "updated",
-      "sha256": "c9a7899f4e3b2059f6afd653d87984bb3e5384fbf31a6b12ab4e2001d57969c5",
+      "sha256": "1aa72accb3d76a144bf2c87f89c33bff733817f294b364c9e528f81cbd83af08",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-duplicate.md",
-            "blob": "8bd45b1feb573f9cca7b9ba923eba22dc0bff60f"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/agents-interrupt.md",
       "disposition": "updated",
-      "sha256": "6ae9ed5da35d204610383d3b5152413b0c711a20da85936c378c7149f853ba4b",
+      "sha256": "b8e52524c2877b3d7e9a62f8f3f1737e578ce3796241bceba9e8a66080caddc2",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-interrupt.md",
-            "blob": "230475d1e354c94632ea26ce70f6820ab6342d92"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/agents-live-state.md",
       "disposition": "updated",
-      "sha256": "9ef6e6b88962c0539665655cb38e895310970b467bef61507c3df6f9b93800a1",
+      "sha256": "c4d61e3dc5916075459623ad0a16a411407a31c919f6b510e9848d9c4c73dd31",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-live-state.md",
-            "blob": "fbc3a63ff2bb66c57afa629c845cba109ea832d3"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/agents-messages.md",
       "disposition": "updated",
-      "sha256": "9bf73107a104769ee2c35ca3500fe9f19210e6705ef98daf82187f9226a093e5",
+      "sha256": "c872725c62b4bb16d93f6a6d709bcb1d414502d7f0fa050098eebcc8fe519c80",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-messages.md",
-            "blob": "ccd540c5f95cfbbb029d9db2a55e3391ddc8ca14"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/agents-runtime-status.md",
       "disposition": "updated",
-      "sha256": "e12c316ca3e6f642b5eb7000a47a8bfc694817a23d4d594faed55752c719bfef",
+      "sha256": "9968d2656e9a1e9c0dfff58610412e79ee8d218d05758f5029e41d572564bf24",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-runtime-status.md",
-            "blob": "a45cb94a19193e586fab48863b020ff459b08777"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/agents-send-message.md",
       "disposition": "updated",
-      "sha256": "1ecef2ca6003709b79db15cbc691426b42d80d08ace361f995f265b44d11d82b",
+      "sha256": "0e261c1172fa0af7b774560a15b26cac5cedce205b8c38051cb88bd69556f6b4",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-send-message.md",
-            "blob": "6d59fb7525fff6f814cd235199d00714cbbe6824"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/agents-start-chat.md",
       "disposition": "updated",
-      "sha256": "5931a850f8390bfb45cc0c5038e6863aa31bd25aadab67c43797549a14d70be0",
+      "sha256": "babdc82816465088de1c3357e6ac420a1818827cd4428bcb4ceef6e6e4e506ed",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-start-chat.md",
-            "blob": "db567a9dacb487e299179ec9de99833c85f0f5b6"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/artefact-upload.md",
       "disposition": "updated",
-      "sha256": "7c28d6f5ddd932519c712e2241bf1e9ea35ab2207a873776da8398b4ce71508c",
+      "sha256": "4f705d3a2b11cf38c2ee7ab04f2578d0b4d7b9cc0f3e1931cb950435c49cac70",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-artefact-upload.md",
-            "blob": "bd0ec82967b8b297fd4b1d703a054b6af3242f11"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/auth-set.md",
       "disposition": "updated",
-      "sha256": "8c961ef394a76f3185af4840de42d97d4280e6ac4270f7f585e7b4fb5f19532b",
+      "sha256": "0fad6e23e2aaa26660114d0ceba3bd59132a13beb5f6ca24f3da3c76e5098186",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-auth-set.md",
-            "blob": "23593e7614c67132540e2f16333ffdd72598a7be"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/call.md",
       "disposition": "updated",
-      "sha256": "7c9bbd63018dd26bdb57904b7243f9b7e790581c05fafefbd1f52e31bf9b36e7",
+      "sha256": "fc53a739331c254538e50ff3df864d76714258a668340732d03c9298394dbd63",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-call.md",
-            "blob": "b4720beba5d9d626630050507d4b5ced130bb589"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/doctor.md",
       "disposition": "updated",
-      "sha256": "6d3a538fd76399ec4314bd585dbe378ea847ca3779ab6d580e37035d7f22c72f",
+      "sha256": "7e2e731fd401e608e4fbd8f2da56a25b972864d482f861e65c795b4477142157",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-doctor.md",
-            "blob": "7a480ddcd64a6f57bbf16eb8c8bfc2cf575f511b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/feedbacks-get.md",
       "disposition": "updated",
-      "sha256": "de1429ea48386e5c783d278a1e91c3935168f4849ed7f01009e9c88325e45387",
+      "sha256": "ba54db46c78c987e31116fbb9f20b71e7396caaf29d71cbf90dbd3d7e58c6b5f",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-feedbacks-get.md",
-            "blob": "d4f19ca36c1ad59bd3e53b1dfb1027d3e7943c55"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/feedbacks-list.md",
       "disposition": "updated",
-      "sha256": "835cf7d7412fbaf1f9fd2ead879e60df069aabc26b5a52b2a1848ac487b0dc41",
+      "sha256": "83dc161847f44b0ebe81406e9e2b761406d6ced5bef2d38584220f1238467a32",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-feedbacks-list.md",
-            "blob": "6819f794169b89542a21b372de55bf502a4e134b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/find-github-repos.md",
       "disposition": "updated",
-      "sha256": "7236e2a0254edf98b66a2b0578bc06d1103c9b1e4563176473eb9711dd826505",
+      "sha256": "b11c68f387db640683c05737c09a36e6ea451c868148e0a5b85d40cc5ba4605e",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-find-github-repos.md",
-            "blob": "2348a4636c5a60ed62e8058a948ea6855dbcf550"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/get-github-token.md",
       "disposition": "updated",
-      "sha256": "d9ac41ffeb6d3a7abf9ddb02b637c5678528feb474d2d08f0bf00f1657c2887a",
+      "sha256": "ea41e74117f3cf276d2588cabe7878d466a0a81241585686a9675d79f809d3da",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-get-github-token.md",
-            "blob": "c07e79615d64e36b4c5414729928f97defef6d7b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/gitea-repos-create.md",
       "disposition": "updated",
-      "sha256": "7a7f6e4145b17947c148fc4c282fb7ef62fe51ce8601cfe6dcca4089d124ecd4",
+      "sha256": "05bf121e6933542300a21ee81e65486687b924557151ab441ccc594190f60e5c",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-gitea-repos-create.md",
-            "blob": "43d2c16ee6e72f588faf922094cac03a95053fe6"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/github-repos-create.md",
       "disposition": "updated",
-      "sha256": "a67af8987790ffd95cf2a81cb85e59641cfadf778866be98a125b71f29229682",
+      "sha256": "22dbddb90708f0bbab951910cfde9fec5a7eaa61dad271348f2bf280bbfd13b7",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-github-repos-create.md",
-            "blob": "37f09e6a47d7a38e6bc101ab27b637e3bd6b3eaa"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/greenfield-create.md",
       "disposition": "updated",
-      "sha256": "89de0dfd1096030fe214d00731d12417c80f5221e0eac4106c91f031f44e0b18",
+      "sha256": "a9c936071f2799a7fd3c89fbd7f383e89034076fdae2a2aad7974e5f3f806fbf",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-greenfield-create.md",
-            "blob": "73fb6897012d824e2cd1a81ce9509326455d71f6"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/help.md",
       "disposition": "updated",
-      "sha256": "9b7df4ad1dc5f450b6376afa0bf65e085009e575ac9ce0acefbd7059cbae945e",
+      "sha256": "eeaf086bb4f09adb54fd0dff63b4f0970fef39ff035a0f76e53773edbc030d64",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-help.md",
-            "blob": "9a7dfd69947519f0aed46856d0b336a1825d045a"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/launch.md",
       "disposition": "updated",
-      "sha256": "c3cd410d02a60af08783bc0df3c776a45ef7e3282f40c3732fdf8ebff8485c9f",
+      "sha256": "f7cb6f717b83ed7772062cca4841963c5b67eee418a4f6f6077204c2ca27ea16",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-launch.md",
-            "blob": "978adade506d4fb818f2b11245bacc7fbb869488"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/local-playgrounds-info.md",
       "disposition": "updated",
-      "sha256": "57d3de0c0bf569c7bb6a319992c957b8bfcee355d267fd4c528ec746db66cc30",
+      "sha256": "090a6b5c9d7f9872872dfb5187592ab1c71b2bf7fe2c7207eaeb79a0a0176891",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-local-playgrounds-info.md",
-            "blob": "37ef5a6d2cc795eb521e58042af7a1d47981189c"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/local-playgrounds-link.md",
       "disposition": "updated",
-      "sha256": "ed612245e5aed97c850bdae3d95cc440b657da3ef0cdeefe5313b01225325f0b",
+      "sha256": "01f000bb4dbb3e8bded1949e10bbe11007f9daa31eaad9338d551afe0a367267",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-local-playgrounds-link.md",
-            "blob": "1ef1e239d18e7f07856dba412b0cfaf1ef3969eb"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/logs-follow.md",
       "disposition": "updated",
-      "sha256": "87d5cdedc33e3e0567450f5233c4b371953682607498c3507645f6ec31551aa3",
+      "sha256": "d53c5c7d493c930c9aad3f4eb4a8fc010aa3000854efed98aacb270c19e3119d",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-logs-follow.md",
-            "blob": "f8fdaa1bde7cf67015b79b9687e9f9a32f9bd8ad"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/memorize.md",
       "disposition": "updated",
-      "sha256": "05f22b68cea0df992c661d7109cbb16974a642b0f5730144a0ac7367fdf4b038",
+      "sha256": "4f42c313e01f71189efcbf83d5d786440162582b6ed70411a1f2de535197dfda",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-memorize.md",
-            "blob": "ed97d8270f4f640695eb04c466c6b4d199da703b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/monitor-follow.md",
       "disposition": "updated",
-      "sha256": "7cb50c6d73f2c9127c19342fc63387ec384edce05db60836685e006e65e9813a",
+      "sha256": "ba99bc89898b94ff3768c8c24fb3e28e03b7da25bb268e2314ba47ffabb2ca61",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-monitor-follow.md",
-            "blob": "7fc438c66e652bccda87f9444858f06727851ff5"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/monitor-list.md",
       "disposition": "updated",
-      "sha256": "3cde6f075ffebfbbb976efff0d2586e2455b98ec0be624e0c26ba08d4c10ad2c",
+      "sha256": "8423b82c5f2903ee95063fc430506a7974ad6724eef1a73829b73e19de46e2ce",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-monitor-list.md",
-            "blob": "85b9d32fd958976131110d01f9a7316a70eb1528"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/mutter.md",
       "disposition": "updated",
-      "sha256": "c84ece4ab87e51585dfa6bae328e15e0c0424c73ffc53c53f3a5720e42157768",
+      "sha256": "5e761cbc3b7ca22a709fa57fb16306cbb6ac0635efcc512e901b60934b88d68c",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-mutter.md",
-            "blob": "f4ebdcda7feac26aadbab1da9c5c7847ad4de179"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/mutters-get.md",
       "disposition": "updated",
-      "sha256": "65ac6d7dd50905c57cec9cce71aea5928744bf0b04d2cc41f905a962d17c1472",
+      "sha256": "fd668dc5072f4823a2f36912338658159fb8a238732af20db3e7198b9a160ace",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-mutters-get.md",
-            "blob": "d1440c04f0c60769149735a4d52b1994603f7a75"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/pipeline-result.md",
       "disposition": "updated",
-      "sha256": "d558fa15a9ad6c46680547ac678029b348058c5ca0086141166fa0b9cb2f7ec6",
+      "sha256": "b37c4b388e55ca3a4366d71e89594cedb699c30e70f659bfe7ab96929d246649",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-pipeline-result.md",
-            "blob": "bc9bc9bfcd1ec344747d384536ce2218f8ab02fb"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/pipeline.md",
       "disposition": "updated",
-      "sha256": "8eef2ad51c5ee502d886871c09a3cfbfeab970af9c866f2827f6fe09221b46b2",
+      "sha256": "67ff7d478c616cdc7df0eb39244261c8f5abc2ff10e85335427c156480cf49c4",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-pipeline.md",
-            "blob": "0225acd2d134cee52fbbcbe5f05608d1aee8fdd3"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/playgrounds-action.md",
       "disposition": "updated",
-      "sha256": "7f0237390bec9594c75d4945d761a7d49fa3f73f3e9080df346eac85cc7270df",
+      "sha256": "80b04701f6ddc14b72f3cfbe7fc242158943eefaa513ac94906bdf6f336eb35a",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-playgrounds-action.md",
-            "blob": "d7f7b75526a22086ed2c1efc390859c774db1379"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/playgrounds-debug.md",
       "disposition": "updated",
-      "sha256": "b064e6455f87fa2ba11dacfeb82ebe9fba511ba36282d2fefb25b63ea54b1f0f",
+      "sha256": "4e42d32533c3158a0b3f88f0ec41e5b6bd4dd7c91b18d34f0515e352cd2733af",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-playgrounds-debug.md",
-            "blob": "2521ec09b17919b014d8f07949071bf3934e4b5e"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/playgrounds-logs.md",
       "disposition": "updated",
-      "sha256": "f5d4786e9cb6e63a932b6f5fb0961cb57fc5d900102efdbfbe08c346c0a6c464",
+      "sha256": "4125cdd00bb4f399b270373b0c3fcbacce4df1bbe4770f91bba109460f67d32d",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-playgrounds-logs.md",
-            "blob": "87734b4c45d2898ee1ca9d58910b83eb1941c0e9"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/playgrounds-switch-template.md",
       "disposition": "updated",
-      "sha256": "80409683ca9699105f7b57bb50fc405142f9e45dd96593466d755d3e75d5e032",
+      "sha256": "31cc22c897ebfa66883f8688af733f3fd82630a771538055254760ec1f0a787f",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-playgrounds-switch-template.md",
-            "blob": "994ac82e171d97b36f743b7e970a9b8215b15065"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/playgrounds-wait.md",
       "disposition": "updated",
-      "sha256": "feaa37bc34074cd40552ba5f39665900ef719219ae803ccc1d62d2845911a534",
+      "sha256": "08d159858a8d40d786e159aa561b7482fd517cb161213bfa5f6eb687db08273c",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-playgrounds-wait.md",
-            "blob": "4122cd4d79e429d146f4756d5ab90ee5b9d35e77"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/repo-status-check.md",
       "disposition": "updated",
-      "sha256": "20b5eca669ae08c09606440f38af1fa2ed6fe1e33998a7ac59fe69ea733beaca",
+      "sha256": "bba007ee2846e9221ec5bcea8869addddfba5319b2ec4cfb360761adefbef5ff",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-repo-status-check.md",
-            "blob": "ee7e61d43214815e19bfaaafe774c5412d415fcd"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/resource-delete.md",
       "disposition": "updated",
-      "sha256": "84f4ce5339eeb6dc8051ffcefefdd36d235075c9988390a70eafb71c00b2040e",
+      "sha256": "3098efdc1851a177450180cbb927f38187d41194dd20b0eed9b6653691de2280",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-resource-delete.md",
-            "blob": "a94f12f00ef65150af58dbbdf072a610c9c756da"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/resource-get.md",
       "disposition": "updated",
-      "sha256": "4d903052a4b4b162c291089ddc3ba1743bea226e02a15848e2a5a581b665df0e",
+      "sha256": "93f30d28eb41c6f531bec7f21f6705f25ec9d9be8bbaed162894a9ff2a9013e6",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-resource-get.md",
-            "blob": "97394bd26f338d1ff5004473787d0a2b5c4f0828"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/resource-list.md",
       "disposition": "updated",
-      "sha256": "5db8e8cb89092b85230b58819a2b5ba25ff8855edf9dd3115687a62e97dd31e7",
+      "sha256": "faa4d7cfd981fedd9323c641d4a2c131f70cd810f861d2c3d9f386803d03dd0a",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-resource-list.md",
-            "blob": "358919612a1e91d1de7b0045b2772faa84816aa8"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/resource-mutate.md",
       "disposition": "updated",
-      "sha256": "402cbb315b8fb0bd6f3681a4d06e4ef3f5d12b0d1cc3dce457383c1adb6bdba3",
+      "sha256": "494992b67614c59d6eb399c7416683937bd00dbb2fc81e298f75ea43c4197faa",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-resource-mutate.md",
-            "blob": "78337dcb665ea11d1f826f39410605b09cf93417"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/run.md",
       "disposition": "updated",
-      "sha256": "0be43d74143d2c9677017854fc61c899ff3d3f82c32c254ac207aa1d67b8db70",
+      "sha256": "122dc6a57f81047096033e07d9eca9a49ba39b55365ae5d9b665daf769fed101",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-run.md",
-            "blob": "d11e21ea58a320d39c5fa04ae0ccc003124a4b11"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/schema.md",
       "disposition": "updated",
-      "sha256": "9006755b6f60daaa469698f42e1530f1f78ba12fa9d6cbf799520e6d906c39cf",
+      "sha256": "2b848fa35a07adc4bea7eda783401e3595401dc3c97dc89a5aff048a7d80ccef",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-schema.md",
-            "blob": "14c1d5516ff0531159da0c0936de50dcdd6df68e"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/status.md",
       "disposition": "updated",
-      "sha256": "384ac7a0e5b1a7778102f094a520e75d3b239a717594b729e0a43ff71ec6f926",
+      "sha256": "9fa0bed0c56e44a94fc500b460663c4b5b6446ae60940f36ee104ad21b2637b7",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-status.md",
-            "blob": "e4c59e092c84f0943934f5a1cee3b7a344f6f71b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/templates-change.md",
       "disposition": "updated",
-      "sha256": "d1086497116c585a6e949cc6374fff7550371a27ff841c44b33d01910818b6a1",
+      "sha256": "ddb35c6400a05ab8e10d78b5a6b55e267ba16f7c9136549c778016f709b24985",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-templates-change.md",
-            "blob": "7f0c0015d2f9c5afcb726f7182d7c32bc9abbfba"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/templates-search.md",
       "disposition": "updated",
-      "sha256": "0aabbfe5cbc79c1040ad8f41224eac61dc52045e6b908cf34871d5a9fdbf5f0a",
+      "sha256": "b76000e6dbcc097f6c3e2d753c034753156181044eea55ca172f100996ab42c1",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-templates-search.md",
-            "blob": "464b6214e2b1c706aa67c09d50ae9a28287f1a9c"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/tools-catalog.md",
       "disposition": "updated",
-      "sha256": "83b7c0127e0fcedca7c9346cc1572431a0a4a31c560bbd62d6cf820ba1190114",
+      "sha256": "514f1a139c26d4b84272d7f0d768e329c0bb220ef2af062d01761bc4f47c6ac2",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-tools-catalog.md",
-            "blob": "7108664109ff129bd052e14dd7879bf01afb0814"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "docs/reference/tools/update-name.md",
       "disposition": "updated",
-      "sha256": "46a195075612181ce313aeb1b2ae05c2b37c57b121a6a6f8364f02af1f504e3d",
+      "sha256": "caa461da9f04964840dbd153b96e1fb330a19fa594a76d08061edc9ee81affa4",
       "review": {
-        "method": "generated_reference_mirror",
-        "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-update-name.md",
-            "blob": "c61605bdd1e72110f8ecf8fa48113d472dfe8f52"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
@@ -3203,11 +2897,14 @@
     {
       "path": "docs/sdk/go-library.md",
       "disposition": "updated",
-      "sha256": "c0a434b3a1bcac6f14a9476f7431b59e9b210ecd99eb0393d15fcd241ceb23bf",
+      "sha256": "9fbed29f913fb2690716a111ea6c8186381e8b76f261caea56417fd7ba86e7c9",
       "review": {
-        "method": "Native guide review",
+        "method": "Native source and released SDK semantic re-audit",
         "findings": [
-          "Updated SDK consumer scope and current native API relationship."
+          {
+            "kind": "independent_followup_correction",
+            "summary": "Explicit/environment/domain credential resolution, capped retry delay and two-success half-open circuit checked against released SDK source."
+          }
         ],
         "source_evidence": [
           "fibe-api/contracts/generated/self-hosted-v1/openapi.json",
@@ -3267,16 +2964,16 @@
     {
       "path": "docs/sdk/tools-catalog.md",
       "disposition": "updated",
-      "sha256": "b3bb11b4dd887a33f4d4d22b58db52338d55eb19aab6228787e26035ea4addd8",
+      "sha256": "763caa48b8d472d1517aa5daa2b894ae4cb89eb7588a74dc11e998dea4366e01",
       "review": {
-        "method": "Native guide review",
-        "findings": [
-          "Removed native qualification implication and replaced former Host funding requirement with reachability."
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          "fibe-api/contracts/generated/self-hosted-v1/openapi.json",
-          "fibe-api/crates/fibe-auth-policy/src/lib.rs",
-          "fibe-ui/src/api/schema.d.ts"
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
@@ -3299,11 +2996,14 @@
     {
       "path": "docs/sdk/workflows.md",
       "disposition": "updated",
-      "sha256": "f5b9455bafc7ff0a6782dac51bbc63706a05ee3c54b229e7c01ba4caef25165b",
+      "sha256": "5eee394f5d1873775bd2e1c22264625529ff68c3b5b073a9501a5a784ffcc0cd",
       "review": {
-        "method": "Native guide review",
+        "method": "Native source and released SDK semantic re-audit",
         "findings": [
-          "Updated workflow prerequisites away from hosted Host funding and candidate-environment guidance."
+          {
+            "kind": "independent_followup_correction",
+            "summary": "Released SDK provisioning enum and string Host inputs checked against SDKv0.3.3 tool schemas; every named JSON tool call validates."
+          }
         ],
         "source_evidence": [
           "fibe-api/contracts/generated/self-hosted-v1/openapi.json",
@@ -3333,7 +3033,7 @@
     {
       "path": "plugins/plugin-llms-txt.js",
       "disposition": "updated",
-      "sha256": "f9c90fc0663033785f664e40e01c47c3992367fbe1bdd8a1bc531826aed8e4f1",
+      "sha256": "483bea0c9598d26391983f9b6e68930b142e873be77e540533f5d3a56c797d38",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
@@ -3357,7 +3057,7 @@
     {
       "path": "scripts/check-candidate.mjs",
       "disposition": "updated",
-      "sha256": "3a9310ac4346f9eb4023557a9a71945f65f7b89c581baa0b32bb9146c6aaf3a4",
+      "sha256": "551a4504c679ce28287db45924853b683bcd8cd2e4de6524e6248dadf520f5c9",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
@@ -3375,20 +3075,16 @@
     {
       "path": "scripts/import-seed-skills.mjs",
       "disposition": "updated",
-      "sha256": "aedd8ad69a6ff66227476f67b96486e4d2c8bb786d19cb9560a3f45a752aa4bc",
+      "sha256": "bc1f92d77341d56704e25acf1b6dbec92a7b0fe07b3e4b3d0fdf6d4eec4dc918",
       "review": {
-        "method": "owned_script",
-        "findings": [
-          {
-            "kind": "reviewed",
-            "summary": "Importer reads the source pin from content-sources.json, imports only public tool seeds as exact bytes, and excludes private prompts; sync preserves current routes/frontmatter transformation."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "path": "content-sources.json",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
@@ -3401,7 +3097,7 @@
     {
       "path": "scripts/review-files.mjs",
       "disposition": "added",
-      "sha256": "c2334143c5b0aed163e35786f4029cc2cb6f3011d76d299d5e54aa994c4e0fec",
+      "sha256": "fc69ee38c9e7e319bb46ef376a133a38f79bccf52a157e8cdd51187fc54b9904",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
@@ -3427,1186 +3123,864 @@
     {
       "path": "seed-skills/README.md",
       "disposition": "updated",
-      "sha256": "202d06550c617d7711066e3675d074aeb9f92aa2ed7f372433a5b767e119daa1",
+      "sha256": "f97eed2eda28547bd3545b6ced3256796b904730b256840c7da89e0df4fd186a",
       "review": {
-        "method": "import_readme",
-        "findings": [
-          {
-            "kind": "provenance",
-            "summary": "Documents explicit Native API pin and private prompt exclusions; clarifies that seed prose does not establish released-consumer conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "path": "content-sources.json",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-agent-defaults-get.md",
       "disposition": "updated",
-      "sha256": "9ea0ae749aa6858f76bea400a33a6ecc8d108ab5ef7ce2d62720a300982469c5",
+      "sha256": "67a621e091c44642c395558d131c37310e2da6af1e9b9c0cefb609362ad86d05",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agent-defaults-get.md",
-            "blob": "71527685c0ce76cecd41aba7fa13b693319ed7a4"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-agent-defaults-reset.md",
       "disposition": "updated",
-      "sha256": "5cb59c1350dd4835f1f669e30e4128ddec20f229b0f8863c7c0ca47fc12601e3",
+      "sha256": "22bf9521257ef7fb5999309adb6f2fbc2d0dbef170d7bad9368019a444612e1e",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agent-defaults-reset.md",
-            "blob": "c295528415bd9109b427e1b85b2100e789e574f3"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-agent-defaults-update.md",
       "disposition": "updated",
-      "sha256": "0c95922de2fcac4d8c6a4b52bb4f0fac570e3661df1f07348bc57c62b3f09403",
+      "sha256": "482b1ac3f3175d9813a3a03bfbd505fddb9380b69e1f41daa70ae6ee8bb8d28f",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agent-defaults-update.md",
-            "blob": "657cbd2423663158d297f9d9dec6c0d19925c90b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-agents-activity.md",
       "disposition": "updated",
-      "sha256": "f85490ddfdd09d6a7d1eb9e033148238c38920d058aa6901a83075cd983ac3d1",
+      "sha256": "dd8d1c4f134126902861463d03c6b6e91079b2de6128a10226cbd1b0026a21a0",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-activity.md",
-            "blob": "9aa396e74c6affbf9e8635a4969daccdaabaf6ba"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-agents-create-conversation.md",
       "disposition": "updated",
-      "sha256": "4eacec56571b7fbfadb40db40a1f4d75aa02e8ddcda2776d66dabc62cfa9344a",
+      "sha256": "3d26ab2ec2469bb3280a25b597791f323bd1010d711c1239720caebb7225aea9",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-create-conversation.md",
-            "blob": "f16a10c141e545420b940986c17bd479297a6f7b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-agents-delete-conversation.md",
       "disposition": "updated",
-      "sha256": "17930b9bf2b1f6035db7d63e97f919f5f454d77bcb31f2712c4a735549a98337",
+      "sha256": "c91068ef84e504175cbebff8a89d53b69a1a023a5ae177dedccf9e2d993e143e",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-delete-conversation.md",
-            "blob": "158feb09f85628b361f6cbe87b408bcd4c6f523d"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-agents-duplicate.md",
       "disposition": "updated",
-      "sha256": "673b89c13e3f7b27da01581552ca09e225480c284917c576a67d20ab6e56bdab",
+      "sha256": "288607f74363fdae6e2f8c0f1f403ba08c2a1691b59a3fd5ff67bd4ce2f9f1f8",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-duplicate.md",
-            "blob": "8bd45b1feb573f9cca7b9ba923eba22dc0bff60f"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-agents-interrupt.md",
       "disposition": "updated",
-      "sha256": "0ab6427478ad5c552c553f5cbe7696af9dd8a7e54ba7828d098004113f26c000",
+      "sha256": "1eb92ebe9f1e5fb8b980b9bdf528ceff3ce0b7e3946fe2507998acd8b6205632",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-interrupt.md",
-            "blob": "230475d1e354c94632ea26ce70f6820ab6342d92"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-agents-live-state.md",
       "disposition": "updated",
-      "sha256": "9f6ba56dcdfbf055c3cf06711866b745e6ac7c2db4f04f29cc9ae2dd256ece6a",
+      "sha256": "47885b15612c1c69e1eebb610cdf76df5be5f4d47f839e4d8e861643e63cf824",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-live-state.md",
-            "blob": "fbc3a63ff2bb66c57afa629c845cba109ea832d3"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-agents-messages.md",
       "disposition": "updated",
-      "sha256": "0867c01119698f41d815f3aa5ab92f3dcce9bcc3d59a12cf81e2e4fdfe4dc8d0",
+      "sha256": "2ce4cf02514c3566109560a1716d50ce9541884fa8a4b6963790e7bcd55996c4",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-messages.md",
-            "blob": "ccd540c5f95cfbbb029d9db2a55e3391ddc8ca14"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-agents-runtime-status.md",
       "disposition": "updated",
-      "sha256": "ddba2bfd942bf9feb67de112840e895aa0ad116abb56161f3eb29578932d2145",
+      "sha256": "f1f6e3894a5325e62f2cc4559a14867deb68778c663d8cbf61bd0df6e02a0b8b",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-runtime-status.md",
-            "blob": "a45cb94a19193e586fab48863b020ff459b08777"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-agents-send-message.md",
       "disposition": "updated",
-      "sha256": "f67ba1b37498dee10475ece6afcbd058088482c9ae4c25551ad04c699b2ab27b",
+      "sha256": "2ca24fb47bd96755541409138925c16a2bbd0f5fa272053d655493db17a4570e",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-send-message.md",
-            "blob": "6d59fb7525fff6f814cd235199d00714cbbe6824"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-agents-start-chat.md",
       "disposition": "updated",
-      "sha256": "f940245b351339d9b5acd11f5309941456bdbdc1802d86864ade1c97cf91c19c",
+      "sha256": "4a4db340b2f7e7cf24ec836c76eae68dd2224b4a0b7c86c38fcb98008a66c647",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-agents-start-chat.md",
-            "blob": "db567a9dacb487e299179ec9de99833c85f0f5b6"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-artefact-upload.md",
       "disposition": "updated",
-      "sha256": "30822180994b3f5bb88bb3cb3bedb4b70986d2c723163ac01499b2a6ee410dcf",
+      "sha256": "bee3eb5f9d199f21f6f38f4e2e679bc1a8b973f7d129a7961f1ec92eb47750d1",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-artefact-upload.md",
-            "blob": "bd0ec82967b8b297fd4b1d703a054b6af3242f11"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-auth-set.md",
       "disposition": "updated",
-      "sha256": "67419129c7809e9085c8e0d04291dfa69512449f270b05d7a4f3821c73f137bb",
+      "sha256": "5ff734438024f958ef8dace3cebc69dc576248ffe03fb9eabc03cfc2ec4eb8c6",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-auth-set.md",
-            "blob": "23593e7614c67132540e2f16333ffdd72598a7be"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-call.md",
       "disposition": "updated",
-      "sha256": "f717d5fbd7f52e3fdcddc9b07e53c0c4a837c95cdd2d18c98f090f01e315346c",
+      "sha256": "9b230c5b2bcb2f5f8d323faa696de466a789000dad05d94281807976611231a2",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-call.md",
-            "blob": "b4720beba5d9d626630050507d4b5ced130bb589"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-doctor.md",
       "disposition": "updated",
-      "sha256": "ff3ab69502e512888495ad0b47faed27ef72f64f2b2b636731ad48ea97ae37ca",
+      "sha256": "f3fc486f5e5c1598ef98bf1dcbac62a5082a82f7535bad4940c45dca1298e3b9",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-doctor.md",
-            "blob": "7a480ddcd64a6f57bbf16eb8c8bfc2cf575f511b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-feedbacks-get.md",
       "disposition": "updated",
-      "sha256": "12d95993703e3111478c2624cd7d206c967e9f34644b59d09f40fc06b86a4e0b",
+      "sha256": "e9f00eabd5439cad440d1b1a34651fa32edf2da4ce0f15814f933c51ec39bbc1",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-feedbacks-get.md",
-            "blob": "d4f19ca36c1ad59bd3e53b1dfb1027d3e7943c55"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-feedbacks-list.md",
       "disposition": "updated",
-      "sha256": "6a1094d7396dc14b13386bfe447cbffc00f8f67d7726171e9249044ec04ed7a0",
+      "sha256": "7eb24bc809b9b1f65140d10c9ec00980226ab2b152d99cb34a3de560585d639a",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-feedbacks-list.md",
-            "blob": "6819f794169b89542a21b372de55bf502a4e134b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-find-github-repos.md",
       "disposition": "updated",
-      "sha256": "aee51465c1ff89cd084f819c97b68333b643fe8e40d572d735e3df48c140e380",
+      "sha256": "95670dfff5bae4f96be96b49fdcc8c7373623c6e140ab1afdb4cb4d937b2b75d",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-find-github-repos.md",
-            "blob": "2348a4636c5a60ed62e8058a948ea6855dbcf550"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-get-github-token.md",
       "disposition": "updated",
-      "sha256": "bc067820e3d0388421494fc09ee65bb0affedc77fa1ad2d75d60ad4a8970e619",
+      "sha256": "a0fee61d9947b7c4adc73be603ac4c3fabbd4c717a3a2e3e992bc3ecfd4fde26",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-get-github-token.md",
-            "blob": "c07e79615d64e36b4c5414729928f97defef6d7b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-gitea-repos-create.md",
       "disposition": "updated",
-      "sha256": "8633dd6409791626039c1034db653b4a14dddf92dacceae4ed1895b36e763994",
+      "sha256": "cb233c8e4d1eec6f18b312c01e12c261f91d27c070cba44f9aea3896a1ff56bb",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-gitea-repos-create.md",
-            "blob": "43d2c16ee6e72f588faf922094cac03a95053fe6"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-github-repos-create.md",
       "disposition": "updated",
-      "sha256": "f3bcb71539b62feb3bbfa147faab6852b9b2c8cd9c4d9cf945a9ac195a35cb34",
+      "sha256": "b1b48ecc8a8972dcc92574721d7a0ee86682056c50c559663dc3bb27f1e0ed72",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-github-repos-create.md",
-            "blob": "37f09e6a47d7a38e6bc101ab27b637e3bd6b3eaa"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-greenfield-create.md",
       "disposition": "updated",
-      "sha256": "235544cae57eadd1cff7ba608b5c7b59d474f16e568f1fb25b145f1ca6f69b33",
+      "sha256": "6fc01ee7b646a47ec85840fecb1f4f0bcf00598f2a01a43ddbdd68b3447034c2",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-greenfield-create.md",
-            "blob": "73fb6897012d824e2cd1a81ce9509326455d71f6"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-help.md",
       "disposition": "updated",
-      "sha256": "c39e573aa476a335a15803f4a095906c58a2b7e86c12f30e3d1c83173e4b5404",
+      "sha256": "fdd208cd14e1d274a8cf1bf26571fcf6e9b1db560afb1604a459d41a4d7d498d",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-help.md",
-            "blob": "9a7dfd69947519f0aed46856d0b336a1825d045a"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-launch.md",
       "disposition": "updated",
-      "sha256": "e26439135da139f73e5c2bf9e266bd091c1f19c3e064ee139b3b33d0f82c4d63",
+      "sha256": "072f9e2fc024895add4975d33c361630089dfe244f694fe42e9bb1d7a142b744",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-launch.md",
-            "blob": "978adade506d4fb818f2b11245bacc7fbb869488"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-local-playgrounds-info.md",
       "disposition": "updated",
-      "sha256": "f185f2789ee1ed5b6c8278609e81af596b62585dd62910040af57768fa0533ef",
+      "sha256": "6e9ee191fb3485d0dfd6b908190a0606a7f2bf4b103f072ad7e4bfe222af808f",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-local-playgrounds-info.md",
-            "blob": "37ef5a6d2cc795eb521e58042af7a1d47981189c"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-local-playgrounds-link.md",
       "disposition": "updated",
-      "sha256": "970186de81df5a21798b214de0f8ae0d93768d00bff4cd14381b47e6ef6b19bf",
+      "sha256": "c6de57c04873dfb7d8e5cc0391eb746c3e5763a672343da15485d19968fd5e9f",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-local-playgrounds-link.md",
-            "blob": "1ef1e239d18e7f07856dba412b0cfaf1ef3969eb"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-logs-follow.md",
       "disposition": "updated",
-      "sha256": "e95fe1ee759158656ce71e70f743b8974995dfe1e1d4f8692bf00db085fa1ff0",
+      "sha256": "c50bd39535424e270a56c858ca9d9615ad405d359151853c6461999f8da2bb1e",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-logs-follow.md",
-            "blob": "f8fdaa1bde7cf67015b79b9687e9f9a32f9bd8ad"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-memorize.md",
       "disposition": "updated",
-      "sha256": "e6c87d309e56eaf4ddc4db36a8c038708007accebed66b2997f6065d096895d2",
+      "sha256": "534764bce85229dda82ee96284adaa414ae7feb3f783479382ab0e0211e7760c",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-memorize.md",
-            "blob": "ed97d8270f4f640695eb04c466c6b4d199da703b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-monitor-follow.md",
       "disposition": "updated",
-      "sha256": "00569e39805f123ec3a1b4e33985a97cd57dbc3fca693ab4897f71e5e161cf8e",
+      "sha256": "467ed8940ce78eff1d011a9aa61555e2a26fff0762b67b1b9bc3d76c86a5f959",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-monitor-follow.md",
-            "blob": "7fc438c66e652bccda87f9444858f06727851ff5"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-monitor-list.md",
       "disposition": "updated",
-      "sha256": "73eb43dbd2f3ea8f4374a6145f7bf4f72736e46c0c701c69549f924d97616bbb",
+      "sha256": "09dad1a610d64ad9d9c06d91750c60773a890b2136ce87c6ae7073871d08f174",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-monitor-list.md",
-            "blob": "85b9d32fd958976131110d01f9a7316a70eb1528"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-mutter.md",
       "disposition": "updated",
-      "sha256": "6abbd91d43b034ea8dfb10809d2f0d5b7fc9c520f59c034f64ae06951514bfcd",
+      "sha256": "012fee2e526de0d98d97aa1b9a4589bd76ee07bae4e460f0896190bb86dccd3d",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-mutter.md",
-            "blob": "f4ebdcda7feac26aadbab1da9c5c7847ad4de179"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-mutters-get.md",
       "disposition": "updated",
-      "sha256": "893b0998ce2821c7f29c50665da79d36de962e8ae596d905300ef21a3696bd8d",
+      "sha256": "2f3e5e8c621f5c6dbf257fa6455f19509b9a461b77c832bf737d98043d8f6aee",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-mutters-get.md",
-            "blob": "d1440c04f0c60769149735a4d52b1994603f7a75"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-pipeline-result.md",
       "disposition": "updated",
-      "sha256": "555231159e8ab3ed97fcc7ea43dcf2c9167ff10a0b6452540653a6efcffd7712",
+      "sha256": "e239fcb19c34f69dc33f78d48b71ea0c8ee41e7347faa5b42c58822a6e395f67",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-pipeline-result.md",
-            "blob": "bc9bc9bfcd1ec344747d384536ce2218f8ab02fb"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-pipeline.md",
       "disposition": "updated",
-      "sha256": "23f3cf5c73ef1f701bcd42721e2231ddc8ac6cb985cf26619aac2ea1b7354882",
+      "sha256": "b71782a0960a3234ca8cf9ba263a1a65b723b31dd54f65bc82e8f3a4d0996671",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-pipeline.md",
-            "blob": "0225acd2d134cee52fbbcbe5f05608d1aee8fdd3"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-playgrounds-action.md",
       "disposition": "updated",
-      "sha256": "bd1c1812ace4be8bfd519e1a26704b4e229a944435a59735c3d6b9f41cb91234",
+      "sha256": "93a75d1c5bb44b08e1513eda04e21d8ec92d86ded34b21263a4df3b3af9189b2",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-playgrounds-action.md",
-            "blob": "d7f7b75526a22086ed2c1efc390859c774db1379"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-playgrounds-debug.md",
       "disposition": "updated",
-      "sha256": "526b86eb11348aa8f8e84696313a5ccb0404001375bfe4ce6693d67edb3d4b8b",
+      "sha256": "490e65c720f01a98f40a392c6334ad8a1628df765d31a718127d39bcc2d29cee",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-playgrounds-debug.md",
-            "blob": "2521ec09b17919b014d8f07949071bf3934e4b5e"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-playgrounds-logs.md",
       "disposition": "updated",
-      "sha256": "abc2e2147f43726944e46f07c2c9984eff08f23e035f88038651ffaa2531d760",
+      "sha256": "8da1d4a2a06152ef4d91de5c905a567ee40e3bc0c1ac9db6ce1b2dd7e611d0cc",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-playgrounds-logs.md",
-            "blob": "87734b4c45d2898ee1ca9d58910b83eb1941c0e9"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-playgrounds-switch-template.md",
       "disposition": "updated",
-      "sha256": "e31c1866fc1897a34031378620a22f388f06d95206a735cb5ef450acadcabdad",
+      "sha256": "de5c1025c086051c69c69515e6e288374f05f2d4aa58a3bb4e4a194e97a2eb56",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-playgrounds-switch-template.md",
-            "blob": "994ac82e171d97b36f743b7e970a9b8215b15065"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-playgrounds-wait.md",
       "disposition": "updated",
-      "sha256": "5785ebf1a0ee69bb9d00a51a961daaa66a0dfcb18d4c08f528c5b9d22cbbb52b",
+      "sha256": "0f9d204ebbfb3c8a7b99ea7b433894deb0ff80dee47d726fb68b80236c741067",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-playgrounds-wait.md",
-            "blob": "4122cd4d79e429d146f4756d5ab90ee5b9d35e77"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-repo-status-check.md",
       "disposition": "updated",
-      "sha256": "cde3b0279956b59051e24f5fe54e9b454fddc319589d1c9e46a7afa5e8e1c13d",
+      "sha256": "a37a23c9e239b087eba1bbf957e589fdd5a16e17c8df03e3df5c9678a09f3f5d",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-repo-status-check.md",
-            "blob": "ee7e61d43214815e19bfaaafe774c5412d415fcd"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-resource-delete.md",
       "disposition": "updated",
-      "sha256": "3ff32fca829243aef7e0b7dccff19b7313875922acea512fdeb18c9f828fcdd0",
+      "sha256": "0cf5fab9501b499b70b69f608cee2bcc55a79879903835d09914e4d59a820a24",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-resource-delete.md",
-            "blob": "a94f12f00ef65150af58dbbdf072a610c9c756da"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-resource-get.md",
       "disposition": "updated",
-      "sha256": "d8a8fe375c1d8fd074e27959c9f486f6c0789b9b9cf9ecf7917df76ad4519dca",
+      "sha256": "e4e9792f5dcc1f6fa42637263f5ac1598f43a4fa4224aeea102dc2cb02e9d04a",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-resource-get.md",
-            "blob": "97394bd26f338d1ff5004473787d0a2b5c4f0828"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-resource-list.md",
       "disposition": "updated",
-      "sha256": "af9e069ec3df818bca27838baf67af08207649fbbcb4be70611e040cde06762e",
+      "sha256": "1f02bfb9ceb67024ef57360f176f354bb79abdb2e2ffb7586075488c5f5bfb3c",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-resource-list.md",
-            "blob": "358919612a1e91d1de7b0045b2772faa84816aa8"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-resource-mutate.md",
       "disposition": "updated",
-      "sha256": "9e50a0f9d672a4ac2089470f5a7e9817ab4fb1942f8af129be2b4d4998a9f7b7",
+      "sha256": "a5c0699a9e883a37eaa26270da70acf83d8cb1140ad6f70f52467240f1bd5a07",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-resource-mutate.md",
-            "blob": "78337dcb665ea11d1f826f39410605b09cf93417"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-run.md",
       "disposition": "updated",
-      "sha256": "ee3778e65973857ea291adad180abd9dfabee87deaefdc051c250587ce15246c",
+      "sha256": "ab7a34b62486b0468c89ef1e2c1fc26c33e24a95cbe115dd3f117b10b6c0224a",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-run.md",
-            "blob": "d11e21ea58a320d39c5fa04ae0ccc003124a4b11"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-schema.md",
       "disposition": "updated",
-      "sha256": "b3b57bb127a02f147deef1b6e261625c34685b6ba0185f01c50d132276ec627c",
+      "sha256": "6f1046e942efb13b2b605dccdb90ac9819ad75ee98974f109995cafc1600b8d1",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-schema.md",
-            "blob": "14c1d5516ff0531159da0c0936de50dcdd6df68e"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-status.md",
       "disposition": "updated",
-      "sha256": "3866901b9afdb075318802d750a8259754b9b7594ccf0a6c5f0b57163d73c5d1",
+      "sha256": "0e43bb09c42321e234278768df356d255a0a707dd8f2a51e4ae9be7bd3eadf20",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-status.md",
-            "blob": "e4c59e092c84f0943934f5a1cee3b7a344f6f71b"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-templates-change.md",
       "disposition": "updated",
-      "sha256": "86cffe367f653eb5bd63c5109bcf0579318702c5f120facc1d90edaba0fd58c8",
+      "sha256": "dafc8127f401c712092fe3d93b43242afba0b5b74dce36e8b68d101831057f48",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-templates-change.md",
-            "blob": "7f0c0015d2f9c5afcb726f7182d7c32bc9abbfba"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-templates-search.md",
       "disposition": "updated",
-      "sha256": "7f101d41adab312eff7caf862e497aab3e0adc1d4fc1d41670a0b7c5c77614c7",
+      "sha256": "097085bab24dababb5f6a1adb85c7d4db74dfdff0071e357946bc4230af267d3",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-templates-search.md",
-            "blob": "464b6214e2b1c706aa67c09d50ae9a28287f1a9c"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-tools-catalog.md",
       "disposition": "updated",
-      "sha256": "d40e8d0c340abc5503b2f9bd4a846b3a3b2a0603815974c0e07bc3c234710a1b",
+      "sha256": "0652bd5bbebb73549e731eb62d8a85df7989360d3ea0a520947edbdf3ba812b1",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-tools-catalog.md",
-            "blob": "7108664109ff129bd052e14dd7879bf01afb0814"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
     {
       "path": "seed-skills/fibe-tool-update-name.md",
       "disposition": "updated",
-      "sha256": "f032f28ba2e77dae89c05db862446084990e9a31fc5cd8ad555c999d694f2622",
+      "sha256": "5f0a8a130e701351414229440c36f81d985d851450bb40e4ee7bb422f9ae9ea9",
       "review": {
-        "method": "pinned_public_tool_seed",
-        "findings": [
-          {
-            "kind": "verbatim_source",
-            "summary": "Copied byte-for-byte from the pinned Native API public Skill seed. Seed prose alone is not evidence of released-consumer compatibility or tool conformance."
-          }
-        ],
+        "method": "Released SDK schema and Native content re-audit",
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "path": "crates/fibe-kernel/src/operations/skill_seeds/fibe-tool-update-name.md",
-            "blob": "c61605bdd1e72110f8ecf8fa48113d472dfe8f52"
-          }
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json",
+          "source-contracts/native/tool-skill-seeds.json"
+        ],
+        "findings": [
+          "Public fields, required inputs, enums and defaults are generated from the selected released schemas; stale upstream seed text is source-only. Offline importer freshness checks cover every selected tool."
         ]
       }
     },
@@ -4759,7 +4133,7 @@
     {
       "path": "skills/decide-secrets-and-randoms.md",
       "disposition": "updated",
-      "sha256": "0a280557ed1513c710f60b78a7edc2184e23a2d4e11932ac8e51bc591e906ac8",
+      "sha256": "0239becb7ab462964e74902bd21e1546f06ea4221bbeb8cd3dc7e2d12d1b661a",
       "review": {
         "method": "canonical_skill",
         "findings": [
@@ -6168,13 +5542,13 @@
     {
       "path": "skills/reference-fibe-labels.md",
       "disposition": "updated",
-      "sha256": "89f83d70a5e751f3a50852b918c9d58e0451511fc5cc8f10e78b1e376db42a8d",
+      "sha256": "e4e800ec8a7833bc9159640b81b8e221b7b5b3bf57f1404c50fabfd3b188dea4",
       "review": {
-        "method": "canonical_skill",
+        "method": "Native source and released SDK semantic re-audit",
         "findings": [
           {
-            "kind": "native_review",
-            "summary": "Reviewed against the pinned source evidence listed for this file; detailed Compose examples were retained where supported."
+            "kind": "independent_followup_correction",
+            "summary": "Numeric and boolean subdomain labels are scalar-coerced before current label validation; examples now match the parser."
           }
         ],
         "source_evidence": [
@@ -6203,7 +5577,7 @@
     {
       "path": "skills/reference-fibe-managed-env.md",
       "disposition": "updated",
-      "sha256": "93da1d1523b4baef4bcce54312116310f6e023e27eb72a30cbcf73d7df0fef15",
+      "sha256": "0f3ca0f657fb7c21fe43315b026d1bff4505102fb36cd81181a0cc2945dbc206",
       "review": {
         "method": "canonical_skill",
         "findings": [
@@ -6473,6 +5847,24 @@
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
+      "path": "source-contracts/native/tool-skill-seeds.json",
+      "disposition": "added",
+      "sha256": "76c20f883dafc50d316790ec9bf3ac7dc933e80afef919e0cb7e13b4e1bc1641",
+      "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
+    },
+    {
+      "path": "source-contracts/sdk/tool-guidance.json",
+      "disposition": "added",
+      "sha256": "7b192290f528d48b9d25926ed3e47499363687659c0822453ac1cef1ecc028f2",
+      "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
+    },
+    {
+      "path": "source-contracts/sdk/tool-schemas.json",
+      "disposition": "added",
+      "sha256": "d89cb43dad5a88ee3eb10e315f2eb5eed866243e9fa85bd8dbf9b79d555781c7",
+      "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
+    },
+    {
       "path": "src/components/FeatureGrid.jsx",
       "disposition": "updated",
       "sha256": "4a00a4be80cddd90ee5c4039167df75082b3caa47d26ac77681c55e612dbaebf",
@@ -6655,32 +6047,38 @@
     {
       "path": "static/llm-skills.txt",
       "disposition": "updated",
-      "sha256": "22225f61f5d790f77e1800dd780a582495c0a33c621d6124641d817421286cac",
+      "sha256": "8b1ec65d68428502613f8c6f9ec890f0529e2578c135d5ab47d28ae1b0fc6167",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
       "path": "static/native/identity.json",
       "disposition": "added",
       "sha256": "bacfa09b24a7c3d4e6397910ff7301c4c3b216bc9df0b2bbc7f3bd3d2cd255ec",
-      "review": "Exact Native committed contract mirror; importer and build checks verify source bytes and identity digests."
+      "review": "Native source/public projection or released SDK input contract; the owning importer and build checks verify provenance, reviewed product scope and deterministic output."
     },
     {
       "path": "static/native/openapi.json",
       "disposition": "added",
       "sha256": "c08c544a685a581f768aca393cfb80641b8c87581d393e1d8e3555e1610e4433",
-      "review": "Exact Native committed contract mirror; importer and build checks verify source bytes and identity digests."
+      "review": "Native source/public projection or released SDK input contract; the owning importer and build checks verify provenance, reviewed product scope and deterministic output."
     },
     {
       "path": "static/native/public-contract.json",
       "disposition": "added",
       "sha256": "53808619ecd2467d874d11433b0438e5bcd16bc5e1b12237ce3b92c1dbd06253",
-      "review": "Exact Native committed contract mirror; importer and build checks verify source bytes and identity digests."
+      "review": "Native source/public projection or released SDK input contract; the owning importer and build checks verify provenance, reviewed product scope and deterministic output."
     },
     {
       "path": "static/native/route-manifest.json",
       "disposition": "added",
       "sha256": "bdf2026cb3486b5bff2e965030bf2158caf22ea9eb7b769d3f739a41ea029587",
-      "review": "Exact Native committed contract mirror; importer and build checks verify source bytes and identity digests."
+      "review": "Native source/public projection or released SDK input contract; the owning importer and build checks verify provenance, reviewed product scope and deterministic output."
+    },
+    {
+      "path": "static/native/sdk-tool-schemas.json",
+      "disposition": "added",
+      "sha256": "bea25843d96523cdf0aad92daddc4412c36d778b7fb2fbe7c66ae79f65ec55d6",
+      "review": "Native source/public projection or released SDK input contract; the owning importer and build checks verify provenance, reviewed product scope and deterministic output."
     },
     {
       "path": "static/robots.txt",
@@ -6692,13 +6090,13 @@
       "path": "static/schema.json",
       "disposition": "updated",
       "sha256": "53d11332a9e1d0b9e3202ddba3128908333f6f2076bfbf403b1a6bbe6d4e7634",
-      "review": "Exact Native committed contract mirror; importer and build checks verify source bytes and identity digests."
+      "review": "Native source/public projection or released SDK input contract; the owning importer and build checks verify provenance, reviewed product scope and deterministic output."
     },
     {
       "path": "static/schemas/fibe-compose.v1.schema.json",
       "disposition": "updated",
       "sha256": "53d11332a9e1d0b9e3202ddba3128908333f6f2076bfbf403b1a6bbe6d4e7634",
-      "review": "Exact Native committed contract mirror; importer and build checks verify source bytes and identity digests."
+      "review": "Native source/public projection or released SDK input contract; the owning importer and build checks verify provenance, reviewed product scope and deterministic output."
     },
     {
       "path": "static/site.webmanifest",

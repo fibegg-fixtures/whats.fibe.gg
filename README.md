@@ -53,9 +53,13 @@ Exact source OpenAPI and route-manifest bytes stay under `source-contracts/`, ou
 the published static files. The public API projection follows approved product scope
 even when source cleanup is incomplete. `static/native/public-contract.json` records
 both source and published hashes; the source identity and Compose schema retain
-upstream bytes. Public `fibe-tool-*` guides are the Native API's seeded SDK/CLI/MCP
-help corpus; they describe consumer tools, not proof that every tool succeeds on
-every installation. Runtime prompts are excluded. When advancing a source pin,
+upstream bytes. The public `fibe-tool-*` set follows the Native API seed inventory. Public tool
+inputs are generated from the captured SDK v0.3.3 schemas and reviewed Native
+guidance; exact upstream seed text stays source-only because its parameter names
+can lag the release. Offline `node scripts/import-seed-skills.mjs --check` checks
+the generated guides, tool catalogue and public schema. `--check-source` also
+compares the private seed snapshot with the pinned API. These checks do not prove
+each tool operation succeeds on every installation. Runtime prompts are excluded. When advancing a source pin,
 review product prose and examples as well as regenerating these mirrors.
 
 ## Files and generated content
@@ -67,7 +71,8 @@ review product prose and examples as well as regenerating these mirrors.
   curated introduction, JSON-schema and behavior-contract pages.
 - `src/data/apiReference.js`: partitions the supported Native OpenAPI into three
   reference pages without inventing request or response schemas.
-- `static/native/`: supported public contracts and source/projection provenance; `static/schema.json` and
+- `source-contracts/sdk/`: offline released tool-schema capture and reviewed guidance.
+- `static/native/`: supported public contracts, released tool inputs and source/projection provenance; `static/schema.json` and
   `static/schemas/fibe-compose.v1.schema.json` are identical Compose schema mirrors.
 - `static/llm-skills.txt`: deterministic public skills index; raw Markdown mirrors
   are generated locally under `static/skills/` and `static/seed-skills/`.

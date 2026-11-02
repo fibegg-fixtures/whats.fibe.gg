@@ -52,7 +52,7 @@ Agent containers receive Native runtime identity values including `FIBE_DOMAIN`,
 
 ## Validation
 
-Compose validation recognizes reserved Fibe variables and reports attempts to shadow them. See the current [Compose schema](../reference/json-schema.md) for the supported Spec shape and the [Native API contract](/native/openapi.json) for request and response details.
+Compose validation recognizes reserved Fibe variables and reports attempts to shadow them. See the current [Compose schema](../reference/json-schema.md) for the supported Spec shape and the [Native API contract](https://whats.fibe.gg/native/openapi.json) for request and response details.
 
 ## Related skills
 

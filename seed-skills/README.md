@@ -1,20 +1,17 @@
-# Native public tool Skill mirror
+# Reviewed public tool guides
 
-This directory mirrors the public `fibe-tool-*.md` guides registered in the
-Native API's built-in Skill catalog. The import is pinned to API commit
-`2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29` so a refresh cannot silently switch to an unrelated checkout.
+These 53 guides use the released SDK v0.3.3 input schemas and
+reviewed Native descriptions. The schema capture and editorial notes live in
+`source-contracts/sdk/`; the public schema projection is
+`static/native/sdk-tool-schemas.json`.
 
-After updating the source pin or these guides, regenerate the website reference
-pages with:
+Exact Native API seed text is retained only in the source-only
+`source-contracts/native/tool-skill-seeds.json` at API revision
+`2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29`. It does not overwrite public guidance.
 
-    npm run import-seed-skills
-    npm run sync-skills
-
-Only the public tool guides are imported. Private agent prompts and runtime
-instructions such as `main.md`, `system.md`, and `cursor-runtime.mdc` are not
-published here.
-
-These are guide documents from the Native API seed catalog. Their presence does
-not prove that a tool operation has passed compatibility checks with the
-released SDK; the consumer release pin is tracked separately in
-`content-sources.json`.
+Run `npm run import-seed-skills` to refresh pinned source provenance and regenerate
+these guides. Run `node scripts/import-seed-skills.mjs --check` for an offline
+freshness check; add `--check-source` to compare the exact Native source snapshot
+with the sibling API checkout. Regenerate reference pages and LLM mirrors after
+changes. Private runtime prompts are excluded. Input-contract inspection is not
+proof of a passing Host, provider, Agent, or SDK product workflow.

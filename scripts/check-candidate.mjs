@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 import {isRetiredName, publicContract} from './public-contract.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -22,7 +23,7 @@ for (const name of ['marquees', 'playspecs', 'props', 'tricks', 'scrolls', 'bill
 assert(exists('build/advanced/runtime-configuration/index.html'));
 checks.push('Canonical concept/feature pages exist; removed concept routes are absent');
 
-for (const name of ['content-sources.json', 'schema.json', 'schemas/fibe-compose.v1.schema.json', 'native/openapi.json', 'native/route-manifest.json', 'native/identity.json', 'native/public-contract.json']) {
+for (const name of ['content-sources.json', 'schema.json', 'schemas/fibe-compose.v1.schema.json', 'native/openapi.json', 'native/route-manifest.json', 'native/identity.json', 'native/public-contract.json', 'native/sdk-tool-schemas.json']) {
   assert(read(`build/${name}`).equals(read(`static/${name}`)), `Built contract differs: ${name}`);
 }
 assert(read('static/schema.json').equals(read('static/schemas/fibe-compose.v1.schema.json')));
@@ -44,6 +45,11 @@ checks.push('Native source identity and public-scope contract digests match; gen
 const publicSeeds = fs.readdirSync(path.join(root, 'seed-skills'))
   .filter(name => name.startsWith('fibe-tool-') && name.endsWith('.md')).sort();
 assert.equal(publicSeeds.length, 53, 'Review the selected Native public tool corpus when changing its inventory');
+execFileSync(process.execPath, ['scripts/import-seed-skills.mjs', '--check'], {cwd: root, stdio: 'pipe'});
+const sdkTools = JSON.parse(read('static/native/sdk-tool-schemas.json'));
+assert.equal(sdkTools.sdk_release, sources.sdk_release);
+assert.equal(sdkTools.tools.length, publicSeeds.length);
+assert.equal(createHash('sha256').update(read('source-contracts/sdk/tool-schemas.json')).digest('hex'), sdkTools.source_schema_snapshot_sha256);
 for (const name of publicSeeds) {
   assert(read(`static/seed-skills/${name}`).equals(read(`seed-skills/${name}`)), `Raw mirror differs: ${name}`);
   assert(exists(`build/reference/tools/${name.replace('fibe-tool-', '').replace('.md', '')}/index.html`));
@@ -51,7 +57,7 @@ for (const name of publicSeeds) {
 for (const name of ['main.md', 'system.md', 'cursor-runtime.mdc']) {
   assert(!exists(`seed-skills/${name}`), `Private runtime prompt copied: ${name}`);
 }
-checks.push(`${publicSeeds.length} public tool guides and raw mirrors match; private runtime prompts stay excluded`);
+checks.push(`${publicSeeds.length} SDK-schema-checked public tool guides and raw mirrors match; private runtime prompts stay excluded`);
 
 for (const name of ['llms.txt', 'llms-full.txt', 'search-index.json']) {
   assert(read(`build/${name}`).length > 1000, `Missing generated output ${name}`);
@@ -69,7 +75,14 @@ function checkPublicPages(dir) {
   for (const entry of fs.readdirSync(path.join(root, dir), {withFileTypes: true})) {
     const file = `${dir}/${entry.name}`;
     if (entry.isDirectory()) checkPublicPages(file);
-    else if (entry.name.endsWith('.html')) assert(!removedFeatures.test(read(file).toString()), `Removed feature in rendered page: ${file}`);
+    else if (entry.name.endsWith('.html')) {
+      const html = read(file).toString();
+      assert(!removedFeatures.test(html), `Removed feature in rendered page: ${file}`);
+      assert(!/href="[^"]+\.json\//.test(html), `Broken JSON asset trailing slash: ${file}`);
+      for (const [, target] of html.matchAll(/href="https:\/\/whats\.fibe\.gg(\/[^"?#]+\.json)"/g)) {
+        assert(exists(`build${target}`), `Missing contract download ${target} in ${file}`);
+      }
+    }
   }
 }
 checkPublicPages('build');

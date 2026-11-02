@@ -14,9 +14,9 @@ The Native Compose schema describes the Compose shape and Fibe-specific configur
 
 ## Download the schema
 
-- [Versioned Fibe Compose schema](/schemas/fibe-compose.v1.schema.json)
-- [Schema alias](/schema.json)
-- [Native OpenAPI contract](/native/openapi.json)
+- [Versioned Fibe Compose schema](https://whats.fibe.gg/schemas/fibe-compose.v1.schema.json)
+- [Schema alias](https://whats.fibe.gg/schema.json)
+- [Native OpenAPI contract](https://whats.fibe.gg/native/openapi.json)
 
 The published schema is copied from the pinned Native API source. Refer to the versioned file when a project needs a stable schema URL.
 

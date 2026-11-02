@@ -1,17 +1,26 @@
 ---
 name: fibe-tool-agents-messages
-description: Use when you need to read the messages of an Agent conversation.
+description: "Read agent messages, optionally scoped to a conversation."
 ---
 # fibe_agents_messages
 
-Lists messages of one conversation, newest last.
+Read agent messages, optionally scoped to a conversation.
+
+This guide uses the released SDK **v0.3.3** input contract. The installation’s Native API routes and authorization determine which server operations are available.
 
 ## Inputs
 
-- `agent_id_or_name`: Agent ID or name.
-- `conversation_id` (optional): defaults to the latest.
-- `limit` (optional).
+| Input | Required | Type | Meaning |
+| --- | --- | --- | --- |
+| `id_or_name` | Yes | integer or string | Agent ID or name. |
+| `conversation_id` | No | string | Specific conversation/thread ID. |
+| `only` | No | array of string | Fields to keep in each result item. Example: ["uuid","title","project"]. Envelope metadata remains. |
+| `output_path` | No | string | JSONPath into the tool result, not a filesystem path. Example: "$.conversations[0].uuid" returns the first UUID; "$.conversations" returns only the array. |
+
+The [complete tool schemas](https://whats.fibe.gg/native/sdk-tool-schemas.json) include nested fields and constraints. Fields marked optional can still be required by a particular resource, mode, or source selection.
 
 ## Notes
 
-- Message content may be long; request a small limit first.
+- The Agent identifier is `id_or_name`. Use `conversation_id` to select a conversation.
+
+Read-only: **yes**. Destructive: **no**. Idempotent: **yes**. These are the released tool’s annotations; operation-specific guards still apply.

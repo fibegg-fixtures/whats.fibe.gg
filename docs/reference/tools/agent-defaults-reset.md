@@ -1,6 +1,6 @@
 ---
 title: "Agent Defaults Reset"
-description: "Use only when the user asks to discard customised Agent defaults and return to the shipped defaults."
+description: "Clear all player agent default overrides so admin defaults apply."
 slug: /reference/tools/agent-defaults-reset
 sidebar_label: "Agent Defaults Reset"
 image: /img/og/reference-tools-agent-defaults-reset.png
@@ -9,13 +9,18 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-Resets Agent defaults for the selected owner to the installation baseline.
+Clear all player agent default overrides so admin defaults apply.
+
+This guide uses the released SDK **v0.3.3** input contract. The installation’s Native API routes and authorization determine which server operations are available.
 
 ## Inputs
 
-- `scope` (optional): personal or Team owner of the defaults.
-- `confirm`: must be true.
+This tool takes no input fields.
+
+The [complete tool schemas](https://whats.fibe.gg/native/sdk-tool-schemas.json) include nested fields and constraints. Fields marked optional can still be required by a particular resource, mode, or source selection.
 
 ## Notes
 
-- This is destructive for customised defaults; confirm with the user first.
+- Clears personal overrides so installation defaults apply. Read the defaults again after resetting.
+
+Read-only: **no**. Destructive: **no**. Idempotent: **no**. These are the released tool’s annotations; operation-specific guards still apply.

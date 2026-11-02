@@ -12,7 +12,7 @@ Fibe is a self-hosted application for managing Docker workloads on Hosts you con
 
 ## The first workflow
 
-1. Install and start the Fibe application using the [deployment guide](https://github.com/fibegg/fibe-api/tree/main/deploy). Keep its `/data` directory persistent and back it up before upgrades.
+1. Install and start the Fibe application using the [deployment guide](https://github.com/viktorvsk/fibe-api/tree/main/deploy). Keep its `/data` directory persistent and back it up before upgrades.
 2. Open the installation and complete **Setup** to create the first account and operator access.
 3. Add a [Host](/concepts/hosts/): a Docker machine that Fibe can reach over SSH.
 4. Connect a [Repository](/concepts/repositories/) or use an image-only Compose definition.

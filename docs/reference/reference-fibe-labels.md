@@ -89,16 +89,14 @@ services:
     labels:
       fibe.gg/port: 3000
       fibe.gg/visibility: external
-      # valid:
+      # valid (each line is an alternative):
       fibe.gg/subdomain: api
-      fibe.gg/subdomain: "@"
-      fibe.gg/subdomain: ""   # fallback to service name
-      # variable-driven values should use path-bound placeholders:
-      fibe.gg/subdomain: demo
-      # invalid in runtime validation:
-      fibe.gg/subdomain: 42
-      fibe.gg/subdomain: true
-      fibe.gg/subdomain: "bad-subdomain-"
+      # fibe.gg/subdomain: "@"       # root domain
+      # fibe.gg/subdomain: ""        # fallback to service name
+      # fibe.gg/subdomain: demo      # variable-driven values can use path bindings
+      # fibe.gg/subdomain: 42        # coerced to "42", valid slug
+      # fibe.gg/subdomain: true      # coerced to "true", valid slug
+      # fibe.gg/subdomain: "bad-subdomain-"  # invalid: trailing hyphen
 ```
 
 If omitted, the public host is `<service-name>.<host-root-domain>`.

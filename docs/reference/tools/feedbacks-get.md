@@ -1,6 +1,6 @@
 ---
 title: "Feedbacks Get"
-description: "Use when you need the details of one feedback item left on a Playground or Agent result."
+description: "Get one feedback entry for an agent, including player comments about artefacts or mutters."
 slug: /reference/tools/feedbacks-get
 sidebar_label: "Feedbacks Get"
 image: /img/og/reference-tools-feedbacks-get.png
@@ -9,12 +9,22 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-Returns one feedback entry with its comments and status.
+Get one feedback entry for an agent, including player comments about artefacts or mutters.
+
+This guide uses the released SDK **v0.3.3** input contract. The installation’s Native API routes and authorization determine which server operations are available.
 
 ## Inputs
 
-- `feedback_id`: feedback identifier.
+| Input | Required | Type | Meaning |
+| --- | --- | --- | --- |
+| `feedback_id` | Yes | number | Feedback ID Minimum: 1. |
+| `only` | No | array of string | Fields to keep in each result item. Example: ["uuid","title","project"]. Envelope metadata remains. |
+| `output_path` | No | string | JSONPath into the tool result, not a filesystem path. Example: "$.conversations[0].uuid" returns the first UUID; "$.conversations" returns only the array. |
+
+The [complete tool schemas](https://whats.fibe.gg/native/sdk-tool-schemas.json) include nested fields and constraints. Fields marked optional can still be required by a particular resource, mode, or source selection.
 
 ## Notes
 
-- Use `fibe_feedbacks_list` to find identifiers.
+- `feedback_id` selects the feedback record.
+
+Read-only: **yes**. Destructive: **no**. Idempotent: **yes**. These are the released tool’s annotations; operation-specific guards still apply.
