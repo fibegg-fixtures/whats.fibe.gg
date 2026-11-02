@@ -15,7 +15,7 @@ part of the public seed corpus.
 
 [content-sources.json](content-sources.json) pins Native API
 `2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29`, React
-`365f0c346a940c450fb256dabe916b854f1edc55` and released SDK v0.3.3. The review
+`231ce23d404ded6957adca4a0befc4f8533a0177` and released SDK v0.3.3. The review
 covers 55 guide pages, 52 canonical product/authoring skills, 53 public tool seed
 guides, and 108 curated/generated reference pages. The follow-up review checks public tool fields against the selected SDK release,
 not against seed prose alone. Exact upstream seed text is retained source-only;
@@ -131,3 +131,10 @@ after these corrections. The complete catalog gate and its separate source-revie
 limits are recorded in the capability repository. Third-round local evidence is
 kept in ignored `artifacts/round3-*` files; the complete per-file inventory remains
 the reproducible coverage record.
+
+During final verification React main advanced by two commits. The final source pin
+is `231ce23d404ded6957adca4a0befc4f8533a0177`: GitHub linking uses the native CSRF
+client and the obsolete Bridge Agent-list toggle is removed. Neither behavior
+requires a public prose correction beyond the source identity; the guide does not
+promise that toggle or the replaced HTML authorization form. The delta was checked
+before the final publication.

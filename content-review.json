@@ -9,7 +9,7 @@
     },
     "ui": {
       "repository": "https://github.com/viktorvsk/fibe-ui.git",
-      "revision": "365f0c346a940c450fb256dabe916b854f1edc55"
+      "revision": "231ce23d404ded6957adca4a0befc4f8533a0177"
     },
     "sdk_release": "v0.3.3",
     "qualification": "Content and committed-source review. No Native runtime, provider or released-consumer qualification is implied."
@@ -59,7 +59,7 @@
     {
       "path": "content-sources.json",
       "disposition": "added",
-      "sha256": "a8db0002f9cc2fef8b9e900ab7a4149e07f514fa6ce0b294b82a98e9c927e016",
+      "sha256": "bfcc51209208d9294a574f8020f2e7f92ebc487fa034cb729f4848eea67359db",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
@@ -73,7 +73,7 @@
         ],
         "source_evidence": [
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-agents/src/agents/configuration.rs",
-          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/account/advanced.tsx"
+          "fibe-ui@231ce23d404ded6957adca4a0befc4f8533a0177:src/features/account/advanced.tsx"
         ]
       }
     },
@@ -181,7 +181,7 @@
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/auth.rs",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/http.rs",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/passkeys.rs",
-          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/account/security.tsx"
+          "fibe-ui@231ce23d404ded6957adca4a0befc4f8533a0177:src/features/account/security.tsx"
         ]
       }
     },
@@ -272,7 +272,7 @@
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/auth.rs",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/http.rs",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/passkeys.rs",
-          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/account/security.tsx",
+          "fibe-ui@231ce23d404ded6957adca4a0befc4f8533a0177:src/features/account/security.tsx",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-eventing/src/automation/webhooks/http.rs",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-eventing/src/automation/webhooks/worker.rs",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/auth.rs",
@@ -293,7 +293,7 @@
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/auth.rs",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/http.rs",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/passkeys.rs",
-          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/account/security.tsx"
+          "fibe-ui@231ce23d404ded6957adca4a0befc4f8533a0177:src/features/account/security.tsx"
         ]
       }
     },
@@ -630,9 +630,9 @@
           "Narrowed Agent filtering to supported sections, distinguished live Agent artefact skill edits from content edits, and qualified captured provider traces."
         ],
         "source_evidence": [
-          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/library/agent-filter.tsx",
-          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/library/artefacts.tsx",
-          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/library/dashboard.tsx",
+          "fibe-ui@231ce23d404ded6957adca4a0befc4f8533a0177:src/features/library/agent-filter.tsx",
+          "fibe-ui@231ce23d404ded6957adca4a0befc4f8533a0177:src/features/library/artefacts.tsx",
+          "fibe-ui@231ce23d404ded6957adca4a0befc4f8533a0177:src/features/library/dashboard.tsx",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-library/src/library/http.rs"
         ]
       }
@@ -1076,7 +1076,7 @@
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/auth.rs",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/http.rs",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/passkeys.rs",
-          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/account/security.tsx"
+          "fibe-ui@231ce23d404ded6957adca4a0befc4f8533a0177:src/features/account/security.tsx"
         ]
       }
     },
@@ -4308,7 +4308,7 @@
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/auth.rs",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/http.rs",
           "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/passkeys.rs",
-          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/account/security.tsx"
+          "fibe-ui@231ce23d404ded6957adca4a0befc4f8533a0177:src/features/account/security.tsx"
         ]
       }
     },
@@ -5702,7 +5702,7 @@
     {
       "path": "static/content-sources.json",
       "disposition": "added",
-      "sha256": "a8db0002f9cc2fef8b9e900ab7a4149e07f514fa6ce0b294b82a98e9c927e016",
+      "sha256": "bfcc51209208d9294a574f8020f2e7f92ebc487fa034cb729f4848eea67359db",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {

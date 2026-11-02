@@ -6,7 +6,7 @@
   },
   "ui": {
     "repository": "https://github.com/viktorvsk/fibe-ui.git",
-    "revision": "365f0c346a940c450fb256dabe916b854f1edc55"
+    "revision": "231ce23d404ded6957adca4a0befc4f8533a0177"
   },
   "sdk_release": "v0.3.3",
   "qualification": "Content and committed-source review. No Native runtime, provider or released-consumer qualification is implied."
