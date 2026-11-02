@@ -85,7 +85,7 @@ This is the standard pattern for app uploads or generated files that more than o
 
 Fibe does not automatically back up named volumes. If the app's data must survive Host destruction:
 
-- Use external services (S3 for blobs, managed Postgres for DB) when possible.
+- For data that must outlive a Host failure, include the storage service and its recovery procedure in the installation's backup plan.
 - For Postgres on a named volume, the application is responsible for backup. Schedule a `pg_dump` job (`mode-schedule-cron`) that uploads to S3.
 - or consider using something like https://hub.docker.com/r/offen/docker-volume-backup
 

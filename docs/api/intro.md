@@ -1,125 +1,51 @@
 ---
 title: API reference
-description: Authentication, responses, pagination, async operations, and endpoint groups for /api.
+description: Authentication, response conventions, asynchronous operations, and endpoint groups for a self-hosted Fibe installation.
 slug: /api
 sidebar_label: Overview
-keywords: [Fibe API, REST API, bearer token, async requests]
+keywords: [Fibe API, self-hosted, REST API, bearer token, async operations]
 ---
 
 # API reference
 
-This candidate reference covers the public `/api` namespace, including immutable owner context and Team credentials. Payment-provider callbacks and routes outside `/api` have separate contracts. Production fibe.gg retains its previous API until its own cutover.
+Fibe's HTTP API is served by the installation you operate. This reference is generated from the native Rust server's OpenAPI contract. Use the API host for your own installation; there is no shared staging or hosted-service base URL.
 
-Use the SDK, CLI, or MCP server when you want a supported automation surface with command discovery and auth profile handling. Use the HTTP API when you need direct REST integration.
+The server contract advertises the `self_hosted` profile, major version `1`. Endpoints outside `/api` also serve the browser application, health checks, setup, and operator interfaces. API operations require the authentication mode and scope documented by that endpoint.
 
 ## Base URL
 
-Use the environment host plus the `/api` namespace:
-
-| Environment | Base URL |
-| --- | --- |
-| Coordinated staging candidate | `https://next.fibe.live/api` |
+Use your installation origin followed by `/api` for API routes. For example, if Fibe is at `https://fibe.example.net`, the API base is `https://fibe.example.net/api`.
 
 ## Authentication
 
-Send API keys as bearer tokens:
+For API-key routes, send the key as a bearer token:
 
 ```http
-Authorization: Bearer fibe_...
+Authorization: Bearer <FIBE_API_KEY>
 Accept: application/json
 Content-Type: application/json
 ```
 
-A new API credential binds one immutable owner context and principal. The principal is a person with live membership or an active Team service account; the issuer is attribution. Scopes and resource ownership are checked separately. A guessed owner ID, selected browser context or request field cannot widen a credential. Historical personal credentials retain their recorded authorization version.
+Credentials are subject to scope, owner, and current authority checks. Selecting a Team in the browser does not widen an API key's authority. Do not put keys in URLs, source control, or client-side applications. The `GET /api/me` route reports the API identity and scopes available to the credential.
 
-`GET /api/me` returns the current API identity and the scopes attached to the token.
+Some installation and browser routes use the session and CSRF protections described by their own contract; a bearer key is not a substitute for those browser protections.
 
-## Response shapes
+## Responses and errors
 
-Most resource reads return the serialized resource directly:
+Use the OpenAPI operation definition as the source of truth for each request and response. The API returns structured error codes for many failures; clients should branch on the documented code and status rather than user-facing message text. A route may have an endpoint-specific response shape, so do not assume every list or mutation shares one envelope.
 
-```json
-{
-  "id": 123,
-  "name": "example"
-}
-```
-
-List endpoints use a shared envelope:
-
-```json
-{
-  "data": [],
-  "meta": {
-    "page": 1,
-    "per_page": 25,
-    "total": 0
-  }
-}
-```
-
-Pagination parameters:
-
-| Parameter | Default | Maximum | Notes |
-| --- | --- | --- | --- |
-| `page` | `1` | `1000` | One-based page number. |
-| `per_page` | `25` | `100` | Page size. |
-| `limit` | `25` | `100` | Alias used by endpoints that accept limit-style pagination. |
-
-Failures use the shared error envelope, except when polling a missing or expired async request. Error codes are stable uppercase identifiers; branch on `code`, not message text:
-
-```json
-{
-  "error": {
-    "code": "VALIDATION_FAILED",
-    "message": "Validation failed",
-    "details": {}
-  }
-}
-```
-
-Common codes include `VALIDATION_FAILED`, `UNAUTHORIZED`, `FORBIDDEN`, `RESOURCE_NOT_FOUND`, `RATE_LIMITED`, and `HOST_NOT_FUNDED` (402, selected Host is unfunded).
-
-Conversation, live-state, and queued-turn endpoints that talk to a live Agent return `422` with a code explaining why delivery failed: `AGENT_RUNTIME_NOT_RUNNING` (the Agent has no running session), `AGENT_RUNTIME_UNREACHABLE` (the session can't be reached), or `AGENT_RUNTIME_ERROR` (the session returned an unexpected error). The `details` object carries the agent (and conversation) involved.
-
-Sending a chat message can fail with `422` and `AGENT_COMMUNICATION_FAILED`. `AGENT_BUSY` means the Agent is mid-turn; retry or use the `queue` busy policy. `NEED_AUTH` means its provider credentials require authentication.
-
-### Rate limits
-
-API requests are limited per account to **5,000 per hour** by default. Support can raise the limit. A blocked request returns `429` with `RATE_LIMITED`; honor `Retry-After`.
-
-Responses to authenticated requests also include `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset` (seconds until the window resets), so you can pace requests before hitting the limit.
-
-Responses include `X-Request-Id` when a request id is available.
-
-## Async operations
-
-Long-running operations return `202 Accepted` with a polling URL:
-
-```json
-{
-  "request_id": "0b4c9a52-...",
-  "status": "queued",
-  "status_url": "/api/async_requests/0b4c9a52-..."
-}
-```
-
-Poll `GET /api/async_requests/:id` until the operation is terminal. Queued and running requests return `202`; terminal and error states return `200`.
-
-Each progress update keeps a status record alive for about 10 minutes. A missing or expired request returns `404` with plain `{ "error": "Request not found" }`. Treat any polling `404` as unknown or expired and start polling soon after the `202` response.
-
-Some write endpoints support `Idempotency-Key` for safe retries. A successful response is remembered for **24 hours** per key: retrying with the same key replays the original response and sets the `X-Idempotent-Replayed: true` header so you can tell a replay from a fresh write. Reuse the same key only for retries of the same logical operation.
-
-| Endpoint | Purpose |
-| --- | --- |
-| `GET /api/async_requests/:id` | Poll a queued async operation. |
+Long-running operations use durable request or operation records where the endpoint defines them. Follow the returned operation identity and status route. A timeout or missing observation does not prove that an external effect did not happen; inspect the operation before retrying a side effect. Use an idempotency key only where the endpoint supports it, and reuse it only for the same logical operation.
 
 ## Endpoint groups
 
 | Group | Contents |
 | --- | --- |
-| [Platform](./platform.mdx) | Hosts, repositories, playgrounds, specs, template imports, launches, and compose validation. |
-| [Agents and knowledge](./agents-and-knowledge.mdx) | Agents, conversations, artefacts, feedback, events, memory, uploads, and conversation synchronization. |
-| [Integrations](./integrations.mdx) | API keys, secrets, job environment, GitHub and Gitea repositories, installations, webhooks, and audit logs. |
+| [Platform](./platform.mdx) | Hosts, Repositories, Specs, Playgrounds, launch and workload operations. |
+| [Agents and knowledge](./agents-and-knowledge.mdx) | Agents, conversations, Library activity, and related records. |
+| [Integrations](./integrations.mdx) | API keys, Secrets, Job ENV, Git integrations, webhooks, and Audit Logs. |
 
-Each endpoint group is rendered from an OpenAPI 3.1 definition. Click **Authorize** on a group page, paste your `FIBE_API_KEY`, choose Production, and use **Try it out** to exercise an endpoint directly from the docs.
+Each group uses the OpenAPI contract for the pinned native API identity. The reference UI origin selector defaults to `https://fibe.example`; replace it with the origin of the Fibe installation you operate before trying a request. Use **Authorize** only with a disposable key scoped for the operation you are inspecting, and confirm the selected origin before submitting a mutation. The raw native specification is available at `/native/openapi.json` on your installation.
+
+## SDK and tool coverage
+
+The released Fibe SDK v0.3.3 is a separate consumer of the API. Its CLI and MCP commands are not proof that every server operation or workflow is supported or qualified by that release. Check `fibe --help`, `fibe doctor`, and the tool-specific documentation for the released client's available surface. For an operation the client does not expose, use the native OpenAPI contract directly with a properly scoped credential.

@@ -106,7 +106,7 @@ x-fibe.gg:
 | `fibe.gg/job_watch: "true"` | One watched service decides success/failure |
 | `restart: "no"` | Required behavior; runtime forces it anyway |
 | `command:` inline shell | Self-contained: no Dockerfile build needed |
-| `$$var__NAME` for secrets | Generated via launcher, masked with `secret: true` |
+| `$$var__NAME` for secrets | Generated via Spec form, masked with `secret: true` |
 | Cron in UTC | Default; if the org needs local time, document explicitly |
 
 ## Variant: cleanup old data
@@ -149,7 +149,7 @@ x-fibe.gg:
 
 ## Variant: fan-out across repositories
 
-If you want the same scheduled job to run for several Repositories (e.g. backups across multiple Player DBs), create one template per Repository, each with its own `schedule_config.host_id` and Repository-specific variables. There is no "for each Repository" in `schedule_config`: schedule fires one job at a time.
+If you want the same scheduled job to run for several Repositories (e.g. backups across multiple user DBs), create one template per Repository, each with its own `schedule_config.host_id` and Repository-specific variables. There is no "for each Repository" in `schedule_config`: schedule fires one job at a time.
 
 ## Cron expressions cheat sheet
 

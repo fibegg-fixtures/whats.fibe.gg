@@ -8,6 +8,10 @@ keywords: [security, 2FA, two-factor, TOTP, WebAuthn, security keys, recovery co
 
 Authenticator codes, hardware keys, recovery codes, sensitive-action re-auth, active session management.
 
+## First administrator setup
+
+On a fresh installation, create the initial setup token locally with `docker compose exec fibe fibe-api --data-dir /data setup token`, then open `/setup` on the installation and paste the token. The deployment guide documents this bootstrap and local account recovery workflow.
+
 ## Authenticator app codes (TOTP)
 
 Scan a QR code with your authenticator app (1Password, Authy, Google Authenticator). Verify once. Each future login asks for a current code. Codes tolerate a small clock drift (±30 seconds), and each code works only once: a code that's already been used can't be replayed.
@@ -28,7 +32,7 @@ Multiple keys can be registered. Any one satisfies the second factor. Register a
 
 ## Recovery codes
 
-A set of 10 single-use codes generated in advance. **Save them somewhere safe.** Without them, losing both phone and security key means account recovery via support.
+A set of 10 single-use codes generated in advance. **Save them somewhere safe.** If you lose both your authenticator and all recovery codes, the installation operator must restore account access locally; this self-hosted product has no Fibe support recovery service.
 
 - Each code works exactly once.
 - Regenerating invalidates the old set.
@@ -39,8 +43,6 @@ A set of 10 single-use codes generated in advance. **Save them somewhere safe.**
 Some operations require re-confirmation of the second factor: managing API keys, creating/deleting/revealing webhook secrets, managing secrets and security keys, and revoking all sessions. Editing an existing webhook's non-secret fields does not re-prompt.
 
 The confirmation lasts 15 minutes. Subsequent sensitive actions inside the window go through without re-prompting.
-
-Platform administrators find **Jobs** and **Maintenance tasks** as links in the admin sidebar. Without a current confirmation, opening either one sends you to the confirmation challenge and then on to the page.
 
 Accounts that sign in only with [Google](/advanced/google-sign-in/) set up an authenticator app before their first protected action, because a Google sign-in never counts as this confirmation.
 
@@ -74,7 +76,7 @@ Sign-ins from a different IP address or browser within 30 minutes of each other 
 <details>
 <summary>Lost phone and recovery codes?</summary>
 
-Contact Fibe support. Identity verification required. Slow. Avoid this by saving recovery codes durably at 2FA setup.
+Ask the installation operator to issue a one-time local recovery token for the account email with `fibe-api operator recover --email <email>`, then follow the recovery flow in the browser. This command runs on the Fibe server; it does not contact a hosted support service. Save the replacement recovery codes before closing the flow.
 </details>
 
 <details>

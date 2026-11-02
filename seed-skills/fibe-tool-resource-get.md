@@ -1,70 +1,16 @@
 ---
 name: fibe-tool-resource-get
-description: Use when you need to fetch a single Fibe resource by id, or by name for playgrounds, tasks, specs, repositories, hosts, and agents. Includes artefact_attachment download.
+description: Use when you need the full record of one Fibe resource by type and identifier.
 ---
-
 # fibe_resource_get
 
-[MODE:DIALOG] Read-only, idempotent. Tier: base.
-
-Generic single-record fetch. Routes to the typed per-resource lookup, hitting `GET /api/<plural>/:id` (or named lookup where supported).
-
-## When to use
-- "What's the current state of playground X?"
-- "Does this name resolve to a real repository?"
-- Pre-mutation read to avoid lost-update.
-- Downloading an artefact's attached file (`resource:"artefact_attachment"`).
+Returns one resource.
 
 ## Inputs
-| Field | Type | Notes |
-|---|---|---|
-| `resource` | string (enum), required | Canonical or alias |
-| `id` | number | Numeric ID (preferred for ID-only resources) |
-| `id_or_name` | string | Numeric ID or name for named resources |
-| `id_or_key` | string | Numeric ID or key for secrets |
 
-Pass exactly one of `id`, `id_or_name`, or `id_or_key` depending on the resource. Named resources (`playground`, `task`, `spec`, `repository`, `host`, `agent`) accept `id_or_name`.
+- `resource`: resource type.
+- `id_or_name`: resource identifier.
 
-## Output
-The resource's detailed JSON serialization. Nested includes vary per resource:
-- `playground`: spec, host, services, status, urls.
-- `repository`: provider, repository_url, default_branch.
-- `spec`: services, source_template_version, mounted files.
-- `template`: versions, source, lineage hints.
+## Notes
 
-## artefact_attachment (special case)
-Downloads the artefact's single attached file, base64-encoded:
-```json
-{
-  "resource": "artefact_attachment",
-  "id": 123
-}
-```
-returns
-```json
-{
-  "resource": "artefact_attachment",
-  "id_or_name": 123,
-  "filename": "report.pdf",
-  "content_type": "application/pdf",
-  "content_base64": "<...>",
-  "size": 12345
-}
-```
-Use this for the actual file bytes; `resource:"artefact"` returns metadata only.
-
-## Secrets / job_env
-- `secret`: returns metadata only. Plaintext is **never** revealed via this tool, regardless of API key scope. Use the dedicated CLI/UI reveal flow.
-- `job_env`: same; the field `reveal` is rejected here.
-
-## Gotchas
-- Named lookup is case-sensitive (slug-style). For ambiguous text use list + filter.
-- Numeric strings work for `id_or_name` ("123" parses as ID 123).
-- Passing `reveal` returns an error: secrets cannot be unmasked through this tool.
-- `artefact` get without `attachment` keyword returns metadata; you must explicitly use `artefact_attachment` for the file.
-- For audit_log / memory the `delete` op exists in schema but is allowlist-restricted; `get` is unrestricted within accessibility.
-
-## Related
-- `fibe_resource_list`: bulk fetch / discovery.
-- `fibe_resource_mutate`: modify.
-- `fibe_resource_delete`: remove (destructive).
+- Secret values are always redacted.

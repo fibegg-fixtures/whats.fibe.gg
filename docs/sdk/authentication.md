@@ -1,6 +1,6 @@
 ---
 title: Authentication & profiles
-description: "Two login flows: API key or browser device-code. Multiple profiles for switching between accounts and environments. Env-var fallbacks for CI."
+description: "Two login flows: API key or browser device-code. Multiple profiles for switching between self-hosted installations and owner contexts. Env-var fallbacks for CI."
 slug: /sdk/authentication
 sidebar_position: 3
 sidebar_label: Authentication
@@ -10,7 +10,7 @@ keywords: [fibe login, fibe auth, profiles, API key, device code, FIBE_API_KEY, 
 
 The CLI, Go library, and MCP server all authenticate the same way: every call carries an API key. Both login flows end in one: the browser device-code login mints a key for you and saves it to your profile; `fibe login --api-key` stores a key you already have.
 
-You can keep multiple credentials at once, staging, production, a teammate's view, by giving each one a **profile name**. Switching between them is one command.
+You can keep credentials for multiple self-hosted installations or owner contexts by giving each one a **profile name**. Switching profiles does not widen the key's authority.
 
 ## Two ways to log in
 
@@ -40,20 +40,20 @@ This validates the key against `/api/me`, saves it to your profile, and is ready
 
 ## Profiles
 
-A profile is a named bundle of `{api_key, domain}`. Profiles let you switch between accounts and environments without re-logging-in.
+A profile is a named bundle of `{api_key, domain}`. Profiles let you switch between accounts or self-hosted installations without re-logging-in.
 
 ```sh
 fibe auth list             # show profile names
-fibe auth use staging      # switch the active profile
+fibe auth use local        # switch the active profile
 fibe auth status           # who am I, which profile, which domain
-fibe --profile staging playgrounds list   # one-off override
+fibe --profile local playgrounds list   # one-off override
 fibe auth logout           # forget the active profile (also tries to revoke its key server-side)
 ```
 
 Common patterns:
 
 - A `default` profile for your main account.
-- A `staging` profile pointing at a non-production Fibe deployment.
+- A named profile pointing at another self-hosted Fibe installation.
 - A `ci-readonly` profile holding a restricted API key for scripted reads.
 
 ## Where credentials live
@@ -74,11 +74,11 @@ Useful for CI, Docker containers, and anywhere a profile on disk isn't available
 | Variable | Purpose |
 | --- | --- |
 | `FIBE_API_KEY` | API key to use when no profile is configured. The active profile wins if one exists. |
-| `FIBE_DOMAIN` | API domain when no profile is configured. Defaults to `https://fibe.gg`. Useful for staging/local. |
+| `FIBE_DOMAIN` | API origin when no profile is configured. Set it to the origin of your self-hosted installation. |
 | `FIBE_OUTPUT` | Default output format (`table` / `json` / `yaml`). |
 | `FIBE_MCP_TOOLS` | Which tool surface to expose (`full`, `core`, or a comma-separated list of tiers). |
 | `FIBE_MCP_YOLO` | Set to `1` to skip the confirmation gate on destructive MCP tools. |
-| `FIBE_MCP_REQUIRE_AUTH` | Multi-tenant MCP: reject requests without `Authorization: Bearer`. |
+| `FIBE_MCP_REQUIRE_AUTH` | Require an API credential for calls to the MCP server. |
 
 For CLI commands and `fibe mcp serve`, the active profile wins: once any profile is configured, `FIBE_API_KEY` and `FIBE_DOMAIN` are ignored unless you pass explicit flags (the CLI reports ignored env vars in `fibe auth status`). They're fallbacks for when no profile exists: ideal for CI and containers. For a per-call override, use the `--api-key`, `--domain`, or `--profile` flags. With no profile **and** no env vars, every call fails with a clear "you need to log in" error.
 
@@ -100,12 +100,12 @@ Mint a **scoped, expiring** API key for CI (see [Granular resource restriction](
 
 ## Switching domains
 
-For staging or a self-hosted Fibe:
+For a self-hosted Fibe installation:
 
 ```sh
-fibe auth login --domain https://fibe.staging.example.com
+fibe auth login --domain https://fibe.example.net
 # or, ad-hoc:
-FIBE_DOMAIN=https://fibe.staging.example.com fibe playgrounds list
+FIBE_DOMAIN=https://fibe.example.net fibe playgrounds list
 ```
 
 `--profile` and `--domain` can be combined in any CLI call without changing the active profile.
@@ -118,7 +118,7 @@ When you run `fibe mcp serve` for an AI agent, three auth options stack:
 2. **Per-request `Authorization: Bearer <key>` header** when running in HTTP/SSE mode: each requester carries their own credentials.
 3. **`fibe_auth_set` tool**: a connected agent can switch credentials at run time without restarting the server.
 
-For a hosted multi-tenant MCP server, set `FIBE_MCP_REQUIRE_AUTH=1` so no one can call tools without supplying a key.
+When you run the MCP server for an installation, set `FIBE_MCP_REQUIRE_AUTH=1` to require a credential for tool calls. Configure the MCP client with an API key that has only the scopes its workflow needs.
 
 ## FAQ
 

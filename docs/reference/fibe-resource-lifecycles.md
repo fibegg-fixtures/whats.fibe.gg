@@ -1,6 +1,6 @@
 ---
 title: "Resource Lifecycles"
-description: "Use to explain how Fibe resources are created, updated, launched, shared, stopped, completed, upgraded, or retired from a user-facing perspective."
+description: "Use to explain how Native Fibe resources relate, change, run, and are removed."
 slug: /reference/fibe-resource-lifecycles
 sidebar_label: "Resource Lifecycles"
 image: /img/og/reference-fibe-resource-lifecycles.png
@@ -9,202 +9,56 @@ tags: ["reference", "foundation"]
 format: md
 ---
 
-Use this skill when a task depends on resource state, launch order, updates, cleanup, or safe user-facing behavior.
+Use this guide to explain the basic relationships between Native Fibe resources. Consult the current API contract for exact status names, action preconditions, and deletion effects; these can be more specific than the conceptual lifecycle below.
 
-## Host lifecycle
+## Host
 
-A Host starts as a host connection or a platform-managed tutorial request.
+A Host is configured as a runtime destination for Fibe workloads. The operator supplies and maintains the machine and its Docker environment. Confirm that a Host is available before starting a Playground or Task, and consider its workloads and data before changing or removing its configuration.
 
-Typical lifecycle:
+The Native API exposes Host connection tests and Host runtime operations. Use the connection test after changing access settings; inspect the Host's runtime state when a workload cannot start.
 
-1. User adds or receives a Host.
-2. Fibe stores connection settings and root-domain information.
-3. User tests connection.
-4. Host becomes available for Playgrounds and standalone Agent chats.
-5. User may update display name, domains, TLS settings, registry credentials, or status.
-6. If disabled or failing, new launches should avoid it.
-7. If deleted, dependent running environments must be stopped or moved first.
+## Repository
 
-Tutorial Hosts add provisioning progress, stricter cleanup, and fix-redeploy controls.
+A Repository connects source to Fibe. It may supply Compose files, application code, or build inputs for a Spec. If source access changes, check the Repository connection and the Spec that refers to it before retrying a run.
 
-Funding and unfunded behavior:
+## Spec
 
-- A paid Host is charged once per day from your balance: Mana for platform-managed tutorial Hosts, Sparks for self-hosted ones.
-- If a charge cannot be covered, the Host is disabled and a grace period begins. While unfunded, runtime actions (launch, rollout, restart, diagnostics refresh, logs) fail with `HOST_NOT_FUNDED`; read-only and billing views still work.
-- On a self-hosted Host, already-running Playgrounds keep running but are no longer actively monitored, recovered, or auto-expired until funded again. On a platform-managed (tutorial) Host, the runtime is paused: its Playgrounds are stopped and its Agent chats are set aside, with stored data kept.
-- If grace ends while still unpaid, the Host is suspended. A suspended, still-unpaid platform-managed Host can eventually be removed, and removal takes its Playgrounds, Tasks, and their data with it. A self-hosted Host is never deleted by Fibe; its host machine and data are untouched.
-- Funding the balance (or auto-recharge) before removal settles the debt and re-enables the Host.
+A Spec describes an environment and the choices used to run it. Review its Compose document, variables, source, and target Host before starting a workload. A change to the Spec describes future or reapplied configuration; it does not by itself prove that a running Playground has adopted the change.
 
-## Repository lifecycle
+Specs can also hold mounted files, registry credentials, schedule settings, and ENV pack attachments. Keep these values aligned with the Team or personal owner of the Spec.
 
-A Repository starts when the user creates or connects a repository.
+## Playground
 
-Typical lifecycle:
+A Playground is a long-running environment created from a Spec on a Host. Use its status, service information, and logs to understand runtime behavior. Apply configuration changes through the available Playground action and verify the resulting state afterward.
 
-1. User creates a built-in repository or imports an existing GitHub repository.
-2. Fibe discovers branches and repository metadata.
-3. Fibe detects useful files such as Docker Compose and example environment files.
-4. Templates and dynamic services can use the Repository as source.
-5. Push events refresh branches, build records, notifications, source-linked templates, and job triggers.
-6. Users may commit Playground changes back to the repository from the UI.
-7. Disabled or errored Repositories should not be used for new source-backed launches until fixed.
+The Native API provides Playground status, logs, debug information, runtime operations, and lifecycle actions. Read the operation result and current status after a change; a request being accepted does not by itself prove that the services are ready.
 
-Repositories are user-scoped. Two users can connect the same repository independently.
+Before deleting a Playground or changing its Spec, check whether persistent volumes or other external storage contain data that must be retained. Container-local files are not a durable storage plan.
 
-## Template lifecycle
+## Task
 
-A Template is the reusable definition. A Template Version is the immutable launch body.
+A Task represents work expected to finish. A Task run is useful for checks or other finite operations. Inspect its outcome and logs after completion, and make sure its Compose command exits when the work is done. A continuously running server is a Playground workload, not a completed Task.
 
-Typical lifecycle:
+Task records expose run status and logs, and support rerun or cancellation actions where applicable. Repository-triggered runs can capture Job ENV values at admission; edits to those entries affect later runs. See [job mode](mode-job-task.md) and [the managed environment reference](reference-fibe-managed-env.md).
 
-1. User creates, imports, forks, or discovers a Template.
-2. User publishes a new Template Version with YAML, variables, metadata, and optional automation settings.
-3. New launches default to the latest suitable version.
-4. Existing Specs keep their original version until the user upgrades or switches them.
-5. Source-linked Templates can publish a new version when the tracked source file changes.
-6. Public versions can appear in a marketplace; private versions stay in the user's templates.
-7. Forks are independent copies for customization.
+## Team ownership
 
-Changes become new versions.
+A Team can own shared resources. Access to those resources follows the Native application's current Team membership and authorization rules. Check the resource owner before using an identifier in an operation, and review Audit Logs when you need to understand a recorded change.
 
-## Spec lifecycle
+## Agent and Library
 
-A Spec is a launch blueprint derived from a Template Version plus launch choices.
+Agent configuration and Library records are workspace resources. An Agent can have authentication, configuration, mounted files, conversations, and runtime state; inspect its current state before changing credentials or restarting it. The Library includes reusable Templates and ENV packs. ENV pack attachments can belong to a Spec or Playground, and removing an attachment changes future configuration without turning the pack into public data. Preserve any required configuration before removing a record.
 
-Typical lifecycle:
+## Safe change sequence
 
-1. User chooses a Template, target Host, branch/source settings, variables, mounted files, service settings, and persistence options.
-2. Fibe validates and compiles the template into a runnable environment plan.
-3. The Spec can create a Playground or Task.
-4. Spec edits are allowed, but changes affect running Playgrounds only after rollout, restart, deploy, or reconciliation.
-5. If a Spec uses persistent volumes, warn before renaming services or volume keys because volume names tie data to service shape.
-6. A Spec can switch to another Template Version, with preview or bulk upgrade flows when available.
-
-A Spec that persists volumes allows only one active Playground at a time; a second concurrent launch from the same stateful Spec is rejected so two instances cannot share the same named data.
-
-## Playground lifecycle
-
-A Playground is a running environment.
-
-Common statuses:
-
-| Status | User-facing meaning |
-| --- | --- |
-| `pending` | Launch was requested and is waiting to start. |
-| `in_progress` | Fibe is preparing source, images, routing, and services. Image builds time out after 45 minutes by default. |
-| `running` | Services are up and the Playground can be used. |
-| `error` | Launch or runtime setup failed. Inspect logs and retry after fixing. |
-| `has_changes` | Linked source has changed and a rollout or restart may be needed. |
-| `completed` | A job-mode Playground finished. |
-| `stopping` | Stop is in progress. |
-| `stopped` | Services are stopped but the Playground record remains restartable. |
-| `destroying` | Cleanup is in progress. |
-
-Main actions:
-
-- Rollout: apply changes with minimal disruption; unchanged services usually stay running.
-- Restart: stop and start the whole environment; use for corrupted state or major shape changes.
-- Stop: stop services while preserving the resource record.
-- Destroy: remove the Playground.
-- Extend expiration: keep a temporary environment alive longer.
-- Retry: re-run failed creation after fixing configuration or infrastructure.
-- Attach or detach Agent: add or remove Agent support.
-
-Data safety:
-
-- Named volumes always survive stop, start, restart, and rollout. Destroy and expiration teardown keep them only when the Spec is stateful ("Stateful (Persist Volumes)"); otherwise they are removed.
-- Restart may pull fresh images for floating tags.
-- Rollout is safer for stateful support services because unchanged containers can remain running.
-- Container-local files are disposable unless backed by a volume, repository, artefact, or mounted file.
-
-Expiration:
-
-- New Playgrounds default to **never expire**. When expiration is enabled without an explicit deadline, Fibe uses an 8-hour fallback for a regular Playground and the operator-configured job fallback for a job-mode run (1 hour by default).
-- A temporary Playground can have an expiration. When it falls due, if the source has uncommitted changes the Playground is parked as `has_changes` and preserved; if it is clean, it is destroyed (containers, named volumes unless persistence is enabled, and the record).
-- Extend adds the duration to whichever is later: the current expiry or now, so extending an already-expired record counts from now. With no duration supplied, the extension is 8 hours for a regular Playground and the configured job fallback for job mode (1 hour by default).
-- Expiration and automatic recovery only run while the Host is funded.
-
-## Task lifecycle
-
-A Task is a job-mode Playground.
-
-Typical lifecycle:
-
-1. User launches manually, schedule fires, or VCS trigger matches.
-2. Fibe starts services with job-mode constraints.
-3. Watched services run until they exit.
-4. If every watched service exits successfully, the Task succeeds.
-5. If any watched service exits non-zero, the Task fails.
-6. Logs and result information are captured.
-7. Services are cleaned up automatically.
-
-Use Tasks for tasks that finish. Do not use Tasks for web apps, dashboards, dev servers, or watchers that should stay alive.
-
-Constraints and limits:
-
-- Job-mode services run one replica with no automatic restart. Public exposure does not happen because `fibe.gg/port` and other routing labels are stripped before launch.
-- A Task has a maximum runtime of about 4 hours; if the watched service has not exited by then, the run is marked failed (timed out) and cleaned up.
-- Logs and the result are kept on the Task after success, failure, or timeout. Log capture keeps the last 5000 lines per service by default. Normal completion removes the runtime containers without deleting the Task record; deleting or expiring the Task removes its saved result with it.
-
-## Agent lifecycle
-
-An Agent is a stored Agent configuration.
-
-Common statuses:
-
-| Status | User-facing meaning |
-| --- | --- |
-| `pending` | Created but not ready to use. |
-| `authenticated` | Credentials are available and valid. |
-| `expired` | Credentials need refresh. |
-| `revoked` | Credentials were removed or invalidated. |
-| `deleting` | Removal is in progress and the Agent should not be used for new work. |
-
-Agents can be duplicated, configured, given mounted files, used for standalone chat and shown in Bridge.
-
-Runtime data and naming:
-
-- A running Agent keeps an on-Host workspace (chat working state and caches). Stop keeps the workspace (restart resumes); clean-up or purge permanently deletes it. Agent configuration, settings, mounted files, credentials, toggles, lives on the Agent itself and survives stop, restart, and clean-up.
-- Each chat gets a stable, friendly subdomain on its Host, with automatic HTTPS from the Host's wildcard certificate. There is one live chat per Agent per Host; restarting reuses the same name and URL.
-
-## Webhook lifecycle
-
-Webhook endpoints are created with a URL, event selection, optional filters, and a signing secret. They can be tested, enabled, disabled, updated, or deleted.
-
-Delivery attempts are recorded. Repeated failures can disable an endpoint until the user fixes the receiver.
-
-## Secret and Job ENV lifecycle
-
-Secrets are long-lived encrypted values. Create them for credentials that Agents or workflows need without putting values in source code or templates.
-
-Job ENV entries apply to job-mode runs. Use global entries for every Task and Repository-scoped entries for one repository's job runs.
-
-## Cleanup and cascades
-
-What deleting or disabling one resource does to others:
-
-- Disable a Host: existing Playgrounds keep running (self-hosted) or are paused (platform-managed); live Agent chats are paused with their data kept; no new actions until re-enabled.
-- Delete a Host: blocked while Playgrounds or Tasks are attached. Move or remove them first. A self-hosted Host's host machine is never touched.
-- Delete an Agent: its Agent chats are cleaned up; Playgrounds it was attached to survive and simply lose the Agent link.
-- Rotate or revoke an API key an Agent uses: running Agents that depend on it redeploy to pick up the change.
-- Disable a Repository: does not stop Playgrounds, builds, or jobs already using it; it only blocks new source-backed launches until re-enabled.
-- Delete a Repository: blocked while a Spec still references it. A source-linked Template does not block deletion; it simply loses its source link.
-- Cancel a subscription: a platform-managed Host tied to it survives as long as it stays funded.
-
-## Automatic recovery
-
-Fibe recovers from these transient failures automatically:
-
-- A brief outage (under a couple of minutes) is ignored; a sustained one triggers an automatic redeploy.
-- A reachable environment stays viewable even if a single health check is missed; a missed health check never stops or errors a running environment.
-- TLS/HTTPS provisioning surfaces a pending state, not a failure, and clears once the certificate is issued.
-- A launch still `in_progress` after 30 minutes is reset and retried. Temporary network or host failures are retried instead of becoming hard failures.
-- Automatic recovery and expiration run only while the Host is funded.
+1. Identify the owner and current state of the resource.
+2. Check which Repository, Spec, Host, or Team it depends on.
+3. Review any persistent data and credentials that may be affected.
+4. Apply the intended change using the Native interface or API operation.
+5. Read the resource again and verify the resulting state.
 
 ## Related skills
 
-- [fibe-product-map](fibe-product-map.md)
-- [fibe-agents-and-automation](fibe-agents-and-automation.md)
-- [decide-job-mode](decide-job-mode.md)
-- [decide-zero-downtime](decide-zero-downtime.md)
-- [recipe-named-volumes](recipe-named-volumes.md)
+- [fibe-product-map](fibe-product-map.md) for resource relationships.
+- [fibe-security-access-and-integrations](fibe-security-access-and-integrations.md) for ownership and data handling.
+- [common-errors-and-fixes](common-errors-and-fixes.md) for Compose and runtime troubleshooting.

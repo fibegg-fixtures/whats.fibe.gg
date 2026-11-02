@@ -74,7 +74,7 @@ services:
 
   web:
     image: my-app
-    command: bin/rails server -b 0.0.0.0
+    command: bundle exec puma -b tcp://0.0.0.0:3000
     depends_on:
       setup:
         condition: service_completed_successfully

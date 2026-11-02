@@ -19,7 +19,7 @@ Use this when you already have a template, Spec, Compose file, or GitHub repo co
 ```sh
 fibe github apps connect
 
-fibe launch --template billing-app --name billing-staging --host next --version 3
+fibe launch --template demo --name demo --host 1 --version 1
 fibe launch --spec starter --name demo --host next
 fibe launch --compose @docker-compose.yml --name demo --host next
 fibe launch owner/repo --host 1
@@ -244,11 +244,11 @@ Tasks emit `playground.*` events (they're job-mode playgrounds). Use `event_filt
 Maintain two profiles and switch with one command:
 
 ```sh
-fibe auth login --profile staging --domain https://fibe.staging.example.com
+fibe auth login --profile local --domain https://fibe.example.net
 fibe auth login --profile prod    --domain https://fibe.gg
 
-fibe auth use staging
-fibe playgrounds list             # against staging
+fibe auth use local
+fibe playgrounds list             # against your installation
 
 fibe --profile prod playgrounds list   # one-off against prod, doesn't change active
 ```

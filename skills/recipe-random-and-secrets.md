@@ -1,19 +1,20 @@
 ---
 name: recipe-random-and-secrets
-description: "Use to generate random values for passwords/secrets via `random: true`, mark variables sensitive for launcher UI, and persist them across rollouts in Fibe templates."
+description: "Use to generate random values during Compose compilation, bind Vault Secrets into Tasks with Job ENV, and handle credentials safely."
 ---
 
-# Recipe: random values, secrets, and sensitive variables
+# Recipe: random values and sensitive configuration
 
-Fibe templates can declare a variable as `random: true` to have the platform generate the value once and persist it. Optional `secret: true` and `sensitive: true` flags hide the value in launcher UI / telemetry.
+Fibe variables can declare `random: true` to generate a value during Compose compilation. A random value is useful for a new password that belongs to that environment. The compiler does not retain a generated value for future compile calls; save and supply the value with the Spec when it must remain stable.
 
 ## `random: true` semantics
 
 When a variable has `random: true`:
 
-1. At compile time, if the user did not supply a value, Fibe generates 32 lowercase hex characters.
-2. The generated value is persisted for the launch: subsequent compiles reuse the same value.
-3. Combined with `required: true`, random generation runs **before** the required check, so the combination always succeeds with no user input.
+1. If no value or non-empty default is supplied, Fibe generates 32 lowercase hexadecimal characters.
+2. The same variable's inline references and `path`/`paths` bindings receive one value within that compile pass.
+3. Combined with `required: true`, random generation runs **before** the required check, so compilation has a value to validate.
+4. A later compile without the saved value can generate a different value. Supply the selected value again when it must remain stable.
 
 ```yaml
 DB_PASSWORD:
@@ -35,9 +36,9 @@ x-fibe.gg:
       paths:
         - services.postgres.environment.POSTGRES_PASSWORD
         - services.pgbouncer.environment.DB_PASSWORD
-        - services.setup.environment.FIBE_DB_PASS
-        - services.web.environment.FIBE_DB_PASS
-        - services.jobs.environment.FIBE_DB_PASS
+        - services.setup.environment.DB_PASSWORD
+        - services.web.environment.DB_PASSWORD
+        - services.jobs.environment.DB_PASSWORD
 ```
 
 Same hex value lands in every listed path. Use this pattern whenever one generated secret must be shared by multiple services.
@@ -65,12 +66,14 @@ x-fibe.gg:
 
 The inline reference and the `paths:` writes all receive the same 32-hex value within one compile pass.
 
-## `secret: true` / `sensitive: true`
+## Display hints
 
-Launcher UIs interpret these optional flags:
+Some configuration forms interpret these optional flags:
 
-- `secret: true`: mask the value in the form (show `••••`, allow reveal-click).
-- `sensitive: true`: exclude the value from logs/telemetry.
+- `secret: true`: request that the form mask the value.
+- `sensitive: true`: mark the value as sensitive for supported handling.
+
+These are metadata hints, not encryption or access control. Never commit a credential to the Compose document just because the variable is marked secret.
 
 Example:
 
@@ -87,31 +90,28 @@ slack_webhook_url:
     - services.slack-notify.environment.SLACK_WEBHOOK_URL
 ```
 
-The default empty string + `required: false` + `secret: true` makes this a "paste your own webhook here, leave blank to skip" launcher field.
+The default empty string + `required: false` + `secret: true` makes this an optional masked configuration value.
 
-## Random vs. Secret resource
+## Random value, Secret Vault, ENV pack, and Job ENV
 
-When to choose `random: true` vs a Fibe **Secret** resource:
+| Need | Native Fibe feature |
+|---|---|
+| New value generated for one Compose compile | `random: true` variable; pass the chosen value with the Spec to preserve it later |
+| Long-lived owner-bound credential | Secret Vault; encrypted at rest and returned as metadata in ordinary reads |
+| Credential for Task runs | Job ENV entry, optionally referring to a Vault Secret; Repository-specific entries can override owner-wide entries |
+| Reusable non-secret environment map for a Spec or Playground | ENV pack attached from the Library |
 
-| Concern | `random: true` | Fibe Secret |
-|---|---|---|
-| Value lives in this template only | yes | no |
-| Value is the Player's external credential (Stripe key, OpenAI token) | no | yes |
-| Need to rotate without changing template | hard (`regenerate_variables` flow) | easy (update the Secret) |
-| Visibility in launcher UI | masked if `secret: true` | not shown: only metadata |
-| Auditability | low | high |
-
-For a Postgres password that lives inside this Playground: `random: true`. For a Stripe API key the Player owns: Fibe Secret. See [decide-secrets-and-randoms](decide-secrets-and-randoms.md).
+Secret Job ENV entries are withheld from pull-request-triggered Task runs. The Native API rejects Job ENV keys beginning with `FIBE_`.
 
 ## Rotating a random value
 
-Template-author tooling can request regeneration for selected variable names. Variables listed there have their stored value deleted, then re-randomized if `random: true`.
+To rotate a password, choose and save a replacement value in the Spec, then coordinate the change with the database and every service that connects to it. Changing a database password without updating both sides may make the stored data inaccessible.
 
 ## When NOT to use `random: true`
 
-- **Already-shared values**: if the Postgres password is also stored elsewhere (e.g. Player's password manager), use a regular variable with no default. The Player supplies once, Fibe stores.
-- **Truly sensitive long-lived secrets**: prefer Fibe Secrets.
-- **Values the Player wants to control**: `random: true` makes the value invisible by default; surface it only via launcher reveal-click on `secret: true`.
+- **Already-shared values**: if a Postgres password is also needed elsewhere, store it in the Secret Vault and use an explicit supported reference for each consumer.
+- **Truly sensitive long-lived credentials**: use a supported external or operator-managed secret source.
+- **Values the user wants to choose**: declare a regular variable and bind it with `path` or `paths`; do not expect `random: true` to create a user-chosen value.
 
 ## Patterns for common secrets
 
@@ -143,7 +143,7 @@ RAILS_MASTER_KEY:
     - services.jobs.environment.RAILS_MASTER_KEY
 ```
 
-(No `random: true`: this must match the value the application already uses to decrypt credentials. The launcher supplies it.)
+(No `random: true`: this must match the value the application already uses to decrypt credentials. Supply it through the installation's supported configuration mechanism.)
 
 ### Webhook URL (optional, sensitive, no default)
 
@@ -175,7 +175,7 @@ JWT_SECRET:
 
 - **Resetting `random: true` between launches**: without explicit `regenerate_variables`, the stored value persists. If you redeploy and the password changed, your existing DB volume is now inaccessible.
 - **Using `random` for values the app can't accept**: e.g. an app expects a 64-char Base64 secret, but `random` gives 32 hex chars. Either change the app's spec to accept hex, or supply manually.
-- **Treating `secret: true` as encryption**: it's a UI hint, not at-rest encryption. Real secrets use Fibe Secrets.
+- **Treating `secret: true` as encryption**: it is a display hint, not at-rest encryption. Use the Secret Vault for owner-bound credentials.
 - **Not listing the variable in `paths:`**: if you only use `$$var__NAME` inline AND don't declare `paths:`, the variable is "used" by inline reference; that's fine. But if you list NO inline use AND no path, it's `unused_var`.
 
 ## Related skills

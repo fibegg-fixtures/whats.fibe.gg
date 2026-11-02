@@ -37,6 +37,6 @@ Automatic repair reuses the last applied values, including after pack deletion o
 
 ## Clients and portability
 
-Use **Library → ENV packs** (`/library/env_packs`) or the matching candidate `fibe env-packs` commands. The API exposes `/api/env_packs` and ordered attachment endpoints on Playgrounds and job-mode Specs; a non-empty attachment list on a service Spec returns 422 `env_pack_spec_job_mode_required`. Read/write/delete/manage pack scopes and target management authority are checked separately.
+Use **Library → ENV packs** (`/library/env_packs`) or the matching released `fibe env-packs` commands, when available in the installed SDK. The API exposes `/api/env_packs` and ordered attachment endpoints on Playgrounds and job-mode Specs; a non-empty attachment list on a service Spec returns 422 `env_pack_spec_job_mode_required`. Read/write/delete/manage pack scopes and target management authority are checked separately.
 
 Exports include readable definitions and selected-service references. Import creates personal copies with new IDs and grants from the authenticated importer. Exported owner or grantor fields never become authority. Missing definitions remain explicitly unavailable. Applied runtime authority is not imported.

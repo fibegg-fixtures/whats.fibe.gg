@@ -1,25 +1,17 @@
 ---
 name: fibe-tool-agents-delete-conversation
-description: Use when you need to delete a specific Agent conversation. Overseer-only.
+description: Use only when the user explicitly asks to delete an Agent conversation.
 ---
-
 # fibe_agents_delete_conversation
 
-[MODE:SIDEEFFECTS] Tier: overseer. Destructive.
-
-Deletes one conversation for an Agent. Use during project/user cleanup flows after any needed exports or archives have completed.
+Deletes one conversation and its stored messages.
 
 ## Inputs
-| Field | Type | Required | Notes |
-|---|---|---|---|
-| `id_or_name` | int or string | yes | Agent ID or name |
-| `conversation_id` | string | yes | Runtime conversation/thread ID |
 
-## Gotchas
-- Deletion is scoped to the Agent and conversation id.
-- Do not delete conversations as part of normal iteration.
-- Archive or export needed project data before cleanup.
+- `agent_id_or_name`: Agent ID or name.
+- `conversation_id`: conversation to delete.
+- `confirm`: must be true.
 
-## Related
-- `fibe_agents_create_conversation`: create/upsert.
-- `fibe_agents_messages` / `fibe_agents_activity`: inspect before deletion.
+## Notes
+
+- Deletion cannot be undone.

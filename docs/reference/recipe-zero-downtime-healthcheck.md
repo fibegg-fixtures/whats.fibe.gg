@@ -91,7 +91,7 @@ If the app doesn't have a healthcheck endpoint, add one before enabling `fibe.gg
 
 ## Variable-driven values
 
-Use variables only when launchers genuinely need to tune rollout behavior. Most templates should hard-code a known-good endpoint and timing profile instead of exposing all five settings.
+Use variables only when Spec forms genuinely need to tune rollout behavior. Most templates should hard-code a known-good endpoint and timing profile instead of exposing all five settings.
 
 ```yaml
 services:

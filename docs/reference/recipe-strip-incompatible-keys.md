@@ -48,7 +48,7 @@ These work as in plain Compose:
 - `working_dir:`
 - `networks:`
 - `deploy:` (`replicas`, `resources.limits.cpus`, `memory`, etc.)
-- `configs:`, `secrets:` (Compose config/secret features: orthogonal to Fibe Secrets)
+- `configs:`, `secrets:` (Compose configuration features; check that the target Host's Docker environment supports the feature)
 - `shm_size:`, `tmpfs:`, etc.
 - `labels:` (`fibe.gg/*` keys + any other vendor labels)
 

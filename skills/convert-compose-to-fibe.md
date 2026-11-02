@@ -77,7 +77,7 @@ For exposed HTTP services that can scale horizontally and respond to a health en
 
 ### Step 6: Extract launch-time variables
 
-Anything the launcher should set (subdomain, image tag, replica counts, credentials defaults) becomes a `x-fibe.gg.variables.<NAME>` entry. Two interpolation idioms:
+Anything the Spec form should set (subdomain, image tag, replica counts, credentials defaults) becomes a `x-fibe.gg.variables.<NAME>` entry. Two interpolation idioms:
 - whole-node value: `path:` / `paths:` (primary route; preserves local Compose placeholders) → [recipe-whole-node-paths](recipe-whole-node-paths.md)
 - inline-string fragment: `$$var__NAME` inside a larger Compose string (last resort only) → [recipe-inline-variables](recipe-inline-variables.md)
 

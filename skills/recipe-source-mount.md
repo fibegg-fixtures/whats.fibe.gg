@@ -26,14 +26,12 @@ description: "Use to set up Fibe live source mounting via `working_dir` plus `fi
 
 ## Checkout and mount semantics
 
-Fibe groups source by normalized repository and exact branch, not by service.
-Several services using the same repository and branch share one checkout and one
-Git synchronization. Different branches always use separate checkouts, even
-when their readable names would collide. The Core-owned source plan is an
-in-memory value: standalone Core derives a repository-digest path, while
-fibe.gg supplies its established `repositories/<repository_slug>/<branch>` path to the same
-grouping and mount contract. The rendered Compose exposes either consumer-owned
-path to local tools through standard build contexts and bind mounts.
+Fibe groups source by normalized Repository and exact branch. Services using the
+same source and branch can share a checkout; different branches use separate
+checkouts. The Native runtime chooses the checkout path and passes it into
+Compose interpolation, build contexts, and bind mounts. Use
+`FIBE_SERVICES_<SERVICE_TOKEN>_PATH` when a Compose value needs the path to a
+source-backed service; see [Fibe-managed environment variables](reference-fibe-managed-env.md).
 
 For each eligible non-production service, Fibe replaces every existing Compose
 mount whose normalized container target exactly equals the source target (`fibe.gg/source_mount`, otherwise `working_dir`). Short
@@ -103,7 +101,7 @@ For Ruby/Rails, gems live inside the image (or in a separate volume); never bind
 | Framework | `fibe.gg/start_command` |
 |---|---|
 | Rails dev (with bin/dev) | `bin/dev` (often runs Vite + Puma via Procfile.dev) |
-| Rails dev (plain) | `bin/rails server -b 0.0.0.0` |
+| Rails dev (plain) | `bundle exec puma -b tcp://0.0.0.0:3000` |
 | Node Express dev | `npm run dev` (with nodemon configured in script) |
 | Next.js dev | `npm run dev -- -H 0.0.0.0` |
 | Vite SPA | `npm run dev -- --host 0.0.0.0` |

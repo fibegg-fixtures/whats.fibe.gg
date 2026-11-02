@@ -1,0 +1,13 @@
+{
+  "reviewed_at": "2026-11-02",
+  "api": {
+    "repository": "https://github.com/viktorvsk/fibe-api.git",
+    "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29"
+  },
+  "ui": {
+    "repository": "https://github.com/viktorvsk/fibe-ui.git",
+    "revision": "365f0c346a940c450fb256dabe916b854f1edc55"
+  },
+  "sdk_release": "v0.3.3",
+  "qualification": "Content and committed-source review. No Native runtime, provider or released-consumer qualification is implied."
+}

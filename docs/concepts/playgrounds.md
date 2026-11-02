@@ -9,9 +9,7 @@ keywords: [Playground, rollout, hard restart, lifecycle, maintenance mode, Docke
 
 A **Playground** is the environment launched from a [Spec](/concepts/specs/). It includes services, URLs, logs, terminals, and an optional Agent panel.
 
-Starting, changing, stopping, or destroying a Playground requires a funded, active Host. Expired billing returns `HOST_NOT_FUNDED`. A disabled, failed, or provisioning Host cannot launch or change Playgrounds.
-
-The Host also needs working SSH details and a root domain. Tutorial Hosts must finish provisioning. Failed checks return a validation error.
+Playground operations require a reachable Host in a state that permits the requested operation. A disabled Host is not a target for new work. Check Host connection and runtime status when an operation is rejected; the API reports the specific admission or validation error.
 
 ## Lifecycle states
 
@@ -82,7 +80,7 @@ A hard restart can pull a fresh image. Pin tags such as `postgres:17` instead of
 <details>
 <summary>How long does a Playground stay alive?</summary>
 
-Until you stop or destroy it. New Playgrounds default to **Never Expire**, but you can set and extend an expiration at any time. If expiration is enabled without a specific deadline, Fibe uses an 8-hour fallback for a regular Playground and the operator-configured job fallback for a [Task](/concepts/tasks/) (1 hour by default).
+Until you stop or destroy it. A Playground may be configured with an expiration. The installation applies its configured fallback when an operation omits a deadline; inspect the Playground and installation settings instead of assuming a universal lifetime.
 </details>
 
 <details>

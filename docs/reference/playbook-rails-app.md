@@ -153,7 +153,7 @@ services:
       fibe.gg/repo_url: https://github.com/owner/repo   # overwritten by the REPO_URL binding
       fibe.gg/branch: main                              # overwritten by the BRANCH binding
       fibe.gg/dockerfile: Dockerfile
-      fibe.gg/start_command: bin/rails server -b 0.0.0.0
+      fibe.gg/start_command: bundle exec puma -b tcp://0.0.0.0:3000
       fibe.gg/port: 3000
       fibe.gg/visibility: external
       fibe.gg/subdomain: app                            # overwritten by the SUBDOMAIN binding
@@ -275,7 +275,7 @@ services:
       fibe.gg/repo_url: https://github.com/owner/repo
       fibe.gg/branch: main
       fibe.gg/dockerfile: Dockerfile
-      fibe.gg/start_command: bin/rails server -b 0.0.0.0
+      fibe.gg/start_command: bundle exec puma -b tcp://0.0.0.0:3000
       # no fibe.gg/port — private to AnyCable
 
   ws:                                # anycable-go front
@@ -313,7 +313,7 @@ Rails apps need migrations + asset compilation BEFORE the web tier accepts traff
 
 ## Pitfalls
 
-- **Hardcoded `secret` for `RAILS_MASTER_KEY`**: must come from the launcher (the repo's encrypted credentials are decrypted with this).
+- **Hardcoded `secret` for `RAILS_MASTER_KEY`**: must come from the Spec form (the repo's encrypted credentials are decrypted with this).
 - **Repository source + `production: "true"`**: `working_dir` is still required as the process directory, but Fibe does not generate a source bind.
 - **Forgetting `RAILS_LOG_TO_STDOUT: "1"`**: without it, Rails logs to a file inside the container; `docker logs` shows nothing useful.
 - **Sidekiq without a healthcheck**: Sidekiq is not HTTP. Don't enable zero-downtime for it; rely on restart-style rollouts and small replica counts.

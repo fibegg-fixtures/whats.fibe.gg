@@ -12,7 +12,7 @@ Choose which events trigger notifications: in-app toasts, and optionally browser
 
 Notifications are grouped:
 
-- **Player & Security**: sign-ins, security changes.
+- **Account & Security**: sign-ins, security changes.
 - **Playground**: launch, rollout, error, destroy.
 - **AI Agents & Apps**: Agent messages, Pokes, Build-in-Public activity.
 - **Content & Dev**: Templates, Repositories, Compose detection.

@@ -1,116 +1,32 @@
 ---
 name: fibe-agents-and-automation
-description: Use for Fibe AI Agents, standalone chats, Playground sidecars, Bridge, artefacts, mutters, feedback, job-mode Tasks, CI repair, scheduled jobs, VCS triggers, and mutation-testing automation.
+description: Use to explain Native Agents, Tasks, and supported scheduled or repository-triggered workflows.
 ---
 
-# Fibe agents and automation
+# Fibe Agents and automation
 
-Use this skill when a user asks how Fibe's AI Agents work, how to automate work, or how jobs relate to Playgrounds.
+Use this guide when a workflow involves an Agent or work that should run without remaining as a long-lived Playground. Exact Agent providers, credential methods, and automation options depend on the installed Native API and its configuration; check the current interface and API contract before prescribing a specific integration.
 
-## Agents / AI Agents
+## Agents
 
-An Agent is a persistent AI assistant configuration. It stores provider choice, credentials, settings, prompts, mounted files, and runtime preferences.
+An Agent is an assistant configuration used in supported Fibe workflows. An Agent can be associated with work around a Playground or a conversation, depending on the configuration available in the installation. Keep provider credentials in the installation's supported credential storage. Do not put API keys or credential bundles in Compose files, Repository content, or logs.
 
-Supported provider families include Gemini, Antigravity, Claude Code, OpenAI Codex, Cursor, and OpenCode. Credential type depends on provider: OAuth-style credentials, device-code credentials, pasted credential bundles, or API keys. Antigravity uses the Google OAuth code flow from its headless CLI. A Agent can also run in Fibe Mana mode: Fibe powers the model from your Mana balance, so no provider credential is needed (not available for Cursor and Antigravity).
+## Tasks
 
-An Agent is usable when authenticated and not expired or revoked.
+Use a Task for finite work such as tests, checks, or a scheduled operation. A Task's command should exit when its work is complete so the run can record its result. Use a Playground for an application or development environment that should continue running.
 
-## Agent settings
+Compose job configuration and the watched service behavior determine how a task run completes. See [job mode](mode-job-task.md) for the Compose pattern and limits described by the current schema.
 
-Common user-facing settings:
+## Scheduled and repository-triggered work
 
-- Custom environment variables.
-- Provider API key mode.
-- Custom MCP configuration.
-- Post-init script for preparing the Agent environment.
-- Custom system prompt.
-- Model options.
-- Mounted files.
-- Agent password for protected access.
-- System-check toggle.
+Where enabled in the Native installation, a schedule or Repository event can start a Task. Confirm the Repository, event or schedule configuration, target Host, and Task Spec before enabling automation. Check the Task run's status and logs to diagnose failures.
 
-Mounted files are useful for large context, proprietary docs, scripts, fixtures, or data that should be available to an Agent without committing it to the application repository.
-
-## Standalone chat
-
-A standalone Agent chat runs on a selected Host without requiring a Playground. It gets its own protected URL and can keep conversation state. Use standalone chat when the user wants an AI workspace but does not need it attached to a specific running app.
-
-Typical chat lifecycle:
-
-1. User selects an authenticated Agent and target Host.
-2. Chat starts and gets a protected URL.
-3. User chats through Bridge or the Agent chat page.
-4. User can stop the chat (history kept; restart later) or clean it up (working data deleted). Chats don't expire: a chat runs, and is auto-recovered if unreachable, until stopped or cleaned up.
-
-## Bridge
-
-Bridge is the unified Agent workspace. It helps users switch among Agents and active chats, inspect reachability, open chat panes, and receive live updates from Agent work.
-
-**Create Agent** is the row below the Agent list. With no Agents, Bridge shows "No agents yet" and the same Create Agent action. The guided setup wizard is not part of Bridge: open it from Profile → Advanced Settings → Setup guide (`/wizard`).
-
-Use Bridge language when a user asks for "the agent hub", "all chats", "the floating agent workspace", or "switching between agents".
-
-## Artefacts, mutters, feedback, and public activity
-
-- Artefact: a generated output worth keeping, such as a report, screenshot, mockup, CSV, config, or interactive preview.
-- Mutter: a short progress, evidence, or issue note tied to a Playground or Agent workflow.
-- Feedback: user rating or review of an Agent output.
-- Build in Public: optional public visibility for selected Agent activity and linked Playground context.
-
-## Job mode and Tasks
-
-A Task is a job-mode Playground for tasks that should finish. It watches one or more services, waits for them to exit, records success or failure, and cleans up.
-
-Good Task use cases:
-
-- Test suite run.
-- Lint or build check.
-- Database migration.
-- Backup.
-- Cleanup.
-- Data sync.
-- Documentation build.
-- Scheduled task.
-- VCS-triggered CI task.
-
-Bad Task use cases:
-
-- Web app that should stay reachable.
-- Background worker that should run forever.
-- Development server with hot reload.
-- Watch command that never exits.
-
-## Scheduled jobs
-
-A scheduled job is a Task launched from a cron expression on a target Host.
-
-Use scheduled jobs for repeated cleanup, backup, sync, or audit tasks. The template must be job-mode, and the watched service must exit.
-
-## VCS-triggered jobs
-
-A VCS-triggered job launches a Task when a configured repository event matches, such as a push or pull request on a branch.
-
-Use this for CI-style test runs, smoke checks, documentation builds, and automation that should react to source changes.
-
-
-## Job ENV
-
-Job ENV entries inject environment variables into Tasks. Use them for CI tokens, test service credentials, package registry tokens, and other job-only secrets.
-
-Scopes:
-
-- Global: applies to every Task owned by the user.
-- Repository-scoped: applies only when a Task is tied to a specific repository.
-
-Prefer Job ENV over template variables when a credential should be reused across many job runs and should not be supplied at every launch.
-
-Every Task also receives Fibe-managed run-context variables, and source-backed service paths are available to Compose interpolation. See [reference-fibe-managed-env](reference-fibe-managed-env.md) for the complete variable list, scope, and ownership rules; do not add platform-looking `FIBE_*` keys to templates without checking that reference.
+Automation runs with the access of its configured owner and credentials. Keep those credentials scoped to the required Repository and task, and review recorded changes through Audit Logs.
 
 ## Related skills
 
-- [mode-job-task](mode-job-task.md)
-- [mode-schedule-cron](mode-schedule-cron.md)
-- [mode-trigger-vcs](mode-trigger-vcs.md)
-- [playbook-test-runner](playbook-test-runner.md)
-- [playbook-cron-scheduled](playbook-cron-scheduled.md)
-- [decide-secrets-and-randoms](decide-secrets-and-randoms.md)
+- [fibe-product-map](fibe-product-map.md) for the core resource model.
+- [mode-job-task](mode-job-task.md) for finite Task configuration.
+- [mode-schedule-cron](mode-schedule-cron.md) for scheduled Tasks.
+- [mode-trigger-vcs](mode-trigger-vcs.md) for Repository-triggered Tasks.
+- [fibe-security-access-and-integrations](fibe-security-access-and-integrations.md) for credential handling.

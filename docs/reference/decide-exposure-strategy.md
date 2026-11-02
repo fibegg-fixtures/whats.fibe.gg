@@ -48,7 +48,7 @@ Use `@` when this service should answer at the root of the Host: typically the "
 
 ## Step 4: Decide whether to share a subdomain with `path_rule`
 
-Sometimes two services share one host but differ by URL path. The classic case is a Rails web app + an AnyCable WebSocket server: both at `next.fibe.live`, but `/cable` and `/health` route to the WebSocket service.
+Sometimes two services share one host but differ by URL path. The classic case is a Rails web app + an AnyCable WebSocket server: both at `apps.example.test`, but `/cable` and `/health` route to the WebSocket service.
 
 ```yaml
 services:
@@ -98,7 +98,7 @@ fibe.gg/port: 8000    # python
 fibe.gg/visibility: external
 fibe.gg/port: 9000    # admin console
 fibe.gg/visibility: internal
-fibe.gg/port: "8080"  # template uses launcher's port choice via path binding
+fibe.gg/port: "8080"  # template uses Spec form's port choice via path binding
 fibe.gg/visibility: external
 ```
 
@@ -108,7 +108,7 @@ A service exposed via Fibe must bind `0.0.0.0` inside the container. `localhost`
 
 | App | Correct bind |
 |---|---|
-| Rails | `bin/rails server -b 0.0.0.0` |
+| Rails | `bundle exec puma -b tcp://0.0.0.0:3000` |
 | Node/Express | `app.listen(PORT, '0.0.0.0')` |
 | Next.js | `next dev -H 0.0.0.0` |
 | Vite | `vite --host 0.0.0.0` |

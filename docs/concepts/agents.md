@@ -4,7 +4,7 @@ description: Configured AI assistants (Agents), Build in Public, and the artefac
 slug: /concepts/agents
 sidebar_position: 1
 image: /img/og/concepts-agents.png
-keywords: [Agent, Agent, AI assistant, providers, Claude, Gemini, Antigravity, OpenAI, Cursor, OpenCode, Pokes, conversations, Build in Public, Artefact, Mutter, Feedback]
+keywords: [Agent, AI assistant, providers, conversations, Build in Public, Pokes, Artefact, Mutter, Feedback]
 ---
 
 A **Agent** is a configured AI assistant. You can keep one per job and run several conversations in each.
@@ -22,8 +22,8 @@ For a guided first run through Hosts, Specs, Playgrounds and Agents, open **Prof
 
 ## Configure an Agent
 
-- **Provider:** Gemini, Antigravity, Claude Code, OpenAI Codex, Cursor, or OpenCode.
-- **Credentials:** OAuth, a device code, a credential bundle, an API key, or Fibe Mana where supported. Mana runs the provider through Fibe without personal provider keys and must be enabled on your profile. Cursor and Antigravity do not support it.
+- **Provider:** choose from the provider options exposed by this installation.
+- **Credentials:** OAuth, a device code, a credential bundle, an API key, or provider credentials configured for that Agent. Provider login availability depends on the selected provider and the installation configuration.
 - **System prompt:** instructions that shape behavior.
 - **Environment values:** variables available to the Agent process.
 - **Model options:** context window, temperature, and provider settings.
@@ -38,7 +38,7 @@ A Agent can authenticate in three ways:
 
 - **OAuth or device flow:** connect through the provider's browser flow.
 - **API key or credential bundle:** store provider credentials on the Agent.
-- **Fibe Mana:** Fibe runs the provider and bills Mana. Cursor and Antigravity do not support this mode.
+- **Provider credentials:** authenticate with the provider using the supported flow for that provider and installation.
 
 If a linked Fibe API key stops working but provider credentials are still stored on the Agent, Fibe falls back to those provider credentials. If neither path works, the Agent needs re-authentication before it can run.
 
@@ -75,7 +75,7 @@ Pick an authenticated Agent and a Host. Fibe starts a chat with a protected URL.
 
 Standalone chats do not expire. They run and recover automatically until stopped or cleaned up. They have no Playground.
 
-Starting, restarting, messaging, interrupting, reading live state from, stopping, or cleaning up an Agent runtime requires the selected Host to be funded. Unpaid Hosts fail with `HOST_NOT_FUNDED`.
+Agent runtime operations contact the selected Host and require it to be reachable and configured for Agent workloads. If a runtime action fails, inspect the Host and Agent runtime status before retrying.
 
 Other failures return stable codes. A busy Agent can queue the message. Invalid provider credentials require authentication. Stopped or unreachable chats report their state.
 
@@ -127,9 +127,9 @@ Each Poke has:
 
 The minimum interval is five minutes. Pause or resume a Poke in Agent settings. If its target is deleted, scheduled runs fail until you pause it or choose another Conversation.
 
-An unpaid Host blocks Poke delivery.
+Poke delivery needs the Agent runtime to be reachable on its configured Host. Inspect the Poke status and Agent runtime diagnostics if delivery fails.
 
-Each account has a Poke limit (20 by default). Creating a Poke past the limit fails with a clear quota error.
+Pokes are limited by the `agent_pokes` owner quota (default 20). The current quota may be configured by the installation administrator.
 
 ## Notifications on activity
 
@@ -186,7 +186,7 @@ Rules:
 
 ### What visitors see
 
-Public profile lists your build-in-public Agents. Visitors browse them. They can't sign in as you or modify anything. Account-level data (settings, Wallet, other Agents) stays private.
+Public profile lists your build-in-public Agents. Visitors browse them. They can't sign in as you or modify anything. Account-level settings and other Agents stay private.
 
 Each public Agent page shows:
 
@@ -258,7 +258,7 @@ With Build in Public on, that Agent's timeline appears on your public profile.
 <details>
 <summary>How many Agents can I have?</summary>
 
-Each account has an Agent limit (10 by default; it can be raised on request). Creating an Agent past the limit fails with a clear error. Usage shows up on your Wallet, not per Agent.
+Agent creation is subject to the installation quota policy where that admission check is enabled. Inspect the current owner quota before creating large batches; see [Limits & Quotas](/advanced/limits/).
 </details>
 
 <details>
@@ -274,9 +274,9 @@ In a Playground, it sees mounted files. In standalone chat, it sees prompts and 
 </details>
 
 <details>
-<summary>Pokes and the Wallet?</summary>
+<summary>How are Pokes limited?</summary>
 
-Each Poke run costs the underlying model call. Poke settings show the last run's status and error, plus how many times the Poke has been sent.
+Poke delivery invokes the configured Agent runtime. Its status and last error are shown in the Poke settings.
 </details>
 
 <details>

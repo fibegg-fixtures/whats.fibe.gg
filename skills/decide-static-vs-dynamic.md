@@ -44,7 +44,7 @@ There is no `fibe.gg/type` label; do not invent one. The classifier derives type
 | Branch | `fibe.gg/branch: main` (default: repo default) |
 | Dockerfile path | `fibe.gg/dockerfile: Dockerfile` (default) |
 | Live source mount | `working_dir: /app` (explicit absolute target; no default) |
-| Runtime command | `fibe.gg/start_command: bundle exec rails server -b 0.0.0.0` |
+| Runtime command | `fibe.gg/start_command: bundle exec puma -b tcp://0.0.0.0:3000` |
 | Dev mode (mounted) | `fibe.gg/production: "false"` |
 | Production mode (built image) | `fibe.gg/production: "true"` |
 | Env example | `fibe.gg/env_file: .env.example` |

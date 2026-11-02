@@ -43,7 +43,7 @@ Fields:
 
 | Field | Type | Notes |
 |---|---|---|
-| `name` | non-empty string | Display name shown in launcher. Missing or empty → `missing_name` error. |
+| `name` | non-empty string | Display name shown in Spec form. Missing or empty → `missing_name` error. |
 | `required` | bool | Required at launch (unless default or random) |
 | `random` | bool | Fibe generates a stable 32-character hex value when no value is supplied. |
 | `default` | string/number/integer/boolean/null | Used when no launch value. |
@@ -51,7 +51,7 @@ Fields:
 | `path` | template path | Whole-node replacement. See [reference-yaml-paths](reference-yaml-paths.md). |
 | `paths` | single path or array | Same as `path` but writes multiple nodes. |
 
-Some launchers understand optional UI hints such as `secret: true` and `sensitive: true`. Treat those as UI hints, not storage security.
+Some Spec forms understand optional UI hints such as `secret: true` and `sensitive: true`. Treat those as UI hints, not storage security.
 
 **Variable usage rule:** a declared variable must either be referenced via `$$var__NAME` somewhere in the template OR define a `path`/`paths`. Otherwise the runtime emits `unused_var`.
 

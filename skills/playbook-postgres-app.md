@@ -61,7 +61,7 @@ x-fibe.gg:
       sensitive: true
       path: services.db.environment.POSTGRES_PASSWORD
   metadata:
-    description: "Web app with managed Postgres"
+    description: "Web app with a PostgreSQL service"
     category: "Web"
 ```
 

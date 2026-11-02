@@ -1,62 +1,46 @@
 ---
-title: JSON Schema
-description: "The official JSON Schema for Fibe Compose templates: fibe.gg/* labels, x-fibe.gg namespace, variables, metadata. Use it for editor autocomplete and CI validation."
+title: Native Fibe Compose JSON Schema
+description: The versioned JSON Schema used to describe Native Fibe Compose Specs, labels, and variables.
 slug: /reference/json-schema
 sidebar_label: JSON Schema
 sidebar_position: 99
 image: /img/og/reference-json-schema.png
-keywords: [JSON Schema, fibe.gg, validation, autocomplete, VSCode, IntelliJ, YAML, schema, compose template]
+keywords: [Fibe, Native, JSON Schema, Compose, validation, autocomplete]
+tags: [reference, schema, compose]
 format: md
 ---
 
-A machine-readable schema describes everything Fibe expects in a Compose template: every `fibe.gg/*` label, the `x-fibe.gg` namespace, template variables, scheduling, triggers. Point your editor at it for autocomplete and on-the-fly validation, or run it through any JSON-Schema validator in CI to gate your templates before launch.
+The Native Compose schema describes the Compose shape and Fibe-specific configuration accepted for Specs, including `fibe.gg/*` labels, the `x-fibe.gg` block, and variables. Use it for editor assistance and early validation. Runtime checks can still depend on a Host, Repository, or other resource.
 
-## Where it lives
+## Download the schema
 
-The same file is published in two places:
+- [Versioned Fibe Compose schema](/schemas/fibe-compose.v1.schema.json)
+- [Schema alias](/schema.json)
+- [Native OpenAPI contract](/native/openapi.json)
 
-| Use | URL |
-| --- | --- |
-| Canonical (versioned) | [fibe.gg/schemas/fibe-compose.v1.schema.json](https://fibe.gg/schemas/fibe-compose.v1.schema.json) |
-| Convenience alias on fibe.gg | [fibe.gg/schema.json](https://fibe.gg/schema.json) |
-| Mirror on this docs site | [whats.fibe.gg/schemas/fibe-compose.v1.schema.json](https://whats.fibe.gg/schemas/fibe-compose.v1.schema.json) |
-| Mirror alias on this docs site | [whats.fibe.gg/schema.json](https://whats.fibe.gg/schema.json) |
+The published schema is copied from the pinned Native API source. Refer to the versioned file when a project needs a stable schema URL.
 
-Prefer the **canonical** URL in production setups so you get whatever the live platform validates against. The mirror is here for environments where reaching `fibe.gg` is blocked or slower.
+## Use it in an editor
 
-The schema's `$id` is the canonical URL. Versioned URLs (`/schemas/fibe-compose.v1...`) will keep working when newer versions land at `/schemas/fibe-compose.v2...`.
-
-## How to use it
-
-### VS Code
-
-Install the [YAML extension by Red Hat](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml), then add the schema mapping in `.vscode/settings.json`:
+For VS Code with the YAML extension, map the schema to Compose files in `.vscode/settings.json`:
 
 ```json
 {
   "yaml.schemas": {
-    "https://fibe.gg/schemas/fibe-compose.v1.schema.json": [
-      "docker-compose*.yml",
-      "docker-compose*.yaml",
+    "https://whats.fibe.gg/schemas/fibe-compose.v1.schema.json": [
       "compose.yml",
-      "compose.yaml"
+      "compose.yaml",
+      "docker-compose.yml",
+      "docker-compose.yaml"
     ]
   }
 }
 ```
 
-Now hovering over a `fibe.gg/...` label shows its description, allowed values, and an example. Invalid values get a red squiggle.
-
-### JetBrains IDEs (IntelliJ, RubyMine, PyCharm…)
-
-Open **Settings → Languages & Frameworks → Schemas and DTDs → JSON Schema Mappings**, click **+**, paste the URL `https://fibe.gg/schemas/fibe-compose.v1.schema.json`, and pin it to the file patterns for your Compose files.
-
-### Inline reference inside the file
-
-You can also embed the schema URL with a `# yaml-language-server:` directive on the first line of the Compose file. Most YAML language servers respect it:
+For an individual file, add the YAML language-server directive:
 
 ```yaml
-# yaml-language-server: $schema=https://fibe.gg/schemas/fibe-compose.v1.schema.json
+# yaml-language-server: $schema=https://whats.fibe.gg/schemas/fibe-compose.v1.schema.json
 services:
   web:
     image: nginx:alpine
@@ -65,162 +49,48 @@ services:
       fibe.gg/visibility: external
 ```
 
-### In CI / scripts
+## Validate in CI
 
-Any JSON-Schema validator works. With [`ajv`](https://ajv.js.org/) from Node:
-
-```sh
-npx -p ajv-cli ajv validate \
-  -s "https://fibe.gg/schemas/fibe-compose.v1.schema.json" \
-  -d "docker-compose.yml" \
-  --strict=false
-```
-
-Or with [`check-jsonschema`](https://github.com/python-jsonschema/check-jsonschema) from Python:
+Use any JSON Schema validator that supports the schema dialect declared by the file. For example, with `check-jsonschema`:
 
 ```sh
-pipx run check-jsonschema --schemafile \
-  "https://fibe.gg/schemas/fibe-compose.v1.schema.json" \
-  docker-compose.yml
+pipx run check-jsonschema \
+  --schemafile https://whats.fibe.gg/schemas/fibe-compose.v1.schema.json \
+  compose.yaml
 ```
 
-CI failure on schema-invalid input is a cheap way to catch problems before the platform sees them.
+Schema validation catches malformed Compose shape and invalid Fibe-specific values. It does not establish that a Repository is accessible, a Host is ready, or a runtime operation will succeed. Use the Native interface or API validation operation for those checks.
 
-## What the schema covers
+## Supported label set
 
-### Services
+The Native Compose label parser recognizes 21 Fibe labels:
 
-The template is a Docker Compose file. The schema validates that:
+`repo_url`, `source_mount`, `job_watch`, `dockerfile`, `env_file`, `start_command`, `port`, `visibility`, `production`, `zerodowntime`, `branch`, `subdomain`, `path_rule`, `build_target`, `build_args`, `healthcheck_path`, `healthcheck_interval`, `healthcheck_timeout`, `healthcheck_retries`, and `healthcheck_start_period`.
 
-- The root has a `services:` map.
-- Each service may carry `labels:`: either as an object (`{key: value}`) or an array (`["key=value"]`). Both forms are accepted; the schema validates the **fibe.gg/** subset in either shape.
-- Any property not under `fibe.gg/` passes through untouched.
+For meanings, defaults, and examples, see [Fibe labels](/reference/reference-fibe-labels). The schema file remains authoritative for accepted field shapes.
 
-### `fibe.gg/*` labels
+## Variables
 
-Nineteen labels are recognized. The table below summarizes each one: for the full prose explanation, see [Service labels](/authoring/service-labels/) and the [`reference-fibe-labels`](/reference/reference-fibe-labels/) skill. Repository-backed services additionally require the standard Compose `working_dir` field with an absolute container path.
-
-| Label | Value shape | Required when | Example |
-| --- | --- | --- | --- |
-| `fibe.gg/repo_url` | HTTP(S)/SSH Git URL or `$$var__NAME` | service is dynamic/source-backed; plain HTTP warns | `https://github.com/user/repo` |
-| `fibe.gg/branch` | string | dynamic services (pin to non-default branch) | `main` |
-| `fibe.gg/dockerfile` | path | dynamic services with `build:` | `./deploy/Dockerfile` |
-| `fibe.gg/start_command` | string | when overriding the image's default | `bundle exec rails s` |
-| `fibe.gg/env_file` | path inside Repository | when env values come from a non-default example | `env.example` |
-| `fibe.gg/build_target` | string | multi-stage build | `production` |
-| `fibe.gg/build_args` | `KEY=value` comma-list | when `--build-arg` values are needed | `KEY=val,K2=v2` |
-| `fibe.gg/production` | `true` / `false` | distinguish built image vs source-mounted dev | `true` |
-| `fibe.gg/port` | port number (1 to 65535) | the service should have a URL | `3000` |
-| `fibe.gg/visibility` | `external` or `internal` | non-default visibility | `external` |
-| `fibe.gg/subdomain` | `@`, lowercase alnum+hyphen, or empty | overriding the default (service-name) subdomain | `api` |
-| `fibe.gg/path_rule` | Traefik `Path` / `PathPrefix` / `PathRegexp` matcher | sharing one subdomain across services | `PathPrefix(\`/api\`)` |
-| `fibe.gg/zerodowntime` | `true` / `false` | rolling updates wanted | `true` |
-| `fibe.gg/healthcheck_path` | HTTP path starting `/` | `zerodowntime: true` | `/up` |
-| `fibe.gg/healthcheck_interval` | duration (`Nms` / `Ns` / `Nm`) | `zerodowntime: true` | `10s` |
-| `fibe.gg/healthcheck_timeout` | duration | `zerodowntime: true` | `5s` |
-| `fibe.gg/healthcheck_retries` | positive integer | `zerodowntime: true` | `3` |
-| `fibe.gg/healthcheck_start_period` | duration | `zerodowntime: true` | `30s` |
-| `fibe.gg/job_watch` | `true` / `false` | the service whose exit decides a Task's result | `true` |
-
-:::tip Boolean values must be strings
-Use quoted `"true"` / `"false"`, not `yes` / `no` / `1` / `0`. The schema rejects the unquoted forms.
-:::
-
-### `x-fibe.gg` namespace
-
-The optional root block describing the template:
+Variables are declared under `x-fibe.gg.variables` and can provide values to Compose paths:
 
 ```yaml
+services:
+  web:
+    image: nginx:alpine
+    labels:
+      fibe.gg/port: 80
+      fibe.gg/subdomain: app
+
 x-fibe.gg:
-  variables: { ... }          # launch-time inputs
-  metadata:
-    description: "..."        # what this template launches
-    category: "..."           # broad, discoverable category
-    source_defaults: true     # auto-fill repo/branch on import
-    job_mode: true|false      # mark this template as a Task
-    schedule_config: { ... }  # cron-driven launches
-    trigger_config: { ... }   # VCS-triggered launches
+  variables:
+    SUBDOMAIN:
+      name: Public subdomain
+      default: app
+      path: services.web.labels.fibe.gg/subdomain
 ```
 
-The schema accepts execution settings (`job_mode`, `schedule_config`, `trigger_config`) at both the root of `x-fibe.gg` and under `x-fibe.gg.metadata`. Current launch/import behavior reads them from `metadata`: keep them there.
+See [template variables](/reference/reference-template-variables) for declarations, interpolation, defaults, and path bindings.
 
-### Template variables
+## Schema limits
 
-Each entry under `x-fibe.gg.variables` is a small object:
-
-```yaml
-variables:
-  SUBDOMAIN:
-    name: "Subdomain"
-    required: true
-    random: false
-    default: "demo"
-    validation: "/^[a-z]+$/"
-    path: services.web.labels.fibe.gg/subdomain
-    paths:
-      - services.web.environment.SUB
-      - services.worker.environment.SUB
-```
-
-- Variable keys match `^[A-Za-z0-9_]+$`.
-- `default` may be string / number / boolean / null.
-- `validation` is either empty or a `/regex/`-wrapped pattern.
-- `path` / `paths` must match the YAML-path grammar in the schema (`^[A-Za-z0-9_./\[\]-]+$`).
-
-See [Launch variables](/authoring/variables/) for the full authoring guide.
-
-### Scheduling and triggers
-
-```yaml
-schedule_config:
-  enabled: true
-  cron: "0 * * * *"
-  host_id: 1
-```
-
-```yaml
-trigger_config:
-  enabled: true
-  event_type: push          # or "pull_request"
-  repo_url: "https://github.com/owner/repo"
-  branch: "main"
-  repository_id: 1
-  host_id: 1
-```
-
-`host_id` and `repository_id` accept either a positive integer or its string form.
-
-## The full schema
-
-<details>
-<summary>Click to expand the JSON</summary>
-
-```bash
-# Fetch the canonical:
-curl -L https://fibe.gg/schemas/fibe-compose.v1.schema.json -o fibe-compose.v1.schema.json
-
-# Or this mirror:
-curl -L https://whats.fibe.gg/schemas/fibe-compose.v1.schema.json -o fibe-compose.v1.schema.json
-```
-
-For an inline copy, see [the mirrored file on this site](https://whats.fibe.gg/schemas/fibe-compose.v1.schema.json). It uses [JSON Schema draft 2020-12](https://json-schema.org/draft/2020-12/release-notes).
-
-</details>
-
-## What the schema does *not* cover
-
-A few rules are enforced by Fibe at compile/runtime but live outside the JSON Schema:
-
-- **Required-when cross-label rules.** Example: a Compose `build:` block requires `fibe.gg/repo_url`. The schema describes individual labels but not their interdependencies.
-- **Reachability of resources.** `host_id: 1` is valid JSON-Schema-wise but fails at runtime if you don't own Host 1.
-- **Variable usage.** Declared-but-never-used or referenced-but-never-declared variables are flagged by the validator after schema check, not by the schema itself.
-- **Job-mode constraints.** When `metadata.job_mode: true`, the runtime forces `restart: "no"` and `replicas: 1`, and forbids `expose:`: those are runtime enforcements, not schema constraints.
-
-For the full validation pipeline (schema → cross-label → compile → runtime), see [`reference-validation-pipeline`](/reference/reference-validation-pipeline/).
-
-## Related
-
-- [Service labels](/authoring/service-labels/): every `fibe.gg/*` label in prose form.
-- [Settings block](/authoring/settings-block/): the `x-fibe.gg` namespace.
-- [Launch variables](/authoring/variables/): variable shape and binding.
-- Reference skills: [`reference-fibe-labels`](/reference/reference-fibe-labels/), [`reference-x-fibe-gg-namespace`](/reference/reference-x-fibe-gg-namespace/), [`reference-template-variables`](/reference/reference-template-variables/), [`reference-yaml-paths`](/reference/reference-yaml-paths/), [`reference-validation-pipeline`](/reference/reference-validation-pipeline/).
+The schema validates document shape and declared constraints. It cannot prove that a Host or Repository identifier is available to the current owner, that source access works, or that a generated runtime plan will start successfully. Consult the [validation pipeline](/reference/reference-validation-pipeline) for the stages after schema validation.

@@ -1,12 +1,13 @@
 #!/usr/bin/env node
-/** Check the built candidate's cross-source and generated-output contracts. */
+/** Check the built Native guide and generated content contracts. */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const rails = process.env.FIBE_REPO_PATH || path.resolve(root, '..', 'fibe');
+const sources = JSON.parse(fs.readFileSync(path.join(root, 'content-sources.json'), 'utf8'));
 const read = relative => fs.readFileSync(path.join(root, relative));
 const exists = relative => fs.existsSync(path.join(root, relative));
 const checks = [];
@@ -20,25 +21,29 @@ for (const name of ['marquees', 'playspecs', 'props', 'tricks', 'scrolls']) {
 assert(exists('build/advanced/runtime-configuration/index.html'));
 checks.push('Canonical concept/feature pages exist; removed concept routes are absent');
 
-for (const name of ['schema.json', 'schemas/fibe-compose.v1.schema.json']) {
-  assert(read(`static/${name}`).equals(fs.readFileSync(path.join(rails, 'public', name))), `Schema mirror differs: ${name}`);
-  assert(read(`build/${name}`).equals(read(`static/${name}`)), `Built schema differs: ${name}`);
+for (const name of ['content-sources.json', 'schema.json', 'schemas/fibe-compose.v1.schema.json', 'native/openapi.json', 'native/route-manifest.json', 'native/identity.json']) {
+  assert(read(`build/${name}`).equals(read(`static/${name}`)), `Built contract differs: ${name}`);
 }
-checks.push('Both schema mirrors and built copies equal exact Rails-owned bytes');
+assert(read('static/schema.json').equals(read('static/schemas/fibe-compose.v1.schema.json')));
+const identity = JSON.parse(read('static/native/identity.json'));
+for (const [file, digest] of [['openapi.json', identity.openapi_sha256], ['route-manifest.json', identity.route_manifest_sha256]]) {
+  assert.equal(createHash('sha256').update(read(`static/native/${file}`)).digest('hex'), digest, `Native identity digest: ${file}`);
+}
+assert.match(sources.api.revision, /^[a-f0-9]{40}$/);
+assert.match(sources.ui.revision, /^[a-f0-9]{40}$/);
+checks.push('Built Native contract mirrors preserve bytes and match the generated identity');
 
-const publicSeeds = fs.readdirSync(path.join(rails, 'db/seeds/fibe_skills'))
+const publicSeeds = fs.readdirSync(path.join(root, 'seed-skills'))
   .filter(name => name.startsWith('fibe-tool-') && name.endsWith('.md')).sort();
-const importedSeeds = fs.readdirSync(path.join(root, 'seed-skills'))
-  .filter(name => name.startsWith('fibe-tool-') && name.endsWith('.md')).sort();
-assert.deepEqual(importedSeeds, publicSeeds);
+assert.equal(publicSeeds.length, 53, 'Review the selected Native public tool corpus when changing its inventory');
 for (const name of publicSeeds) {
-  assert(read(`seed-skills/${name}`).equals(fs.readFileSync(path.join(rails, 'db/seeds/fibe_skills', name))), `Public seed differs: ${name}`);
   assert(read(`static/seed-skills/${name}`).equals(read(`seed-skills/${name}`)), `Raw mirror differs: ${name}`);
+  assert(exists(`build/reference/tools/${name.replace('fibe-tool-', '').replace('.md', '')}/index.html`));
 }
 for (const name of ['main.md', 'system.md', 'cursor-runtime.mdc']) {
   assert(!exists(`seed-skills/${name}`), `Private runtime prompt copied: ${name}`);
 }
-checks.push(`${publicSeeds.length} public tool seeds and raw mirrors match; private runtime prompts stay excluded`);
+checks.push(`${publicSeeds.length} public tool guides and raw mirrors match; private runtime prompts stay excluded`);
 
 for (const name of ['llms.txt', 'llms-full.txt', 'search-index.json']) {
   assert(read(`build/${name}`).length > 1000, `Missing generated output ${name}`);
@@ -49,6 +54,15 @@ for (const name of ['build/llms.txt', 'build/llms-full.txt', 'build/search-index
   assert(!removedDomains.test(read(name).toString()), `Removed domain vocabulary in ${name}`);
 }
 checks.push('LLM/search outputs are nonempty and contain no removed domain contract');
+
+const llmLinks = [...read('build/llms.txt').toString().matchAll(/\]\((https:\/\/whats\.fibe\.gg[^)]+)\)/g)];
+for (const [, href] of llmLinks) {
+  const pathname = decodeURIComponent(new URL(href).pathname).replace(/^\//, '');
+  assert(exists(`build/${pathname}`) || exists(`build/${pathname}/index.html`), `Broken LLM index target: ${href}`);
+}
+assert(read('build/llms.txt').includes(Buffer.from(sources.api.revision)), 'LLM index source pin missing');
+assert(read('build/llms-full.txt').includes(Buffer.from(sources.ui.revision)), 'Full LLM document source pin missing');
+checks.push(`${llmLinks.length} LLM index links resolve to built files; source pins are current`);
 
 const categories = ['.', 'concepts', 'advanced', 'authoring', 'operate', 'sdk', 'api', 'reference', 'reference/tools'];
 const expectedCards = [];
@@ -71,6 +85,8 @@ checks.push(`Default and all ${actualCards.length} per-page cards are valid 1200
 
 const icons = read('src/components/FibeIcons.jsx').toString();
 assert(icons.includes('(props)') && icons.includes('{...props}'), 'Generic React props were lost');
-assert(read('docusaurus.config.js').includes(Buffer.from('Production fibe.gg retains the previous contract')));
-checks.push('Generic React props and explicit candidate/production boundary are retained');
+assert(read('docusaurus.config.js').includes(Buffer.from('Native FIBE guide: self-hosted Rust + React.')));
+assert(!read('src/data/apiReference.js').includes(Buffer.from('HOST_NOT_FUNDED')));
+assert(!read('src/components/FeatureGrid.jsx').includes(Buffer.from('Mana & Sparks')));
+checks.push('React props and current self-hosted content are retained');
 console.log(JSON.stringify({checks, passed: checks.length, pages: expectedCards.length, publicSeeds: publicSeeds.length}, null, 2));

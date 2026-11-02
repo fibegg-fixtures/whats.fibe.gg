@@ -102,10 +102,10 @@ Inline substitution happens before YAML structure is finalized. So `$$var__NAME`
 
 | Declaration | Binding style | Output behavior |
 |---|---|---|
-| `default` provided | inline only | `$$var__NAME` becomes the default when launcher omits the value |
-| `required: true`, no `default`, no launcher input | inline only | Compile error (`Variable '<name>' is required`) |
-| `random: true`, launcher omits value | inline only | Compiles with a 32-char hex secret (same value reused for every inline occurrence) |
-| No `default`, no `random`, no launcher input | inline only | Replaced with literal `placeholder` |
+| `default` provided | inline only | `$$var__NAME` becomes the default when Spec form omits the value |
+| `required: true`, no `default`, no Spec form input | inline only | Compile error (`Variable '<name>' is required`) |
+| `random: true`, Spec form omits value | inline only | Compiles with a 32-char hex secret (same value reused for every inline occurrence) |
+| No `default`, no `random`, no Spec form input | inline only | Replaced with literal `placeholder` |
 | Same declaration, no source value, `path:`/`paths:` present | path only | Final YAML node is empty string (`""`) |
 
 ### Concrete edge-case examples
@@ -201,7 +201,7 @@ If you need an actual `$$` in a final Compose value (e.g. in a shell command), w
 - **Nested defaults**: `default: "https://$$var__SUBDOMAIN.$$root_domain"` is invalid. Defaults are literal values only.
 - **Splitting `$$var__NAME` across YAML lines via line-continuation**: the literal text must appear unbroken; YAML folded scalars (`>`) might collapse the marker: quote the value.
 - **Using `$VAR` instead of `$$var__VAR`**: `$VAR` is Compose substitution from the host env; Fibe ignores it.
-- **Variable used inline only AND template imported across Hosts with different defaults**: be deliberate about defaults; they live in the template, not the launcher.
+- **Variable used inline only AND template imported across Hosts with different defaults**: be deliberate about defaults; they live in the template, not the Spec form.
 
 ## Related skills
 

@@ -29,32 +29,29 @@ Two providers, each with its own auth path:
 
 | Provider | URL shape | Auth |
 | --- | --- | --- |
-| **Built-in Gitea** | URL inside Fibe's Gitea host | One connection is provisioned for each Player. |
+| **Gitea** | A Gitea repository reachable by the installation | Use a configured Gitea connection with access to that repository. |
 | **GitHub** | `https://github.com/owner/repo` or `ssh://…` | GitHub App installation, or per-Repository Personal Access Token. |
 
-Other providers (GitLab, Bitbucket, self-hosted) aren't supported today. The repo-URL validator only accepts the two above. To use code from another host, push a mirror into the built-in Gitea.
+Other providers (GitLab, Bitbucket, and arbitrary Git servers) are not supported by the Repository URL validator. To use code from another host, mirror it into the Fibe Git service when that service is configured for your installation.
 
 ## Connect a GitHub repository
 
 Three ways, in order of preference:
 
-### 1. Install the Fibe GitHub App (recommended for orgs)
+### 1. Connect the configured GitHub integration
 
 Best when you have multiple private repos in the same org and want webhooks + CI to work without per-Repository token management.
 
-1. Go to **Profile → Advanced Settings → GitHub Apps**, click **Install on GitHub**.
-2. GitHub asks which org/account and which repos to grant.
-3. Pick repos. Return to Fibe; the installation is registered.
-4. Create a Repository from a granted repository. Fibe creates a short-lived token when cloning.
+1. Open **Profile → Advanced Settings → GitHub Apps** (or the Team GitHub settings for a Team-owned Repository).
+2. Connect the GitHub identity and installation configured for this Fibe deployment.
+3. Grant access to the repository or its organization.
+4. Return to Repositories and attach the repository. Check its status if the source cannot be read.
 
 Multiple installations per account are supported (one per org or repo set). Detail: [Advanced → GitHub Apps](/advanced/github-apps/).
 
-### 2. Sign in with GitHub
+### 2. Link your GitHub account
 
-Best when you mostly use your own (personal) repos and want a single OAuth click.
-
-1. Click **Connect GitHub** from the profile. GitHub OAuth flow runs.
-2. Your GitHub user is linked. Public repos clone without further setup; private ones still need an App installation or a PAT.
+Open **Profile → Advanced Settings → GitHub Apps** and choose **Connect GitHub**. This links the GitHub identity to your Fibe account; it does not grant access to private repositories by itself. Public repositories can be read without an installation. For private repositories, install the configured GitHub App or provide a repository credential.
 
 ### 3. Paste a Personal Access Token (per-Repository)
 
@@ -73,23 +70,17 @@ PATs are per-Repository and don't share across Repositories. Rotate from the Rep
 
 When **both** an App installation and a PAT are available, the PAT wins. The Repository uses what's set on its `credentials` field; if blank, it falls back to the App installation token.
 
-## Connect a built-in Gitea repository
+## Use the Fibe Git service
 
-Fibe runs an internal Gitea instance and provisions an account for every Player automatically.
+Fibe can provide Gitea-backed repositories when the installation administrator has configured the Fibe Git service. This service is an integration, not a second Fibe application bundled in the control-plane image. Provisioning is optional and does not block account creation. If enabled, Fibe provisions an account and credential for the selected owner; the new Repository flow can create a Gitea repository or import a public GitHub repository into the private Fibe Git service.
 
-### Auto-provisioning
+### Account provisioning
 
-The moment your Player is created, a background job runs:
-
-1. Creates a Gitea user matching your Fibe username.
-2. Generates a random password and saves it to your profile's Gitea account card.
-3. Mints a Gitea access token with repository read/write plus user access scopes.
-
-You don't take any action. When the job finishes you'll see a toast: *"Your Gitea account has been provisioned. Check your profile for credentials."*
+When managed provisioning is enabled, account creation queues Gitea provisioning in the background. Existing accounts may be queued by an installation administrator. Provisioning failures are retried by the server; if it remains pending, use the retry control on the Git service connection page. Account registration itself does not wait for Gitea.
 
 ### Where the Gitea credentials live
 
-Profile page shows a **Gitea account** card:
+When credentials are available, **Profile** shows a **Gitea account** card:
 
 - **Username**: same as your Fibe username.
 - **Password**: the random one generated at provisioning. Copy it from the card. Hidden by default; click to reveal.
@@ -102,23 +93,23 @@ Use these to log into Gitea directly (push from the command line, browse the web
 
 If you lose the password or want to rotate:
 
-1. Profile → **Reset credentials** on the Gitea card.
-2. 2FA confirmation required.
+1. Open **Profile → Advanced Settings → GitHub Apps** and choose **Reset Git credentials** on the Fibe Git service card.
+2. Confirm the sensitive action with your second factor.
 3. Fibe generates a new password and a new access token for your Gitea account; reset tokens carry `write:repository`, `read:repository`, `write:user`, and `read:user` access. The new password appears on the card, and all your Gitea Repositories pick up the new token automatically. (A token you pasted into a specific Repository's Credentials field is not touched.)
 
 ### Creating a Gitea repo
 
-From **New Repository → New Repository** tab:
+In **Repositories → New Repository**, choose the **New Repository** tab:
 
 - **Repo name**: letters, digits, dashes, underscores, or dots; must be unique in your Gitea account (e.g. `my-new-app`).
 - **Private**: toggle.
 - Click **Create Repository**. Fibe creates the repo in Gitea and saves the Repository.
 
-The repo is owned by your Gitea user. You can push to it via HTTPS using your Gitea credentials or access token. The built-in Gitea does not offer SSH access.
+The repo is owned by your Gitea user. You can push to it via HTTPS using your Gitea credentials or access token. The configured Fibe Git service does not offer SSH access.
 
 ### Provisioning failures
 
-Provisioning retries connection failures up to 10 times with polynomial backoff, then continues every few minutes. While pending, the profile shows a Gitea spinner that you can click to retry.
+The server retries provisioning failures with bounded backoff and periodically admits eligible accounts again. While an account is pending, open **Profile → Advanced Settings → GitHub Apps** and choose **Retry connection** on the Fibe Git service card. An uncertain provider mutation is held for operator review rather than blindly repeated.
 
 ## What's auto-set up on connect
 
@@ -127,7 +118,7 @@ Whatever the provider and auth path, on creation Fibe:
 1. Resolves the repo URL. Validates the format.
 2. Discovers branches.
 3. Notes useful files (`fibe.yml`, `fibe.yaml`, `docker-compose.yml`, `docker-compose.yaml`, and `.env.example`) as candidates for new Templates.
-4. Configures push notifications. Built-in Gitea repositories get them automatically. GitHub requires the Fibe GitHub App. A PAT-only Repository receives no push events.
+4. Configures push notifications. The configured Fibe Git service delivers events for its own repositories. GitHub push and pull-request events require the Fibe GitHub App; a Repository with only a PAT does not receive GitHub push events.
 
 ## Pushes
 
@@ -137,11 +128,11 @@ On commit, Fibe:
 2. Auto-publishes new Template versions for any source-linked Template tracking a changed file.
 3. Fires Tasks configured for that push or PR.
 4. Posts a commit notification when the Repository's **Notifications** toggle is on. See [Inbox Notifications](/advanced/notifications/).
-5. Pulls the commit into running Playgrounds on the same branch without a rollout. Fibe skips any service where pulling would overwrite local changes. Updates require a funded Host and exclude one-off jobs.
+5. Pulls the commit into running Playgrounds on the same branch without a rollout. Fibe skips any service where pulling would overwrite local changes. Updates depend on the Host being reachable and the workload being eligible for source maintenance; one-shot Tasks are not updated as live development work.
 
-Built-in Gitea webhooks or the Fibe GitHub App deliver push events.
+The configured Fibe Git service delivers its push events; the Fibe GitHub App delivers GitHub push and pull-request events.
 
-Fibe also mirrors branch deletion. Push the branch again to restore it.
+Branch and commit state is read from the connected Git provider during synchronization.
 
 ## Editing source from a Playground
 
@@ -149,9 +140,9 @@ Playground terminal has full git tooling. The UI exposes a diff view, commit mes
 
 Commits go back to the Repository. The push notification fires. Source-linked Templates and Tasks react.
 
-## Repositories are personal
+## Repositories are owner-scoped
 
-Each Player owns their Repositories. Two people can connect the same upstream repository independently, with separate credentials, branches, and Task configurations.
+Each Personal or Team owner has its own Repository record and provider authority. Two owners can connect the same upstream URL independently. Team resources use Team-owned connections where configured.
 
 If you fork a Template that points at someone else's Repository, your fork doesn't get access to their repository. Connect your own Repository (or a fork of theirs).
 
@@ -175,7 +166,7 @@ App, when you can install it: installation tokens are short-lived, scoped per-in
 <details>
 <summary>Can I use a PAT for an arbitrary git host (GitLab, Bitbucket, self-hosted)?</summary>
 
-No. The `credentials` field works only for GitHub URLs. The URL validator rejects other hosts. To bring code in from elsewhere, push a mirror to the built-in Gitea.
+No. The `credentials` field works only for GitHub URLs. The URL validator rejects other hosts. To bring code in from elsewhere, push or import a mirror into the configured Fibe Git service.
 </details>
 
 <details>
@@ -199,19 +190,19 @@ Yes. Re-authenticate or paste a new PAT in Repository settings, then revoke the 
 <details>
 <summary>Where's my Gitea password if I never saved it?</summary>
 
-Profile → Gitea account → reveal Password. If the password isn't visible ("Password is not saved for this account"), click **Reset credentials** to mint a new one.
+Open **Profile** and reveal the password on the Gitea account card. If the password isn't visible ("Password is not saved for this account"), click **Reset credentials** to mint a new one.
 </details>
 
 <details>
 <summary>Can I SSH into Gitea?</summary>
 
-No. Built-in Gitea uses HTTPS only. Clone and push with the credentials from your profile.
+No. The configured Fibe Git service uses HTTPS. Clone and push with the credentials shown on your profile or Git connections page.
 </details>
 
 <details>
 <summary>Are repos created through Fibe public or private?</summary>
 
-Choose with the **Private** toggle. Automation defaults built-in Gitea repositories to private and GitHub repositories to public unless you pass the privacy flag. See the SDK [greenfield flow](/sdk/workflows/).
+Choose with the **Private** toggle. New Fibe Git service repositories default to private. The form lets you choose privacy when creating a repository; GitHub repositories retain the upstream visibility. See the SDK [greenfield flow](/sdk/workflows/).
 </details>
 
 <details>

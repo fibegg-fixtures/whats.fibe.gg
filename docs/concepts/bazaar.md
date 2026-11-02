@@ -7,11 +7,11 @@ image: /img/og/concepts-bazaar.png
 keywords: [Bazaar, marketplace, public templates, discovery, fork, launch]
 ---
 
-The **Bazaar** is the public marketplace for [Templates](/concepts/specs/#templates). Browse what other Players have published. Fork, launch, or both.
+The **Bazaar** is the public catalog for [Templates](/concepts/specs/#templates) exposed by the installation. Browse, fork, or launch a published version.
 
 ## What's in the Bazaar
 
-Any Template version a Player published with publish-ready metadata (description, category, sensible defaults). The Bazaar listing is the view filter: Templates aren't a separate codebase, the same Templates power your private launches and the public marketplace.
+A Template version is listed when it is public and has the metadata required by the catalog. The Bazaar listing is the view filter: Templates aren't a separate codebase, the same Templates power your private launches and the public marketplace.
 
 ## Browse
 
@@ -66,7 +66,7 @@ See [Before you publish](/operate/publishing/) for the full checklist.
 
 ## Public profile
 
-Templates you publish appear on your public profile alongside any [Agents you've opted into Build in Public](/concepts/agents/#build-in-public). Visitors see what you've made without a Fibe account.
+Public Template versions may appear on your profile and in the installation’s Bazaar. Visibility follows the Template version’s public setting.
 
 ## FAQ
 
@@ -77,15 +77,15 @@ Fibe staff can take down Templates that are malicious, broken, or misleading. If
 </details>
 
 <details>
-<summary>Can I make my Bazaar Template require payment?</summary>
+<summary>Does publishing a Template charge users?</summary>
 
-Not today. Bazaar Templates are free to launch. Hosting costs (Host usage) still apply to the launcher.
+No Fibe payment flow is attached to a published Template. Launching it consumes resources on the launcher’s own Host.
 </details>
 
 <details>
 <summary>How many Templates can I publish?</summary>
 
-Accounts hold 20 Templates by default, each with up to 100 versions. Quotas can be raised per account: see [Limits & Quotas](/advanced/limits/).
+Template and version admission is governed by the installation’s quota policy where implemented. See [Limits & Quotas](/advanced/limits/).
 </details>
 
 <details>

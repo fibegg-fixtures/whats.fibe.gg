@@ -37,7 +37,7 @@ Some signals change behavior even when no explicit error is raised:
 
 ### `Service '<n>': unknown label '<key>'`
 
-You wrote a label under `fibe.gg/` that isn't in the whitelist. The 20 supported labels are listed in [reference-fibe-labels](reference-fibe-labels.md).
+You wrote a label under `fibe.gg/` that isn't in the whitelist. The 21 supported labels are listed in [reference-fibe-labels](reference-fibe-labels.md).
 
 **Fix:** Remove the unknown label, or rename to a supported one. Non-`fibe.gg/` labels (`traefik.enable: "true"`, `com.example.owner`) pass through.
 
@@ -248,7 +248,7 @@ Possible causes:
 - `enabled: false`.
 - Host is paused/down.
 
-**Fix:** Set `enabled: true`; confirm the target Host is reachable and funded.
+**Fix:** Set `enabled: true`; confirm the target Host is active, reachable, and available for the Spec's owner.
 
 ### Runtime environment drift repeats for Compose `${VAR}` references
 

@@ -25,7 +25,7 @@ Only delete `build:` when the template is Fibe-only or when the service is sourc
 ## Step-by-step
 
 1. **Identify the repo** (`https://github.com/owner/repo`, a configured Gitea URL, or a full `ssh://` URL).
-2. **Add `fibe.gg/repo_url`** with that URL. If the launcher should choose, use `$$var__REPO_URL` and declare the variable.
+2. **Add `fibe.gg/repo_url`** with that URL. If the Spec form should choose, use `$$var__REPO_URL` and declare the variable.
 3. **Pin Dockerfile** if it isn't at repo root: `fibe.gg/dockerfile: <path>`.
 4. **Pin branch** if you don't want the default: `fibe.gg/branch: <ref>`. Default branch is the repo default.
 5. **Move build target** if multi-stage: `fibe.gg/build_target: <stage>`.
@@ -57,7 +57,7 @@ services:
       fibe.gg/port: 3000
       fibe.gg/visibility: external
       fibe.gg/production: "false"
-      fibe.gg/start_command: bin/rails server -b 0.0.0.0
+      fibe.gg/start_command: bundle exec puma -b tcp://0.0.0.0:3000
     environment:
       RAILS_ENV: development
 ```
@@ -115,7 +115,7 @@ x-fibe.gg:
       path: services.web.labels.fibe.gg/branch
 ```
 
-Use this pattern when the launcher should choose the repository and branch.
+Use this pattern when the Spec form should choose the repository and branch.
 
 ## Subdirectory builds (monorepo-style)
 

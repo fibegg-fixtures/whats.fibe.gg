@@ -16,7 +16,7 @@ import {
 const FEATURES = [
   {
     title: 'Hosts',
-    blurb: 'Hosts for your Playgrounds. Bring your own or use a managed one.',
+    blurb: 'Register your own SSH Hosts and prepare them for workloads.',
     href: '/concepts/hosts/',
     Icon: HostIcon,
   },
@@ -28,7 +28,7 @@ const FEATURES = [
   },
   {
     title: 'Playgrounds',
-    blurb: 'A live, shareable, configurable application instance.',
+    blurb: 'A long-running application instance on an owned Host.',
     href: '/concepts/playgrounds/',
     Icon: PlaygroundsIcon,
   },
@@ -63,9 +63,9 @@ const FEATURES = [
     Icon: SdkIcon,
   },
   {
-    title: 'Mana & Sparks',
-    blurb: 'Balances, daily costs, subscriptions, and referrals.',
-    href: '/concepts/billing/',
+    title: 'Teams & Quotas',
+    blurb: 'Share resources under Team roles and nonfinancial quotas.',
+    href: '/concepts/teams/',
     Icon: WalletIcon,
   },
 ];

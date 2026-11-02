@@ -1,6 +1,6 @@
 ---
 title: CLI reference
-description: Every fibe command grouped by resource family. Playgrounds, Tasks, Agents, Templates, repos, secrets, monitoring, and the lower-level utilities.
+description: Orientation to command groups in released SDK v0.3.3; use CLI help for the exact installed command set.
 slug: /sdk/cli-reference
 sidebar_position: 4
 sidebar_label: CLI reference
@@ -12,7 +12,7 @@ keywords: [fibe CLI, playgrounds, tasks, agents, templates, hosts, secrets, webh
 
 Every command supports `--help` (`fibe playgrounds --help`, `fibe playgrounds create --help`). Use it liberally; this page is the overview.
 
-Commands that launch, restart, inspect, stream from, schedule onto, stop, destroy, clean up, or message a Host require that Host to be funded. Unpaid Hosts return `HOST_NOT_FUNDED`.
+This reference describes commands available in the released SDK v0.3.3. Server support is installation-specific: consult `fibe <resource> --help` and the installation OpenAPI document before relying on an operation.
 
 ## Global flags
 
@@ -117,7 +117,7 @@ fibe agents remove-mounted-file <id> --filename style.md
 fibe agents pokes list <id>                  # list pokes attached
 fibe agents messages <id>                    # message history
 fibe agents activity <id>                    # event timeline
-fibe agents defaults get                     # per-Player defaults for new agents
+fibe agents defaults get                     # owner defaults for new Agents
 fibe agents gitea-token <id>                 # mint a short-lived Gitea token
 fibe agents authenticate <id>                # device-code re-auth for an agent
 ```
@@ -157,7 +157,7 @@ fibe specs switch-template <id>          # move a Spec to another template versi
 
 `fibe launch` is the one-shot path from one existing source: a catalog template, exact template version, existing Spec, raw Compose YAML, or GitHub repo config. Bare positional sources resolve as repositories when they look like `owner/repo`, a URL, or `.git`; otherwise the CLI looks for a template or Spec by name. Use explicit flags for numeric IDs because a bare number is ambiguous.
 
-Template launch, greenfield, tasks, agent chat, and playground commands all require the selected Host to be funded.
+Commands that contact a Host need that Host to be reachable and enabled for the requested operation.
 
 ## Repos & installations
 
@@ -238,7 +238,7 @@ Launch one existing source, or use a repo config as a greenfield snapshot templa
 ```sh
 fibe github apps connect
 
-fibe launch --template billing-app --version 3 --name billing-staging --host next
+fibe launch --template demo --version 1 --name demo --host 1
 fibe launch --spec starter --name demo --host next
 fibe launch --compose @docker-compose.yml --name demo --host next
 fibe launch owner/repo --host 12

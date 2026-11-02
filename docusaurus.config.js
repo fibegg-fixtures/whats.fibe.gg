@@ -9,12 +9,12 @@ const __dirname = path.dirname(__filename);
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Fibe user guide and skills',
-  tagline: 'Docker environments, AI Agents, and reusable templates.',
+  tagline: 'Self-hosted Playgrounds, Tasks, Agents and reusable Specs.',
   favicon: 'img/favicon.ico',
 
   url: 'https://whats.fibe.gg',
   baseUrl: '/',
-  organizationName: 'fibegg',
+  organizationName: 'fibegg-fixtures',
   projectName: 'whats.fibe.gg',
   trailingSlash: true,
   onBrokenLinks: 'throw',
@@ -111,14 +111,14 @@ const config = {
     ({
       image: 'img/og-default.png',
       announcementBar: {
-        id: 'candidate-next-20261007',
-        content: 'Unpublished candidate guide for the coordinated next.fibe.live release. Production fibe.gg retains the previous contract.',
+        id: 'native-main-20261102',
+        content: 'Native FIBE guide: self-hosted Rust + React. Use your installation URL; feature availability depends on your installed build.',
         backgroundColor: '#2a2140',
         textColor: '#ffffff',
         isCloseable: false,
       },
       metadata: [
-        {name: 'description', content: 'Fibe user guide: Docker environments, AI Agents, reusable templates, automated jobs.'},
+        {name: 'description', content: 'Native FIBE guide: Hosts, Specs, Repositories, Teams, Tasks, Agents, Library and long-running Playgrounds.'},
         {name: 'keywords', content: 'Fibe, fibe.gg, Docker, Docker Compose, dev environment, AI agent, Agent, Host, Playground, Task, Bazaar, template, developer tools'},
         {name: 'author', content: 'Fibe'},
         {name: 'twitter:image:alt', content: 'Fibe user guide'},

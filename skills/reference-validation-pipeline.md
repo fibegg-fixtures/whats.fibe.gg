@@ -108,7 +108,7 @@ The compiler also performs the substitution work: it is the layer that actually 
 
 Drive through MCP, CLI, API, or UI launch/preview. Catches:
 
-- `trigger_config.repository_id` / `host_id` / `schedule_config.host_id` not found or not owned by Player.
+- `trigger_config.repository_id` / `host_id` / `schedule_config.host_id` not found or not owned by user.
 - `trigger_config.repo_url` not authorized (no installed GitHub app, no Gitea token).
 - Source defaults can't be applied (template imported from non-existent Repository).
 - Conflicts during launch (e.g. subdomain already taken at the chosen Host: only surfaces at launch).

@@ -2,7 +2,7 @@
   "name": "fibe-skills",
   "version": "0.1.0",
   "private": true,
-  "description": "Fibe user guide and machine-readable skill library published at whats.fibe.gg",
+  "description": "Native FIBE self-hosted user guide and public skill library",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
@@ -20,7 +20,9 @@
     "check-candidate": "node scripts/check-candidate.mjs",
     "refresh-skills": "npm run import-seed-skills && npm run sync-skills && npm run build-llm-skills",
     "prestart": "node scripts/build-llm-skills.mjs",
-    "prebuild": "node scripts/build-llm-skills.mjs"
+    "prebuild": "node scripts/build-llm-skills.mjs",
+    "import-native-contracts": "node scripts/import-native-contracts.mjs",
+    "check-native-contracts": "node scripts/import-native-contracts.mjs --check"
   },
   "dependencies": {
     "@docusaurus/core": "3.9.2",

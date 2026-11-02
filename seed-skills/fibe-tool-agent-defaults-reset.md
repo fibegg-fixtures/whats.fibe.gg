@@ -1,30 +1,16 @@
 ---
 name: fibe-tool-agent-defaults-reset
-description: Use when you need to clear all Player Agent default overrides so the platform's admin defaults apply.
+description: Use only when the user asks to discard customised Agent defaults and return to the shipped defaults.
 ---
-
 # fibe_agent_defaults_reset
 
-[MODE:SIDEEFFECTS] Tier: base. Caller-visible effect is non-idempotent; retrying an empty reset is safe.
-
-Wipes the Player's `agent_defaults` to `{}` through `DELETE /api/agent_defaults`. Requires `agents:write` API key scope.
-
-## When to use
-- Player wants fresh-start defaults from the platform.
-- Reverting a botched `fibe_agent_defaults_update`.
-- Cleaning up before tearing down the account.
+Resets Agent defaults for the selected owner to the installation baseline.
 
 ## Inputs
-None.
 
-## Output
-The post-reset payload (same shape as `fibe_agent_defaults_get`: `agent_defaults: {}`).
+- `scope` (optional): personal or Team owner of the defaults.
+- `confirm`: must be true.
 
-## Gotchas
-- Reset only affects the Player's overrides; existing Agents retain their per-Agent settings until updated separately.
-- Cannot reset another Player's defaults: scoped to the authenticated user.
-- Without `agents:write` scope: 403.
+## Notes
 
-## Related
-- `fibe_agent_defaults_get`: confirm post-reset state.
-- `fibe_agent_defaults_update`: re-apply specific overrides.
+- This is destructive for customised defaults; confirm with the user first.

@@ -25,13 +25,13 @@ Runtime Git operations can push code through an attached installation. Repositor
 
 Multiple installations supported per account: one per org or per repo set.
 
-Production and staging use separate GitHub Apps. An installation on `fibe.gg` does not connect `next.fibe.live`. Repository selection also matters: an installation on a personal account does not cover repositories owned by another organization. Repository status reports both `github_app_installed` (any connected installation) and `github_app_installed_for_repo` (the repository's runtime access).
+Each Fibe installation has its own GitHub App configuration. Repository selection matters: an installation on a personal account does not cover repositories owned by another organization. Repository status distinguishes a connected installation from access to a particular repository.
 
 If GitHub says the App is installed but Fibe cannot verify it, reconnect the GitHub identity that has access. Fibe retains the pending installation in that browser session and retries linking after OAuth. Expired authorizations saved before renewal support need one reconnect; their missing refresh token cannot be recovered. New authorizations retain encrypted refresh tokens and renew before expiry. GitHub describes the rotation protocol in [Refreshing user access tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens).
 
 ## Permissions
 
-Cloning and reading source require repository contents read plus GitHub's mandatory metadata permission. Runtime pushes require contents write; creating repositories requires administration write. The hosted Apps currently also request email read and organization administration write. Those additional permissions come from the App's GitHub configuration. Changing Ruby or CLI code does not change the installation consent screen. Review that configuration separately before requesting broader organization access; keep existing repository creation and write workflows working when reducing permissions.
+Cloning and reading source require repository contents read plus GitHub's mandatory metadata permission. Runtime pushes require contents write; creating repositories requires administration write. The configured GitHub App may request permissions beyond repository reads. Those permissions come from the GitHub App configuration, so review the consent screen and limit access to what your installation needs.
 
 ## Installation cards
 

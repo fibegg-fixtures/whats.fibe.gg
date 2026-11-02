@@ -1,7 +1,7 @@
 {
   "name": "Fibe user guide and skills",
   "short_name": "Fibe Guide",
-  "description": "Docker environments, AI Agents, and reusable templates.",
+  "description": "Self-hosted Playgrounds, Tasks, Agents and reusable Specs.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

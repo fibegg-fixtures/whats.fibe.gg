@@ -126,7 +126,7 @@ services:
       start_period: 120s
     labels:
       <<: *app-build-labels
-      fibe.gg/start_command: bin/rails server -b 0.0.0.0
+      fibe.gg/start_command: bundle exec puma -b tcp://0.0.0.0:3000
       fibe.gg/port: 3000
       fibe.gg/visibility: external
       fibe.gg/subdomain: app

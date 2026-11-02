@@ -13,7 +13,7 @@ Capture includes authored provider/model settings, prompts/options and explicitl
 
 Recipients provide required inputs and their own authentication. Secret inputs may bind only to ENV or MCP authentication. Scripts receive explicit `FIBE_PRESET_INPUT_<NAME>` environment values; input values are not interpolated into shell source. Vault selectors must belong to the recipient context and are copied once into separately encrypted bindings.
 
-A recipient may create an independent Personal or Team Agent after authority, quotas and authentication checks. The copy keeps concrete authored values, including empty strings/maps and false flags, independently of later author/default edits. Platform-managed images, limits, entitlement and recipient resource authority remain live. ENV-pack selections stay separate from the authored preset.
+A recipient may create an independent Personal or Team Agent after authority, quotas and authentication checks. The copy keeps concrete authored values, including empty strings/maps and false flags, independently of later author/default edits. Recipient resource authority and the installation-configured Agent runtime remain subject to current checks. ENV-pack selections stay separate from the authored preset.
 
 Unpublishing revokes public revision/asset access without removing an independent copy. Republishing starts a new publication epoch with only the explicitly selected revision. Retrying a create request reuses its scoped idempotency result; conflicting reuse fails.
 

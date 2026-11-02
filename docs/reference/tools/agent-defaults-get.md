@@ -1,6 +1,6 @@
 ---
 title: "Agent Defaults Get"
-description: "Use when reading the current Player's Agent default overrides (LLM provider, settings, etc.): the JSON shape used by the profile UI."
+description: "Use when you need to read the installation or Team default Agent configuration before creating or changing an Agent."
 slug: /reference/tools/agent-defaults-get
 sidebar_label: "Agent Defaults Get"
 image: /img/og/reference-tools-agent-defaults-get.png
@@ -9,32 +9,12 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-[MODE:DIALOG] Read-only, idempotent. Tier: base.
-
-Returns the authenticated Player's `agent_defaults` JSON through `GET /api/agent_defaults`. Requires API key scope `agents:read`.
-
-## When to use
-- Reviewing default LLM provider/model/temperature for new Agents.
-- Before `fibe_agent_defaults_update`: to compute a delta.
-- Confirming an admin-set default is in effect (Player's overrides take priority).
+Returns the effective default Agent settings: provider, model, enabled skills, mounted files and prompt defaults.
 
 ## Inputs
-None.
 
-## Output
-```json
-{
-  "agent_defaults": { "provider":"anthropic", "model":"claude-opus-4-7", "...":"..." },
-  "player": { "id": 11, "username": "viktor" }
-}
-```
+- `scope` (optional): personal or Team owner of the defaults.
 
-## Gotchas
-- Player overrides ARE NOT global admin defaults: empty `agent_defaults` means the platform's admin defaults apply.
-- Without `agents:read` scope: 403 `FORBIDDEN`.
-- Returned shape mirrors what `fibe_agent_defaults_update` accepts.
+## Notes
 
-## Related
-- `fibe_agent_defaults_update`: replace overrides.
-- `fibe_agent_defaults_reset`: clear overrides.
-- `fibe_resource_mutate(resource:"agent", operation:"update")`: per-Agent overrides instead.
+- Read before `fibe_agent_defaults_update` so an update starts from current values.

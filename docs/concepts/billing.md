@@ -1,196 +1,36 @@
 ---
-title: Billing
-description: Plans, Wallet, Mana, Sparks, top-ups, subscriptions, referrals, Runes. Everything that goes through Profile → Billing.
+title: Self-hosted operation
+description: Install, update, back up, and manage resource quotas for a self-hosted Fibe installation.
 slug: /concepts/billing
 sidebar_position: 9
 image: /img/og/concepts-billing.png
-keywords: [Billing, Wallet, Mana, Sparks, plan, subscription, top-up, referral, Rune]
+keywords: [self-hosted, installation, operations, quota, backup, update]
 ---
 
-Manage plans, balances, subscriptions, and referrals under **Profile → Billing**. Fibe uses two currencies and charges for usage.
+Fibe is self-hosted software. There is no Fibe subscription, wallet, top-up, usage charge, referral reward, or tutorial Host in this product. You provide the Fibe server and the Docker Hosts where your workloads run, and you manage their capacity and operating costs directly.
 
-## Team billing
+## What you operate
 
-Teams have independent balances, provider customers, orders, subscriptions and gateway allocations. Accepted administrators manage them under **Team settings → Billing** (open the gear next to the Team pill): Wallet, Add funds, Plans, Subscriptions, Recent purchases, and the billing contact and provider. Other members see the same cards read-only. Personal funds and Team funds are separate. Membership changes retain Team finance and resource history. See [Teams](/concepts/teams/) for ownership and closure admission.
+- The Fibe application and its persistent `/data` directory, which contains the SQLite database, keys, and uploaded files.
+- Each registered Host and its Docker daemon, network access, storage, DNS, and TLS routing.
+- External services used by your workloads, such as registries, Git providers, email, or object storage, when configured.
 
-## Wallet
+The official distribution is one Fibe application image plus the documented routing layer. Follow the [deployment guide](https://github.com/fibegg/fibe-api/tree/main/deploy) for installation and upgrade procedures. Back up the complete stopped data directory before migrations; an older image cannot reverse a newer database schema. Host workload volumes and external provider data have their own backup requirements.
 
-The Wallet holds your account balance.
+## Resource quotas
 
-### What the Wallet page shows
+Fibe retains owner-scoped quota controls for supported resource admissions. An installation administrator can inspect and change quota policy from the native **Quotas** operator page. Personal and Team resources have separate ownership and policy; a Team allocation does not consume its creator's Personal allowance. Reducing a limit does not delete existing records, but can prevent later allocations.
 
-- **Current balance** in both currencies.
-- **History:** labeled credits and debits, with descriptions and links to the resources that caused them.
-- **Debt:** unpaid Host days, also reported by email. New credit settles the debt first.
+The quota system is not a billing meter. Support for admission limits varies by resource workflow, so treat **Profile → Advanced Settings → Limits & Quotas** and the current API response as authoritative for owner usage. Installation administrators manage supported per-account policy under **Admin → Players** or at `/quotas`. See [Limits & Quotas](/advanced/limits/) for the current control surface and its boundaries.
 
-### Top up
+## Teams
 
-From the Wallet page:
-
-1. Pick an amount or discounted pack.
-2. Pay via the billing provider shown in the checkout flow.
-3. Receive the balance, usually immediately or after the provider clears the payment.
-
-By default, Mana purchases range from $10 to 100,000 Mana in multiples of 10 Mana. Checkout rejects other amounts.
-
-Balance can also arrive without a checkout: a **[referral](#referrals)** reward, or an occasional **grant** the platform issues directly.
-
-### Auto-recharge
-
-Auto-recharge buys a fixed amount every 30 or 365 days. Enable it on the Mana purchase form; bundle checkout enables it automatically. It does not react to your balance, so choose an amount above your daily use.
-
-Use a sufficient auto-recharge to keep production Hosts funded.
-
-## Mana
-
-Mana is the **primary** currency. Use it for anything persistent.
-
-### What Mana pays for
-
-- **Tutorial Hosts:** their daily cost is charged in Mana.
-- **Sparks:** a one-way conversion used to fund standard, self-hosted Hosts. Bundle checkout converts automatically.
-
-### Bundles
-
-Buy bundles from Billing. Each Host shows its daily cost, available balance, and a **Fund until** date. Fibe charges one day at a time through that date.
-
-## Sparks
-
-Sparks are the **second** currency: they pay the daily running cost of standard (self-hosted) Hosts.
-
-### What Sparks pay for
-
-Sparks pay the daily cost of standard, self-hosted Hosts. Convert Mana manually in the Wallet or automatically through bundle checkout.
-
-### Mana → Sparks conversion
-
-Convert Mana to Sparks at a fixed rate from the Wallet page. One-way: Sparks can't be converted back to Mana.
-
-## Subscriptions
-
-Recurring plans appear under **Active Subscriptions** in Billing.
-
-Per-subscription columns:
-
-- **Plan:** the subscribed product.
-- **Provider:** the billing provider.
-- **Period:** current billing cycle.
-- **Status:** active, past due, cancelled, or another provider state.
-
-Use the Cancel action when shown; otherwise contact support. Cancellation is immediate and stops future recharges. Existing Wallet credit remains. Buy another bundle to change plans.
-
-## Referrals
-
-Your **referral code** gives a new player a checkout discount. Their first qualifying purchase adds a Sparks reward to your Wallet. Each account can be referred once, and self-referrals do not count.
-
-The Billing page shows:
-
-- **Your Code:** your referral code.
-- **Referrals desc:** current terms, payout, and promotion.
-- **Referred:** number of accounts registered with your code.
-
-## Runes
-
-A **Rune** is an invite code with a redemption limit. It stops working at that limit. A Rune may be restricted to one email address or one email domain, but not both. Staff can map an exact-domain Rune to a Team so that [Google sign-in](/advanced/google-sign-in/) admits people from that domain straight into the Team as members.
-
-The page shows:
-
-- **Rune:** your code.
-- **Used:** redeemed invites.
-
-## What's free
-
-You don't need to spend anything to:
-
-- Sign up.
-- Author Templates privately.
-- Browse the [Bazaar](/concepts/bazaar/).
-
-Spending starts when you fund a Host. Tutorial Hosts charge Mana daily, and Agent chats require a funded Host.
-
-:::info Staging update: 13 September 2026
-On [next.fibe.live](https://next.fibe.live), delayed or repeated subscription
-cancellation jobs recheck the server's current funding and entitlement. They follow
-normal billing grace and retention instead of deleting playground records or
-storage immediately. Renewed funding is checked again before retention cleanup,
-and a failed infrastructure removal request does not mark the server as removed.
-This correction has not yet been promoted to fibe.gg. Retention still applies;
-this is not a promise of indefinite hosting or storage without payment.
-:::
-
-## When your balance runs low
-
-A funded Host is charged daily: Mana for tutorial Hosts and Sparks for standard ones. A service day runs from midnight to midnight UTC and is paid only when funded through its end. Billing intervals contain 30 service days per month or 365 per year. Each Host shows its daily rate, projected cost, and **Fund until** date. If a charge fails, the Host enters the recovery process below.
-
-### 1. Runtime blocked, grace starts
-
-When a daily charge fails, runtime actions are blocked and a grace period begins. The default is three days; the grace email gives the deadline.
-
-- **New runtime actions are blocked.** Launching, rolling out, restarting, refreshing diagnostics, and pulling logs return a **`HOST_NOT_FUNDED`** message. Read-only views and your Billing pages keep working.
-- **Self-hosted workloads keep running** without automatic recovery, expiration, or updates. A tutorial Host goes out of service: Playgrounds become unavailable and Agent chats stop. Stored data remains until removal.
-
-Nothing is deleted yet; the unpaid amount is tracked as a debt on the Host.
-
-### 2. Grace ends and suspension begins
-
-If the balance still cannot cover the Host after grace, it becomes **suspended**. After two grace incidents, the next failed charge suspends it immediately. The Host stays off and keeps its debt. Fibe sends email during this process.
-
-### 3. Managed Host removal
-
-An unpaid platform-managed Host may be removed after its retention window, seven days after suspension by default. Destruction permanently removes its Playgrounds, Tasks, and their data.
-
-Fibe never deletes a self-hosted server. An unpaid one becomes disabled and suspended, but its machine and data remain yours. Fibe management resumes after re-enabling it.
-
-### Getting back to normal
-
-- **Top up** before removal. As soon as the credit lands, outstanding charges settle first, then the Host can be re-enabled: a self-hosted Host's apps were never touched, and on a managed Host your Playgrounds and Agent chats can be started again.
-- **Enable [auto-recharge](#auto-recharge)** with enough credit to cover daily use.
-
-:::warning Grace is a safety net, not a plan
-For any Host running real work, keep a buffer or enable auto-recharge. A removed managed Host takes its data with it.
-:::
-
-## FAQ
-
-<details>
-<summary>Do credits expire?</summary>
-
-No. Purchased and granted Mana and Sparks do not expire.
-</details>
-
-<details>
-<summary>Refunds?</summary>
-
-Unused balance is refundable within a reasonable window after purchase. Specific items follow standard SaaS conventions. The checkout flow shows the policy.
-</details>
-
-<details>
-<summary>Cheapest way to start?</summary>
-
-The Tutorial bundle provides a managed Host billed daily in Mana, with no server required.
-</details>
-
-<details>
-<summary>Sparks needed but I only have Mana?</summary>
-
-Convert on the Wallet page at the fixed rate. Immediate. One-way.
-</details>
-
-<details>
-<summary>What happens if my balance hits zero?</summary>
-
-Runtime actions return `HOST_NOT_FUNDED` and grace begins. A managed Host becomes disabled. Workloads on a self-hosted Host keep running without Fibe management. Continued nonpayment causes suspension and may eventually remove a managed Host and its environments. Fibe never deletes a self-hosted server. See [When your balance runs low](#when-your-balance-runs-low).
-</details>
-
-<details>
-<summary>Where do I see the invoice for a top-up?</summary>
-
-The Wallet history shows the order reference for each purchase; the invoice/receipt comes from the billing provider (check the email from checkout).
-</details>
+Teams provide owner-scoped collaboration and resource isolation. They do not have separate balances, payment customers, subscriptions, or billing settings. Team membership and administration are managed from the Team workspace.
 
 ## Related
 
-- [Hosts](/concepts/hosts/): daily charges in Mana or Sparks.
-- [Agents](/concepts/agents/): run on funded Hosts.
-- [Advanced → Limits & Quotas](/advanced/limits/): plan quotas.
-- [Advanced → Data Backup](/advanced/backup/): included with plans rather than charged in Sparks.
+- [Hosts](/concepts/hosts/): connect and manage your Docker machines.
+- [Teams](/concepts/teams/): Team ownership and membership.
+- [Limits & Quotas](/advanced/limits/): inspect quota usage and operator policy.
+- [Data Backup](/advanced/backup/): product-data export and import limits.
+- [Runtime configuration](/advanced/runtime-configuration/): operator-managed installation settings.

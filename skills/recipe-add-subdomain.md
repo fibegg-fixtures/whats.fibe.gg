@@ -5,7 +5,7 @@ description: Use to set the public hostname leftmost label via `fibe.gg/subdomai
 
 # Recipe: `fibe.gg/subdomain`
 
-The public URL of an exposed service is `https://<subdomain>.<host-root-domain>`. The Host owns its `root_domain` (e.g. `next.fibe.live`); the template owns the subdomain via `fibe.gg/subdomain`.
+The public URL of an exposed service is `https://<subdomain>.<host-root-domain>`. The Host owns its `root_domain` (e.g. `apps.example.test`); the template owns the subdomain via `fibe.gg/subdomain`.
 
 ## Allowed values
 

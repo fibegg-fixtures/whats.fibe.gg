@@ -1,6 +1,6 @@
 ---
 title: "Agents Runtime Status"
-description: "Use when you need to check an Agent's reachability, authentication, queue depth, and processing state. Diagnostics for Agent chat health."
+description: "Use when you need to know whether an Agent's runtime is provisioned and healthy on its Host."
 slug: /reference/tools/agents-runtime-status
 sidebar_label: "Agents Runtime Status"
 image: /img/og/reference-tools-agents-runtime-status.png
@@ -9,54 +9,12 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-[MODE:OVERSEER] Read-only, idempotent. Tier: overseer.
-
-Live checks require the chat Host to be funded. Unpaid Hosts return `HOST_NOT_FUNDED`.
-
-Pulls the combined chat envelope and live status for an Agent through `GET /api/agents/:id/runtime_status`.
-
-## When to use
-- Before sending messages: confirm the Agent is up.
-- Investigating why messages aren't being processed.
-- Quick health check across managed Agents.
+Returns runtime provisioning and health information for an Agent.
 
 ## Inputs
-| Field | Type | Required | Notes |
-|---|---|---|---|
-| `id_or_name` | int or string | yes | Agent ID or name |
 
-## Output
-Without an active chat:
-```json
-{ "status": "missing", "runtime_reachable": false, "authenticated": false, "is_processing": false, "queue_count": 0 }
-```
+- `agent_id_or_name`: Agent ID or name.
 
-With a chat:
-```json
-{
-  "id": <chat_id>, "status": "running", "host_id": ...,
-  "runtime_reachable": true,
-  "authenticated": true,
-  "is_processing": false,
-  "queue_count": 0,
-  "started_at": "...", "stopped_at": null,
-  ... (other chat_api_payload fields)
-}
-```
+## Notes
 
-## Field meanings
-- `runtime_reachable`: Agent responded to the status check.
-- `authenticated`: Agent reports valid LLM provider credentials.
-- `is_processing`: Agent is currently mid-turn.
-- `queue_count`: pending messages waiting for the Agent.
-
-## Gotchas
-- `status:"pending"` is the normal start/restart deployment state; poll until `status:"running"` and `runtime_reachable:true`.
-- `runtime_reachable:false` despite `status:"running"` usually means the runtime is unreachable or recovery is being queued while Fibe preserves a potentially healthy session.
-- "missing" status means no chat ever started: call `fibe_agents_start_chat`.
-- Returns immediately; does not poll.
-
-## Related
-- `fibe_agents_start_chat`: bring chat online.
-- `fibe_agents_send_message`: only sensible after `runtime_reachable:true`.
-- `fibe_resource_get(resource:"agent")`: config-side info.
+- A failed runtime usually needs `fibe_doctor` or a Host check, not a new message.

@@ -128,7 +128,7 @@ x-fibe.gg:
 | `DB_PASS: wikijsrocks` | `DB_PASS: placeholder` + `path` binding | Same random as DB password |
 | `depends_on: - db` (short form) | `depends_on: db: { condition: service_healthy }` + `healthcheck:` on db | App waits until DB accepts connections |
 | `volumes: - db-data:...` (hyphen) | `db_data` (underscore) | YAML safety; both work but `_` is conventional |
-| No metadata | `x-fibe.gg.metadata.{description,category}` | Pantry/launcher card |
+| No metadata | `x-fibe.gg.metadata.{description,category}` | Pantry/Spec form card |
 | No subdomain | `fibe.gg/subdomain: wiki` + `SUBDOMAIN.path` | Launcher chooses while local Compose keeps a concrete label |
 
 ## Optional additions

@@ -38,6 +38,10 @@ jobs:
         run: npm run build
         env:
           NODE_OPTIONS: --max-old-space-size=4096
+          DOCUSAURUS_SSR_CONCURRENCY: 2
+
+      - name: Verify Native guide and LLM exports
+        run: npm run check-candidate
 
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3

@@ -1,6 +1,6 @@
 ---
 title: The Fibe SDK
-description: "One binary, three modes: a fibe CLI for the terminal, a Go library to embed, and an MCP server for AI agents. The interface to Fibe."
+description: Released SDK v0.3.3 CLI, Go library, and MCP client entry points for self-hosted Fibe installations.
 slug: /sdk/intro
 sidebar_position: 1
 sidebar_label: Overview
@@ -8,51 +8,49 @@ image: /img/og/sdk-intro.png
 keywords: [Fibe SDK, fibe CLI, MCP server, Go library, automation, AI agent]
 ---
 
-The Fibe SDK is the **interface to Fibe**: a single Go binary that runs in three modes depending on who's calling:
+The released Fibe SDK v0.3.3 provides a Go binary with CLI, library, and MCP entry points. Its available operations are defined by that release; the native server OpenAPI document is the authoritative inventory of server endpoints.
 
 - **CLI**: you, at a terminal. `fibe playgrounds list`, `fibe agent chat`, `fibe tasks trigger`.
 - **Go library**: programs you write in Go that embed Fibe directly. Automate deployments, build a custom dashboard, write a control plane.
 - **MCP server**: AI agents (Claude Code, Cursor, Antigravity, anything that speaks the Model Context Protocol). Agents call `fibe_*` tools and Fibe responds.
 
-All three share the same authentication, the same resource model, the same retry / circuit-breaker / rate-limit logic. Pick your interface; the platform is the same.
+The CLI, library, and MCP server are entry points to the released client. Their operation set and behavior are versioned with SDK v0.3.3 and are not a guarantee that every native server workflow is available.
 
 ## When to use which mode
 
 | You are… | Use… |
 | --- | --- |
 | At a terminal | The **CLI**: `fibe ...` |
-| A Go program that needs to drive Fibe | The **Go library** at `github.com/fibegg/sdk/fibe` |
-| An LLM agent (Claude Code, Cursor, Codex, etc.) | The **MCP server**: `fibe mcp serve`: 60+ typed tools (see the [Tools catalog](/sdk/tools-catalog/) for the current list) |
+| A Go program that needs to drive Fibe | The released **Go library** at `github.com/fibegg/sdk/fibe` |
+| An LLM agent (Claude Code, Cursor, Codex, etc.) | The **MCP server**: `fibe mcp serve`, when available in the installed client |
 | Writing a one-off shell script | The **CLI** with `-o json` for parseable output |
-| Building CI/CD automation | The **CLI** from a workflow, with an API key |
-| Embedding Fibe in your own SaaS | The **Go library** |
+| Automating a self-hosted installation | The CLI or Go library with a scoped API key |
 
-:::caution Candidate CLI
-This branch requires the programme’s matching untagged candidate binary. The stable Homebrew/release binary and existing production authentication profiles stay unchanged. Use a separate bound candidate profile for next.fibe.live; do not reuse a production credential against an unrelated owner context.
+:::info Released client scope
+The SDK v0.3.3 release is a separate API consumer. A command or MCP tool existing in the client does not mean the corresponding native server workflow is available or qualified. Check the server OpenAPI contract and use `fibe --help` for the released command set.
 :::
 
 ## The 60-second tour
 
 ```sh
-# Use the verified candidate binary prepared for your architecture.
-# The stable Homebrew installation continues to serve production.
+
 
 # First-time setup
-fibe login                # browser device-code flow
+fibe login                # check `fibe login --help` for supported auth modes
 fibe doctor               # check connectivity + auth
 
 # Daily use
 fibe playgrounds list
-fibe agent chat my-agent "Hello"
-fibe pg create --name demo --spec starter --host next --service web.subdomain=demo
-fibe tasks trigger --spec 42
+fibe agents --help
+fibe playgrounds --help
+fibe tasks --help
 
 # Run an MCP server for your AI agent
 fibe mcp serve
 fibe mcp install --client claude-code
 ```
 
-That's the whole product surface, in a paragraph.
+Check `fibe --help` and the installation's OpenAPI document before relying on a specific command or workflow.
 
 ## What it talks to
 
@@ -68,7 +66,7 @@ So the SDK is what gets you those resources from a script, an agent, or a CI job
 fibe <resource> <action> [flags]
 ```
 
-A standard command tree. Every top-level resource family has the usual list / get / create / update / delete plus action-specific subcommands. Output defaults to a readable table; `-o json` and `-o yaml` produce parseable output for scripts. Many commands accept `-f file.json` to load a payload from a file or `-` for stdin.
+The released command tree is versioned with SDK v0.3.3. Run `fibe --help` or `fibe <resource> --help` to see its actual commands and options; do not infer server support from the command name alone.
 
 Read on: [Install the CLI](/sdk/install/), [Authentication](/sdk/authentication/), [CLI reference](/sdk/cli-reference/).
 
@@ -81,19 +79,18 @@ client := fibe.NewClient(fibe.WithAPIKey(os.Getenv("FIBE_API_KEY")))
 pg, _ := client.Playgrounds.Create(ctx, &fibe.PlaygroundCreateParams{Name: "demo", SpecIdentifier: "5"})
 ```
 
-A thin Go wrapper over the Fibe HTTP API with sensible defaults: automatic retry on transient failures, an opt-in circuit breaker for when the upstream is sick, idempotency-key support for safe re-tries, rate-limit awareness, structured errors. Resource "managers" (`client.Playgrounds`, `client.Agents`, `client.Tasks`, …) mirror the REST shape.
+The package exposes typed client methods for the resources included in SDK v0.3.3. Exact signatures and behavior are release-specific; see the package documentation and compare each operation with the native OpenAPI contract.
 
 Read on: [Go library](/sdk/go-library/).
 
 ### MCP server
 
 ```sh
-fibe mcp serve                       # stdio, single-tenant
-fibe mcp serve --http :4400          # SSE over HTTP, multi-tenant
+fibe mcp serve                       # see the installed client help for transport options
 fibe mcp install --client claude-code
 ```
 
-The same Go binary doubles as an MCP server. AI agents call `fibe_*` tools (60+ of them across resource CRUD, playground actions, agent control, greenfield setup, multi-step pipelines, monitoring, repo management, and a few escape hatches). The catalog is in [Tools catalog](/sdk/tools-catalog/) and each tool has its own detail page under [Reference → Tools](/reference/tools/playgrounds-switch-template/).
+The released binary can also serve MCP. Its exact transport and tool surface are defined by SDK v0.3.3. See the [Tools catalog](/sdk/tools-catalog/) and verify server-side support in the installation OpenAPI document.
 
 Read on: [MCP server](/sdk/mcp-server/), [Tools catalog](/sdk/tools-catalog/).
 

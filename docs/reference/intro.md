@@ -8,7 +8,7 @@ image: /img/og/reference-intro.png
 keywords: [Fibe, reference, skills, LLM, authoring, recipes, playbooks]
 ---
 
-The reference section contains small, task-focused **skill files**. Each answers one question, such as how to add a subdomain or turn a Compose file into a Task, then links to related topics.
+The reference section contains task-focused **skill files** for authoring Native Fibe Compose Specs, using the resource model, and understanding public tool guides. Each topic links to related material.
 
 Two audiences:
 
@@ -19,13 +19,13 @@ Two audiences:
 
 | Group | What's in it |
 | --- | --- |
-| **Foundations** | The conceptual map: what Fibe is, what each noun means, who owns what, how features fit together. |
-| **Compose conversion** | The master playbook for turning `docker-compose.yml` into a Fibe template, plus the publish checklist and common-errors guide. |
+| **Foundations** | The Native product map, glossary, ownership concepts, and resource lifecycles. |
+| **Compose conversion** | Guides for adapting `compose.yaml` into a Fibe Spec, plus validation and troubleshooting. |
 | **References** | Authoritative pages for the moving parts: labels, the `x-fibe.gg` block, variables, YAML paths, implied semantics, validation. |
 | **Decision guides** | Short, opinionated frameworks for the choices you make while authoring (static vs dynamic, expose external vs internal, zero-downtime on/off, etc.). |
-| **Execution modes** | One per template shape: job-mode Tasks, cron schedules, VCS triggers. |
-| **Recipes** | Small, copy-pasteable patterns (replace `ports:` with `expose`, lift a Compose `${VAR}` into a Fibe variable, share a subdomain across services, etc.). |
-| **App playbooks** | Worked end-to-end conversions for common app shapes: nginx, Node dev mode, Rails, WordPress, Postgres app, Wiki.js, and more. |
+| **Execution modes** | Task configuration, schedules, and Repository triggers. |
+| **Recipes** | Copyable Compose patterns for routing, variables, source mounts, volumes, and related configuration. |
+| **App playbooks** | Worked examples for Node, Python, databases, and self-hosted applications. |
 
 ## How to read a skill file
 
@@ -37,7 +37,7 @@ Each file follows a consistent shape:
 
 ## How agents use these
 
-Fibe's MCP server and the [Anthropic / Claude SDK setup](https://fibe.gg) reference these skill files by name. When you ask an agent "convert my Compose file", the agent picks up `convert-compose-to-fibe`, then loads only the skills that file points to. That keeps the agent's context window focused on what's actually relevant.
+The public Native tool guides are mirrored from the pinned API Skill catalog. Agent prompts and installation-specific runtime instructions are not part of this public reference. An assistant can use [`llms.txt`](https://whats.fibe.gg/llms.txt) to find relevant guides, then follow their cross-links for Compose and resource details.
 
 If you're building your own agent that should know Fibe, point it at [`whats.fibe.gg/llms.txt`](https://whats.fibe.gg/llms.txt) for an index, [`whats.fibe.gg/llms-full.txt`](https://whats.fibe.gg/llms-full.txt) for the entire library concatenated, or [`whats.fibe.gg/llm-skills.txt`](https://whats.fibe.gg/llm-skills.txt) for a compact `name: description` table of every skill and tool.
 

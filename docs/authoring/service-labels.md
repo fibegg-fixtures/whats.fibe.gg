@@ -28,11 +28,7 @@ path. It has no Fibe default. On non-production services it is also the managed
 source-bind target; on production services it remains the process directory but
 Fibe does not generate a bind.
 
-Prefer credential-free GitHub HTTPS URLs. Standalone Core can apply its one
-host-wide `GITHUB_TOKEN`; Enterprise resolves the Player's Repository/provider
-credential. Explicit credentials in an HTTP(S) URL are supported but persist
-with the authored and rendered configuration, Git origin, and backups. SSH URLs
-use the server's mounted SSH configuration with host-key verification.
+Prefer credential-free HTTPS or SSH repository URLs. Fibe resolves repository credentials from the connected Repository and its current Personal or Team Git connection. Avoid embedding credentials in a Compose label: rendered configuration, Git metadata, or backup files may retain them. SSH URLs use the installation's configured SSH access and host-key verification.
 
 ## Routing & exposure
 

@@ -100,7 +100,7 @@ Use this as a quick map during conversion:
 |---|---|---|
 | Full scalar value (env var, label value, replica count, path destination) | `path:` / `paths:` | `fibe.gg/port` via `paths: services.web.labels.fibe.gg/port` |
 | Part of a larger value (tag, combined command string, prefix/suffix) | `$$var__NAME` inline | `image: registry/app:$$var__TAG` |
-| Existing `${VAR}` from input compose and launcher should control the whole node | Keep a local placeholder and add `path:` / `paths:` | `RAILS_ENV: development` + `path: services.web.environment.RAILS_ENV` |
+| Existing `${VAR}` from input compose and Spec form should control the whole node | Keep a local placeholder and add `path:` / `paths:` | `RAILS_ENV: development` + `path: services.web.environment.RAILS_ENV` |
 | Mixed fragments in the same logical token | Inline | `PathPrefix('/$$var__PATH_PREFIX')` |
 
 ## `$$var__` behavior matrix
@@ -108,11 +108,11 @@ Use this as a quick map during conversion:
 | Declaration | Binding style | Compile-time value | What lands in compiled template |
 |---|---|---|---|
 | `default: "1.2.3"` only | inline | user value -> default -> random -> placeholder | `$$var__` placeholder replaced with `1.2.3` |
-| `required: true` + `default` | inline | required check passes when default exists | default always used when launcher omits value |
-| `required: true` only | inline | compile error if launcher doesn't provide value | compile fails |
+| `required: true` + `default` | inline | required check passes when default exists | default always used when Spec form omits value |
+| `required: true` only | inline | compile error if Spec form doesn't provide value | compile fails |
 | `random: true` only | inline | generated 32-char hex on each compile call unless persisted | same hex reused if stored |
-| No `default`, no `random`, no launcher value | inline | fallback literal `placeholder` | raw `placeholder` appears in output |
-| No `default`, no `random`, no launcher value | `path:` / `paths:` | fallback empty string | YAML empty scalar at every bound path |
+| No `default`, no `random`, no Spec form value | inline | fallback literal `placeholder` | raw `placeholder` appears in output |
+| No `default`, no `random`, no Spec form value | `path:` / `paths:` | fallback empty string | YAML empty scalar at every bound path |
 
 ## Example matrix
 
@@ -191,7 +191,7 @@ Using both inline + path for the same variable is valid, but path writes are the
 
 ## `$$root_domain`
 
-Special, **not** declared in `variables`. Always replaced at compile time with the launching Host's `root_domain` (e.g. `next.fibe.live`). Use it only as an inline fragment where a fully-qualified public host cannot be represented with explicit `path`/`paths` variables. Prefer explicit public URL variables with literal defaults for app ENV:
+Special, **not** declared in `variables`. Always replaced at compile time with the launching Host's `root_domain` (e.g. `apps.example.test`). Use it only as an inline fragment where a fully-qualified public host cannot be represented with explicit `path`/`paths` variables. Prefer explicit public URL variables with literal defaults for app ENV:
 
 ```yaml
 x-fibe.gg:
@@ -209,7 +209,7 @@ x-fibe.gg:
 - Compile-time fresh value if no user value is supplied: 32 lowercase hex characters.
 - Once persisted for the launch, the value is reused on subsequent compiles unless template-author tooling explicitly regenerates it.
 - For values with `random: true` AND `required: true`, the random generation runs **before** the required check, so missing inputs do not error.
-- `secret: true` / `sensitive: true` are launcher UI hints; use Fibe Secrets for long-lived credential storage.
+- `secret: true` / `sensitive: true` are presentation hints. Use a Vault Secret for an owner-bound credential; use Job ENV to supply eligible values to Tasks. ENV packs are for reusable settings attached to a Spec or Playground.
 
 ```yaml
 x-fibe.gg:

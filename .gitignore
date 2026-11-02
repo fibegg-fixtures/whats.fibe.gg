@@ -25,3 +25,7 @@ graphify-out
 .graphifyignore
 .antigravity
 .antigravitycli
+
+# Local review evidence and scratch output.
+.audit-*.json
+artifacts/

@@ -94,7 +94,7 @@ services:
 - Allowed: `Path`, `PathPrefix`, `PathRegexp`
 - Forbidden as primary constructs inside a path rule: `Host`, `HostRegexp`, `HostSNI`, `HostSNIRegexp`, `Headers`, `HeadersRegexp`, `Method`, `Query`, `ClientIP`
 
-This prevents routes from bypassing the hosted domain model.
+This prevents routes from bypassing the Host root-domain routing.
 
 ## Boolean labels and implicit conversion
 

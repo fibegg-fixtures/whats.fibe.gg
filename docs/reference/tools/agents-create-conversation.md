@@ -1,6 +1,6 @@
 ---
 title: "Agents Create Conversation"
-description: "Use when you need to create or upsert a deterministic Agent conversation. Overseer-only."
+description: "Use when you need a new conversation with an existing Agent without sending a message yet."
 slug: /reference/tools/agents-create-conversation
 sidebar_label: "Agents Create Conversation"
 image: /img/og/reference-tools-agents-create-conversation.png
@@ -9,21 +9,13 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-[MODE:SIDEEFFECTS] Tier: overseer. Caller-visible effect is non-idempotent; retries with the same `conversation_id` are safe.
-
-Creates or upserts a conversation for an Agent before sending messages to it.
+Creates or upserts an Agent conversation and returns its identifier.
 
 ## Inputs
-| Field | Type | Required | Notes |
-|---|---|---|---|
-| `id_or_name` | int or string | yes | Agent ID or name |
-| `conversation_id` | string | yes | Stable conversation/thread ID |
-| `title` | string | no | Human-readable title |
 
-## Gotchas
-- Use stable caller-owned ids for deterministic routing.
-- Never expose `conversation_id` as user authorization. It is routing metadata only.
+- `agent_id_or_name`: Agent ID or name.
+- `title` (optional): conversation title.
 
-## Related
-- `fibe_agents_send_message`: send into the conversation.
-- `fibe_agents_delete_conversation`: cleanup.
+## Notes
+
+- Use `fibe_agents_start_chat` when you also want to send the first message.

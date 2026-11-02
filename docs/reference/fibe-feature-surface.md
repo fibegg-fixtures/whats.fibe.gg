@@ -1,6 +1,6 @@
 ---
 title: "Feature Surface"
-description: "Use to answer broad \"what can Fibe do?\" questions and choose the correct user-facing Fibe feature area without leaking implementation details."
+description: "Use to orient users around Fibe's Native self-hosted features and choose the right resource for a workflow."
 slug: /reference/fibe-feature-surface
 sidebar_label: "Feature Surface"
 image: /img/og/reference-fibe-feature-surface.png
@@ -9,101 +9,40 @@ tags: ["reference", "foundation"]
 format: md
 ---
 
-Use this skill when a user asks what Fibe supports, where a workflow belongs, or how user-facing features relate.
+Use this guide when someone asks what Fibe is for or where a workflow belongs. Fibe is self-hosted: the operator configures Hosts and runs the application and its data in their own environment.
 
-## Hosts and infrastructure
+## Hosts and runtime
 
-A Host is where environments run. Users can connect a Docker-capable host over SSH or receive a platform-managed tutorial Host.
+A Host is a Docker-capable machine configured for Fibe. Playgrounds and Tasks run there. Host configuration connects Fibe to the machine and provides the runtime context for workloads.
 
-Hosts provide:
+## Repositories and Specs
 
-- Docker execution.
-- Public and internal routing.
-- TLS certificate handling.
-- DNS and root-domain association.
-- Connection tests.
-- SSH terminal access.
-- Registry credentials for private images.
-- Capacity for multiple Playgrounds.
-- Teams: immutable Team resources, defaults, credentials, balances and quotas; the Team pill picks the owner, accepted members operate resources, accepted admins govern members, billing, service accounts and GitHub in Team settings, and durable service accounts support independent automation.
+Repositories provide source code and Compose files. A Spec describes the environment Fibe can start from a repository or Compose definition, together with its configuration. Use a Repository when the question concerns source or build inputs; use a Spec when it concerns the environment definition and launch settings.
 
-## Repositories and source control
+## Playgrounds and Tasks
 
-Repositories connect Fibe to Git repositories. They support built-in repositories, GitHub imports, branch discovery, Compose detection, push notifications, code-change history, and in-browser git actions from Playgrounds.
+Choose a Playground for an environment that should stay available. Choose a Task for work expected to finish, such as a test or a scheduled operation. Both run against a Host; use the resource's own status and logs to understand what happened.
 
-Use Repositories when the question involves source code, branches, builds, repository credentials, GitHub/Gitea, webhooks from git providers.
+Compose services communicate over their Compose network. Fibe's supported service labels describe routing and other Fibe-specific behavior. The [Compose schema](../reference/json-schema.md) and [label guide](reference-fibe-labels.md) are the source of truth for accepted fields.
 
-## Templates and Bazaar
+## Teams, Agents, and Library
 
-Templates are reusable environment definitions. They are versioned, forkable, publishable, searchable, and launchable.
+Teams provide shared ownership for workspace resources. Access follows the resource owner and the current Team membership rules. Agents are assistant configurations associated with workspace activity. Library holds reusable configuration and records, including ENV packs that can be attached to a Spec or Playground.
 
-Feature names:
+## Audit and access
 
-- Templates: the user's personal template collection.
-- Bazaar: public template discovery and launch.
+Audit Logs provide a history of supported actions. Use them for review and accountability. API access is scoped by the credentials and authorization rules configured for the self-hosted installation.
 
-Templates can be pasted directly, imported from a Repository, source-linked to a file, refreshed from source changes, tested with a CI Host, and upgraded into downstream Specs.
+## Where to start
 
-## Specs and Playgrounds
-
-A Spec is the configured blueprint for a launch. A Playground is the running environment.
-
-Playgrounds support:
-
-- Service URLs.
-- Public and internal exposure.
-- Logs.
-- Debug terminal.
-- Service discovery.
-- Environment overrides.
-- Expiration and extension.
-- Rollout and hard restart.
-- Stop, destroy, retry, and deploy actions.
-- Git diff and commit flows.
-- Live status updates.
-
-## Tasks and automated jobs
-
-Tasks are job-mode Playgrounds. They run tasks that should finish, then record results and clean up.
-
-Use this area for:
-
-- Test runners.
-- Migrations.
-- Backups.
-- Scheduled cron jobs.
-- Push or pull-request triggers.
-- CI repair with an Agent.
-- Mutation-testing repair workflows.
-- Per-Repository Job ENV values.
-
-## Agents, Bridge, artefacts, and feedback
-
-Agents, also called Agents, are persistent AI assistant configurations. They support multiple providers, stored credentials, standalone chats, Playground attachment, custom prompts, mounted files, MCP access, post-init setup, duplication, live activity, artefacts, feedback, mutters, and build-in-public timelines.
-
-Bridge is the unified workspace for switching among Agents and active chats. **Create Agent** sits below the Agent list; an empty Bridge shows "No agents yet". The step-by-step setup wizard lives at Profile → Advanced Settings → Setup guide (`/wizard`).
-
-## Secrets, API keys, and webhooks
-
-Secret Vault stores encrypted credentials for users and Agents. API keys provide scoped programmatic access. Webhooks deliver signed events to external systems.
-
-ENV packs are readable, non-secret ENV maps kept in Library → ENV packs. Users pick them when creating a Playground; only job-mode Specs keep packs, as packs for scheduled runs.
-
-Use this area when the user asks about automation credentials, third-party API tokens, MCP access, event subscriptions, HMAC signatures, event filters, delivery history, or safe external callbacks.
-
-## Monitoring, notifications, and diagnostics
-
-Fibe gives live feedback through service status, build steps, logs, in-app notifications, browser push notifications, commit notifications, audit logs, diagnostics, and maintenance tools.
-
-Use this area when a user asks how to observe a Playground, track changes, inspect failures, or receive updates.
-
-## Data portability
-
-Users can export and import resources for backup or migration. Exportable areas include Repositories, Hosts, Specs, Agents, Playgrounds, Templates, Secrets, and Webhooks. Imports support conflict handling and rollback for created resources.
+- To bring up a workload, begin with a Host, a Repository or Compose definition, and a Spec.
+- To keep a service available, use a Playground.
+- To run finite work, use a Task.
+- To share resources, use a Team as their owner.
+- To understand a change, inspect the resource and its Audit Logs.
 
 ## Related skills
 
-- [fibe-product-map](fibe-product-map.md) for the conceptual model.
-- [fibe-resource-lifecycles](fibe-resource-lifecycles.md) for resource behavior over time.
-- [fibe-agents-and-automation](fibe-agents-and-automation.md) for Agents and jobs.
-- [fibe-security-access-and-integrations](fibe-security-access-and-integrations.md) for access and integration surfaces.
+- [fibe-product-map](fibe-product-map.md) for the resource model.
+- [fibe-resource-lifecycles](fibe-resource-lifecycles.md) for lifecycle concepts.
+- [fibe-security-access-and-integrations](fibe-security-access-and-integrations.md) for ownership and access.

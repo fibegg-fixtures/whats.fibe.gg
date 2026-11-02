@@ -1,24 +1,17 @@
 ---
 name: fibe-tool-agents-messages
-description: Use when you need persisted Agent messages, optionally scoped to a conversation. Overseer-only.
+description: Use when you need to read the messages of an Agent conversation.
 ---
-
 # fibe_agents_messages
 
-[MODE:OVERSEER] Tier: overseer. Read-only.
-
-Reads persisted Agent messages. Use `conversation_id` whenever the Agent is reused across multiple user/project conversations.
+Lists messages of one conversation, newest last.
 
 ## Inputs
-| Field | Type | Required | Notes |
-|---|---|---|---|
-| `id_or_name` | int or string | yes | Agent ID or name |
-| `conversation_id` | string | no | Specific conversation/thread ID |
 
-## Gotchas
-- This is persisted history, not live streaming state. Use `fibe_agents_live_state` for live output.
-- Without `conversation_id`, results may include only the default conversation.
+- `agent_id_or_name`: Agent ID or name.
+- `conversation_id` (optional): defaults to the latest.
+- `limit` (optional).
 
-## Related
-- `fibe_agents_activity`: persisted activity log.
-- `fibe_agents_live_state`: transient processing state.
+## Notes
+
+- Message content may be long; request a small limit first.

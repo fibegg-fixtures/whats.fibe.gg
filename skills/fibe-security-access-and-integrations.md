@@ -1,134 +1,45 @@
 ---
 name: fibe-security-access-and-integrations
-description: Use for Fibe authentication, Google sign-in, Team ownership, sessions, sudo mode, two-factor auth, WebAuthn, API keys, Secret Vault, Job ENV, webhooks, audit logs, data portability and notifications.
+description: Use for Native Fibe resource ownership, Vault Secrets, ENV packs, Job ENV entries, and safe handling of application credentials.
 ---
 
 # Fibe security, access, and integrations
 
-Use this skill when a user asks who can access what, how credentials are protected, how automation authenticates, or how Fibe integrates with outside systems.
+Use this guide when a workflow depends on who owns a resource, how an API request is authorized, or where a credential should be stored. Native Fibe binds resources and credentials to a personal or Team owner. API access is checked against the selected owner and the requested operation.
 
-## Team ownership
+## Personal and Team ownership
 
-Teams own their Hosts, Repositories, Specs, Playgrounds, Agents, Library records, Secrets, credentials, defaults and finance independently of Personal resources. Users pick Personal or a Team in the Team pill under their avatar before creating work. Accepted members operate Team resources; accepted administrators govern membership, credentials and billing in Team settings (`/teams/:id/settings`, tabs Members, Billing, Service accounts, GitHub). Ownership is immutable, and children inherit their root owner. Another Team's ID or a creator's personal credentials cannot provide authority. Team access comes only from Team ownership; there is no per-resource sharing.
-
-Individual credentials require live membership. Durable Team service accounts continue independently of their issuer, but key/service-account revocation and Team closure block later effects. Team resources and retained history survive creator departure.
-
-Removal records a durable enrollment block. Restoration requires an audited native admin request and the removed person's explicit acceptance. Existing applied ENV-pack snapshots remain repairable after grant loss; fresh use requires valid renewed authority.
-
-## Google sign-in
-
-Google sign-in works with any Google account; Runes govern admission. A new account needs a valid invitation Rune. Staff can map an exact-domain Rune to a Team, so a verified Google Workspace account from that domain joins the Team as a member. Existing accounts link Google from Security & Sessions; a matching email never links automatically. A Google session never grants native trust or sudo: Google-only accounts set up TOTP before protected actions.
-
-## Sessions and trust
-
-Fibe uses browser sessions with expiry, device context, and trust state. Sessions can become untrusted when security-sensitive context changes, and users may need to restore trust with two-factor authentication or a security key.
-
-Sensitive actions require sudo mode: a short-lived re-verification window. Examples include managing API keys, secrets, webhooks, all-session revocation, and security keys.
-
-## Two-factor authentication
-
-Fibe supports authenticator-app TOTP, recovery codes, and WebAuthn security keys.
-
-Important rules:
-
-- TOTP setup shows a QR code and requires verification.
-- Recovery codes are single-use and should be saved by the user.
-- Regenerating recovery codes invalidates old ones.
-- Security keys can restore trust or satisfy sudo verification.
-- Removing a security key or disabling 2FA requires a valid verification step.
-
-## API keys
-
-API keys provide scoped programmatic access for API, CLI, MCP, and agent workflows.
-
-Common scope families:
-
-- `hosts:read`, `hosts:write`, `hosts:delete`, `hosts:manage`
-- `repositories:read`, `repositories:write`, `repositories:delete`
-- `specs:read`, `specs:write`, `specs:delete`
-- `playgrounds:read`, `playgrounds:write`, `playgrounds:delete`
-- `import_templates:read`, `import_templates:write`
-- `agents:read`, `agents:write`, `agents:delete`
-- `artefacts:read`, `artefacts:write`, `artefacts:delete`
-- `mutters:read`, `mutters:write`
-- `feedbacks:read`, `feedbacks:write`, `feedbacks:delete`
-- `mutations:read`, `mutations:write`
-- `launch:write`
-- `keys:manage`
-- `webhooks:read`, `webhooks:write`, `webhooks:delete`
-- `secrets:read`, `secrets:write`, `secrets:delete`, `secrets:manage`
-- `job_env:read`, `job_env:write`, `job_env:delete`, `job_env:manage`
-- `conversations:read`, `conversations:write`, `conversations:delete`, `conversations:manage`
-- `memories:read`, `memories:write`, `memories:delete`, `memories:manage`
-- `monitor:read`
-- `env_packs:read`, `env_packs:write`, `env_packs:delete`, `env_packs:manage`
-- `billing:read`, `billing:write`
-- `agent_presets:read`, `agent_presets:write`
-
-Use narrow scopes for automation. Use granular restrictions when a key should only touch specific resources. The raw token is shown only at creation time. Full-access wildcard keys exist for administrator-level cases, but should not be the default recommendation.
+Resources belong to a personal workspace or a Team. Team ownership provides a shared workspace; it does not make a resource public. References from a Spec, Repository, Task, Vault Secret, or ENV pack must remain within the applicable owner and authorization rules. Check both the resource owner and the current API permission before using an identifier.
 
 ## Secret Vault
 
-Secret Vault stores user-owned sensitive values for Agents and workflows.
+The Secret Vault stores owner-bound credentials encrypted at rest. A Secret has a key and optional description; its value is not returned by ordinary resource reads. Use the Vault for long-lived credentials used by Tasks or integrations, and use a Secret ID where a Native feature explicitly supports a Vault reference.
 
-Use Secret Vault when:
-
-- The value is long-lived.
-- The value should not be committed to source control.
-- The value should not appear in template YAML.
-- A Agent or workflow needs to retrieve it securely.
-
-Do not confuse Secret Vault with template variables marked `secret` or `sensitive`; those flags shape launch UI behavior, while Secret Vault is the long-lived credential store.
+Vault Secrets may be referenced by Job ENV entries. The Job ENV entry must be marked secret and the caller must have the required `secrets:read` authority for the referenced Secret. Keep the raw value out of the Compose definition, source Repository, and logs.
 
 ## Job ENV
 
-Job ENV entries inject environment variables into job-mode runs.
+Job ENV entries provide named values to Task runs. An entry can apply to an owner generally or to a specific Repository. The entry may hold an encrypted value directly or reference a Vault Secret. Repository-specific entries override owner-wide values for that Repository. Secret entries are withheld from pull-request-triggered runs; push, scheduled, and manual Task runs follow the configured entry rules.
 
-Use Job ENV when:
+The Native API rejects Job ENV keys beginning with `FIBE_`. Fibe captures the eligible values when a Task is admitted, so edits to an entry affect future Task runs rather than changing a run that has already captured its inputs. Use the current API contract for exact fields and permission scopes.
 
-- The value is only needed for Tasks.
-- The same credential should be reused across job runs.
-- A Repository-specific override should beat a global value for one repository.
+## ENV packs
 
-## Webhooks
+ENV packs are reusable environment-variable maps stored in the Library. Their values are encrypted at rest and scoped to their owner. Attach a pack to a Spec or Playground where those values are needed; an attachment can limit which service names receive it. ENV packs are configuration maps, not a place to put a credential unless the intended consumers and access rules are appropriate.
 
-Webhooks deliver signed HTTP callbacks when Fibe resources change.
+Use a Job ENV entry for Task-specific or Repository-scoped values. Use an ENV pack when the same environment values should be attached to a Spec or Playground. Use a Vault Secret for an owner-bound credential that a supported feature can reference.
 
-Webhook capabilities:
+## Compose variables and external credentials
 
-- Subscribe to event families such as Playground, Host, Repository, Spec, Agent, Template, Artefact, Feedback, Mutter, API Key, Secret, and Webhook events.
-- Use event filters to restrict events to selected resources.
-- Test a webhook endpoint.
-- Inspect delivery history.
-- Receive HMAC-signed payloads.
-- Automatically disable endpoints after repeated failures.
+Compose variables configure a Spec and can be bound to YAML paths. Flags such as `secret: true` and `sensitive: true` describe handling in supported forms; they do not replace encrypted Vault storage. See [template variables](reference-template-variables.md) and [random values and secrets](recipe-random-and-secrets.md).
 
-Safety expectations:
+## Audit Logs
 
-- Avoid private-network callback URLs in protected environments.
-- Treat webhook secrets like credentials.
-- Verify signatures before trusting payloads.
-
-## Audit logs
-
-Audit logs provide read-only history of important actions. They help answer:
-
-- Who changed this?
-- What resource changed?
-- When did it happen?
-- Was the actor a user, system automation, API key, or Agent?
-
-Use audit logs for investigation and accountability, not as a live message queue.
-
-## Data portability
-
-Users can export and import major configuration areas, including repositories, hosts, environment blueprints, agents, running-environment configuration, templates, secrets, and webhooks.
-
-Imports support conflict choices such as merge or skip. Completed imports may support rollback for records created during the import.
+Use Audit Logs to review actions recorded by the installation. A Secret value is not ordinary audit metadata. Audit history is separate from an authorization grant or a live event stream.
 
 ## Related skills
 
-- [fibe-feature-surface](fibe-feature-surface.md)
-- [fibe-resource-lifecycles](fibe-resource-lifecycles.md)
-- [decide-secrets-and-randoms](decide-secrets-and-randoms.md)
-- [recipe-random-and-secrets](recipe-random-and-secrets.md)
+- [fibe-feature-surface](fibe-feature-surface.md) for Native product areas.
+- [fibe-resource-lifecycles](fibe-resource-lifecycles.md) for resource changes.
+- [decide-secrets-and-randoms](decide-secrets-and-randoms.md) for choosing storage.
+- [recipe-random-and-secrets](recipe-random-and-secrets.md) for Compose variables.

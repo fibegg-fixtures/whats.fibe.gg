@@ -30,12 +30,12 @@ These are real and won't fix themselves:
 
 See [Common problems & fixes](/operate/common-problems/) for the exact message → smallest-fix table.
 
-## One caveat: funding
+## Host availability
 
-Automatic recovery, redeploys, and auto-expiration only run while the **Host is funded**. An unfunded Host's environments are left exactly as they are until you fund it again: nothing self-heals in the meantime. See [Billing: When your balance runs low](/concepts/billing/#when-your-balance-runs-low).
+Recovery requires the Host and its Docker runtime to be reachable. If a Host is down or disabled, Fibe cannot perform remote repair until the installation can reach it again. Inspect the Host runtime status and pending operation before retrying.
 
 ## See also
 
 - [Common problems & fixes](/operate/common-problems/)
 - [What deleting or disabling affects](/operate/cleanup-and-cascades/)
-- [Billing: When your balance runs low](/concepts/billing/#when-your-balance-runs-low)
+- [Hosts](/concepts/hosts/): connection and runtime status.

@@ -8,7 +8,7 @@ image: /img/og/advanced-overview.png
 keywords: [Advanced Settings, profile, account settings, configuration]
 ---
 
-Profile → Advanced Settings holds account-level configuration. Eleven sections:
+Open **Profile → Advanced Settings** for account-level configuration. The current sections are:
 
 | Section | What it does |
 | --- | --- |
@@ -21,9 +21,9 @@ Profile → Advanced Settings holds account-level configuration. Eleven sections
 | [Agent Defaults](/advanced/agent-defaults/) | Account-wide defaults for new Agents. |
 | [Feature Preferences](/advanced/features/) | Account preferences and per-browser interface tuning. |
 | [Inbox Notifications](/advanced/notifications/) | Which events trigger toast notifications. |
-| [Data Backup](/advanced/backup/) | Export and import account data. |
+| [Data Backup](/advanced/backup/) | Export/import selected owner resources and operator backup guidance. |
 | Setup guide | Lists the setup steps and starts the setup wizard (`/wizard`), which walks through Hosts, Specs, Playgrounds and Agents. |
 
 Open Profile → Advanced Settings to land on the section card grid. Each card opens its dedicated page.
 
-The [audit log](/advanced/audit-log/) is not an Advanced Settings section: open **Audit Logs** from the main navigation. Team settings are not here either: select the Team in the Team pill and open its gear (see [Teams](/concepts/teams/)).
+[Audit Logs](/advanced/audit-log/) is opened from the main navigation. Team settings are not here either: select the Team in the Team pill and open its gear (see [Teams](/concepts/teams/)).

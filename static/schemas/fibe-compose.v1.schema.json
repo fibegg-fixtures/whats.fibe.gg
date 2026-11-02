@@ -398,10 +398,6 @@
         "job_mode": {
           "type": "boolean"
         },
-        "muti_config": {
-          "type": "object",
-          "additionalProperties": true
-        },
         "schedule_config": {
           "$ref": "#/$defs/scheduleConfig"
         },
@@ -480,10 +476,6 @@
         },
         "job_mode": {
           "type": "boolean"
-        },
-        "muti_config": {
-          "type": "object",
-          "additionalProperties": true
         },
         "schedule_config": {
           "$ref": "#/$defs/scheduleConfig"

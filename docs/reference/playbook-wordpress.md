@@ -137,7 +137,7 @@ x-fibe.gg:
 
 ## Persistent volumes
 
-Both `wp_data` and `db_data` are named volumes. Without these, every relaunch loses the site content and DB. They survive container restarts but not Host destruction: for true durability, point WordPress at S3-compatible object storage (plugins exist) and use managed MySQL.
+Both `wp_data` and `db_data` are named volumes. Without these, recreating the containers loses site content and the database. Named volumes remain on the Host when containers are restarted; include them in the Host's backup and recovery plan. For installations with separate storage services, configure those services explicitly and verify their retention policy.
 
 ## Notes on WordPress quirks
 

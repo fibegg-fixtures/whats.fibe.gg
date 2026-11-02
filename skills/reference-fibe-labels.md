@@ -5,7 +5,7 @@ description: Use as the definitive reference for every supported `fibe.gg/*` Doc
 
 # Reference: `fibe.gg/*` labels
 
-The label prefix is `fibe.gg/` (the prefix can be changed in self-hosted installations, but `fibe.gg/` is what every public template uses). Unknown `fibe.gg/*` labels FAIL parsing. Non-`fibe.gg/` labels pass through to Docker.
+The Native Compose label prefix is `fibe.gg/`. Unknown labels in this namespace are rejected by validation; unrelated Docker labels are handled as Compose metadata. Use the schema published with this guide to check the exact supported labels and value constraints.
 
 ## Supported labels
 
@@ -36,9 +36,8 @@ Any of the above values may contain a `$$var__NAME` interpolation, but use inlin
 
 Repository-backed services should set the standard service-level Compose
 `working_dir` field with an absolute container path. It is not a Fibe label and
-does not make a service dynamic by itself. Core uses it as the generated
-non-production source-bind target; production keeps the field but receives no
-generated bind. The legacy `fibe.gg/source_mount` label takes precedence over `working_dir` for the bind target. Existing templates that omit both retain `/app`.
+does not make a service source-backed by itself. The Native runtime uses it as
+the default source bind target; `fibe.gg/source_mount` can override that target.
 
 ## Value rules
 
@@ -132,7 +131,7 @@ Parsed into a key→value map.
 
 ### `fibe.gg/repo_url`
 
-Core accepts HTTP(S) URLs, full `ssh://` URLs, and scp-style SSH URLs such as `git@host:owner/repo.git`. Equivalent transport spellings normalize to one repository identity. A credential-free `https://github.com/...` URL uses standalone Core's optional host-wide `GITHUB_TOKEN`; Enterprise instead resolves the Player's Repository/provider credentials. Explicit HTTP(S) URL credentials take precedence and are supported for generic Git access, but they remain in the authored template, rendered Compose, Git origin, and backups, so prefer the deployment's managed credential path. SSH uses the server's mounted SSH configuration and normal host-key verification. Inline `$$var__NAME` interpolation is allowed and bypasses validation until compile time.
+The `repo_url` value identifies the source Repository. Configure access to private Git sources through the Native installation's supported Repository credentials or server-side Git configuration. Do not put a password or token in a label: Compose content can be stored with the Spec and may appear in rendered configuration or backups. Use inline `$$var__NAME` only for a declared template variable; validation checks the resolved value when the Spec is compiled.
 
 ## Two forms accepted
 

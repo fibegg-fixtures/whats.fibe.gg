@@ -113,7 +113,7 @@ HMAC-SHA256 with the signing secret, over the raw request body. Signature sent i
 <details>
 <summary>How many webhooks can I have?</summary>
 
-20 endpoints per account by default. Your current usage and limit are shown on the [Limits & Quotas](/advanced/limits/) page; contact support if you need more.
+The native quota policy defines 20 webhook endpoints as its default. Installation administrators can change supported owner limits from [Limits & Quotas](/advanced/limits/); inspect the current policy before creating endpoints in bulk.
 </details>
 
 <details>

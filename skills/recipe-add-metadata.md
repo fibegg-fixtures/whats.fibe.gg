@@ -42,7 +42,7 @@ x-fibe.gg:
 
 | Field | Type | Purpose |
 |---|---|---|
-| `description` | string | Bazaar card description and launcher summary |
+| `description` | string | Bazaar card description and Spec form summary |
 | `category` | string | Bazaar filter |
 | `source_defaults` | bool | Auto-fill `repo_url`/`branch` from the source Repository when imported |
 | `job_mode` | bool | Marks this template as one-shot/job-mode |

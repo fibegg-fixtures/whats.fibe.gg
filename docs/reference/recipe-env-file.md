@@ -86,7 +86,7 @@ Doesn't make sense: static services don't clone a repo, so there's no file to re
 - **Pointing at a path outside the repo root**: the file is interpreted relative to the cloned repo root. No `../` traversal.
 - **Confusing with Compose `env_file:`**: read this skill again. They're different.
 - **Expecting the file to be live-reloaded**: it isn't. Env values are baked at launch.
-- **Putting real secrets in the example file**: example files are committed to the repo. Secrets must come from template variables or Fibe Secrets.
+- **Putting real secrets in the example file**: example files are committed to the Repository. Supply sensitive values through the Native installation's configured credential mechanism.
 
 ## Related skills
 

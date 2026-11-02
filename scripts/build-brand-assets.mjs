@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Copies canonical Rails brand assets and renders the local 1200x630 social card. */
+/** Renders the social card using the retained local brand assets. */
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -11,36 +11,8 @@ const ROOT = path.resolve(__dirname, '..');
 const IMG = path.join(ROOT, 'static', 'img');
 const SRC = path.join(IMG, '_source');
 
-const FIBE_REPO = process.env.FIBE_REPO_PATH || path.resolve(ROOT, '..', '..', 'fibe');
-const FIBE_IMAGES = path.join(FIBE_REPO, 'app', 'assets', 'images');
-
-const UPSTREAM_ICONS = [
-  'fibe.svg',
-  'favicon.ico',
-  'favicon-64.png',
-  'apple-touch-icon.png',
-  'icon-192.png',
-  'icon-512.png',
-  'fibe-icon.png',
-];
-
-for (const f of UPSTREAM_ICONS) {
-  const src = path.join(FIBE_IMAGES, f);
-  if (!fs.existsSync(src)) {
-    console.error(`[build-brand-assets] Missing upstream icon: ${src}`);
-    console.error('Set FIBE_REPO_PATH or check that the fibe repo is checked out next to this one.');
-    process.exit(1);
-  }
-}
-
-for (const f of UPSTREAM_ICONS) {
-  fs.copyFileSync(path.join(FIBE_IMAGES, f), path.join(IMG, f));
-}
-
-for (const f of ['favicon.svg', 'logo.svg']) {
-  fs.rmSync(path.join(IMG, f), {force: true});
-}
-
+// Retain this site's existing brand assets. Content refreshes never pull Rails assets.
+const FIBE_IMAGES = IMG;
 // Fibe has no upstream social card, so this site owns its SVG source.
 const OG_SVG = path.join(SRC, 'og-default.svg');
 if (!fs.existsSync(OG_SVG)) {
@@ -70,6 +42,6 @@ const report = (name) => {
   console.log(`  ${name.padEnd(22)} ${sz.toString().padStart(7)} bytes`);
 };
 console.log(`[build-brand-assets] from upstream (${FIBE_IMAGES}):`);
-for (const f of UPSTREAM_ICONS) report(f);
+
 console.log('[build-brand-assets] generated:');
 report('og-default.png');

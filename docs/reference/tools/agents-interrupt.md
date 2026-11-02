@@ -1,6 +1,6 @@
 ---
 title: "Agents Interrupt"
-description: "Use when you need to stop a running Agent turn. Overseer-only."
+description: "Use when an Agent run must stop, for example when it is looping or the user changed their mind."
 slug: /reference/tools/agents-interrupt
 sidebar_label: "Agents Interrupt"
 image: /img/og/reference-tools-agents-interrupt.png
@@ -9,23 +9,13 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-[MODE:SIDEEFFECTS] Tier: overseer. Not idempotent.
-
-Interrupting a live Agent requires the chat Host to be funded. Stop and cleanup flows that touch the Host also require funding.
-
-Requests the runtime to interrupt the currently running Agent turn. Use this only when the user explicitly asks to stop/cancel, or when an automated controller must halt a bad loop.
+Interrupts the active run of an Agent conversation.
 
 ## Inputs
-| Field | Type | Required | Notes |
-|---|---|---|---|
-| `id_or_name` | int or string | yes | Agent ID or name |
-| `conversation_id` | string | no | Specific conversation/thread ID |
 
-## Gotchas
-- Prefer passing `conversation_id` for multi-conversation Agents.
-- Interrupting does not delete queued messages or persisted history.
-- After interrupt, check `fibe_agents_live_state` or `fibe_agents_runtime_status` before sending more work.
+- `agent_id_or_name`: Agent ID or name.
+- `conversation_id` (optional): conversation to interrupt.
 
-## Related
-- `fibe_agents_live_state`: inspect the current turn.
-- `fibe_agents_send_message`: continue after stopping.
+## Notes
+
+- The conversation stays available; send a new message to continue.

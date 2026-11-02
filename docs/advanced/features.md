@@ -3,7 +3,7 @@ title: Feature Preferences
 description: Account-wide preferences and per-browser interface tuning.
 slug: /advanced/features
 sidebar_position: 9
-keywords: [feature preferences, settings, animations, teams, beta, interface]
+keywords: [feature preferences, settings, animations, teams, interface]
 ---
 
 Account-wide preferences and per-browser interface tuning.
@@ -12,11 +12,8 @@ Account-wide preferences and per-browser interface tuning.
 
 ### Teams (Collaboration)
 
-Unlocks creating and managing [Teams](/concepts/teams/). It is off by default and an admin enables it per account. Without it, you cannot create a Team, but you can still accept an invitation and work in a Team you belong to through the Team pill.
+Team creation and access are controlled by the installation’s membership and operator settings. Ask an installation administrator if the Teams actions are unavailable.
 
-### Beta program
-
-Fibe runs as a beta: signing in and authenticating against the [API](/api/) require beta participation, granted per account. Without it, sign-in redirects to the waitlist.
 
 ## Per-browser preferences
 

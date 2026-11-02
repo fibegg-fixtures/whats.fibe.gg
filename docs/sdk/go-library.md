@@ -8,17 +8,17 @@ image: /img/og/sdk-go-library.png
 keywords: [fibe Go library, github.com/fibegg/sdk/fibe, retry, circuit breaker, idempotency, rate limit]
 ---
 
-The Go library at `github.com/fibegg/sdk/fibe` is the same code the CLI uses internally: same retries, same circuit-breaker, same rate-limit handling, same structured errors. Embed it in your own Go programs when you want fine-grained control without shelling out to the CLI.
+The released Go package at `github.com/fibegg/sdk/fibe` provides typed client methods for the API operations included in SDK v0.3.3. Its available methods and behavior are release-specific; use the native OpenAPI contract to check for server routes outside that package.
 
 This page is the orientation. Per-method API docs live at [pkg.go.dev/github.com/fibegg/sdk/fibe](https://pkg.go.dev/github.com/fibegg/sdk/fibe).
 
 ## Install the library
 
 ```sh
-go get github.com/fibegg/sdk/fibe@<programme-sdk-sha>
+go get github.com/fibegg/sdk/fibe@v0.3.3
 ```
 
-For this unpublished candidate, pin the programme SDK commit. Stable tags and Homebrew remain production-compatible until their separate release.
+This is the released SDK version. Its API coverage is release-specific; consult the native OpenAPI document for server routes not exposed by this package.
 
 ## Construct a client
 
@@ -37,7 +37,7 @@ func main() {
     client := fibe.NewClient(
         fibe.WithAPIKey(os.Getenv("FIBE_API_KEY")),
         // optional:
-        fibe.WithDomain("https://next.fibe.live"),
+        fibe.WithDomain("https://fibe.example.net"),
         fibe.WithTimeout(30*time.Second),   // 30s is the default
         fibe.WithUserAgent("my-app/1.2"),
     )
@@ -74,11 +74,11 @@ Each resource family hangs off the client:
 | `client.AuditLogs` | Read-only history |
 | `client.Monitor` | Live event stream |
 
-The resource service provides typed `List`, `Get`, `GetByIdentifier`, `Create`, `Update` and `Delete` operations. Playground lifecycle operations use `Action` with `PlaygroundActionParams`, while `Status`, `WaitForStatus` and `LogsStream` observe the result. Exact signatures live in the selected candidate SDK source and its generated API manifest.
+The resource service provides typed `List`, `Get`, `GetByIdentifier`, `Create`, `Update` and `Delete` operations. Playground lifecycle operations use `Action` with `PlaygroundActionParams`, while `Status`, `WaitForStatus` and `LogsStream` observe the result. Exact signatures are defined by the v0.3.3 package documentation.
 
 ## Failure handling
 
-You don't manage retries or backoff yourself:
+The release documents these client behaviors; they do not establish that a native workflow is available:
 
 - **Request timeout**: every request times out after 30 seconds by default; change it with `WithTimeout`.
 - **Automatic retry** is on by default for transient errors. The client retries 429, 500, 502, 503, and 504 responses up to three times with exponential backoff and full jitter (a random fraction of 500 ms × 2^attempt, capped at 30 s). A `Retry-After` header overrides that delay. Network timeouts and cancelled contexts return immediately.

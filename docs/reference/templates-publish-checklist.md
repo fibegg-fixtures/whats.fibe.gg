@@ -113,8 +113,8 @@ Reject / revise templates that:
 
 ## After publish
 
-- [ ] Test launch from a fresh Player + fresh Host: make sure required variables are honest about what launchers must provide.
-- [ ] Add a Mutter on first launch with screenshots / proof so future Players can compare.
+- [ ] Test launch from a fresh user + fresh Host: make sure required variables are honest about what Spec forms must provide.
+- [ ] Add a Mutter on first launch with screenshots / proof so future users can compare.
 - [ ] Plan a maintenance window / version bump cadence: pinned image tags drift.
 
 ## Related skills

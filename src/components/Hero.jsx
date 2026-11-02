@@ -10,7 +10,7 @@ export default function Hero() {
           Fibe
         </h1>
         <p className={styles.lede}>
-          Run Docker environments, automate work with AI Agents, and reuse what works.
+          Run long-running Playgrounds on your Hosts, automate Tasks, and work with Agents in your self-hosted FIBE installation.
         </p>
         <OrchestrationMesh />
         <div className={styles.ctas}>

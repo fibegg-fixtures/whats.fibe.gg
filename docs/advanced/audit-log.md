@@ -37,7 +37,7 @@ Every action that meaningfully changes account or resource state:
 
 Every entry shows the actor plus the channel it acted through:
 
-- **Actor**: you, the platform's caretaker automation, the billing provider, or the system.
+- **Actor**: a user, an API key, an installation operator, or a system job, as recorded for that event.
 - **Channel**: UI, API, System, or Webhook.
 
 Calls made with an API key, including an Agent using its agent key, appear as **you via the API channel**, with the key's label attached so you can tell which key acted.
@@ -62,7 +62,7 @@ The audit log can't be exported today. [Data Backup](/advanced/backup/) covers y
 
 "Who deleted my Task yesterday afternoon?"
 
-1. Open the audit log. Filter by action prefix `playground.` and set the date range to the last 24 hours: Task runs are recorded as Playground entries (e.g. "Player deleted playground").
+1. Open the audit log. Filter by action prefix `playground.` and set the date range to the last 24 hours: Task activity may be recorded with the owning workload event family; use the resource link and action details to identify the affected record.
 2. Entry: the actor (you via the API channel, labelled with the CI key), timestamp, Playground ID.
 3. Drill into the key on the API Keys page to see what else it's been doing.
 4. If something's off, rotate the key and review its granular scopes.
@@ -72,7 +72,7 @@ The audit log can't be exported today. [Data Backup](/advanced/backup/) covers y
 <details>
 <summary>Retention?</summary>
 
-Audit history is currently kept indefinitely: entries are immutable and there is no plan-based retention window.
+Audit entries are immutable records in the installation database. Include them in the installation backup and apply the installation's data-retention policy to its complete persistent data.
 </details>
 
 <details>

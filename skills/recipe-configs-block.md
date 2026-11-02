@@ -66,7 +66,7 @@ Notes:
 
 ## `configs:` vs `secrets:`
 
-Compose's `secrets:` is similar but for sensitive content with stricter file permissions. Both work on Fibe; prefer `configs:` for plain config, `secrets:` for credentials. (Fibe Secrets, the resource type, is a different layer; use Fibe Secrets for Player-managed long-lived credentials.)
+Compose's `secrets:` is intended for sensitive content and mounts it as a file. Use `configs:` for plain configuration and `secrets:` where the application expects a secret file. This Compose feature is distinct from a Secret Vault entry and an ENV pack in the Native Library. Do not commit secret content with the Spec.
 
 ## Targets
 

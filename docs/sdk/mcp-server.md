@@ -1,6 +1,6 @@
 ---
 title: MCP server
-description: Run fibe mcp serve to expose 60+ typed tools to your AI agent. Stdio for single-tenant, SSE/HTTP for multi-tenant. Plug into Claude Code, Cursor, Antigravity, Codex.
+description: Run the released fibe MCP server and check its available transports and tools.
 slug: /sdk/mcp-server
 sidebar_position: 6
 sidebar_label: MCP server
@@ -8,9 +8,9 @@ image: /img/og/sdk-mcp-server.png
 keywords: [MCP, Model Context Protocol, Claude Code, Cursor, AI agent, fibe mcp serve, Antigravity, Codex]
 ---
 
-The `fibe` binary doubles as an **MCP server**: exposing the same resource surface as the CLI and library, but as **typed tools** an AI agent can call directly. No subprocess overhead, no shell parsing, no string-matching the help text. Your agent gets a real tool API.
+The released `fibe` binary can expose MCP tools to an AI client. The available tools and transports depend on SDK v0.3.3; server support is determined by the native OpenAPI contract and current credential authority.
 
-60+ tools across 9 families. Each one is documented individually under [Reference → Tools](/reference/tools/playgrounds-switch-template/). The [Tools catalog](/sdk/tools-catalog/) page is the table-of-contents.
+The released client exposes MCP tools from its own command surface. The list is release-specific; a tool appearing here does not establish that its server-side workflow is supported by every native installation. See the [Tools catalog](/sdk/tools-catalog/) and compare with the installation OpenAPI document. The [Tools catalog](/sdk/tools-catalog/) page is the catalog, which documents the client surface.
 
 ## Run the server
 
@@ -27,7 +27,7 @@ fibe mcp serve --http :4400 --streamable
 
 The server inherits your active CLI profile by default. For multi-tenant deployments, see "Multi-tenant auth" below.
 
-Tools preserve funding failures as structured MCP errors. When a target Host is unpaid, tools return `HOST_NOT_FUNDED` with status `402`.
+Tool errors reflect the API response from the configured Fibe installation. Use the endpoint contract and returned error code when deciding whether a failed call can be retried.
 
 ## Install into a client
 
@@ -92,11 +92,11 @@ Each family has its own group on the [Tools catalog](/sdk/tools-catalog/) page, 
 
 The full annotated list is on [Tools catalog](/sdk/tools-catalog/).
 
-Any tool that launches, rebuilds, streams, inspects, schedules, stops, deletes, cleans up, or talks to a Host requires that Host to be funded.
+Tools that act on a Host require that Host to be reachable and enabled for the requested operation. Confirm the server response and current Host state before retrying.
 
 ## Multi-tenant auth
 
-When you host the MCP server somewhere shared (a SaaS, a team relay, a Cloudflare Worker), every connecting agent needs its own credentials.
+When you host the MCP server as a shared process, configure authentication and network access for each caller. Do not share a broad Personal API key across independent users.
 
 Three options stack:
 

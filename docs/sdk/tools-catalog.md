@@ -1,6 +1,6 @@
 ---
 title: Tools catalog
-description: Every MCP tool fibe ships, organized by family. Each row links to a detail page. Read the catalog top-to-bottom or jump straight to a tool.
+description: An orientation to the released SDK v0.3.3 MCP tools, with links to the corresponding tool descriptions.
 slug: /sdk/tools-catalog
 sidebar_position: 7
 sidebar_label: Tools catalog
@@ -8,11 +8,11 @@ image: /img/og/sdk-tools-catalog.png
 keywords: [MCP tools, fibe tools, tool catalog, resource_mutate, greenfield_create, playgrounds_transform, pipeline]
 ---
 
-Every tool the [MCP server](/sdk/mcp-server/) ships, grouped by what it operates on. Click through to a tool's detail page for parameters, return shape, examples, and edge cases.
+This catalog describes the released SDK v0.3.3 MCP client surface. It is not a native server capability or qualification list. Check the installation OpenAPI contract for available endpoints and `fibe --help` for the commands supported by the installed client.
 
 For a deep how-to, [Common workflows](/sdk/workflows/) walks through the end-to-end stories these tools support.
 
-Tools preserve unpaid Host failures as `HOST_NOT_FUNDED` with HTTP status `402`. Funding and billing reads remain available.
+Tool calls return the responses of the configured installation. Their availability and authorization depend on the corresponding native route and credential scopes.
 
 ## Auth, doctor & meta
 
@@ -54,7 +54,7 @@ Long-running environments: the brownfield half of the platform.
 | [`fibe_playgrounds_wait`](/reference/tools/playgrounds-wait/) | Block until a Playground reaches a status. |
 | [`fibe_playgrounds_logs`](/reference/tools/playgrounds-logs/) | Consolidated log dump. |
 | [`fibe_logs_follow`](/reference/tools/logs-follow/) | Stream live logs with progress notifications. |
-| [`fibe_playgrounds_action`](/reference/tools/playgrounds-action/) | Rollout, hard-restart, stop, start, retry, maintenance on/off. Actions that use the Host require funding. |
+| [`fibe_playgrounds_action`](/reference/tools/playgrounds-action/) | Rollout, hard-restart, stop, start, retry, maintenance on/off. Actions that use the Host require it to be reachable. |
 | [`fibe_playgrounds_debug`](/reference/tools/playgrounds-debug/) | Deployment diagnostics for a stuck Playground. |
 | [`fibe_playgrounds_switch_template`](/reference/tools/playgrounds-switch-template/) | Switch a Playground to another template, provision repos, rollout, wait. Preserves the Playground ID. |
 
@@ -65,17 +65,17 @@ Configure, chat with, and observe AI assistants from inside another AI assistant
 | Tool | Purpose |
 | --- | --- |
 | [`fibe_agents_duplicate`](/reference/tools/agents-duplicate/) | Clone an agent's config with a new name. |
-| [`fibe_agents_runtime_status`](/reference/tools/agents-runtime-status/) | Reachability, auth, queue depth, processing state. Live checks require a funded Host. |
-| [`fibe_agents_send_message`](/reference/tools/agents-send-message/) | Send a chat message (with attachments). Requires a funded Host. |
-| [`fibe_agents_start_chat`](/reference/tools/agents-start-chat/) | Start / reconnect a chat session. Requires a funded Host. |
+| [`fibe_agents_runtime_status`](/reference/tools/agents-runtime-status/) | Reachability, auth, queue depth, processing state. Live checks require a reachable Host. |
+| [`fibe_agents_send_message`](/reference/tools/agents-send-message/) | Send a chat message (with attachments). Requires a reachable Host. |
+| [`fibe_agents_start_chat`](/reference/tools/agents-start-chat/) | Start / reconnect a chat session. Requires a reachable Host. |
 | [`fibe_agents_interrupt`](/reference/tools/agents-interrupt/) | Interrupt a long-running tool call. |
 | [`fibe_agents_messages`](/reference/tools/agents-messages/) | Read message history. |
 | [`fibe_agents_activity`](/reference/tools/agents-activity/) | Event timeline for one agent. |
 | [`fibe_agents_live_state`](/reference/tools/agents-live-state/) | Current in-flight tools, status, scratchpad. |
 | [`fibe_agents_create_conversation`](/reference/tools/agents-create-conversation/) | Start a new conversation thread. |
 | [`fibe_agents_delete_conversation`](/reference/tools/agents-delete-conversation/) | Tear one down. |
-| [`fibe_agent_defaults_get`](/reference/tools/agent-defaults-get/) | Read your per-Player default agent config. |
-| [`fibe_agent_defaults_update`](/reference/tools/agent-defaults-update/) | Write per-Player default agent config. |
+| [`fibe_agent_defaults_get`](/reference/tools/agent-defaults-get/) | Read your Personal Agent defaults. |
+| [`fibe_agent_defaults_update`](/reference/tools/agent-defaults-update/) | Write Personal Agent defaults. |
 | [`fibe_agent_defaults_reset`](/reference/tools/agent-defaults-reset/) | Reset defaults to platform values. |
 
 ## Greenfield: one-call setup

@@ -1,6 +1,6 @@
 ---
 name: recipe-extract-env-variables
-description: Use to lift `${VAR}` / `${VAR:-default}` Compose interpolations into `x-fibe.gg.variables` so the launcher can configure them, with optional defaults, validation, and path bindings.
+description: Use to lift `${VAR}` / `${VAR:-default}` Compose interpolations into `x-fibe.gg.variables` so the Spec form can configure them, with optional defaults, validation, and path bindings.
 ---
 
 # Recipe: `${VAR}` → `x-fibe.gg.variables`
@@ -31,7 +31,7 @@ Launch variables are NOT passed to Compose's `${VAR}` interpolation. On Fibe, `$
 
 1. **Grep the input compose** for `\$\{[A-Z_][A-Z_0-9]*[-:?]?[^}]*\}`. List every variable name.
 2. For each variable, decide:
-   - **Should the launcher set this?** (Yes for app config, secrets, hostnames. No for static infrastructure like fixed POOL_MODE.)
+   - **Should the Spec form set this?** (Yes for app config, secrets, hostnames. No for static infrastructure like fixed POOL_MODE.)
    - **Is there a sensible default?**
    - **Is it sensitive?**
 3. For each "yes", add an entry to `x-fibe.gg.variables`.
@@ -114,7 +114,7 @@ Inside one variable declaration you can have BOTH inline references AND `path:`:
 ## Required + default + random: common combinations
 
 ```yaml
-# Required, must be supplied by launcher
+# Required, must be supplied by Spec form
 APP_NAME:
   name: "App name"
   required: true

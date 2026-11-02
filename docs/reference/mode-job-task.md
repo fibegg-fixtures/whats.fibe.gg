@@ -95,21 +95,17 @@ services:
 
 The `migrate` service is **not** watched: it's a setup step. Only `test` defines success.
 
+## Run-context variables
+
+Job services receive Native Fibe run-context values, and source-backed service paths are available to Compose interpolation. Use [reference-fibe-managed-env](reference-fibe-managed-env.md) for the variables supplied by Fibe. Supply application credentials through the credential mechanism configured for the installation; do not place them in the Spec's Compose text.
+
 ## Job ENV entries
 
-Job-mode templates can pull launcher-level env vars from **Job ENV entries** (Player-scoped or Repository-scoped). They're injected at run time:
+Job ENV provides named values to Task services. An entry can store an encrypted value directly or reference an owner-bound Secret Vault entry. It may apply to the owner generally or be scoped to a Repository. When a Task is admitted, Fibe captures the eligible values for that run; edits affect later runs.
 
-- Manage via `fibe_resource_mutate(resource: "job_env", operation: "create"|"update")`.
-- Global Job ENV applies to every Player job.
-- Repository-scoped Job ENV applies only when the job uses that Repository.
+For Repository-triggered Tasks, Repository-specific entries override owner-wide entries, and secret entries override plain entries with the same key. Secret entries are withheld from pull-request-triggered runs. Job ENV keys cannot begin with `FIBE_` because those names are reserved for Fibe's run context.
 
-Use this for CI credentials such as `NPM_TOKEN` and `STRIPE_SECRET_KEY`. Fibe injects them per Player and Repository scope, so they need not appear in the template.
-
-Entries marked secret are NOT injected into runs triggered by `pull_request` events (protection against untrusted PR code). They are available on push-triggered, scheduled, and manual runs. If a PR test needs a credential, it must come from a non-secret entry or the template itself: understand the exposure risk first.
-
-### Built-in run-context variables
-
-Job services receive Fibe-managed run context env, and source-backed service paths are available to Compose interpolation. Use [reference-fibe-managed-env](reference-fibe-managed-env.md) for the complete variable list, scope, and ownership rules before adding any platform-looking `FIBE_*` key to a template.
+Use Job ENV for credentials such as package registry tokens that a Task needs. Use an ENV pack for reusable non-secret environment settings attached to a Spec or Playground. See [security and integrations](fibe-security-access-and-integrations.md) for Vault and ENV pack details.
 
 ## When not to use job mode
 

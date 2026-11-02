@@ -70,7 +70,7 @@ For private templates tied to one repo, hardcode `repo_url`/`branch`.
 
 ## `repository_id`
 
-The Repository resource that wires the repo. Repositories are Fibe's representation of a Git repo connection. The `repository_id` must reference a Repository the Player owns and has VCS access to.
+The Repository resource that wires the repo. Repositories are Fibe's representation of a Git repo connection. The `repository_id` must reference a Repository the user owns and has VCS access to.
 
 ## `host_id`
 
@@ -124,7 +124,7 @@ x-fibe.gg:
       host_id: 1
 ```
 
-When `source_defaults: true` is set and the template is imported from a source-backed mechanism, `REPO_URL` and `BRANCH` variables can be populated from the Repository, but for explicit Repository-bound triggers, you usually hardcode or use launcher input.
+When `source_defaults: true` is set and the template is imported from a source-backed mechanism, `REPO_URL` and `BRANCH` variables can be populated from the Repository, but for explicit Repository-bound triggers, you usually hardcode or use Spec form input.
 
 ## Branch for `event_type: push` vs `pull_request`
 

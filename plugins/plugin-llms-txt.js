@@ -3,9 +3,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const SITE_TITLE = 'Fibe: user guide & skills';
+const SITE_TITLE = 'Native FIBE: self-hosted user guide & skills';
 const SITE_DESCRIPTION =
-  'Fibe runs your projects in real Docker environments connected to your compute hosts and Git repositories. The guide covers Hosts, Repositories, Templates, Playgrounds, Tasks, Agents, and a full reference library of authoring skills.';
+  'FIBE is a self-hosted Rust and React control plane for owned Hosts, Repositories, Specs, Teams, Tasks, Agents, Library and long-running Playgrounds. This guide describes the pinned Native build and distinguishes accepted operations from completed runtime effects.';
 const SITE_URL = 'https://whats.fibe.gg';
 
 const CATEGORIES = [
@@ -54,6 +54,8 @@ export default function pluginLlmsTxt() {
     name: 'plugin-llms-txt',
     async postBuild({siteConfig, outDir, siteDir}) {
       const docsDir = path.resolve(siteDir, 'docs');
+      const sources = JSON.parse(fs.readFileSync(path.join(siteDir, 'content-sources.json'), 'utf8'));
+      const provenance = `Content reviewed ${sources.reviewed_at}; API ${sources.api.revision}; React ${sources.ui.revision}; released SDK consumer ${sources.sdk_release}. Source review does not establish passing runtime or provider workflows.`;
 
       const sections = [];
       for (const cat of CATEGORIES) {
@@ -70,6 +72,8 @@ export default function pluginLlmsTxt() {
       }
 
       let llms = `# ${SITE_TITLE}\n\n> ${SITE_DESCRIPTION}\n\n`;
+      llms += `> ${provenance}\n\n`;
+      llms += `## Native machine-readable contracts\n\n- [OpenAPI](${SITE_URL}/native/openapi.json): exact committed Native request, response and security schemas.\n- [Route manifest](${SITE_URL}/native/route-manifest.json): registered Native paths and methods.\n- [Contract identity](${SITE_URL}/native/identity.json): native profile, major, revision and contract digests.\n- [Compose template schema](${SITE_URL}/schema.json): accepted Compose and FIBE extension shapes.\n- [Public skills index](${SITE_URL}/llm-skills.txt): raw product and released-consumer tool guides.\n\n`;
       for (const s of sections) {
         llms += `## ${s.label}\n\n`;
         for (const e of s.entries) {
@@ -83,6 +87,7 @@ export default function pluginLlmsTxt() {
       fs.writeFileSync(path.join(outDir, 'llms.txt'), llms);
 
       let full = `# ${SITE_TITLE}\n\n${SITE_DESCRIPTION}\n\n${SITE_URL}\n\n`;
+      full += `${provenance}\n\nMachine-readable API: ${SITE_URL}/native/openapi.json\nCompose template schema: ${SITE_URL}/schema.json\n\n`;
       for (const s of sections) {
         full += `\n---\n\n# ${s.label}\n\n`;
         for (const e of s.entries) {
