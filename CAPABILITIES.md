@@ -23,10 +23,9 @@ and typed template variables. Whether a selected source build, rollout, provider
 or Agent workflow completes depends on the installed build and its configuration;
 check the operation's result and current runtime state.
 
-Native has no billing, payments, rewards, managed tutorial Hosts, licensing or AI
-Gateway. Accounts, supported authentication, Teams, access restrictions, Audit Logs,
-nonfinancial quotas and operator settings remain part of the product. The guide
-does not promise hosted-service fallback, SaaS credential import or Host takeover.
+Accounts, supported authentication, Teams, access restrictions, Audit Logs,
+nonfinancial quotas and operator settings are part of the product. Public content
+follows the approved product scope even when implementation cleanup is incomplete.
 
 The public guide and skills contain product help. Contributor bootstrap,
 qualification matrices and deployment procedures belong to their owning Native

@@ -16,15 +16,15 @@
   },
   "summary": {
     "updated": 249,
-    "added": 7,
-    "retained": 72,
-    "removed": 1
+    "added": 12,
+    "retained": 71,
+    "removed": 2
   },
   "files": [
     {
       "path": ".antigravitycli/c7f57859-1fda-4988-98a1-572ad226c97a.json",
       "disposition": "removed",
-      "review": "Removed obsolete local agent-session output; no product or style content."
+      "review": "Removed obsolete local agent-session output."
     },
     {
       "path": ".github/workflows/deploy.yml",
@@ -47,13 +47,13 @@
     {
       "path": "CAPABILITIES.md",
       "disposition": "updated",
-      "sha256": "4af0fe0d5515da52775d90736860e05b733a37a5999052144a4bea482dab710b",
+      "sha256": "2c55e01c3e932460eeff6bdc24ddd6c8b5e1eee17aa75c83d49cd8b2f3fa839f",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
       "path": "README.md",
       "disposition": "updated",
-      "sha256": "51bd1b22319f236354635f8334928d5cd79a343bf41906118acf185db127ec21",
+      "sha256": "d92c4d4954c577fa6833a30c2a511f9212efffd03bf2a71eebc6c774e1ea74c8",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
@@ -116,11 +116,11 @@
     {
       "path": "docs/advanced/backup.md",
       "disposition": "updated",
-      "sha256": "089b22e4755126b6149f4dbd908755b3c9e64cdc688929d4a730c6c9c802bd88",
+      "sha256": "715595291f17a8a110e38c9d036ce13330f05abd584d03a4f6914ed9b4bfddfd",
       "review": {
         "method": "Native guide review",
         "findings": [
-          "Documented current owner data-transfer boundaries and complete Compose backup/restore commands."
+          "Updated the self-hosted operations cross-link to `/concepts/self-hosted/`."
         ],
         "source_evidence": [
           "fibe-ui/src/app/route-paths.ts",
@@ -192,11 +192,11 @@
     {
       "path": "docs/advanced/limits.md",
       "disposition": "updated",
-      "sha256": "ca9488286f3e5b2755f45107ec3b17f43e70d19580ce6047c28ab1fa288823a9",
+      "sha256": "8ab0554c856e6c22fcd2f8d91d498f1de753cfd629b53c91e98f4347b392bd63",
       "review": {
         "method": "Native guide review",
         "findings": [
-          "Documented the actual account usage view, administrator quota paths and implementation boundaries."
+          "Removed finance/entitlement framing; retained positive resource-admission, owner-usage and policy details."
         ],
         "source_evidence": [
           "fibe-ui/src/app/route-paths.ts",
@@ -285,7 +285,7 @@
       "review": {
         "method": "Native guide review",
         "findings": [
-          "Added fresh-install setup and local operator account recovery, removed hosted support and legacy admin-navigation instructions."
+          "Added local setup and operator account recovery; removed hosted-support fallback and legacy admin-navigation claims."
         ],
         "source_evidence": [
           "fibe-ui/src/app/route-paths.ts",
@@ -564,7 +564,7 @@
       "review": {
         "method": "Native guide review",
         "findings": [
-          "Removed retired provider/platform semantics and documented native Agent runtime, credentials and reachable-Host requirements."
+          "Removed the retired unfunded-Host Poke restriction; current Poke guidance requires a reachable runtime."
         ],
         "source_evidence": [
           "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
@@ -576,11 +576,11 @@
     {
       "path": "docs/concepts/bazaar.md",
       "disposition": "updated",
-      "sha256": "29210c797feaf0b55f0a3089d7f8320ef0d1c8236a12b4a84f1c3d500fa48e94",
+      "sha256": "99f9db097cf93ecbb4722d049cde199334005c2788630584a3de5d0f1d038fbe",
       "review": {
         "method": "Native guide review",
         "findings": [
-          "Updated template publishing and launch guidance for a self-hosted public catalog with no Fibe payment flow."
+          "Removed obsolete charge/payment FAQ; retained live public Template browse, launch, fork and publish instructions."
         ],
         "source_evidence": [
           "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json"
@@ -589,22 +589,8 @@
     },
     {
       "path": "docs/concepts/billing.md",
-      "disposition": "updated",
-      "sha256": "8a3ec64913f65e11037c6b0e568bfc4c6c58f4143ee8de51b8f2f11ac5d36dea",
-      "review": {
-        "method": "Native guide review",
-        "findings": [
-          "Retained the route while replacing billing content with installation responsibilities and current quota controls."
-        ],
-        "source_evidence": [
-          "fibe-api/crates/fibe-kernel/src/quotas.rs",
-          "fibe-api/crates/fibe-admin/src/browser_quotas.rs",
-          "fibe-api/crates/fibe-admin/assets/quotas.html",
-          "fibe-ui/src/features/account/advanced.tsx",
-          "fibe-ui/src/features/admin/players/policy-panels.tsx",
-          "fibe-ui/src/app/shell/sidebar-content.tsx"
-        ]
-      }
+      "disposition": "removed",
+      "review": "Removed obsolete public feature route; positive installation guidance is at concepts/self-hosted."
     },
     {
       "path": "docs/concepts/env-packs.md",
@@ -625,11 +611,11 @@
     {
       "path": "docs/concepts/hosts.md",
       "disposition": "updated",
-      "sha256": "56ebacd4562681ededae7eecd114308b5977a0d1e96880ec8c18f1d1d352b3a3",
+      "sha256": "1066ec07239b4b2aef937f4e982b69f1aa7c05715ee92c55dac481c6a17eb071",
       "review": {
         "method": "Native guide review",
         "findings": [
-          "Rewrote Host guidance for operator-owned machines, SSH connection, capacity and lifecycle."
+          "Updated the self-hosted operations cross-link to `/concepts/self-hosted/`."
         ],
         "source_evidence": [
           "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
@@ -675,7 +661,7 @@
       "review": {
         "method": "Native guide review",
         "findings": [
-          "Updated provider, GitHub and optional Fibe Git service instructions, owner-scoped repository behavior and push requirements."
+          "Removed references to old funding semantics and documented current owner-scoped Git provider behavior."
         ],
         "source_evidence": [
           "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
@@ -685,6 +671,33 @@
           "fibe-ui/src/features/repositories/create-workflow.tsx",
           "fibe-ui/src/features/integrations/git.tsx",
           "fibe-ui/src/features/account/profile-gitea.tsx"
+        ]
+      }
+    },
+    {
+      "path": "docs/concepts/self-hosted.md",
+      "disposition": "added",
+      "sha256": "ad112dd9e82d5dbe9fe135fd79ca94eb0b9f6878b9078bdf27811a58b9620bb6",
+      "review": {
+        "method": "Native guide review",
+        "findings": [
+          "Moved the positive installation, backup, quota and Team operations guide to `/concepts/self-hosted`; removed the former billing route and all finance/removed-feature copy. Updated frontmatter slug and image name."
+        ],
+        "source_evidence": [
+          "fibe-api/crates/fibe-kernel/src/quotas.rs",
+          "fibe-api/crates/fibe-admin/src/browser_quotas.rs",
+          "fibe-api/crates/fibe-admin/assets/quotas.html",
+          "fibe-ui/src/features/account/advanced.tsx",
+          "fibe-ui/src/features/admin/players/policy-panels.tsx",
+          "fibe-ui/src/app/shell/sidebar-content.tsx",
+          "WORKSPACE.md",
+          "fibe-api/AGENTS.md",
+          "fibe-api/crates/fibe-kernel/src/quotas.rs",
+          "fibe-api/crates/fibe-admin/src/browser_quotas.rs",
+          "fibe-api/crates/fibe-admin/assets/quotas.html",
+          "fibe-api/deploy/README.md",
+          "fibe-ui/src/features/account/advanced.tsx",
+          "fibe-ui/src/features/admin/players/policy-panels.tsx"
         ]
       }
     },
@@ -719,11 +732,11 @@
     {
       "path": "docs/concepts/teams.md",
       "disposition": "updated",
-      "sha256": "6d1ea5245dd400f3e70cfaf8e6549673f0fe0d8c1db95ba54c9d995f87ef2c2f",
+      "sha256": "2060ad673cbf0f30f10b8d0e73a2ad13097c4efd1c5b31b6a5e8ed18527f9594",
       "review": {
         "method": "Native guide review",
         "findings": [
-          "Updated Team ownership, authority, settings and quota guidance for the native owner model."
+          "Removed financial descriptions; retained Team membership, invitations, owner scoping and quotas."
         ],
         "source_evidence": [
           "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
@@ -734,11 +747,11 @@
     {
       "path": "docs/intro.md",
       "disposition": "updated",
-      "sha256": "859a26c9c472cc95399aaa6a320a2421e41c8ff43fad854202aaf94afb51d142",
+      "sha256": "36bb16d1ce47d8e17f1bff4bba3ca9861c78aa3ebcbe9d73ec067ca052d36dda",
       "review": {
         "method": "Native guide review",
         "findings": [
-          "Reframed the landing introduction around the self-hosted Rust/SQLite/React product, native first-run setup, and Host–Repository–Spec flow."
+          "Removed references to retired hosted compute, paid tutorial Host, billing and model-credit concepts; kept current self-hosted first-run workflow."
         ],
         "source_evidence": [
           "fibe-api/deploy/README.md",
@@ -1722,13 +1735,17 @@
     {
       "path": "docs/reference/recipe-random-and-secrets.md",
       "disposition": "updated",
-      "sha256": "e64f59cb0b469cd2582c570052961b469dde15f88264ea05d45ac8d8884a148e",
+      "sha256": "9c37c66e0fc43ce5465a3c22fc04a7470f611987601d26350f9a35d23cb57357",
       "review": {
         "method": "generated_reference_mirror",
         "findings": [
           {
             "kind": "curated_or_regenerated",
             "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
+          },
+          {
+            "kind": "regenerated_after_source_review",
+            "summary": "Regenerated after updating canonical Native Secret Vault guidance."
           }
         ],
         "source_evidence": [
@@ -3316,7 +3333,7 @@
     {
       "path": "plugins/plugin-llms-txt.js",
       "disposition": "updated",
-      "sha256": "439f4a6740d58ef34499f39305cec91573094522b6f9a46eaf33c715eb53356a",
+      "sha256": "f9c90fc0663033785f664e40e01c47c3992367fbe1bdd8a1bc531826aed8e4f1",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
@@ -3340,7 +3357,7 @@
     {
       "path": "scripts/check-candidate.mjs",
       "disposition": "updated",
-      "sha256": "802865778b61a6a429847cc94f2d1595b72071b938954b352fcb66be3cb90e3b",
+      "sha256": "3a9310ac4346f9eb4023557a9a71945f65f7b89c581baa0b32bb9146c6aaf3a4",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
@@ -3352,7 +3369,7 @@
     {
       "path": "scripts/import-native-contracts.mjs",
       "disposition": "added",
-      "sha256": "4efe585ebd78b14e30e7d6b062f34010c2d42b8354a8964ee9d502f1cb74cece",
+      "sha256": "f181e5dc9cb0645ec15b9551ae76740d12c3771a241e8d5375f6de780bbe6711",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
@@ -3376,9 +3393,15 @@
       }
     },
     {
+      "path": "scripts/public-contract.mjs",
+      "disposition": "added",
+      "sha256": "06dccd5724c4b2397d43a5da482a18c83da18186681365ea01e0dfde9652767f",
+      "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
+    },
+    {
       "path": "scripts/review-files.mjs",
       "disposition": "added",
-      "sha256": "89de1b2a21607af653cb2e81568d7f82f47801af9020fd4de77e3147bbde9d96",
+      "sha256": "c2334143c5b0aed163e35786f4029cc2cb6f3011d76d299d5e54aa994c4e0fec",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
@@ -4589,9 +4612,9 @@
     },
     {
       "path": "sidebars.js",
-      "disposition": "retained",
-      "sha256": "cf1579457a8c0662af08211adcdb5468e4cb680a01413ab5a8286efae1e1823c",
-      "review": "Coordinator reviewed file; no obsolete product contract or content change required."
+      "disposition": "updated",
+      "sha256": "67a0a4237ce8765d3132dc14bd61228292080e7ce8ebb2d758b41c3e09333f99",
+      "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
       "path": "skills/common-errors-and-fixes.md",
@@ -5959,13 +5982,17 @@
     {
       "path": "skills/recipe-random-and-secrets.md",
       "disposition": "updated",
-      "sha256": "20abb84990ff3d989f113463e7976ad37059f9e1f46b99e39fc6b37968f7c4a2",
+      "sha256": "97cf680fc4f0ca903a470ac17c8934514bd2dbdf1abb6e736da8ea7e942ca37c",
       "review": {
         "method": "canonical_skill",
         "findings": [
           {
             "kind": "native_review",
             "summary": "Reviewed against the pinned source evidence listed for this file; detailed Compose examples were retained where supported."
+          },
+          {
+            "kind": "native_claim_review",
+            "summary": "Long-lived credential guidance was reviewed against the pinned Native Secret Vault and Job ENV implementation; recommends the Native Vault and supported Secret Vault or Job ENV references."
           }
         ],
         "source_evidence": [
@@ -6434,6 +6461,18 @@
       }
     },
     {
+      "path": "source-contracts/native/openapi.json",
+      "disposition": "added",
+      "sha256": "d015749766bdad93e039d50cf6bcf064eb99d6ca406da6cbfd629f9aa49a2f37",
+      "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
+    },
+    {
+      "path": "source-contracts/native/route-manifest.json",
+      "disposition": "added",
+      "sha256": "3b802e11de70cfb48bfe56f46c9319f8836c2a15c0ab3e3631f044e0130b0b47",
+      "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
+    },
+    {
       "path": "src/components/FeatureGrid.jsx",
       "disposition": "updated",
       "sha256": "4a00a4be80cddd90ee5c4039167df75082b3caa47d26ac77681c55e612dbaebf",
@@ -6496,7 +6535,7 @@
     {
       "path": "src/data/apiReference.js",
       "disposition": "updated",
-      "sha256": "75efdc59a5cc0af8d702db44cb7771338bab8b2d128f2e4a899f1426a2a7f9c3",
+      "sha256": "e0400081aa035a66d5216823f96cb07300d936b0e433bd8e068b7007a9a7a089",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {
@@ -6628,13 +6667,19 @@
     {
       "path": "static/native/openapi.json",
       "disposition": "added",
-      "sha256": "d015749766bdad93e039d50cf6bcf064eb99d6ca406da6cbfd629f9aa49a2f37",
+      "sha256": "c08c544a685a581f768aca393cfb80641b8c87581d393e1d8e3555e1610e4433",
+      "review": "Exact Native committed contract mirror; importer and build checks verify source bytes and identity digests."
+    },
+    {
+      "path": "static/native/public-contract.json",
+      "disposition": "added",
+      "sha256": "53808619ecd2467d874d11433b0438e5bcd16bc5e1b12237ce3b92c1dbd06253",
       "review": "Exact Native committed contract mirror; importer and build checks verify source bytes and identity digests."
     },
     {
       "path": "static/native/route-manifest.json",
       "disposition": "added",
-      "sha256": "3b802e11de70cfb48bfe56f46c9319f8836c2a15c0ab3e3631f044e0130b0b47",
+      "sha256": "bdf2026cb3486b5bff2e965030bf2158caf22ea9eb7b769d3f739a41ea029587",
       "review": "Exact Native committed contract mirror; importer and build checks verify source bytes and identity digests."
     },
     {

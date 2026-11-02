@@ -19,7 +19,7 @@ Fibe is a self-hosted application for managing Docker workloads on Hosts you con
 5. Create a [Spec](/concepts/specs/) from Compose. A Spec records the configuration for a workload.
 6. Launch a long-running [Playground](/concepts/playgrounds/) or run a finite [Task](/concepts/tasks/).
 
-Fibe does not provide hosted compute, billing plans, paid tutorial Hosts, or a hosted-service fallback. You operate the installation and the machines registered as Hosts.
+You operate the Fibe installation and the machines registered as Hosts.
 
 ## Choose a workload
 
@@ -30,7 +30,7 @@ Fibe does not provide hosted compute, billing plans, paid tutorial Hosts, or a h
 
 ## Add an Agent
 
-An [Agent](/concepts/agents/) is a configured assistant that can work with a Playground or its own Host runtime. Agent providers and their credentials are configured by the installation owner; Fibe does not include a model gateway or provide model credits.
+An [Agent](/concepts/agents/) is a configured assistant that can work with a Playground or its own Host runtime. Configure Agent providers and their credentials for your installation.
 
 ## Find your way around
 

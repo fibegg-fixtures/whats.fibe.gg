@@ -6,7 +6,7 @@ sidebar_position: 3
 keywords: [limits, quotas, usage, caps, self-hosted]
 ---
 
-Fibe keeps resource limits as admission controls for a self-hosted installation. They do not represent a plan, payment balance, or hosted compute entitlement.
+Fibe applies resource limits at supported admission points in a self-hosted installation.
 
 ## Inspecting limits
 
@@ -24,6 +24,6 @@ Defaults can be configured by the installation. Do not rely on a fixed quota num
 
 ## Related
 
-- [Self-hosted operation](/concepts/billing/): compute, backup, and ownership model.
+- [Self-hosted operation](/concepts/self-hosted/): compute, backup, and ownership model.
 - [Teams](/concepts/teams/): independent Personal and Team ownership.
 - [API reference](/api/): quota endpoints and schemas.

@@ -40,4 +40,4 @@ Disable a Host before planned maintenance to keep it out of new placement choice
 - [Specs](/concepts/specs/): store Compose configuration.
 - [Playgrounds](/concepts/playgrounds/): run long-lived services.
 - [Tasks](/concepts/tasks/): run finite work.
-- [Self-hosted operation](/concepts/billing/): installation and operator responsibilities.
+- [Self-hosted operation](/concepts/self-hosted/): installation and operator responsibilities.

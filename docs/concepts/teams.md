@@ -7,7 +7,7 @@ image: /img/og/concepts-teams.png
 keywords: [Team, workspace, owner context, membership, service account]
 ---
 
-A **Team** is an owner context for shared Fibe resources. Team Hosts, Repositories, Specs, Playgrounds, Tasks, Agents, Library records, and credentials remain owned by the Team rather than by the person who created them. Fibe is self-hosted, so Teams do not have separate balances, payment accounts, subscriptions, or billing settings.
+A **Team** is an owner context for shared Fibe resources. Team Hosts, Repositories, Specs, Playgrounds, Tasks, Agents, Library records, and credentials remain owned by the Team rather than by the person who created them.
 
 ## Select a Team
 
@@ -33,4 +33,4 @@ Personal and Team quota policies are separate. Creating a Team resource consumes
 
 - [Hosts](/concepts/hosts/), [Repositories](/concepts/repositories/), [Specs](/concepts/specs/).
 - [API Keys](/advanced/api-keys/): credentials and scoped access.
-- [Self-hosted operation](/concepts/billing/): resource ownership and quota controls.
+- [Self-hosted operation](/concepts/self-hosted/): resource ownership and quota controls.

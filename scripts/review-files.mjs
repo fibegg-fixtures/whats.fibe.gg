@@ -24,8 +24,8 @@ const entries = [];
 for (const file of [...paths].sort()) {
   const absolute = path.join(root, file);
   if (!fs.existsSync(absolute)) {
-    assert(file.startsWith('.antigravitycli/'), `Unexpected removed content file: ${file}`);
-    entries.push({path: file, disposition: 'removed', review: 'Removed obsolete local agent-session output; no product or style content.'});
+    assert(file.startsWith('.antigravitycli/') || file === 'docs/concepts/billing.md', `Unexpected removed content file: ${file}`);
+    entries.push({path: file, disposition: 'removed', review: file.startsWith('.antigravitycli/') ? 'Removed obsolete local agent-session output.' : 'Removed obsolete public feature route; positive installation guidance is at concepts/self-hosted.'});
     continue;
   }
   const bytes = fs.readFileSync(absolute);

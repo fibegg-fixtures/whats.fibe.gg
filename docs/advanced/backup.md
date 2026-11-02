@@ -48,6 +48,6 @@ Host workload volumes, containers, Git repositories, registry contents, and exte
 
 ## Related
 
-- [Self-hosted operation](/concepts/billing/): installation and upgrade responsibilities.
+- [Self-hosted operation](/concepts/self-hosted/): installation and upgrade responsibilities.
 - [Hosts](/concepts/hosts/): workload machines and their data.
 - [Secret Vault & Job ENV](/advanced/secrets/): recreate secret values omitted from account exports.

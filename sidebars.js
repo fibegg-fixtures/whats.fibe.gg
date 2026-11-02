@@ -21,7 +21,7 @@ const sidebars = {
         'concepts/specs',
         'concepts/playgrounds',
         'concepts/tasks',
-        'concepts/billing',
+        'concepts/self-hosted',
       ],
     },
 

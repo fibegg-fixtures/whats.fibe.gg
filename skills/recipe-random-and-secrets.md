@@ -110,7 +110,7 @@ To rotate a password, choose and save a replacement value in the Spec, then coor
 ## When NOT to use `random: true`
 
 - **Already-shared values**: if a Postgres password is also needed elsewhere, store it in the Secret Vault and use an explicit supported reference for each consumer.
-- **Truly sensitive long-lived credentials**: use a supported external or operator-managed secret source.
+- **Truly sensitive long-lived credentials**: store them in the Secret Vault, then supply them through a supported Secret Vault reference or Job ENV entry.
 - **Values the user wants to choose**: declare a regular variable and bind it with `path` or `paths`; do not expect `random: true` to create a user-chosen value.
 
 ## Patterns for common secrets

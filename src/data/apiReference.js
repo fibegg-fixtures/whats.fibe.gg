@@ -1,4 +1,4 @@
-// Native OpenAPI is imported byte-for-byte by scripts/import-native-contracts.mjs.
+// Native public product scope is projected by scripts/import-native-contracts.mjs.
 import nativeSpec from '@site/static/native/openapi.json';
 
 const belongsTo = path => {
@@ -22,7 +22,7 @@ function displayTag(path) {
 function section(name, title) {
   return [{
     title,
-    // Keep schemas, security, parameters and response contracts exactly as generated.
+    // Retain the supported operation schemas and guards; display groups are editorial.
     spec: {
       ...nativeSpec,
       paths: Object.fromEntries(Object.entries(nativeSpec.paths)

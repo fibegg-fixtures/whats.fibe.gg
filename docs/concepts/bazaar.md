@@ -77,12 +77,6 @@ Fibe staff can take down Templates that are malicious, broken, or misleading. If
 </details>
 
 <details>
-<summary>Does publishing a Template charge users?</summary>
-
-No Fibe payment flow is attached to a published Template. Launching it consumes resources on the launcher’s own Host.
-</details>
-
-<details>
 <summary>How many Templates can I publish?</summary>
 
 Template and version admission is governed by the installation’s quota policy where implemented. See [Limits & Quotas](/advanced/limits/).
