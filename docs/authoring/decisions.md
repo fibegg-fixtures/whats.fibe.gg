@@ -67,7 +67,7 @@ See [`decide-zero-downtime`](/reference/decide-zero-downtime/) and [`recipe-zero
 | Value | Where to keep it |
 | --- | --- |
 | App-level launch config (app name, environment label) | template variable |
-| Generated DB password unique to a launch | variable with `random: true` |
+| Generated DB password stored with a Spec | variable with `random: true` |
 | External API token (Stripe, OpenAI…) | Secret Vault |
 | Credential reused across many Tasks | Job ENV entry |
 | Sensitive value the launcher should type each time | variable marked `sensitive` |

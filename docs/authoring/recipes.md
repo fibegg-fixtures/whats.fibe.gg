@@ -29,7 +29,7 @@ For each recipe, the [Reference](/reference/intro/) section has a full skill fil
 - [Lift Compose `${VAR}`](/reference/recipe-extract-env-variables/): turn Compose interpolations into Fibe variables.
 - [Inline a variable into a string](/reference/recipe-inline-variables/): `$$var__NAME` in URLs, tags, partial strings.
 - [Bind a whole node with a path](/reference/recipe-whole-node-paths/): `path:` / `paths:` for whole values.
-- [Generate & mark sensitive](/reference/recipe-random-and-secrets/): `random: true` for launch-unique secrets.
+- [Generate & mark sensitive](/reference/recipe-random-and-secrets/): `random: true` for generated values stored with the Spec.
 
 ## Compose hygiene
 

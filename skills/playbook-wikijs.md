@@ -124,7 +124,7 @@ x-fibe.gg:
 | Before | After | Why |
 |---|---|---|
 | `ports: ["8080:3000"]` on `wiki` | `fibe.gg/port: 3000` + `fibe.gg/visibility: external` | Fibe routes via Traefik on subdomain, not host port |
-| `POSTGRES_PASSWORD: wikijsrocks` | `POSTGRES_PASSWORD: placeholder` + `path` binding | Generated per-launch random secret |
+| `POSTGRES_PASSWORD: wikijsrocks` | `POSTGRES_PASSWORD: placeholder` + `path` binding | Generated secret stored with the Spec |
 | `DB_PASS: wikijsrocks` | `DB_PASS: placeholder` + `path` binding | Same random as DB password |
 | `depends_on: - db` (short form) | `depends_on: db: { condition: service_healthy }` + `healthcheck:` on db | App waits until DB accepts connections |
 | `volumes: - db-data:...` (hyphen) | `db_data` (underscore) | YAML safety; both work but `_` is conventional |

@@ -44,7 +44,7 @@ Long-running operations use durable request or operation records where the endpo
 | [Agents and knowledge](./agents-and-knowledge.mdx) | Agents, conversations, Library activity, and related records. |
 | [Integrations](./integrations.mdx) | API keys, Secrets, Job ENV, Git integrations, webhooks, and Audit Logs. |
 
-Each group uses the OpenAPI contract for the pinned native API identity. The reference UI origin selector defaults to `https://fibe.example`; replace it with the origin of the Fibe installation you operate before trying a request. Use **Authorize** only with a disposable key scoped for the operation you are inspecting, and confirm the selected origin before submitting a mutation. The raw native specification is available at `/native/openapi.json` on your installation.
+Each group uses the OpenAPI contract for the pinned native API identity. The reference UI origin selector defaults to `https://fibe.example`; replace it with the origin of the Fibe installation you operate before trying a request. Use **Authorize** only with a disposable key scoped for the operation you are inspecting, and confirm the selected origin before submitting a mutation. This guide publishes its reviewed specification at [the public contract mirror](https://whats.fibe.gg/native/openapi.json). A Native installation serves its own contract at `/openapi.json` and route inventory at `/route-manifest.json`; use those installation-local documents when checking a different installed revision.
 
 ## SDK and tool coverage
 

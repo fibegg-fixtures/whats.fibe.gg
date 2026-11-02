@@ -15,9 +15,9 @@
     "qualification": "Content and committed-source review. No Native runtime, provider or released-consumer qualification is implied."
   },
   "summary": {
-    "updated": 249,
+    "updated": 260,
     "added": 16,
-    "retained": 71,
+    "retained": 60,
     "removed": 2
   },
   "files": [
@@ -64,18 +64,16 @@
     },
     {
       "path": "docs/advanced/agent-defaults.md",
-      "disposition": "retained",
-      "sha256": "91e4b37360909264ec621ea3a2c7f29e33ddfe1698a859bfb1b2645c2f6f0fdf",
+      "disposition": "updated",
+      "sha256": "e368572eb4019dfc8e6c44ab876676a08f5ee1f39b832cc2f6a59429b8b02b08",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Reviewed the owned prose and internal navigation against pinned native API/UI sources; no content change was needed."
+          "Distinguished inherited runtime settings from creation-time flags and preset snapshots; corrected MCP replacement, custom ENV merge and content-mode scopes."
         ],
         "source_evidence": [
-          "fibe-ui/src/app/route-paths.ts",
-          "fibe-ui/src/app/routes.tsx",
-          "fibe-ui/src/features/account/advanced.tsx",
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-agents/src/agents/configuration.rs",
+          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/account/advanced.tsx"
         ]
       }
     },
@@ -99,17 +97,15 @@
     {
       "path": "docs/advanced/audit-log.md",
       "disposition": "updated",
-      "sha256": "0a984a3e1d0aed81b52f753533bbb1845efc28670d505da7b6fd48782151b921",
+      "sha256": "d5916fc64b25482a8efde684286dd9e65adb4ef07dc15522dec4731a080a8c7f",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Updated Audit Log language and retention around native account and Team events."
+          "Removed an unsupported generated-secret audit event; distinguished the absent screen export control from supported paginated Audit Logs API retrieval."
         ],
         "source_evidence": [
-          "fibe-ui/src/app/route-paths.ts",
-          "fibe-ui/src/app/routes.tsx",
-          "fibe-ui/src/features/account/advanced.tsx",
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/telemetry.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/telemetry/http.rs"
         ]
       }
     },
@@ -175,20 +171,17 @@
     {
       "path": "docs/advanced/google-sign-in.md",
       "disposition": "updated",
-      "sha256": "654cef6f7c7b4a5b9dad044b5425d18cc3fd792a286a4d54fb6d282bdd1e07cf",
+      "sha256": "117a24df34db7404686b6ef3d6f9115e154616bec7a8fb6fe9dc29eef7d22c5c",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Updated Google sign-in and account recovery around installation-configured auth and native security settings."
+          "Google-only accounts enroll TOTP or a passkey for native protected actions; Google sign-in alone does not satisfy that check."
         ],
         "source_evidence": [
-          "fibe-ui/src/app/route-paths.ts",
-          "fibe-ui/src/app/routes.tsx",
-          "fibe-ui/src/features/account/advanced.tsx",
-          "fibe-ui/src/features/account/security.tsx",
-          "fibe-api/crates/fibe-kernel/src/auth.rs",
-          "fibe-api/crates/fibe-admin/src/control/unix.rs",
-          "fibe-api/deploy/README.md"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/auth.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/http.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/passkeys.rs",
+          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/account/security.tsx"
         ]
       }
     },
@@ -266,55 +259,58 @@
     },
     {
       "path": "docs/advanced/secrets.md",
-      "disposition": "retained",
-      "sha256": "e23e1529b70b8b000d517d8819306717e9719c90682696b4b9f41536ccb507ce",
+      "disposition": "updated",
+      "sha256": "748ae69cfdec1fca5b60a7a1b28049ecacbfe490c1d35d094070eb0049cf2b8d",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Reviewed the owned prose and internal navigation against pinned native API/UI sources; no content change was needed."
+          "Corrected Vault reference resolution, fixed keys, direct versus referenced Job ENV values, secrecy-first precedence, admission capture, recent authentication, reveal auditing and logging boundaries."
         ],
         "source_evidence": [
-          "fibe-ui/src/app/route-paths.ts",
-          "fibe-ui/src/app/routes.tsx",
-          "fibe-ui/src/features/account/advanced.tsx",
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env/http.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/auth.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/http.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/passkeys.rs",
+          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/account/security.tsx",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-eventing/src/automation/webhooks/http.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-eventing/src/automation/webhooks/worker.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/auth.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-admin/src/operations/maintenance.rs"
         ]
       }
     },
     {
       "path": "docs/advanced/security.md",
       "disposition": "updated",
-      "sha256": "95b8de587cf6e78a6f9711e2d554a9121f2c9da6e64e133c0b8431c26cd626ca",
+      "sha256": "c278eacb883d17f6a28586ce9a6ad88433443542c3b85cfad2dee49b677e8c20",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Added local setup and operator account recovery; removed hosted-support fallback and legacy admin-navigation claims."
+          "Corrected passkeys to signed-in protected-action/trust flows; verified factor removal, recovery display, password policy, lockout, session lifetime and local operator recovery."
         ],
         "source_evidence": [
-          "fibe-ui/src/app/route-paths.ts",
-          "fibe-ui/src/app/routes.tsx",
-          "fibe-ui/src/features/account/advanced.tsx",
-          "fibe-ui/src/features/account/security.tsx",
-          "fibe-api/crates/fibe-kernel/src/auth.rs",
-          "fibe-api/crates/fibe-admin/src/control/unix.rs",
-          "fibe-api/deploy/README.md"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/auth.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/http.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/passkeys.rs",
+          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/account/security.tsx"
         ]
       }
     },
     {
       "path": "docs/advanced/webhooks.md",
       "disposition": "updated",
-      "sha256": "5717e48bf17ff9427d393047302df09dc64831ad4a3de93e7fc0c0c8a4706ac6",
+      "sha256": "f4f56dca6a90d62b0040647340e436bfa88f1162d00f3fbb2b8c8d0d5ccba7ae",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Reviewed the owned prose and internal navigation against pinned native API/UI sources; no content change was needed."
+          "Corrected HTTPS admission versus Personal-admin SSRF policy, send-time checks, automatic versus manual retry, exact request bounds, durable identities and history retirement."
         ],
         "source_evidence": [
-          "fibe-ui/src/app/route-paths.ts",
-          "fibe-ui/src/app/routes.tsx",
-          "fibe-ui/src/features/account/advanced.tsx",
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-eventing/src/automation/webhooks/http.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-eventing/src/automation/webhooks/worker.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/auth.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-admin/src/operations/maintenance.rs"
         ]
       }
     },
@@ -355,17 +351,14 @@
     {
       "path": "docs/api/intro.md",
       "disposition": "updated",
-      "sha256": "254dd5b622cbbdbfef4c00a4a565abe800f4de40ae5a0d05eb6eb396bacad5e3",
+      "sha256": "9c44389a7cd00e9dd84a687e03e545e13e0e724acfd9b1063d0561484f061426",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Replaced hosted API assumptions with installation origin, native OpenAPI, auth and durable-operation guidance; documented Swagger origin selector and raw spec URL."
+          "Distinguished installation /openapi.json and /route-manifest.json from this documentation site native/ mirrors."
         ],
         "source_evidence": [
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
-          "fibe-api/crates/fibe-api/src/route_manifest.rs",
-          "fibe-api/contracts/generated/self-hosted-v1/openapi.json",
-          "whats.fibe.gg/src/components/SwaggerApiReference.jsx"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-api/src/http.rs"
         ]
       }
     },
@@ -388,33 +381,33 @@
     },
     {
       "path": "docs/authoring/compose-to-fibe.md",
-      "disposition": "retained",
-      "sha256": "ee425304d85a4da8227c7169a4ddb19c1764ea74bf852bace65277ba933501a1",
+      "disposition": "updated",
+      "sha256": "bfb10635e977dfc4fc6633a5c13d51ad569e22f3272fb66f42c4dbf7f47cba45",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Reviewed the owned prose and internal navigation against pinned native API/UI sources; no content change was needed."
+          "Corrected invalid tab indentation in the launch-variable example."
         ],
         "source_evidence": [
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
-          "fibe-api/crates/fibe-compose/src",
-          "fibe-api/docs/implementation"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
     {
       "path": "docs/authoring/decisions.md",
-      "disposition": "retained",
-      "sha256": "ea5530e04dd8a686055ab726b5eea8cb64b86e1cc54c0a86aede4ce084461ad3",
+      "disposition": "updated",
+      "sha256": "c71651afbe1bf72168b7aa8744dc35b2c7eacc50a12be8c1eb3d783647e46688",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Reviewed the owned prose and internal navigation against pinned native API/UI sources; no content change was needed."
+          "Corrected generated password scope from each launch or Playground to persisted Spec values."
         ],
         "source_evidence": [
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
-          "fibe-api/crates/fibe-compose/src",
-          "fibe-api/docs/implementation"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -436,17 +429,17 @@
     },
     {
       "path": "docs/authoring/overview.md",
-      "disposition": "retained",
-      "sha256": "e5df30b51a94050b2f405dcdb1f405838caa0b8938330a95ce6dee3e8e9f9329",
+      "disposition": "updated",
+      "sha256": "b66a757bddb8315de141a464ef4bdbbb1e7fefaedce6a784292ae7df629cd0f4",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Reviewed the owned prose and internal navigation against pinned native API/UI sources; no content change was needed."
+          "Qualified platform-owned Compose transformations instead of claiming all remaining fields behave as untouched Compose."
         ],
         "source_evidence": [
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
-          "fibe-api/crates/fibe-compose/src",
-          "fibe-api/docs/implementation"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -468,17 +461,17 @@
     },
     {
       "path": "docs/authoring/recipes.md",
-      "disposition": "retained",
-      "sha256": "844ccc8eae51b137faa81dabbeaa0cd5f7024be0a27e3b5d417758e035b39144",
+      "disposition": "updated",
+      "sha256": "f3a79e9daf20c2af2a88d9a92fde9c6d5d102ff09310513e9c7eb95b053b95e1",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Reviewed the owned prose and internal navigation against pinned native API/UI sources; no content change was needed."
+          "Corrected generated password scope from each launch or Playground to persisted Spec values."
         ],
         "source_evidence": [
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
-          "fibe-api/crates/fibe-compose/src",
-          "fibe-api/docs/implementation"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -500,17 +493,17 @@
     },
     {
       "path": "docs/authoring/settings-block.md",
-      "disposition": "retained",
-      "sha256": "850abd83148c6e5c5b844de9691b6675b2890f2d07cd377207ebfb8342cc15a0",
+      "disposition": "updated",
+      "sha256": "e05099e980eafa3c5a4f74d8d468f2aa4aabf240578522100fd583d554cd1e67",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Reviewed the owned prose and internal navigation against pinned native API/UI sources; no content change was needed."
+          "Corrected invalid tab indentation and placed metadata beside variables rather than inside its variable map."
         ],
         "source_evidence": [
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
-          "fibe-api/crates/fibe-compose/src",
-          "fibe-api/docs/implementation"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -532,17 +525,17 @@
     },
     {
       "path": "docs/authoring/variables.md",
-      "disposition": "retained",
-      "sha256": "7a9f906c047feba88a00cb89596008fe265b2e4cd6df6719e625e0f27be5a9e0",
+      "disposition": "updated",
+      "sha256": "18be857210a1d7722fcdc0143967115fdf48a28c53fc773fc7bd99710621273f",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Reviewed the owned prose and internal navigation against pinned native API/UI sources; no content change was needed."
+          "Separated saved Spec generation-before-default and encrypted persistence from direct compiler default-before-generation; corrected YAML indentation."
         ],
         "source_evidence": [
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
-          "fibe-api/crates/fibe-compose/src",
-          "fibe-api/docs/implementation"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -629,51 +622,48 @@
     },
     {
       "path": "docs/concepts/library.md",
-      "disposition": "retained",
-      "sha256": "067e434fa8b55d7f797c5695d984e8bb23a9c565e947dfdd35948328a07d5610",
+      "disposition": "updated",
+      "sha256": "a0956b11ecaf8fd5e8a70e77add8b6ab165d64fcf245a58a020cc875bf3ef627",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Reviewed the owned prose and internal navigation against pinned native API/UI sources; no content change was needed."
+          "Narrowed Agent filtering to supported sections, distinguished live Agent artefact skill edits from content edits, and qualified captured provider traces."
         ],
         "source_evidence": [
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json"
+          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/library/agent-filter.tsx",
+          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/library/artefacts.tsx",
+          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/library/dashboard.tsx",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-library/src/library/http.rs"
         ]
       }
     },
     {
       "path": "docs/concepts/playgrounds.md",
       "disposition": "updated",
-      "sha256": "b22cb3e3fcc89b77ec09433b50612644bcaac6d66a1853de27c6d0e13f73208c",
+      "sha256": "f6ba7b377076d61572871127ceb61e435bc3ea10b391dbfec388c5eb098d92aa",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Replaced hosted/funded and tutorial Host assumptions with long-running self-hosted Playground behavior."
+          "Saved random launch values remain attached to the Spec and are reused; do not promise per-launch regeneration."
         ],
         "source_evidence": [
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
-          "fibe-api/crates/fibe-runtime/src/playgrounds",
-          "fibe-ui/src/features/playgrounds"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
     {
       "path": "docs/concepts/repositories.md",
       "disposition": "updated",
-      "sha256": "9ed90b6c79d0b58a2ab381b47d24b4cac1a9cf909f2a86ec6a44e343f036144b",
+      "sha256": "70a26c97f40402ee384bb1f21d7a306af772f65f7707bddf1bf4dbd3f0dd39ab",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Removed references to old funding semantics and documented current owner-scoped Git provider behavior."
+          "Registration requires verified GitHub push authority; public read access is insufficient."
         ],
         "source_evidence": [
-          "fibe-api/contracts/generated/self-hosted-v1/route-manifest.json",
-          "fibe-api/docs/implementation/gitea-user-provisioning.md",
-          "fibe-api/crates/fibe-source-control/src/repositories.rs",
-          "fibe-ui/src/features/repositories/index.tsx",
-          "fibe-ui/src/features/repositories/create-workflow.tsx",
-          "fibe-ui/src/features/integrations/git.tsx",
-          "fibe-ui/src/features/account/profile-gitea.tsx"
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-source-control/src/source_control/http.rs"
         ]
       }
     },
@@ -936,20 +926,18 @@
     {
       "path": "docs/reference/decide-secrets-and-randoms.md",
       "disposition": "updated",
-      "sha256": "003103dc28b531476977242c46c8324cd2d38bbb5f5ab9bc88c61fccca38f40f",
+      "sha256": "1c68db4de019fcc8c06693908a8de9bff249b02ac75fa2d8109c54b2193dd53b",
       "review": {
-        "method": "generated_reference_mirror",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
+          "Corrected persisted Spec values and Job ENV secret precedence across owner and Repository scopes."
         ],
         "source_evidence": [
-          {
-            "path": "skills/decide-secrets-and-randoms.md",
-            "generated_by": "scripts/sync-skills.mjs"
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env/http.rs"
         ]
       }
     },
@@ -1076,20 +1064,19 @@
     {
       "path": "docs/reference/fibe-security-access-and-integrations.md",
       "disposition": "updated",
-      "sha256": "24616b1dd8af15047634fa235cc493005db8bdca21425bb94c0e8c728474b6e3",
+      "sha256": "2784946d257f0dd0563f1186b207dcec8623dcbd6fafbe6d27ab5cd41e4445e6",
       "review": {
-        "method": "generated_reference_mirror",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
+          "Qualified Vault usage and Job ENV secrecy-first precedence; account security checks follow current Native factors."
         ],
         "source_evidence": [
-          {
-            "path": "skills/fibe-security-access-and-integrations.md",
-            "generated_by": "scripts/sync-skills.mjs"
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env/http.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/auth.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/http.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/passkeys.rs",
+          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/account/security.tsx"
         ]
       }
     },
@@ -1167,20 +1154,15 @@
     {
       "path": "docs/reference/mode-job-task.md",
       "disposition": "updated",
-      "sha256": "edfddd8c5a4ce6ad558ffe6b860ee4a8bbc8cac2543b18d0628c4a6406c5fdfd",
+      "sha256": "c4121481eeca76c2da928a02b41b83b7f1df7c6d85385ab38747ec5b73a8958b",
       "review": {
-        "method": "generated_reference_mirror",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
+          "Corrected Job ENV precedence: secret beats plain; Repository beats owner-wide within each secrecy class."
         ],
         "source_evidence": [
-          {
-            "path": "skills/mode-job-task.md",
-            "generated_by": "scripts/sync-skills.mjs"
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env/http.rs"
         ]
       }
     },
@@ -1407,20 +1389,16 @@
     {
       "path": "docs/reference/playbook-rails-app.md",
       "disposition": "updated",
-      "sha256": "6b70500cd4fa5db9475018dac999d95f389f7ed168dc02215793cf3ab19b6931",
+      "sha256": "705e543e4aaff43ddfed8fc89db9ea11a3599c9cbb77689b12a724c527731247",
       "review": {
-        "method": "generated_reference_mirror",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
+          "Qualified the AnyCable addition as a continuation of the main template and supplied its required Repository working directory."
         ],
         "source_evidence": [
-          {
-            "path": "skills/playbook-rails-app.md",
-            "generated_by": "scripts/sync-skills.mjs"
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -1447,40 +1425,32 @@
     {
       "path": "docs/reference/playbook-wikijs.md",
       "disposition": "updated",
-      "sha256": "30a2e8fc87f1cae69c890a8560a4f7a441c0fed553916292a9679696a3f023dc",
+      "sha256": "a03e5fe804108c8c60c8bd56339410743c1cee4fd3f8dcb2fffdfe9a7bd7036c",
       "review": {
-        "method": "generated_reference_mirror",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
+          "Corrected generated password scope from each launch or Playground to persisted Spec values."
         ],
         "source_evidence": [
-          {
-            "path": "skills/playbook-wikijs.md",
-            "generated_by": "scripts/sync-skills.mjs"
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
     {
       "path": "docs/reference/playbook-wordpress.md",
       "disposition": "updated",
-      "sha256": "d71c44897c0fe55e4edc995db7ff6dd0b8ee1d82f956b563bb7dd5f7f5d8f99d",
+      "sha256": "09bf855ce65caf17ab991f8f0b30d06c30fed702302b1248df1b084e878deca9",
       "review": {
-        "method": "generated_reference_mirror",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
+          "Corrected generated password scope from each launch or Playground to persisted Spec values."
         ],
         "source_evidence": [
-          {
-            "path": "skills/playbook-wordpress.md",
-            "generated_by": "scripts/sync-skills.mjs"
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -1546,21 +1516,17 @@
     },
     {
       "path": "docs/reference/recipe-anchors-and-aliases.md",
-      "disposition": "retained",
-      "sha256": "67593ed271a4fd9618d55b9e14014a3fb4ad90fd464060592691654027a6e431",
+      "disposition": "updated",
+      "sha256": "2efb89952cbf25ae456113647fc8a07f484e2de8b447f1db4bc25c4cdbb96071",
       "review": {
-        "method": "generated_reference_mirror",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
+          "Made anchor examples self-contained with actual definitions instead of nonexistent alias targets; clarified Compose fragments."
         ],
         "source_evidence": [
-          {
-            "path": "skills/recipe-anchors-and-aliases.md",
-            "generated_by": "scripts/sync-skills.mjs"
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -1707,20 +1673,17 @@
     {
       "path": "docs/reference/recipe-named-volumes.md",
       "disposition": "updated",
-      "sha256": "7cd628d521a4c256619b57204b01361670196a3108a57e65f06c532de45433c4",
+      "sha256": "77a52df2ec49b74732ae67a01fa977c82579f94d60f7ec73c0b336f7f7ed04fa",
       "review": {
-        "method": "generated_reference_mirror",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
+          "Corrected Spec/Host/volume-key persistence identity, unsupported authored binds/options, undeclared named-volume errors and complete declarations; bound the sample Postgres password to a generated variable."
         ],
         "source_evidence": [
-          {
-            "path": "skills/recipe-named-volumes.md",
-            "generated_by": "scripts/sync-skills.mjs"
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-runtime/src/playgrounds/worker.rs"
         ]
       }
     },
@@ -1747,24 +1710,18 @@
     {
       "path": "docs/reference/recipe-random-and-secrets.md",
       "disposition": "updated",
-      "sha256": "9c37c66e0fc43ce5465a3c22fc04a7470f611987601d26350f9a35d23cb57357",
+      "sha256": "041adb67e9097dd95c78d71c11e269dcd1efbf6a1014b4aaeb92e51374465cb5",
       "review": {
-        "method": "generated_reference_mirror",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          },
-          {
-            "kind": "regenerated_after_source_review",
-            "summary": "Regenerated after updating canonical Native Secret Vault guidance."
-          }
+          "Corrected Spec random persistence and explicit regeneration; qualified Job ENV secrecy-first and Repository precedence."
         ],
         "source_evidence": [
-          {
-            "path": "skills/recipe-random-and-secrets.md",
-            "generated_by": "scripts/sync-skills.mjs"
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env/http.rs"
         ]
       }
     },
@@ -1911,20 +1868,16 @@
     {
       "path": "docs/reference/reference-template-variables.md",
       "disposition": "updated",
-      "sha256": "40438efbee4bb1d2b7321343c763a787abaa4251c6ad2403c62336d50ee95d7f",
+      "sha256": "8a176e95270c3dca4d78c653440fb13643423c384ca904998627d79f885cc62b",
       "review": {
-        "method": "generated_reference_mirror",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
+          "Corrected saved Spec persistence and missing-random-before-default behavior, distinguished direct compiler calls and fixed YAML indentation."
         ],
         "source_evidence": [
-          {
-            "path": "skills/reference-template-variables.md",
-            "generated_by": "scripts/sync-skills.mjs"
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -1951,20 +1904,16 @@
     {
       "path": "docs/reference/reference-x-fibe-gg-namespace.md",
       "disposition": "updated",
-      "sha256": "8d411a0adff975e8ea7a3a63046f9ee10930c1cc1f75d01ac25562e8c42483c4",
+      "sha256": "847913ad22b04bc6f692cc24f461bb2899a76aeec9c5e1cdefb591f8d4650519",
       "review": {
-        "method": "generated_reference_mirror",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "curated_or_regenerated",
-            "summary": "Reviewed as a curated Native contract page or regenerated mirror of its canonical source."
-          }
+          "Qualified Native-owned transformations instead of treating all non-namespace fields as untouched Compose."
         ],
         "source_evidence": [
-          {
-            "path": "skills/reference-x-fibe-gg-namespace.md",
-            "generated_by": "scripts/sync-skills.mjs"
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -2881,16 +2830,15 @@
     {
       "path": "docs/sdk/cli-reference.md",
       "disposition": "updated",
-      "sha256": "203d33f91fc64759c165ba526f284fe72f5008eea29fb238617451e37c1fa542",
+      "sha256": "5cde572de5e4ce353411ca5252089dbd8e77e6ac50e4f5e0ee45330f19db92d2",
       "review": {
-        "method": "Native guide review",
+        "method": "Third committed-source content review",
         "findings": [
-          "Removed retired host-funding language and updated owner vocabulary while retaining released-client command qualification."
+          "Corrected required template-version --body input, command-specific global flags and dated expiry example against the released SDK."
         ],
         "source_evidence": [
-          "fibe-api/contracts/generated/self-hosted-v1/openapi.json",
-          "fibe-api/crates/fibe-auth-policy/src/lib.rs",
-          "fibe-ui/src/api/schema.d.ts"
+          "source-contracts/sdk/tool-schemas.json",
+          "source-contracts/sdk/tool-guidance.json"
         ]
       }
     },
@@ -4133,42 +4081,18 @@
     {
       "path": "skills/decide-secrets-and-randoms.md",
       "disposition": "updated",
-      "sha256": "0239becb7ab462964e74902bd21e1546f06ea4221bbeb8cd3dc7e2d12d1b661a",
+      "sha256": "8f4cf06e53211f487410f52a808bfe8f0dfa36fd1f144dc2397da5d2a33363aa",
       "review": {
-        "method": "canonical_skill",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "native_review",
-            "summary": "Reviewed against the pinned source evidence listed for this file; detailed Compose examples were retained where supported."
-          }
+          "Corrected persisted Spec values and Job ENV secret precedence across owner and Repository scopes."
         ],
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-identity/src/vault.rs",
-              "crates/fibe-identity/src/vault/job_env.rs",
-              "crates/fibe-bazaar/src/env_packs.rs"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-api/src/automation/task_env.rs",
-              "crates/fibe-identity/src/vault/job_env.rs",
-              "crates/fibe-identity/src/vault/job_env/trigger.rs"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "contracts/generated/self-hosted-v1/openapi.json",
-              "crates/fibe-api/src/route_manifest.rs"
-            ]
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env/http.rs"
         ]
       }
     },
@@ -4372,42 +4296,19 @@
     {
       "path": "skills/fibe-security-access-and-integrations.md",
       "disposition": "updated",
-      "sha256": "ced8bcede98db537dbe5ea98e0640eb37bbc49b157b64c3ab9f2daac5d524ac6",
+      "sha256": "bc4d2058b3b7f29de03531d29b346589a76fd6f1f6fd12a27e2acbf2fb2e8c16",
       "review": {
-        "method": "canonical_skill",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "native_review",
-            "summary": "Reviewed against the pinned source evidence listed for this file; detailed Compose examples were retained where supported."
-          }
+          "Qualified Vault usage and Job ENV secrecy-first precedence; account security checks follow current Native factors."
         ],
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-identity/src/vault.rs",
-              "crates/fibe-identity/src/vault/job_env.rs",
-              "crates/fibe-bazaar/src/env_packs.rs"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-api/src/automation/task_env.rs",
-              "crates/fibe-identity/src/vault/job_env.rs",
-              "crates/fibe-identity/src/vault/job_env/trigger.rs"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "contracts/generated/self-hosted-v1/openapi.json",
-              "crates/fibe-api/src/route_manifest.rs"
-            ]
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env/http.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-kernel/src/auth.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/http.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/identity/passkeys.rs",
+          "fibe-ui@365f0c346a940c450fb256dabe916b854f1edc55:src/features/account/security.tsx"
         ]
       }
     },
@@ -4446,35 +4347,15 @@
     {
       "path": "skills/mode-job-task.md",
       "disposition": "updated",
-      "sha256": "5a2170ef90bf5574c832d209ca64ea664a56bcd7649e42b2bb921461c75902d9",
+      "sha256": "b8da7f6c64d5ebaa36d0f67e0047d2ddd7209c3fdbc4e329ed885c9aca564622",
       "review": {
-        "method": "canonical_skill",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "native_review",
-            "summary": "Reviewed against the pinned source evidence listed for this file; detailed Compose examples were retained where supported."
-          }
+          "Corrected Job ENV precedence: secret beats plain; Repository beats owner-wide within each secrecy class."
         ],
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-compose/src/label_parser.rs",
-              "crates/fibe-compose/src/validation.rs",
-              "crates/fibe-compose/src/template_compiler.rs",
-              "crates/fibe-compose/src/interpolation.rs",
-              "crates/fibe-compose/schema/fibe-compose.v1.schema.json"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "contracts/generated/self-hosted-v1/openapi.json",
-              "crates/fibe-api/src/route_manifest.rs"
-            ]
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env/http.rs"
         ]
       }
     },
@@ -4761,35 +4642,16 @@
     {
       "path": "skills/playbook-rails-app.md",
       "disposition": "updated",
-      "sha256": "13c0b030bbad5046b36ba33ea6c86a4fd0154d5f72a351c73e30063487aea59e",
+      "sha256": "4b4db7a47264070b459bf41cf063fb08baa4f02dfc25bedad251439880e22179",
       "review": {
-        "method": "canonical_skill",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "native_review",
-            "summary": "Reviewed against the pinned source evidence listed for this file; detailed Compose examples were retained where supported."
-          }
+          "Qualified the AnyCable addition as a continuation of the main template and supplied its required Repository working directory."
         ],
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-compose/src/label_parser.rs",
-              "crates/fibe-compose/src/validation.rs",
-              "crates/fibe-compose/src/template_compiler.rs",
-              "crates/fibe-compose/src/interpolation.rs",
-              "crates/fibe-compose/schema/fibe-compose.v1.schema.json"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "contracts/generated/self-hosted-v1/openapi.json",
-              "crates/fibe-api/src/route_manifest.rs"
-            ]
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -4831,70 +4693,32 @@
     {
       "path": "skills/playbook-wikijs.md",
       "disposition": "updated",
-      "sha256": "fe40bb5de7a3bca4e9b969847b2a829c67bdbaf4e9116da9d2c27bc0b415016c",
+      "sha256": "16079bbce47398caa50b1eeec1b4e0621cd984dc3f781a6035c428e3f0611975",
       "review": {
-        "method": "canonical_skill",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "native_review",
-            "summary": "Reviewed against the pinned source evidence listed for this file; detailed Compose examples were retained where supported."
-          }
+          "Corrected generated password scope from each launch or Playground to persisted Spec values."
         ],
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-compose/src/label_parser.rs",
-              "crates/fibe-compose/src/validation.rs",
-              "crates/fibe-compose/src/template_compiler.rs",
-              "crates/fibe-compose/src/interpolation.rs",
-              "crates/fibe-compose/schema/fibe-compose.v1.schema.json"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "contracts/generated/self-hosted-v1/openapi.json",
-              "crates/fibe-api/src/route_manifest.rs"
-            ]
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
     {
       "path": "skills/playbook-wordpress.md",
       "disposition": "updated",
-      "sha256": "2cf67b7ed4014f643caab033fe05860275719e21f1f1e5b5dc447b5cd7e6a86b",
+      "sha256": "f97d4c7c3263af7de03991d151ced00d9f839f4d1b77eac8916b056d81fbadc1",
       "review": {
-        "method": "canonical_skill",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "native_review",
-            "summary": "Reviewed against the pinned source evidence listed for this file; detailed Compose examples were retained where supported."
-          }
+          "Corrected generated password scope from each launch or Playground to persisted Spec values."
         ],
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-compose/src/label_parser.rs",
-              "crates/fibe-compose/src/validation.rs",
-              "crates/fibe-compose/src/template_compiler.rs",
-              "crates/fibe-compose/src/interpolation.rs",
-              "crates/fibe-compose/schema/fibe-compose.v1.schema.json"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "contracts/generated/self-hosted-v1/openapi.json",
-              "crates/fibe-api/src/route_manifest.rs"
-            ]
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -5005,36 +4829,17 @@
     },
     {
       "path": "skills/recipe-anchors-and-aliases.md",
-      "disposition": "retained",
-      "sha256": "f69fc1a11c62dc63104a48207a8595798ec740d6e70b93e6a4f659ae57953d70",
+      "disposition": "updated",
+      "sha256": "f4ec4a78a57f02293c4ab0c87287d297e81279d7d5d3b77c8b7f384df1cc7875",
       "review": {
-        "method": "canonical_skill",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "native_review",
-            "summary": "Reviewed against the pinned source evidence listed for this file; detailed Compose examples were retained where supported."
-          }
+          "Made anchor examples self-contained with actual definitions instead of nonexistent alias targets; clarified Compose fragments."
         ],
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-compose/src/label_parser.rs",
-              "crates/fibe-compose/src/validation.rs",
-              "crates/fibe-compose/src/template_compiler.rs",
-              "crates/fibe-compose/src/interpolation.rs",
-              "crates/fibe-compose/schema/fibe-compose.v1.schema.json"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "contracts/generated/self-hosted-v1/openapi.json",
-              "crates/fibe-api/src/route_manifest.rs"
-            ]
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -5286,35 +5091,17 @@
     {
       "path": "skills/recipe-named-volumes.md",
       "disposition": "updated",
-      "sha256": "a24f230336adbc83a4703c1c453ea5983497c388cd24670b4a15e62cbff04c65",
+      "sha256": "8c11882570b826189505e329d624ea2aaae6ecc4bc3dd6b53088f65b2507d5cf",
       "review": {
-        "method": "canonical_skill",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "native_review",
-            "summary": "Reviewed against the pinned source evidence listed for this file; detailed Compose examples were retained where supported."
-          }
+          "Corrected Spec/Host/volume-key persistence identity, unsupported authored binds/options, undeclared named-volume errors and complete declarations; bound the sample Postgres password to a generated variable."
         ],
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-compose/src/label_parser.rs",
-              "crates/fibe-compose/src/validation.rs",
-              "crates/fibe-compose/src/template_compiler.rs",
-              "crates/fibe-compose/src/interpolation.rs",
-              "crates/fibe-compose/schema/fibe-compose.v1.schema.json"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "contracts/generated/self-hosted-v1/openapi.json",
-              "crates/fibe-api/src/route_manifest.rs"
-            ]
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-runtime/src/playgrounds/worker.rs"
         ]
       }
     },
@@ -5356,46 +5143,18 @@
     {
       "path": "skills/recipe-random-and-secrets.md",
       "disposition": "updated",
-      "sha256": "97cf680fc4f0ca903a470ac17c8934514bd2dbdf1abb6e736da8ea7e942ca37c",
+      "sha256": "b8c18e6ff6244c629756e24266c138d5f6e3e31d15ee23cf8a072cb24a744999",
       "review": {
-        "method": "canonical_skill",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "native_review",
-            "summary": "Reviewed against the pinned source evidence listed for this file; detailed Compose examples were retained where supported."
-          },
-          {
-            "kind": "native_claim_review",
-            "summary": "Long-lived credential guidance was reviewed against the pinned Native Secret Vault and Job ENV implementation; recommends the Native Vault and supported Secret Vault or Job ENV references."
-          }
+          "Corrected Spec random persistence and explicit regeneration; qualified Job ENV secrecy-first and Repository precedence."
         ],
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-identity/src/vault.rs",
-              "crates/fibe-identity/src/vault/job_env.rs",
-              "crates/fibe-bazaar/src/env_packs.rs"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-api/src/automation/task_env.rs",
-              "crates/fibe-identity/src/vault/job_env.rs",
-              "crates/fibe-identity/src/vault/job_env/trigger.rs"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "contracts/generated/self-hosted-v1/openapi.json",
-              "crates/fibe-api/src/route_manifest.rs"
-            ]
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-identity/src/vault/job_env/http.rs"
         ]
       }
     },
@@ -5662,35 +5421,16 @@
     {
       "path": "skills/reference-template-variables.md",
       "disposition": "updated",
-      "sha256": "2f893bcdf28fb1d714d82c6030b7967b548e64a4ddcabdf2b41d8a76109c6c1c",
+      "sha256": "329d01f3a0c7badba8893aec9d40b43b6e4049ac86d0088c3fcddf3493c6a158",
       "review": {
-        "method": "canonical_skill",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "native_review",
-            "summary": "Reviewed against the pinned source evidence listed for this file; detailed Compose examples were retained where supported."
-          }
+          "Corrected saved Spec persistence and missing-random-before-default behavior, distinguished direct compiler calls and fixed YAML indentation."
         ],
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-compose/src/label_parser.rs",
-              "crates/fibe-compose/src/validation.rs",
-              "crates/fibe-compose/src/template_compiler.rs",
-              "crates/fibe-compose/src/interpolation.rs",
-              "crates/fibe-compose/schema/fibe-compose.v1.schema.json"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "contracts/generated/self-hosted-v1/openapi.json",
-              "crates/fibe-api/src/route_manifest.rs"
-            ]
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -5732,35 +5472,16 @@
     {
       "path": "skills/reference-x-fibe-gg-namespace.md",
       "disposition": "updated",
-      "sha256": "f9f2f26c969612d48ed2b83e1c72e3ac8becb54af623a2cd4ebd5e0551c40420",
+      "sha256": "f2ea5d343ccdcd4b4b209e6d50b041efad2c1e5cf3aeed157cdaece4f1e1e960",
       "review": {
-        "method": "canonical_skill",
+        "method": "Third committed-source content review",
         "findings": [
-          {
-            "kind": "native_review",
-            "summary": "Reviewed against the pinned source evidence listed for this file; detailed Compose examples were retained where supported."
-          }
+          "Qualified Native-owned transformations instead of treating all non-namespace fields as untouched Compose."
         ],
         "source_evidence": [
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "crates/fibe-compose/src/label_parser.rs",
-              "crates/fibe-compose/src/validation.rs",
-              "crates/fibe-compose/src/template_compiler.rs",
-              "crates/fibe-compose/src/interpolation.rs",
-              "crates/fibe-compose/schema/fibe-compose.v1.schema.json"
-            ]
-          },
-          {
-            "repository": "https://github.com/viktorvsk/fibe-api.git",
-            "revision": "2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29",
-            "paths": [
-              "contracts/generated/self-hosted-v1/openapi.json",
-              "crates/fibe-api/src/route_manifest.rs"
-            ]
-          }
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/template_compiler.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-compose/src/validation.rs",
+          "fibe-api@2ef6a69f4ce27f1f4a4b637ff0b6d2769c1ebe29:crates/fibe-bazaar/src/spec_templates.rs"
         ]
       }
     },
@@ -5909,7 +5630,7 @@
     {
       "path": "src/components/SwaggerApiReference.jsx",
       "disposition": "updated",
-      "sha256": "984c001af7bbdb2b7c48183ef633083ccfccec52c80a186e7fc59b400639913e",
+      "sha256": "6f4976e064b472e9047df81d8070f5a5567a99bdabfc0079c9e47f87337e5ff5",
       "review": "Coordinator reviewed Native content, source selection, generated output or repository instructions; no styling changes."
     },
     {

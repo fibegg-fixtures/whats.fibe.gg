@@ -53,6 +53,8 @@ Multiple installations per account are supported (one per org or repo set). Deta
 
 Open **Profile → Advanced Settings → GitHub Apps** and choose **Connect GitHub**. This links the GitHub identity to your Fibe account; it does not grant access to private repositories by itself. Public repositories can be read without an installation. For private repositories, install the configured GitHub App or provide a repository credential.
 
+Registering a GitHub Repository is a separate check: personal owners need a current verified write path, through a connected personal GitHub identity with push access or a per-Repository PAT with push access. A Team-owned Repository must use its verified Team GitHub installation. Public content being readable does not by itself authorize a new Repository registration.
+
 ### 3. Paste a Personal Access Token (per-Repository)
 
 Best for one-off integrations or when you can't install the App (no admin rights on the org).

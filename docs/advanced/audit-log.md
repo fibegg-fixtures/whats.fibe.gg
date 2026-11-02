@@ -24,7 +24,7 @@ Every action that meaningfully changes account or resource state:
 - Add or modify webhooks.
 - Add, rotate, revoke Secret Vault entries.
 - Modify Job ENV entries.
-- 2FA changes: enable, disable, register/remove security keys, regenerate recovery codes.
+- Security-factor events: TOTP setup, enable and disable; passkey registration and removal; recovery-code confirmation.
 - Session revocations.
 
 **Not** recorded:
@@ -56,7 +56,7 @@ The Playground page shows live service status, build steps, log streams, and exp
 
 ## Export
 
-The audit log can't be exported today. [Data Backup](/advanced/backup/) covers your resources (Repositories, Hosts, Specs, Agents, Playgrounds, Templates, Secrets, Webhooks), not history: use the dashboard filters to investigate.
+The Audit Logs screen has no export control. You can retrieve authorized records through the paginated Audit Logs API. [Data Backup](/advanced/backup/) covers your resources (Repositories, Hosts, Specs, Agents, Playgrounds, Templates, Secrets, Webhooks), not history; use the dashboard filters or API to investigate.
 
 ## Example investigation
 

@@ -263,14 +263,23 @@ The `environment:` values keep Compose-style `${VAR:-default}` for local `docker
 
 For apps that split websocket traffic into AnyCable or ActionCable services, share the same subdomain and route websocket paths to the websocket service:
 
+Add these service definitions inside the `services:` mapping of the full template above. They reuse the `x-rails-deps` and `x-rails-env` anchors defined there.
+
 ```yaml
 services:
   web-for-anycable:                 # private Rails replicas for RPC
     build: .
     depends_on: *rails-deps
     environment: *rails-env
+    working_dir: "/rails"
     deploy:
       replicas: 2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/up"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+      start_period: 120s
     labels:
       fibe.gg/repo_url: https://github.com/owner/repo
       fibe.gg/branch: main

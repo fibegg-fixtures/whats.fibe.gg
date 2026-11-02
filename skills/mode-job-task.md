@@ -99,7 +99,7 @@ Job services receive Native Fibe run-context values, and source-backed service p
 
 Job ENV provides named values to Task services. An entry can store an encrypted value directly or reference an owner-bound Secret Vault entry. It may apply to the owner generally or be scoped to a Repository. When a Task is admitted, Fibe captures the eligible values for that run; edits affect later runs.
 
-For Repository-triggered Tasks, Repository-specific entries override owner-wide entries, and secret entries override plain entries with the same key. Secret entries are withheld from pull-request-triggered runs. Job ENV keys cannot begin with `FIBE_` because those names are reserved for Fibe's run context.
+For Repository-triggered Tasks, secret entries override plain entries with the same key; within the same secrecy class, Repository-specific entries override owner-wide entries. Secret entries are withheld from pull-request-triggered runs. Job ENV keys cannot begin with `FIBE_` because those names are reserved for Fibe's run context.
 
 Use Job ENV for credentials such as package registry tokens that a Task needs. Use an ENV pack for reusable non-secret environment settings attached to a Spec or Playground. See [security and integrations](fibe-security-access-and-integrations.md) for Vault and ENV pack details.
 

@@ -27,10 +27,10 @@ x-fibe.gg:
       random: false
       default: "demo"
       validation: "/^[a-z0-9-]+$/"
-	      path: services.web.environment.APP_NAME
-	      paths:
-	        - services.web.labels.fibe.gg/subdomain
-	        - services.worker.environment.APP_NAME
+      path: services.web.environment.APP_NAME
+      paths:
+        - services.web.labels.fibe.gg/subdomain
+        - services.worker.environment.APP_NAME
 ```
 
 For whole-node paths into dotted label keys such as `services.web.labels.fibe.gg/subdomain`, keep a concrete placeholder label value in the Compose file for local parity. Runtime validation rejects paths aimed at missing `services.<name>` roots, while missing leaves under existing services can be created.
@@ -43,8 +43,8 @@ Field semantics:
 |---|---|
 | `name` | If null/empty: validation error `missing_name`. |
 | `required: true` | If no user value AND no default AND no random: compile fails with `Variable '<key>' is required`. |
-| `random: true` | If no user value is supplied at compile time: generated as a stable 32-character hex value. |
-| `default: <value>` | Used when no user value. Must be a literal; `$$var__*`, `$$random__*`, and `$$root_domain` are invalid inside defaults. |
+| `random: true` | Saved Spec workflows generate a missing value before considering `default` and store it encrypted with the Spec. Direct compiler calls use a non-empty default before generating and do not retain generated values across calls. Generated values are 32 lowercase hex characters. |
+| `default: <value>` | Used when no resolved value remains. A saved Spec workflow may already have generated a missing random value. Must be a literal; `$$var__*`, `$$random__*`, and `$$root_domain` are invalid inside defaults. |
 | `validation: "/regex/"` | Pattern must be wrapped in `/.../`. Empty string is allowed (no validation). Compile fails with `fails validation pattern` if value doesn't match. |
 | `path` / `paths` | Whole-node replacement after string substitution. See [reference-yaml-paths](reference-yaml-paths.md). |
 
@@ -114,7 +114,7 @@ Use this as a quick map during conversion:
 | `default: "1.2.3"` only | inline | user value -> default -> random -> placeholder | `$$var__` placeholder replaced with `1.2.3` |
 | `required: true` + `default` | inline | required check passes when default exists | default always used when Spec form omits value |
 | `required: true` only | inline | compile error if Spec form doesn't provide value | compile fails |
-| `random: true` only | inline | generated 32-char hex on each compile call unless persisted | same hex reused if stored |
+| `random: true` only | inline | fresh 32-character hex if no value is supplied; reused across references within this compile | Spec workflows persist the value with the Spec; a direct compiler call does not retain it for later compiles |
 | No `default`, no `random`, no Spec form value | inline | fallback literal `placeholder` | raw `placeholder` appears in output |
 | No `default`, no `random`, no Spec form value | `path:` / `paths:` | fallback empty string | YAML empty scalar at every bound path |
 
@@ -210,8 +210,8 @@ x-fibe.gg:
 
 `random: true` declares a generated value. Behavior:
 
-- Compile-time fresh value if no user value is supplied: 32 lowercase hex characters.
-- Once persisted for the launch, the value is reused on subsequent compiles unless template-author tooling explicitly regenerates it.
+- Saved Spec imports, launches and template-version switches generate 32 lowercase hex characters when a random variable is absent, null or an empty string, before considering its declared default.
+- Spec workflows store generated values encrypted with the Spec and reuse them in later compiles and template-version switches. A direct lower-level compiler call uses a non-empty default before random generation and does not retain generated values for later calls.
 - For values with `random: true` AND `required: true`, the random generation runs **before** the required check, so missing inputs do not error.
 - `secret: true` / `sensitive: true` are presentation hints. Use a Vault Secret for an owner-bound credential; use Job ENV to supply eligible values to Tasks. ENV packs are for reusable settings attached to a Spec or Playground.
 
@@ -265,7 +265,9 @@ Any `$$var__NAME` / `$$random__NAME` occurrence whose `NAME` does not appear in 
 
 ## Defaulting and override order
 
-For each declared variable, Fibe picks the value in this order:
+Saved Spec imports, launches and template-version switches first reuse supplied or stored values. For `random: true`, an absent, null or empty-string value is generated and saved before the compiler considers the declaration's `default`. A non-empty default therefore does not prevent generation in those Spec workflows.
+
+The lower-level compiler then picks each value in this order. Calling it directly skips the saved Spec stage:
 
 1. User-supplied value from launch input or stored launch values.
 2. `default` field (if non-empty).

@@ -29,7 +29,7 @@ Sensitive account changes may require a recent-authentication challenge. Before 
 
 ## Two-factor authentication
 
-Google sign-in is an identity provider, not a second factor for Fibe's protected actions. Configure TOTP, recovery codes, or a security key from **Security & Sessions** when required by the installation's security policy.
+Google sign-in is an identity provider, not a Fibe security-factor check for protected actions. Configure TOTP or register a passkey from **Security & Sessions**. Recovery codes are generated when TOTP is enabled. A passkey can be used for protected actions and to restore session trust; it is not a password sign-in method.
 
 ## Related
 

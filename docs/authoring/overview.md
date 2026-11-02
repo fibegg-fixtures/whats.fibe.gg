@@ -16,7 +16,7 @@ If you can write Compose, you can author a Fibe template. The additions are smal
 - **Service labels** under `labels:` on each service. These tell Fibe how to route, build, expose, and watch the service.
 - **A settings block** at the root under `x-fibe.gg:`. Holds launch-time variables and template metadata. Optional, but you'll want it once you have anything customizable.
 
-Everything else is plain Docker Compose. A template that doesn't need Fibe features is just a Compose file.
+The rest of the document uses Docker Compose fields and syntax. Fibe rewrites a small set of fields it owns during launch generation; see [Compose → Fibe](/authoring/compose-to-fibe/) for those transformations. A template that doesn't need Fibe features is still an ordinary Compose file.
 
 ## The smallest template
 

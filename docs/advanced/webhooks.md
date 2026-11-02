@@ -12,7 +12,7 @@ Send signed event callbacks to external systems when Fibe resources change. Outb
 
 Each webhook has:
 
-- A **destination URL**: HTTPS required.
+- A **destination URL**: HTTPS is required by protected deployment policy; development behavior follows the installation’s configured policy.
 - A **selection of event types** to listen for: exact names, or `*` for everything.
 - A **signing secret**: Fibe HMAC-signs every payload; verify on receipt.
 
@@ -40,9 +40,9 @@ Signing secret generated at creation. Use it to verify deliveries.
 
 ## URL safety
 
-Production webhook URLs must use HTTPS. Fibe checks the host when you save the endpoint and rejects localhost, loopback, and private-network destinations. A host that can't be reached yet does not block saving the endpoint; delivery failures are handled by the delivery model below.
+Protected deployments require HTTPS when saving an endpoint. Ordinary requests also reject localhost, loopback and private-network destinations under the installation’s SSRF policy. The supported exception is a Personal endpoint owned by an installation administrator; nondeployment environments also have a policy bypass. Team endpoints do not inherit an administrator creator’s Personal exception. A temporarily unreachable host can be saved without claiming delivery succeeded.
 
-The destination is checked again at delivery time before the request is sent, so DNS changes can't turn a previously safe endpoint into a private-network callback.
+Resolved destination addresses are checked again before each send under the current applicable SSRF policy. Redirects are not followed. The HTTPS requirement is an admission check; it is separate from delivery-time address checks.
 
 ## Event types (examples)
 
@@ -57,12 +57,12 @@ You subscribe to exact event types (or `*` for everything); unknown event names 
 
 ## Delivery model
 
-- Each event produces one POST to your URL with a JSON body.
-- A non-2xx response counts as a failed delivery and is **not retried**. Network-level failures (timeouts, connection refused) are retried up to 3 attempts with `attempt^4 + 2` seconds of delay.
-- After 10 consecutive failures the endpoint is disabled automatically; one successful delivery resets the counter.
+- A matching event creates a durable delivery identity. Its attempts POST the captured JSON body to your URL.
+- HTTP `408`, `429`, `5xx`, and transport failures can retry automatically while the delivery stays within its initial **3-attempt budget**, with `attempt^4 + 2` seconds between attempts. An explicit authorized manual retry can add later attempts under the same delivery identity. Other non-2xx responses settle as failures. A transport timeout leaves the send outcome uncertain; retries keep the same delivery identity.
+- After 10 final failed deliveries the endpoint is disabled automatically; a successful delivery resets the counter. Intermediate retry attempts do not each count as a final failure.
 - The signature is sent in the `X-Webhook-Signature` header as `sha256=<hex digest>`, an HMAC-SHA256 over the raw request body using your signing secret.
-- Each delivery also carries `X-Webhook-Event` (the event name) and `X-Webhook-Delivery` / `X-Idempotency-Key` (the unique delivery id: use it for idempotency).
-- Requests use `User-Agent: Fibe-Webhook/1.0` with a 5-second connect timeout and a 5-second read timeout. Very large receiver responses are truncated in delivery history.
+- Each attempt carries `X-Webhook-Event`, the public delivery ID in `X-Webhook-Delivery`, and the stable idempotency identity in `X-Idempotency-Key`. Deduplicate repeated attempts before applying an external effect.
+- Requests use `User-Agent: Fibe-Webhook/1.0`, a **3-second connect timeout** and a **5-second total request timeout**. Redirects are not followed. Stored response text is truncated to 10,000 characters.
 
 ## Verify signatures
 
@@ -79,7 +79,7 @@ Constant-time compare.
 ## Test & observe
 
 - **Test delivery** from the endpoint page before depending on it.
-- **Delivery history** shows payloads sent, timestamps, receiver responses. Useful for debugging. Kept for 30 days and capped at the most recent 1,000 deliveries per endpoint; older records are pruned automatically.
+- **Delivery history** shows captured payloads, timestamps and receiver responses. Fully observed terminal history leaves ordinary visibility after 30 days or under the endpoint’s configured history quota (default 1,000). Pending or uncertain sends remain visible rather than being discarded to satisfy that cap; immutable attempt identities are retained for recovery.
 
 ## Resilience
 

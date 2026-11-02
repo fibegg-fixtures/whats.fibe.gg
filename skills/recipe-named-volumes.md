@@ -5,7 +5,7 @@ description: Use to declare Compose named volumes for persistent data (databases
 
 # Recipe: named volumes for persistence
 
-Stateful services (Postgres, MinIO, Redis with AOF, Git service data) need persistent storage. Use Compose **named volumes**. Host bind mounts (`./data:/var/lib/...`) generally do not work on Fibe Hosts because templates should not assume a host filesystem layout.
+Stateful services (Postgres, MinIO, Redis with AOF, Git service data) need persistent storage. Use Compose **named volumes**. The reviewed Native deployment path rejects authored host bind mounts (`./data:/var/lib/...`); templates must not assume a Host filesystem layout.
 
 ## Pattern
 
@@ -14,7 +14,7 @@ services:
   postgres:
     image: postgres:17
     environment:
-      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_PASSWORD: placeholder
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -33,17 +33,28 @@ volumes:
   postgres_data:
   redis_data:
   minio_data:
+
+x-fibe.gg:
+  variables:
+    DB_PASSWORD:
+      name: "Database password"
+      required: true
+      random: true
+      secret: true
+      path: services.postgres.environment.POSTGRES_PASSWORD
 ```
 
 The `volumes:` top-level block declares the named volumes; the per-service `volumes:` array mounts them.
+
+When a Spec persists volumes, Fibe keys each named volume by the Spec, the Host, and the Compose volume key. The same Spec/Host/key reuses that volume across runs, even if a different service mounts it. A different Spec or Host gets a separate volume. Keep the Compose volume key stable when the data must remain attached.
 
 ## Named vs bind
 
 | Form | Example | Use on Fibe |
 |---|---|---|
 | Named volume | `postgres_data:/var/lib/postgresql/data` | YES: Fibe manages the volume |
-| Anonymous volume | `/var/lib/postgresql/data` | Works, but is unnamed and harder to manage |
-| Host bind | `./data:/var/lib/postgresql/data` | NO: Host filesystem doesn't have `./data` |
+| Anonymous volume | `/var/lib/postgresql/data` | Not supported by the reviewed Native deployment path; declare a named volume |
+| Host bind | `./data:/var/lib/postgresql/data` | Authored host binds are not supported by the reviewed Native deployment path; use an injected source mount for Repository files |
 | Source mount (Fibe-injected) | (via `working_dir`) | YES: Fibe injects automatically |
 
 ## Read-only mounts
@@ -55,6 +66,9 @@ services:
   web:
     volumes:
       - gitea_data:/gitea-data:ro
+
+volumes:
+  gitea_data:
 ```
 
 Use read-only mounts when one service owns the data and another service only needs to inspect generated files.
@@ -91,19 +105,14 @@ Fibe does not automatically back up named volumes. If the app's data must surviv
 
 ## Volume options
 
-Compose allows volume drivers and options:
+Use plain named-volume declarations on the reviewed Native build:
 
 ```yaml
 volumes:
   pg_data:
-    driver: local
-    driver_opts:
-      type: tmpfs
-      device: tmpfs
-      o: "size=1g"
 ```
 
-Host defaults to `local` driver. Custom drivers may or may not be available: keep portable templates simple (just `<name>:` with no options).
+The current deployment validator accepts plain declarations and labels, but rejects authored `driver`, `driver_opts`, `external`, and custom `name` options before deployment. Use the plain declaration above for supported persistent storage.
 
 ## Replacing host binds: common rewrites
 
@@ -139,6 +148,9 @@ services:
     volumes:
       - app_data:$$var__DATA_PATH
 
+volumes:
+  app_data:
+
 x-fibe.gg:
   variables:
     DATA_PATH:
@@ -148,8 +160,8 @@ x-fibe.gg:
 
 ## Pitfalls
 
-- **Forgetting the top-level `volumes:` block**: Compose treats `postgres_data` in the service array as anonymous and creates a new random volume per launch. Always declare.
-- **Bind mounts assuming repo paths**: `./Dockerfile:/app/Dockerfile` works locally but a Host does not guarantee that relative host path. Use `working_dir` when the service needs repository files.
+- **Forgetting the top-level `volumes:` block**: Fibe rejects an undeclared named volume before deployment. Declare every named volume used by a service.
+- **Bind mounts assuming repo paths**: `./Dockerfile:/app/Dockerfile` is a local Compose bind and is rejected by the reviewed Native deployment path. Use `working_dir` and `fibe.gg/repo_url` when the service needs Repository files.
 - **Mounting a volume into a path the image already populates**: the volume gets the image's first-write data only; subsequent image updates don't repopulate. For init data, copy from `/opt/init-data` to the volume on first start (entrypoint script pattern).
 - **Mounting a volume into multiple services with read-write**: possible but careful: Postgres specifically refuses to start if its data dir is owned by something else. Use `:ro` on the read-only consumers, leave RW only for the writer.
 

@@ -19,7 +19,7 @@ Vault Secrets may be referenced by Job ENV entries. The Job ENV entry must be ma
 
 ## Job ENV
 
-Job ENV entries provide named values to Task runs. An entry can apply to an owner generally or to a specific Repository. The entry may hold an encrypted value directly or reference a Vault Secret. Repository-specific entries override owner-wide values for that Repository. Secret entries are withheld from pull-request-triggered runs; push, scheduled, and manual Task runs follow the configured entry rules.
+Job ENV entries provide named values to Task runs. An entry can apply to an owner generally or to a specific Repository. The entry may hold an encrypted value directly or reference a Vault Secret. Secret entries override plain entries. Within the same secrecy class, Repository-specific entries override owner-wide values for that Repository. Secret entries are withheld from pull-request-triggered runs; push, scheduled, and manual Task runs follow the configured entry rules.
 
 The Native API rejects Job ENV keys beginning with `FIBE_`. Fibe captures the eligible values when a Task is admitted, so edits to an entry affect future Task runs rather than changing a run that has already captured its inputs. Use the current API contract for exact fields and permission scopes.
 

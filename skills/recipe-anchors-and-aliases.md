@@ -68,10 +68,16 @@ services:
 ## Anchoring a full service definition
 
 ```yaml
+x-slack-notify-environment: &slack-notify-environment
+  SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL:-}
+
+x-slack-notify-awaken-dependency: &slack-notify-awaken-dependency
+  slack-notify-awaken:
+    condition: service_completed_successfully
+
 x-slack-notify-service: &slack-notify-service
   image: node:24-slim
-  environment:
-    SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL:-}
+  environment: *slack-notify-environment
   restart: 'no'
   command:
     - /bin/sh
@@ -92,6 +98,10 @@ Useful for "near-identical services with one or two field overrides".
 ## Anchoring `depends_on`
 
 ```yaml
+x-slack-notify-awaken-dependency: &slack-notify-awaken-dependency
+  slack-notify-awaken:
+    condition: service_completed_successfully
+
 x-setup-dependencies: &setup-dependencies
   <<: *slack-notify-awaken-dependency
   postgres:

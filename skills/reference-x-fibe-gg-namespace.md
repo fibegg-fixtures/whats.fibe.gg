@@ -41,7 +41,7 @@ Fields:
 |---|---|---|
 | `name` | non-empty string | Display name shown in Spec form. Missing or empty → `missing_name` error. |
 | `required` | bool | Required at launch (unless default or random) |
-| `random` | bool | Fibe generates a stable 32-character hex value when no value is supplied. |
+| `random` | bool | Fibe generates a fresh 32-character lowercase hex value when no value is supplied. Spec workflows store it encrypted with the Spec; direct compiler calls do not retain it across compiles. |
 | `default` | string/number/integer/boolean/null | Used when no launch value. |
 | `validation` | empty string or `/regex/` | Slash-wrapped validation pattern. Not wrapping in `/.../` → `invalid_regex_format` error. |
 | `path` | template path | Whole-node replacement. See [reference-yaml-paths](reference-yaml-paths.md). |

@@ -9,7 +9,7 @@ export default function SwaggerApiReference({sections}) {
     info: {
       ...sections[0].spec.info,
       title: sections[0].title,
-      description: 'Committed Native self-hosted contract. Public /api routes use Bearer credentials; /ui-api and /admin-api routes require browser authentication and the guards shown in the contract. Route registration does not establish end-to-end qualification.',
+      description: 'Committed Native self-hosted contract. Each operation declares its authentication requirements: API-key routes use Bearer credentials, while browser routes use session and related guards. Route registration does not establish end-to-end qualification.',
     },
     servers: [{
       url: '{origin}',

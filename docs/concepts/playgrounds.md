@@ -73,7 +73,7 @@ What this means:
 | **External service** (S3, managed DB) | Yes | Production-shaped data. |
 | **Container filesystem** | No | Disposable. Gone on rollout. |
 
-A hard restart can pull a fresh image. Pin tags such as `postgres:17` instead of `postgres:latest`. Renaming services or volume keys can detach data; Fibe warns first.
+A hard restart can pull a fresh image. Pin tags such as `postgres:17` instead of `postgres:latest`. Renaming a Compose volume key can detach data; keep it stable when the data must remain attached. Fibe warns before a detected volume change.
 
 ## FAQ
 

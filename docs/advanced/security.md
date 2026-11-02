@@ -1,94 +1,87 @@
 ---
 title: Security & Sessions
-description: Two-factor authentication, security keys, recovery codes, re-authentication for sensitive actions, active sessions.
+description: Two-factor authentication, passkeys, recovery codes, protected actions, and active sessions.
 slug: /advanced/security
 sidebar_position: 2
 keywords: [security, 2FA, two-factor, TOTP, WebAuthn, security keys, recovery codes, sudo, sessions]
 ---
 
-Authenticator codes, hardware keys, recovery codes, sensitive-action re-auth, active session management.
+Fibe supports authenticator codes (TOTP), recovery codes, and passkeys for account security. Password sign-in uses an authenticator or an unused recovery code when TOTP is enabled. Passkeys are used from an existing signed-in session to restore trust or confirm protected actions; they are not a password sign-in method.
 
 ## First administrator setup
 
-On a fresh installation, create the initial setup token locally with `docker compose exec fibe fibe-api --data-dir /data setup token`, then open `/setup` on the installation and paste the token. The deployment guide documents this bootstrap and local account recovery workflow.
+On a fresh installation, create the initial setup token locally with `docker compose exec fibe fibe-api --data-dir /data setup token`, then open `/setup` on the installation and paste the token.
 
 ## Authenticator app codes (TOTP)
 
-Scan a QR code with your authenticator app (1Password, Authy, Google Authenticator). Verify once. Each future login asks for a current code. Codes tolerate a small clock drift (±30 seconds), and each code works only once: a code that's already been used can't be replayed.
+Scan the QR code with your authenticator app and verify it to enable TOTP. Future password sign-ins require a current authenticator code or an unused recovery code. Codes are checked against a short time window, and a used code cannot be replayed.
 
 Baseline. Set this up first.
 
 ## Security keys
 
-Register hardware keys (FIDO2 / WebAuthn) as a stronger alternative to TOTP. Phishing-resistant in a way TOTP isn't.
+Register a passkey or hardware security key (FIDO2 / WebAuthn) from **Profile → Security & Sessions**. It does not replace the authenticator code at password sign-in.
 
 Once registered, use a key to:
 
-- Sign in.
-- Confirm sensitive actions.
-- Restore trust on a session the platform flagged.
+- Confirm protected actions that ask for recent authentication.
+- Restore trust on a session that needs another security check.
 
-Multiple keys can be registered. Any one satisfies the second factor. Register a primary plus a backup (e.g. one at home, one in a safe).
+You can register multiple keys. Keep a backup authentication method available before removing a key.
 
 ## Recovery codes
 
-A set of 10 single-use codes generated in advance. **Save them somewhere safe.** If you lose both your authenticator and all recovery codes, the installation operator must restore account access locally; this self-hosted product has no Fibe support recovery service.
+A set of 10 single-use codes is generated when you enable TOTP. **Save them somewhere safe.** They are shown once during setup; the display must be confirmed within 10 minutes. If you lose both your authenticator and all recovery codes, ask the installation operator to use the local account recovery procedure.
 
 - Each code works exactly once.
-- Regenerating invalidates the old set.
 - Print, password manager, or both.
 
 ## Re-authentication for sensitive actions
 
-Some operations require re-confirmation of the second factor: managing API keys, creating/deleting/revealing webhook secrets, managing secrets and security keys, and revoking all sessions. Editing an existing webhook's non-secret fields does not re-prompt.
+Some protected account operations require recent authentication. If TOTP or a passkey is configured, the prompt asks for one of those factors; password-only accounts confirm with their password. The check stays valid for 15 minutes.
 
-The confirmation lasts 15 minutes. Subsequent sensitive actions inside the window go through without re-prompting.
-
-Accounts that sign in only with [Google](/advanced/google-sign-in/) set up an authenticator app before their first protected action, because a Google sign-in never counts as this confirmation.
+Google sign-in alone is not a Fibe security-factor check. Google-only accounts can configure TOTP or a passkey to complete protected actions; a passkey can also restore session trust.
 
 ## Removing 2FA
 
-Disabling 2FA or removing a registered security key requires confirmation first. A leaked session can't quietly weaken your account's protection.
+Disabling TOTP requires confirmation with the account password and authenticator code for password accounts. Google-only accounts must verify a replacement native security method first. Removing a passkey requires recent authentication.
 
 ## Active sessions
 
-Lists every active session: device type, browser and OS, last activity, and the IP address it last used.
+Lists active sessions with available device, browser, operating-system, activity, and IP details.
 
 Sign out a single session or all other sessions. Useful after losing a device or finishing work on a shared computer.
 
-Sessions also expire on their own: after 24 hours without activity, and after 30 days regardless of activity.
+By default, sessions expire after 24 hours without activity or 30 days total. An installation can set `sessions.duration_hours`; when set, that configured lifetime replaces the default session and idle limits.
 
-Sign-ins from a different IP address or browser within 30 minutes of each other are treated as suspicious. Every session involved loses trusted status until the second factor is confirmed again, and a sign-in notice email goes out.
+If Fibe detects an unexpected change in network context, it can ask you to restore trust by confirming a security factor. Use the authenticator, a recovery code, or a registered passkey.
 
 ## Timeouts & protections
 
 | Protection | Behavior |
 |---|---|
-| Passwords | 8 to 72 characters, no composition rules. Checked at signup and on every change; passwords that show up repeatedly in known data breaches are rejected. |
-| Failed sign-ins | 10 failed attempts lock the account for 30 minutes. An email with an unlock link goes out; a successful sign-in resets the counter. |
+| Passwords | 8 to 72 characters. The installation can optionally enable screening against a known-breach password service; it is off by default. |
+| Failed password sign-ins | 10 failed attempts lock the account for 30 minutes. Fibe sends an unlock link when email delivery is configured. A successful sign-in clears the failure count. |
 | Password reset links | Expire after 2 hours. |
-| Signup confirmation links | Expire after 24 hours. |
-| Email change | Takes effect immediately: no re-verification of the new address. A notice goes to the old address, so a silent takeover can't pass unnoticed. |
-| Usernames | 5 to 39 characters. Letters and digits; dots, hyphens, and underscores allowed in the middle. Must start and end with a letter or digit. Some names (`admin`, `api`, `login`, …) are reserved. |
 
 ## FAQ
 
 <details>
 <summary>Lost phone and recovery codes?</summary>
 
-Ask the installation operator to issue a one-time local recovery token for the account email with `fibe-api operator recover --email <email>`, then follow the recovery flow in the browser. This command runs on the Fibe server; it does not contact a hosted support service. Save the replacement recovery codes before closing the flow.
+Ask the installation operator to issue a single-use local recovery token with `fibe-api --data-dir /data operator recover --email <email> --reset-factors`. The token expires after 30 minutes and must be redeemed in the browser with a new password. Resetting factors removes existing TOTP and passkeys, and signs out all sessions. The operator can also omit `--reset-factors` when the factors should remain. This command runs against the local installation; it does not contact a hosted support service.
 </details>
 
 <details>
 <summary>Does the Fibe API ask for 2FA?</summary>
 
-No. The API authenticates via API keys, which are themselves protected by 2FA at creation time. See [API Keys](/advanced/api-keys/).
+API requests authenticate with API keys. Browser account security checks and API authentication are separate; see [API Keys](/advanced/api-keys/) for creating and managing keys.
 </details>
 
 ## Related
 
-- [Google sign-in](/advanced/google-sign-in/): linking, removing and TOTP for Google-only accounts.
-- [API Keys](/advanced/api-keys/): managing them requires 2FA confirmation.
-- [Secret Vault](/advanced/secrets/): creating, deleting, or revealing entries requires confirmation.
+- [Google sign-in](/advanced/google-sign-in/): linking and removing a Google identity.
+- [API Keys](/advanced/api-keys/): creating and managing API keys.
+- [Secret Vault](/advanced/secrets/): storing and managing secrets.
 - [Audit log](/advanced/audit-log/): sign-in and security events appear there.
 - Reference: [`fibe-security-access-and-integrations`](/reference/fibe-security-access-and-integrations/).

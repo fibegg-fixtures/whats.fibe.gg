@@ -16,7 +16,7 @@ This reference describes commands available in the released SDK v0.3.3. Server s
 
 ## Global flags
 
-These work on every command:
+These flags are registered globally. Some only have an effect on commands that support the corresponding input or output (for example, pagination applies to list endpoints and `--from-file` to commands that accept payloads):
 
 | Flag | Purpose |
 | --- | --- |
@@ -151,7 +151,7 @@ fibe launch --spec <id|name> --name demo --host <id-or-name>
 fibe launch --compose @docker-compose.yml --name demo --host <id-or-name>
 fibe launch owner/repo@main --name demo --host <id-or-name>
 fibe templates update <id> -f patch.json     # update template metadata
-fibe templates versions create <id>          # publish a new template version
+fibe templates versions create <id> --body @template.yml  # publish a new template version
 fibe specs switch-template <id>          # move a Spec to another template version
 ```
 
@@ -188,7 +188,7 @@ fibe job-env list
 fibe job-env set DEPLOY_KEY="$(pbpaste)" [--repository my-repo] [--secret]   # global scope is the default
 
 fibe api-keys list
-fibe api-keys create --label "ci-deploy" --scope launch:write --expires-at 2026-01-01T00:00:00Z
+fibe api-keys create --label "ci-deploy" --scope launch:write --expires-at 2027-01-01T00:00:00Z
 fibe api-keys delete <id>
 
 fibe webhooks list

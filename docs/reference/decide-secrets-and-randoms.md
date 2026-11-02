@@ -16,9 +16,9 @@ Use this guide when a Compose definition needs a value that varies between Specs
 | Need | Use | Why |
 | --- | --- | --- |
 | Non-sensitive setting chosen for one Spec | A declared Fibe variable with a `path` or `paths` binding | Makes the configuration explicit and keeps the Compose document reusable. |
-| One-time value generated during Compose compilation | A Fibe variable with `random: true` | The compiler can generate a 32-character hexadecimal value when no value was supplied. To keep a value stable across future compiles, store and pass the chosen value with the Spec; `random: true` alone does not make the compiler retain it. |
+| One-time value generated during Compose compilation | A Fibe variable with `random: true` | Spec workflows generate missing values once and store them encrypted with the Spec, reusing them on later compiles and template-version switches. A direct lower-level compiler call only caches the value within that compile, so supply it yourself when it must remain stable. |
 | Long-lived owner-bound credential | A Secret Vault entry | Values are encrypted at rest and ordinary reads expose metadata rather than plaintext. |
-| Credential supplied to a Task, optionally for one Repository | A Job ENV entry, optionally referencing a Vault Secret | Task runs receive eligible values captured at admission; Repository-specific entries can override owner-wide entries. |
+| Credential supplied to a Task, optionally for one Repository | A Job ENV entry, optionally referencing a Vault Secret | Task runs receive eligible values captured at admission; Secret entries override plain entries; within that class, Repository-specific entries override owner-wide entries. |
 | Reusable non-secret environment map for a Spec or Playground | An ENV pack attached to that resource | Packs live in the Library and can be attached to Specs or Playgrounds. |
 
 Flags such as `secret: true` and `sensitive: true` affect supported configuration forms. They do not encrypt a literal in a Compose document or replace Vault storage.

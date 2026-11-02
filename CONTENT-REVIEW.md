@@ -27,8 +27,8 @@ billing/funding assumptions, candidate branches and obsolete product names.
 Instructions distinguish accepted work from completed runtime effects and cover
 Native setup, operator recovery, quotas, owner scope, browser guards, optional
 Git/provider configuration, encrypted Vault/ENV packs/Job ENV and template inputs.
-The source compiler's per-compilation random cache is no longer described as
-persistent storage.
+Saved Specs generate and persist random launch values through the Spec lifecycle.
+The direct compiler's per-compilation random cache is separate and is not persistent storage.
 
 The API pages render supported Native operations and schemas with readable display
 groups. Exact source OpenAPI and route-manifest blobs are kept outside the published
@@ -105,3 +105,29 @@ Historical source-only snapshots can contain old wording; they are excluded from
 the published build. Current public guidance and reproducible checks are the
 publication authority. A complete file inventory is coverage evidence, not a
 proof that no future semantic error can be found.
+
+## Third content audit
+
+A further source-traced round corrected security and session flows, Vault and
+Job ENV precedence, webhook admission/retry/retention, Library controls, Agent
+default inheritance, Repository push authority, API document locations and CLI
+examples. Saved Spec random generation and encrypted persistence are distinguished
+from the lower-level compiler, including the different defaulting order. The
+correction was also applied to the Wiki.js, WordPress and authoring cross-references.
+Current Native named-volume identity and deployment restrictions replace older
+Compose assumptions. These are content changes; styles and branding are unchanged.
+
+The example sweep parsed 243 standalone YAML fences and reviewed 133 service
+examples and 90 namespace examples against the pinned public schema. The remaining
+flags are explicitly illustrated shapes, placeholders, intentionally invalid
+examples, or the documented Rails continuation; there are no unresolved findings
+in that sweep. The Rails continuation was additionally parsed with its shared
+anchors in scope. Invalid tabs, a misplaced metadata block, missing anchors and a
+missing source working directory were corrected. Parsing and schema checks do not
+assert that external example images or providers were executed.
+
+All derived reference pages, raw Markdown, search and LLM documents were rebuilt
+after these corrections. The complete catalog gate and its separate source-review
+limits are recorded in the capability repository. Third-round local evidence is
+kept in ignored `artifacts/round3-*` files; the complete per-file inventory remains
+the reproducible coverage record.

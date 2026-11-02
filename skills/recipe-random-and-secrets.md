@@ -5,16 +5,16 @@ description: "Use to generate random values during Compose compilation, bind Vau
 
 # Recipe: random values and sensitive configuration
 
-Fibe variables can declare `random: true` to generate a value during Compose compilation. A random value is useful for a new password that belongs to that environment. The compiler does not retain a generated value for future compile calls; save and supply the value with the Spec when it must remain stable.
+Fibe variables can declare `random: true` to generate a value during Compose compilation. Spec workflows generate missing values once and store them encrypted with the Spec, then reuse them on later compiles and template-version switches. A direct lower-level compiler call does not retain the generated value across calls, so supply it yourself when using that path.
 
 ## `random: true` semantics
 
 When a variable has `random: true`:
 
-1. If no value or non-empty default is supplied, Fibe generates 32 lowercase hexadecimal characters.
-2. The same variable's inline references and `path`/`paths` bindings receive one value within that compile pass.
-3. Combined with `required: true`, random generation runs **before** the required check, so compilation has a value to validate.
-4. A later compile without the saved value can generate a different value. Supply the selected value again when it must remain stable.
+1. Saved Spec imports, launches and template-version switches reuse a supplied or stored value. If the random variable is absent, null or an empty string, they generate 32 lowercase hexadecimal characters before the compiler considers its declared `default`, then store the generated value encrypted with the Spec.
+2. A direct lower-level compiler call tries the supplied value, then a non-empty `default`, then random generation. It does not retain a generated value for another call.
+3. The same variable's inline references and `path`/`paths` bindings receive one resolved value within that compile pass.
+4. Combined with `required: true`, random generation runs **before** the required check, so compilation has a value to validate. Supply the selected value again when using direct compiler calls that must remain stable.
 
 ```yaml
 DB_PASSWORD:
@@ -96,9 +96,9 @@ The default empty string + `required: false` + `secret: true` makes this an opti
 
 | Need | Native Fibe feature |
 |---|---|
-| New value generated for one Compose compile | `random: true` variable; pass the chosen value with the Spec to preserve it later |
+| New generated configuration value | `random: true` variable; saved Spec workflows retain it, while direct compiler calls require the selected value again |
 | Long-lived owner-bound credential | Secret Vault; encrypted at rest and returned as metadata in ordinary reads |
-| Credential for Task runs | Job ENV entry, optionally referring to a Vault Secret; Repository-specific entries can override owner-wide entries |
+| Credential for Task runs | Job ENV entry, optionally referring to a Vault Secret; Secret entries override plain entries; within that class, Repository-specific entries override owner-wide entries |
 | Reusable non-secret environment map for a Spec or Playground | ENV pack attached from the Library |
 
 Secret Job ENV entries are withheld from pull-request-triggered Task runs. The Native API rejects Job ENV keys beginning with `FIBE_`.
@@ -173,7 +173,7 @@ JWT_SECRET:
 
 ## Pitfalls
 
-- **Resetting `random: true` between launches**: without explicit `regenerate_variables`, the stored value persists. If you redeploy and the password changed, your existing DB volume is now inaccessible.
+- **Regenerating a stored random value during a template switch**: the switch operation can explicitly regenerate selected random variables. Do that only when the dependent application data is ready for the credential change; otherwise retain the stored value.
 - **Using `random` for values the app can't accept**: e.g. an app expects a 64-char Base64 secret, but `random` gives 32 hex chars. Either change the app's spec to accept hex, or supply manually.
 - **Treating `secret: true` as encryption**: it is a display hint, not at-rest encryption. Use the Secret Vault for owner-bound credentials.
 - **Not listing the variable in `paths:`**: if you only use `$$var__NAME` inline AND don't declare `paths:`, the variable is "used" by inline reference; that's fine. But if you list NO inline use AND no path, it's `unused_var`.

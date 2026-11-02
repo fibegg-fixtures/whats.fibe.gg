@@ -60,18 +60,20 @@ See [Variable placement](/authoring/variable-placement/) for the path syntax.
 
 ## Defaulting
 
-When the launcher doesn't supply a value, Fibe uses:
+Saved Spec imports, launches and template-version switches resolve values in this order:
 
-1. The variable's `default`, if set.
-2. A generated value if `random: true`.
-3. Otherwise, an error if the variable is `required: true`.
+1. Reuse the supplied or stored value.
+2. If a `random: true` variable is absent, null or an empty string, generate and save its value, even when the declaration has a non-empty `default`.
+3. For values still missing, use a non-empty `default`, or return an error if `required: true`.
+
+A direct lower-level Compose compiler call uses supplied value → non-empty default → random generation → required check. It does not save a generated value for later calls.
 
 Defaults are literal values only. Do not put `$$var__*`, `$$random__*`, or `$$root_domain` inside `default`; validation rejects nested defaults. For derived public URLs, create explicit variables and bind them through `path`/`paths`.
 
 ## Random values
 
 - Set `random: true` and the launcher doesn't have to supply anything.
-- The generated value is **persisted with the launch** and reused on subsequent compiles: your database password doesn't reset every time.
+- Fibe's Spec workflows generate missing random values once and store them encrypted with the Spec, so later compiles and template-version switches reuse them. The lower-level Compose compiler only caches a generated value within one compile; when using it directly, supply the value yourself if it must stay stable.
 - Mark a variable `secret` or `sensitive` to nudge the launcher UI to mask the value.
 
 ## Validation patterns
@@ -100,11 +102,11 @@ x-fibe.gg:
         - services.web.environment.APP_NAME
         - services.worker.environment.APP_NAME
 
-	    SUBDOMAIN:
-	      name: "Subdomain"
-	      default: "demo"
-	      validation: "/^[a-z][a-z0-9-]*$/"
-	      path: services.web.labels.fibe.gg/subdomain
+    SUBDOMAIN:
+      name: "Subdomain"
+      default: "demo"
+      validation: "/^[a-z][a-z0-9-]*$/"
+      path: services.web.labels.fibe.gg/subdomain
 
     DB_PASSWORD:
       name: "Database password"
@@ -120,11 +122,11 @@ x-fibe.gg:
       default: 2
       path: services.web.deploy.replicas
 
-	    DEBUG:
-	      name: "Debug mode"
-	      default: false
-	      paths:
-	        - services.web.environment.DEBUG
+    DEBUG:
+      name: "Debug mode"
+      default: false
+      paths:
+        - services.web.environment.DEBUG
 ```
 
 When a `path:` targets a dotted label key such as `services.web.labels.fibe.gg/subdomain`, keep that label key in the Compose file with a concrete local placeholder. Runtime validation rejects paths aimed at missing `services.<name>` roots, while missing leaves under an existing service can be created. See [Variable placement](/authoring/variable-placement/).

@@ -116,12 +116,12 @@ x-fibe.gg:
       default: "demo"
       validation: "/^[a-z][a-z0-9-]*$/"
       path: services.web.labels.fibe.gg/subdomain
-	  DB_PASSWORD:
-	    name: "Database password"
-	    required: true
-	    random: true
-	    secret: true
-	    path: services.db.environment.POSTGRES_PASSWORD
+    DB_PASSWORD:
+      name: "Database password"
+      required: true
+      random: true
+      secret: true
+      path: services.db.environment.POSTGRES_PASSWORD
 ```
 
 For dotted label keys such as `services.web.labels.fibe.gg/subdomain`, predeclare the label on the service first, even with an empty placeholder value. The path editor matches an existing dotted label key; it does not invent one from dotted path segments.

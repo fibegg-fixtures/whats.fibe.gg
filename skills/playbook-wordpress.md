@@ -126,7 +126,7 @@ x-fibe.gg:
 | Before | After | Why |
 |---|---|---|
 | `ports: ["8080:80"]` | `fibe.gg/port: 80` + `fibe.gg/visibility: external` | Public via Traefik |
-| `wp_password` hardcoded | `random: true` variable | Generated per Playground |
+| `wp_password` hardcoded | `random: true` variable | Generated and stored with the Spec |
 | `root_pw` hardcoded | separate `random: true` variable | Distinct from user password |
 | `wordpress:latest` | `wordpress:$$var__WP_VERSION` | Pin version per launch |
 | `db:3306` host | unchanged | Compose network service-name DNS |

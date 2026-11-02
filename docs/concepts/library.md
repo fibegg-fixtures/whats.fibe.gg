@@ -7,7 +7,7 @@ image: /img/og/concepts-library.png
 keywords: [Library, artefacts, mutters, memories, Pantry, ENV packs, provider traces, raw logs]
 ---
 
-**Library** collects your artefacts, mutters, messages, feedback, activity, conversations, provider traces, memories, Pantry templates and ENV packs. Browse by section or filter by Agent.
+**Library** collects your artefacts, mutters, messages, feedback, activity, conversations, provider traces, memories, Pantry templates and ENV packs. Browse by section and use the search and filters available for that content. Several activity sections can be narrowed by Agent.
 
 Open Library for notes and files, inspect raw provider logs when an AI session needs debugging, or pull a reusable template out of the Pantry.
 
@@ -21,12 +21,12 @@ Open Library for notes and files, inspect raw provider logs when an AI session n
 | **Messages** | Conversation messages worth surfacing outside the chat. |
 | **Conversations** | Transcripts of your chats with Agents. |
 | **Activity** | Higher-level events: messages sent, Tasks run, rollouts. |
-| **Raw provider traces** | The exact request/response logs from an Agent's provider. For debugging an AI session. |
+| **Raw provider traces** | Captured provider request, response and metadata for debugging an AI session. |
 | **Memories** | Persistent notes the Agent or the user marked as worth remembering. |
 | **Pantry templates** | Your saved reusable Templates. |
 | **ENV packs** | Named maps of readable environment values that you pick when creating a Playground. |
 
-Each section is searchable, and any section can be narrowed to a single Agent with the Agent filter.
+The Agent filter is available in Artefacts, Mutters, Feedback, Messages, Activity and Raw provider traces. It is not a universal Library filter.
 
 ## Authoring artefacts
 
@@ -36,13 +36,13 @@ Create an artefact directly in the Artefacts section:
 - **Description**: short summary (optional).
 - **Body**: Markdown content. The editor surfaces a body placeholder until you start writing.
 
-Agent-created artefacts appear in the same library and carry a creator badge. They are read-only, but you can download them or change their skill flag.
+Agent-created artefacts appear in the same library and carry a creator badge. Their content is read-only. While the Agent still exists, you can toggle the artefact's skill and skill-enabled flags; downloads are also available where a file is attached.
 
 ## Raw provider traces
 
-Provider traces capture the exact request and response. Use them to debug wrong answers, refused tool calls, and context-window failures.
+The Library shows captured provider requests, responses and metadata. Depending on the Agent's capture settings, a trace may redact or truncate values or omit request or response bodies. Use traces to investigate wrong answers, refused tool calls and context-window failures.
 
-Traces are sensitive: they contain prompts and replies verbatim. Treat them like the data they contain.
+Treat available traces as sensitive because they can contain prompts, replies and other session data.
 
 ## Pantry
 
@@ -66,7 +66,7 @@ Memories are written explicitly: either by the user adding a note, or by the Age
 
 ## Search
 
-Each section has its own search box: search artefacts in Artefacts, memories in Memories, and so on. The search box on the Library home page searches your artefacts. Narrow any section to a single Agent with the Agent filter.
+Use the search and filter controls available in each section. The Agent filter is available in Artefacts, Mutters, Feedback, Messages, Activity and Raw provider traces, but not in Memories, Pantry Templates or ENV packs. The search box on the Library home page searches Artefacts.
 
 ## FAQ
 
