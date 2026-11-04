@@ -65,7 +65,7 @@ Credentials are stored under `~/.config/fibe/` (or `$XDG_CONFIG_HOME/fibe/` if y
 | `credentials.json` | API keys (the secret stuff) |
 | `config.json` | Profile metadata: names and domains, plus which profile is active |
 
-Treat `credentials.json` like an SSH private key: never commit it, never paste it into a chat. The CLI writes it owner-only (`0600`, directory `0700`); `config.json` holds no secrets and is written `0644`. If you copy credentials to another machine, keep those modes. The Go library and the MCP server read the same files when run on the same machine.
+Treat `credentials.json` like an SSH private key: never commit it, never paste it into a chat. The CLI writes it owner-only (`0600`, directory `0700`); `config.json` holds no secrets but is written owner-only (`0600`) too. If you copy credentials to another machine, keep those modes. The Go library and the MCP server read the same files when run on the same machine.
 
 ## Environment variables
 
@@ -80,7 +80,7 @@ Useful for CI, Docker containers, and anywhere a profile on disk isn't available
 | `FIBE_MCP_YOLO` | Set to `1` to skip the confirmation gate on destructive MCP tools. |
 | `FIBE_MCP_REQUIRE_AUTH` | Require an API credential for calls to the MCP server. |
 
-For CLI commands and `fibe mcp serve`, the active profile wins: once any profile is configured, `FIBE_API_KEY` and `FIBE_DOMAIN` are ignored unless you pass explicit flags (the CLI reports ignored env vars in `fibe auth status`). They're fallbacks for when no profile exists: ideal for CI and containers. For a per-call override, use the `--api-key`, `--domain`, or `--profile` flags. With no profile **and** no env vars, every call fails with a clear "you need to log in" error.
+For CLI commands and `fibe mcp serve`, the active profile wins: once any profile is configured, `FIBE_API_KEY` and `FIBE_DOMAIN` are ignored unless you pass explicit flags (the CLI reports ignored env vars in `fibe auth status`). They're fallbacks for when no profile exists: ideal for CI and containers. For a per-call override, use the `--api-key`, `--domain`, or `--profile` flags. With no profile **and** no env vars, the CLI has no key to send: requests go out unauthenticated and the API rejects them with `401 Unauthorized`. `fibe auth status` reports `not authenticated`.
 
 For Go code using the SDK directly, explicit client options win first, then `FIBE_API_KEY` / `FIBE_DOMAIN`, then the local credential store for the selected domain.
 
@@ -143,7 +143,7 @@ Only if you've explicitly minted an **agent-accessible** API key: that's a key f
 <details>
 <summary>How does the CLI tell I'm logged in?</summary>
 
-It looks (in order): `--api-key` flag → profile (the `--profile` flag if given, otherwise the active profile) → `FIBE_API_KEY` env var (only when no profile is configured) → fail with "no credentials". The domain resolves the same way: `--domain` flag → profile domain → `FIBE_DOMAIN` only when no profile is configured → `fibe.gg`. Run `fibe doctor` to see exactly what it picked.
+It looks (in order): `--api-key` flag → profile (the `--profile` flag if given, otherwise the active profile) → `FIBE_API_KEY` env var (only when no profile is configured). If none of those yields a key, the request is sent without one and the API answers `401 Unauthorized`. The domain resolves the same way: `--domain` flag → profile domain → `FIBE_DOMAIN` only when no profile is configured → `fibe.gg`. Run `fibe doctor` to see exactly what it picked.
 </details>
 
 ## Next step
