@@ -51,14 +51,13 @@ If your client isn't on that list, the snippet is small enough to write by hand.
   "mcpServers": {
     "fibe": {
       "command": "fibe",
-      "args": ["mcp", "serve"],
-      "env": {
-        "FIBE_API_KEY": "fibe_live_yourkeyhere"  // or omit and use the default profile
-      }
+      "args": ["mcp", "serve", "--profile", "default"]
     }
   }
 }
 ```
+
+`--profile` pins the server to one saved profile, the same way `fibe mcp install` does. Don't put `FIBE_API_KEY` in the client's `env` on a machine where you've run `fibe login`: once any profile exists, the server ignores `FIBE_API_KEY` and `FIBE_DOMAIN`. They only apply where no profile is configured, such as CI or a container.
 
 Restart the client; it picks up the server on start. Tools appear as `fibe_*` in the agent's tool list.
 
@@ -142,7 +141,7 @@ The agent itself can introspect:
 
 ```
 fibe_tools_catalog        # list every tool with descriptions
-fibe_schema               # ask for the JSON schema of a tool's args
+fibe_schema               # JSON Schema for a resource operation's payload (resource=list for the catalog)
 fibe_help <command>       # CLI help for an equivalent command
 ```
 
@@ -153,7 +152,7 @@ These are first-class tools so an agent that doesn't know what you're asking can
 | Symptom | Fix |
 | --- | --- |
 | The client can't find `fibe` | Make sure it's on `PATH` for the user the client runs as. `command: "/usr/local/bin/fibe"` in the config is sometimes needed. |
-| Calls fail with "no credentials" | Either the profile isn't set, or `FIBE_API_KEY` is missing for the env. Run `fibe doctor` outside the client to confirm. |
+| Calls fail with `401 Unauthorized` | The server found no valid key: the `--profile` it runs with has no saved key, or `FIBE_API_KEY` is missing where no profile exists (or ignored because one does). Run `fibe auth status` outside the client to confirm. |
 | Tools list is empty | Check `FIBE_MCP_TOOLS`: it might be set to a tier with no matching tools. |
 | Agent gets stuck waiting | The destructive-confirm gate is on. Have the agent retry the tool call with `confirm: true`, or set `FIBE_MCP_YOLO=1` if you trust the workflow. |
 | "Where did my print go?": server-side output vanishes in stdio mode | Deliberate. In stdio mode stdout **is** the JSON-RPC channel, so the server reroutes stray writes (prints, log output, panic traces) to stderr to keep the protocol pipe clean: look for them there; most MCP hosts surface stderr as a debug log. Anything else that echoes onto the server's stdout (a wrapper script, for example) corrupts the stream, and the client reports parse errors like `invalid message version tag`. |

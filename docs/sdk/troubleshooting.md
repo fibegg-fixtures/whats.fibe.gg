@@ -56,9 +56,9 @@ The structured output includes the error code, HTTP status, request ID, and any 
 
 ## Common errors
 
-### "no credentials"
+### No API key configured
 
-`FIBE_API_KEY` isn't set and there's no active profile. Run `fibe login` or set the env var.
+The CLI doesn't stop early when it finds no key: it sends the request without one and the API answers `401 Unauthorized`. `fibe auth status` shows `not authenticated`. Run `fibe login`, or set `FIBE_API_KEY` on a machine with no profile configured.
 
 ### "401 Unauthorized" / "403 Forbidden"
 
