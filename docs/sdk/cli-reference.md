@@ -257,9 +257,12 @@ When `--host` is omitted, launch and greenfield use `FIBE_HOST_ID` or infer the 
 If you're running a Host locally and want to peek at `/opt/fibe/playgrounds`:
 
 ```sh
-fibe local playgrounds info
-fibe local playgrounds link <id>            # symlink into the current directory
+fibe local playgrounds info --view names                    # names, current, repos, urls, mounts or details
+fibe local playgrounds info --view details --playground <id>
+fibe local playgrounds link <id>            # symlink into PLAYGROUNDS_DIR (fallback: /app/playground)
 ```
+
+`--view` is required. `urls`, `mounts` and `details` also need `--playground`. `link` accepts `--link-dir <dir>` to pick another target, but refuses the filesystem root, your home directory and the current working directory.
 
 ## Schema introspection
 

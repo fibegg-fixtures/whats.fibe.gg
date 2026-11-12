@@ -15,9 +15,9 @@
     "qualification": "Content and committed-source review. No Native runtime, provider or released-consumer qualification is implied."
   },
   "summary": {
-    "updated": 260,
+    "updated": 261,
     "added": 16,
-    "retained": 60,
+    "retained": 59,
     "removed": 2
   },
   "files": [
@@ -2814,7 +2814,7 @@
     {
       "path": "docs/sdk/authentication.md",
       "disposition": "updated",
-      "sha256": "e512e969ceea63f318002064899bfd9c7aedcbfb5dd26cff07c9cf89f2e055ed",
+      "sha256": "4dfb2138347038c03d7436c116e92f4cfbb97652f4c9e1889b040080e1ea219a",
       "review": {
         "method": "Native guide review",
         "findings": [
@@ -2830,7 +2830,7 @@
     {
       "path": "docs/sdk/cli-reference.md",
       "disposition": "updated",
-      "sha256": "5cde572de5e4ce353411ca5252089dbd8e77e6ac50e4f5e0ee45330f19db92d2",
+      "sha256": "6d30c39c14852918e7491e44630c8a0c6410c582dd030f333ef818dc48524a94",
       "review": {
         "method": "Third committed-source content review",
         "findings": [
@@ -2896,7 +2896,7 @@
     {
       "path": "docs/sdk/mcp-server.md",
       "disposition": "updated",
-      "sha256": "8568d95bbff08c0452559f4b2e14bdd4010caad91bbccdb55400d473fa43065a",
+      "sha256": "0df14dfd62f19f44de190f5ebe6c556f042162f6112262ef4aa5d310c5acac33",
       "review": {
         "method": "Native guide review",
         "findings": [
@@ -2927,8 +2927,8 @@
     },
     {
       "path": "docs/sdk/troubleshooting.md",
-      "disposition": "retained",
-      "sha256": "a58b53220dd9b39df2d772d544726e15d10a4f63bcbb0eccc79b10779bcda36e",
+      "disposition": "updated",
+      "sha256": "312d6f8f1c85a7170dc0ac08d5729467f52c0f5dcda094cd8ade20641e2b146c",
       "review": {
         "method": "Native guide review",
         "findings": [
