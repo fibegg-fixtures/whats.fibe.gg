@@ -15,7 +15,8 @@ seed text stays source-only, and a seed import cannot overwrite the reviewed gui
 
 Approved removals (hosted billing and funding, obsolete product names, compatibility
 metadata) are excluded from pages, navigation, public API projections, search and LLM
-exports even when source cleanup is incomplete. Historical tombstones belong to the
+exports even when source cleanup is incomplete. The old `/concepts/billing` route is
+removed; operational guidance lives at `/concepts/self-hosted`. Historical tombstones belong to the
 capability catalog, not this guide. The API pages render supported operations without
 inventing a common response envelope or claiming every route or tool is qualified.
 
@@ -26,7 +27,8 @@ LLM documents, social cards and canonical routes. YAML examples were parsed and 
 against the pinned public schema; that does not assert external images or providers
 were executed. No Native Rust/React, Host, provider, SDK or Agent runtime suite runs
 in these checks. A complete file inventory is coverage evidence, not proof that no
-future semantic error exists.
+future semantic error exists. The CSS animation-minifier warning and dependency
+peer/Browserslist warnings were known and left outside this content update.
 
 ## Reproduce
 
