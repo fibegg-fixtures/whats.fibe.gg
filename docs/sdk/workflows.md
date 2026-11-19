@@ -87,7 +87,7 @@ For an AI agent:
 }
 ```
 
-`--github-account` and `--github-installation-id` select the GitHub App installation used to read the source config. `git_provider: "github"` controls where the new destination repos are created and uses the player's GitHub OAuth connection.
+`--github-account` and `--github-installation-id` select the GitHub App installation used to read the source config. `git_provider: "github"` controls where the new destination repos are created and uses the user's GitHub OAuth connection.
 
 See [`fibe_greenfield_create`](/reference/tools/greenfield-create/) for the full parameter list.
 

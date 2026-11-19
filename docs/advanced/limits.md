@@ -10,7 +10,7 @@ Fibe applies resource limits at supported admission points in a self-hosted inst
 
 ## Inspecting limits
 
-Open **Profile → Advanced Settings → Limits & Quotas** to inspect the selected owner's usage. Installation administrators manage policy in **Admin → Players → select an account → Resource Quotas**. The API exposes owner-scoped quota reads at `/ui-api/v1/quotas`; authorized installation administrators can also inspect or change supported policy through `/admin-api/v1/quotas` and the operator quota page at `/quotas`.
+Open **Profile → Advanced Settings → Limits & Quotas** to inspect the selected owner's usage. Installation administrators manage policy in **Admin → Users → select an account → Resource Quotas**. The API exposes owner-scoped quota reads at `/ui-api/v1/quotas`; authorized installation administrators can also inspect or change supported policy through `/admin-api/v1/quotas` and the operator quota page at `/quotas`.
 
 Personal and Team ownership are evaluated independently. A Team resource uses that Team's capacity policy, not the creator's Personal quota. Existing resources are retained when a limit is lowered; the lower limit applies to later admissions.
 

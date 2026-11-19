@@ -1,6 +1,6 @@
 ---
 title: "Feedbacks Get"
-description: "Get one feedback entry for an agent, including player comments about artefacts or mutters."
+description: "Get one feedback entry for an agent, including user comments about artefacts or mutters."
 slug: /reference/tools/feedbacks-get
 sidebar_label: "Feedbacks Get"
 image: /img/og/reference-tools-feedbacks-get.png
@@ -9,7 +9,7 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-Get one feedback entry for an agent, including player comments about artefacts or mutters.
+Get one feedback entry for an agent, including user comments about artefacts or mutters.
 
 This guide uses the released SDK **v0.3.3** input contract. The installation’s Native API routes and authorization determine which server operations are available.
 

@@ -1,10 +1,10 @@
 ---
 name: fibe-tool-agent-defaults-update
-description: "Replace the authenticated player's agent default overrides. Use the same agent_defaults JSON shape as the profile UI."
+description: "Replace the authenticated user's agent default overrides. Use the same agent_defaults JSON shape as the profile UI."
 ---
 # fibe_agent_defaults_update
 
-Replace the authenticated player's agent default overrides. Use the same agent_defaults JSON shape as the profile UI.
+Replace the authenticated user's agent default overrides. Use the same agent_defaults JSON shape as the profile UI.
 
 This guide uses the released SDK **v0.3.3** input contract. The installation’s Native API routes and authorization determine which server operations are available.
 
@@ -12,7 +12,7 @@ This guide uses the released SDK **v0.3.3** input contract. The installation’s
 
 | Input | Required | Type | Meaning |
 | --- | --- | --- | --- |
-| `agent_defaults` | Yes | object | Canonical player agent defaults object; use provider_overrides.&lt;provider&gt;.cli_version for per-provider CLI pins and default_mounted_files for runtime files. Nested fields are defined in the linked JSON schema. |
+| `agent_defaults` | Yes | object | Canonical user agent defaults object; use provider_overrides.&lt;provider&gt;.cli_version for per-provider CLI pins and default_mounted_files for runtime files. Nested fields are defined in the linked JSON schema. |
 | `only` | No | array of string | Fields to keep in each result item. Example: ["uuid","title","project"]. Envelope metadata remains. |
 | `output_path` | No | string | JSONPath into the tool result, not a filesystem path. Example: "$.conversations[0].uuid" returns the first UUID; "$.conversations" returns only the array. |
 

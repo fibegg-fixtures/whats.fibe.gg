@@ -61,6 +61,7 @@ function currentDescription(text) {
     .split(/(?<=\.)\s+/)
     .filter(sentence => !/\bfunded\b|\bunpaid\b|HOST_NOT_FUNDED/i.test(sentence))
     .join(' ')
+    .replace(/\bplayer(s?)\b/g, 'user$1')
     .replaceAll('repositories/Repositories', 'repositories and Fibe Repositories');
 }
 
@@ -69,7 +70,7 @@ function currentSchema(value) {
   if (!value || typeof value !== 'object') return value;
   return Object.fromEntries(Object.entries(value).map(([key, item]) => [key,
     key === 'description' && typeof item === 'string'
-      ? item.replace(' Must be funded.', ' The Host must be reachable and authorized for the operation.')
+      ? item.replace(/\bplayer(s?)\b/g, 'user$1').replace(' Must be funded.', ' The Host must be reachable and authorized for the operation.')
         .replace('In regex mode, this is a PostgreSQL regex pattern.', 'In regex mode, use the Native server’s supported regular-expression syntax.')
         .replace('Treat query as PostgreSQL regex. Requires a 3+ character literal token so the server can prefilter with indexed text search.', 'Treat query as a Native regular expression. A literal token of at least three characters is required for bounded matching.')
       : currentSchema(item),

@@ -1,6 +1,6 @@
 ---
 title: "Agent Defaults Get"
-description: "Read the authenticated player's agent default overrides."
+description: "Read the authenticated user's agent default overrides."
 slug: /reference/tools/agent-defaults-get
 sidebar_label: "Agent Defaults Get"
 image: /img/og/reference-tools-agent-defaults-get.png
@@ -9,7 +9,7 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-Read the authenticated player's agent default overrides.
+Read the authenticated user's agent default overrides.
 
 This guide uses the released SDK **v0.3.3** input contract. The installation’s Native API routes and authorization determine which server operations are available.
 

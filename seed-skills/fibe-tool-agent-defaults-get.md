@@ -1,10 +1,10 @@
 ---
 name: fibe-tool-agent-defaults-get
-description: "Read the authenticated player's agent default overrides."
+description: "Read the authenticated user's agent default overrides."
 ---
 # fibe_agent_defaults_get
 
-Read the authenticated player's agent default overrides.
+Read the authenticated user's agent default overrides.
 
 This guide uses the released SDK **v0.3.3** input contract. The installation’s Native API routes and authorization determine which server operations are available.
 

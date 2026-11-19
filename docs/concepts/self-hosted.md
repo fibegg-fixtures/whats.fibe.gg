@@ -21,7 +21,7 @@ The official distribution is one Fibe application image plus the documented rout
 
 Fibe retains owner-scoped quota controls for supported resource admissions. An installation administrator can inspect and change quota policy from the native **Quotas** operator page. Personal and Team resources have separate ownership and policy; a Team allocation does not consume its creator's Personal allowance. Reducing a limit does not delete existing records, but can prevent later allocations.
 
-Admission limits are enforced by supported resource workflows. Treat **Profile → Advanced Settings → Limits & Quotas** and the current API response as authoritative for owner usage. Installation administrators manage supported per-account policy under **Admin → Players** or at `/quotas`. See [Limits & Quotas](/advanced/limits/) for the current control surface and its boundaries.
+Admission limits are enforced by supported resource workflows. Treat **Profile → Advanced Settings → Limits & Quotas** and the current API response as authoritative for owner usage. Installation administrators manage supported per-account policy under **Admin → Users** or at `/quotas`. See [Limits & Quotas](/advanced/limits/) for the current control surface and its boundaries.
 
 ## Teams
 

@@ -223,15 +223,15 @@ templates-publish-checklist: Use as the final gate before publishing or submitti
 
 ## Tools (53)
 
-fibe-tool-agent-defaults-get: Read the authenticated player's agent default overrides.
+fibe-tool-agent-defaults-get: Read the authenticated user's agent default overrides.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-agent-defaults-get.md
   local: ./seed-skills/fibe-tool-agent-defaults-get.md
 
-fibe-tool-agent-defaults-reset: Clear all player agent default overrides so admin defaults apply.
+fibe-tool-agent-defaults-reset: Clear all user agent default overrides so admin defaults apply.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-agent-defaults-reset.md
   local: ./seed-skills/fibe-tool-agent-defaults-reset.md
 
-fibe-tool-agent-defaults-update: Replace the authenticated player's agent default overrides. Use the same agent_defaults JSON shape as the profile UI.
+fibe-tool-agent-defaults-update: Replace the authenticated user's agent default overrides. Use the same agent_defaults JSON shape as the profile UI.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-agent-defaults-update.md
   local: ./seed-skills/fibe-tool-agent-defaults-update.md
 
@@ -291,7 +291,7 @@ fibe-tool-doctor: Run self-diagnostic checks: verify API key, connectivity, and 
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-doctor.md
   local: ./seed-skills/fibe-tool-doctor.md
 
-fibe-tool-feedbacks-get: Get one feedback entry for an agent, including player comments about artefacts or mutters.
+fibe-tool-feedbacks-get: Get one feedback entry for an agent, including user comments about artefacts or mutters.
   web:   https://whats.fibe.gg/seed-skills/fibe-tool-feedbacks-get.md
   local: ./seed-skills/fibe-tool-feedbacks-get.md
 

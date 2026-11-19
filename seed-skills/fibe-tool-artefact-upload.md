@@ -13,7 +13,7 @@ This guide uses the released SDK **v0.3.3** input contract. The installation’s
 | Input | Required | Type | Meaning |
 | --- | --- | --- | --- |
 | `name` | Yes | string | Artefact display name (alias: 'title'). Also used as filename fallback. |
-| `agent_id_or_name` | No | string | Optional agent id or name; defaults to FIBE_AGENT_ID when available, otherwise creates a player-owned artefact |
+| `agent_id_or_name` | No | string | Optional agent id or name; defaults to FIBE_AGENT_ID when available, otherwise creates a user-owned artefact |
 | `body` | No | string | Inline body for body-only artefacts |
 | `content_base64` | No | string | Base64-encoded file content (alias: 'content') |
 | `content_path` | No | string | Absolute local file path to read (local MCP only) |

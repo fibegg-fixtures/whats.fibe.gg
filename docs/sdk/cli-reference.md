@@ -114,7 +114,7 @@ fibe agents add-mounted-file <id> --file ./style.md --mount-path docs/style.md
 fibe agents update-mounted-file <id> --filename style.md --mount-path docs/style.md
 fibe agents remove-mounted-file <id> --filename style.md
 
-fibe agents pokes list <id>                  # list pokes attached
+fibe agents pokes list <id>                  # list schedules for this Agent
 fibe agents messages <id>                    # message history
 fibe agents activity <id>                    # event timeline
 fibe agents defaults get                     # owner defaults for new Agents

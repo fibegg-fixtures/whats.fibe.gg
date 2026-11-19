@@ -1,10 +1,10 @@
 ---
 name: fibe-tool-feedbacks-get
-description: "Get one feedback entry for an agent, including player comments about artefacts or mutters."
+description: "Get one feedback entry for an agent, including user comments about artefacts or mutters."
 ---
 # fibe_feedbacks_get
 
-Get one feedback entry for an agent, including player comments about artefacts or mutters.
+Get one feedback entry for an agent, including user comments about artefacts or mutters.
 
 This guide uses the released SDK **v0.3.3** input contract. The installation’s Native API routes and authorization determine which server operations are available.
 

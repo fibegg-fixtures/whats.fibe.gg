@@ -4,7 +4,7 @@ description: Configured AI assistants (Agents), Build in Public, and the artefac
 slug: /concepts/agents
 sidebar_position: 1
 image: /img/og/concepts-agents.png
-keywords: [Agent, AI assistant, providers, conversations, Build in Public, Pokes, Artefact, Mutter, Feedback]
+keywords: [Agent, AI assistant, providers, conversations, Build in Public, Schedules, Artefact, Mutter, Feedback]
 ---
 
 A **Agent** is a configured AI assistant. You can keep one per job and run several conversations in each.
@@ -109,27 +109,29 @@ Switch Agents inside a Playground anytime.
 
 Every chat is a **Conversation**: messages, replies, related activity stored together. A Agent holds many Conversations in parallel. Resume any later.
 
-The **Inbox** collects activity outside a conversation, including notifications, Pokes, and broadcasts.
+The **Inbox** collects activity outside a conversation, including notifications, scheduled prompts, and broadcasts.
 
-## Scheduled prompts
+<span id="scheduled-prompts" />
 
-A **Poke** sends a prompt to a Conversation on a schedule. For example:
+## Schedules
+
+Open **Agent settings → Schedules** to send a prompt to a Conversation at a recurring time. Examples include
 
 - Morning summary of new commits.
 - Hourly deploy-log check.
 - Weekly roadmap draft from open issues.
 
-Each Poke has:
+For each schedule, choose
 
 - A **cron schedule** (5-field POSIX).
 - A **prompt body**.
 - An optional **target Conversation**. The Inbox cannot be selected explicitly; leave the target empty to use it.
 
-The minimum interval is five minutes. Pause or resume a Poke in Agent settings. If its target is deleted, scheduled runs fail until you pause it or choose another Conversation.
+The minimum interval is five minutes. Pause or resume a schedule in Agent settings. If its target is deleted, scheduled runs fail until you pause it or choose another Conversation.
 
-Poke delivery needs the Agent runtime to be reachable on its configured Host. Inspect the Poke status and Agent runtime diagnostics if delivery fails.
+Delivery requires the Agent runtime to be reachable on its configured Host. Inspect the schedule status and Agent runtime diagnostics if delivery fails.
 
-Pokes are limited by the `agent_pokes` owner quota (default 20). The current quota may be configured by the installation administrator.
+Schedules count toward the `agent_pokes` owner quota (default 20). The current quota may be configured by the installation administrator.
 
 ## Notifications on activity
 
@@ -274,9 +276,9 @@ In a Playground, it sees mounted files. In standalone chat, it sees prompts and 
 </details>
 
 <details>
-<summary>How are Pokes limited?</summary>
+<summary>How many schedules can I create?</summary>
 
-Poke delivery invokes the configured Agent runtime. Its status and last error are shown in the Poke settings.
+The default limit is 20 schedules across the owner’s Agents. Your installation administrator can change it.
 </details>
 
 <details>

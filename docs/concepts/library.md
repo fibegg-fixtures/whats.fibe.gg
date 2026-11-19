@@ -1,15 +1,15 @@
 ---
 title: Library
-description: "Search artefacts, notes, messages, provider traces, memories, Pantry templates and ENV packs."
+description: "Search artefacts, notes, messages, provider traces, memories, reusable templates and ENV packs."
 slug: /concepts/library
 sidebar_position: 3
 image: /img/og/concepts-library.png
-keywords: [Library, artefacts, mutters, memories, Pantry, ENV packs, provider traces, raw logs]
+keywords: [Library, artefacts, mutters, memories, Templates, ENV packs, provider traces, raw logs]
 ---
 
-**Library** collects your artefacts, mutters, messages, feedback, activity, conversations, provider traces, memories, Pantry templates and ENV packs. Browse by section and use the search and filters available for that content. Several activity sections can be narrowed by Agent.
+**Library** collects your artefacts, mutters, messages, feedback, activity, conversations, provider traces, memories, reusable templates and ENV packs. Browse by section and use the search and filters available for that content. Several activity sections can be narrowed by Agent.
 
-Open Library for notes and files, inspect raw provider logs when an AI session needs debugging, or pull a reusable template out of the Pantry.
+Open Library for notes and files, inspect raw provider logs when an AI session needs debugging, or open **Templates** to reuse a configuration.
 
 ## What lives in Library
 
@@ -23,7 +23,7 @@ Open Library for notes and files, inspect raw provider logs when an AI session n
 | **Activity** | Higher-level events: messages sent, Tasks run, rollouts. |
 | **Raw provider traces** | Captured provider request, response and metadata for debugging an AI session. |
 | **Memories** | Persistent notes the Agent or the user marked as worth remembering. |
-| **Pantry templates** | Your saved reusable Templates. |
+| **Templates** | Your saved reusable Templates. |
 | **ENV packs** | Named maps of readable environment values that you pick when creating a Playground. |
 
 The Agent filter is available in Artefacts, Mutters, Feedback, Messages, Activity and Raw provider traces. It is not a universal Library filter.
@@ -44,15 +44,15 @@ The Library shows captured provider requests, responses and metadata. Depending 
 
 Treat available traces as sensitive because they can contain prompts, replies and other session data.
 
-## Pantry
+<span id="pantry" />
 
-The Pantry holds private reusable Templates that are too specialized for the public [Bazaar](/concepts/bazaar/).
+## Templates
 
-Pantry templates can be:
+Open **Library → Templates** to manage templates for your personal workspace or the selected Team. Select a template to work with it.
 
-- Edited in place (name, description, image, category).
-- Versioned: publish a new version whenever you want to change the body; each version is an immutable snapshot, and editing the template's name or description doesn't create one.
-- Imported into a Spec at launch time.
+- Edit its name, description, image, or category.
+- Create a version when the template body changes. Each version is an immutable snapshot.
+- Import a version into a Spec at launch time.
 
 ## ENV packs
 
@@ -66,7 +66,7 @@ Memories are written explicitly: either by the user adding a note, or by the Age
 
 ## Search
 
-Use the search and filter controls available in each section. The Agent filter is available in Artefacts, Mutters, Feedback, Messages, Activity and Raw provider traces, but not in Memories, Pantry Templates or ENV packs. The search box on the Library home page searches Artefacts.
+Use the search and filter controls available in each section. The Agent filter is available in Artefacts, Mutters, Feedback, Messages, Activity and Raw provider traces, but not in Memories, Templates or ENV packs. The search box on the Library home page searches Artefacts.
 
 ## FAQ
 
@@ -83,14 +83,14 @@ Artefacts live in your account's library. Use the Agent filter to narrow the lis
 </details>
 
 <details>
-<summary>Are Pantry templates public?</summary>
+<summary>Are Library templates public?</summary>
 
-No. Pantry templates are private to your account until you publish a version. Publishing a version puts that version in the [Bazaar](/concepts/bazaar/); the rest of the template stays private.
+Templates are private to their workspace until you publish a version. Publishing a version puts that version in the [Bazaar](/concepts/bazaar/); the rest of the template stays private.
 </details>
 
 ## Related
 
 - [Agents](/concepts/agents/): where most of the library's content originates.
-- [Bazaar](/concepts/bazaar/): public counterpart to private Pantry.
+- [Bazaar](/concepts/bazaar/): browse published template versions.
 - [ENV packs](/concepts/env-packs/): picking packs per Playground and grants.
-- [Specs & Templates](/concepts/specs/): Templates can be authored into the Pantry first, then promoted to the Bazaar.
+- [Specs & Templates](/concepts/specs/): create a template in the Library and publish a version to the Bazaar.

@@ -30,9 +30,9 @@ Use the [complete JSON tool schemas](https://whats.fibe.gg/native/sdk-tool-schem
 
 | Tool | Purpose |
 | --- | --- |
-| [`fibe_agent_defaults_get`](/reference/tools/agent-defaults-get/) | Read the authenticated player's agent default overrides. |
-| [`fibe_agent_defaults_reset`](/reference/tools/agent-defaults-reset/) | Clear all player agent default overrides so admin defaults apply. |
-| [`fibe_agent_defaults_update`](/reference/tools/agent-defaults-update/) | Replace the authenticated player's agent default overrides. Use the same agent_defaults JSON shape as the profile UI. |
+| [`fibe_agent_defaults_get`](/reference/tools/agent-defaults-get/) | Read the authenticated user's agent default overrides. |
+| [`fibe_agent_defaults_reset`](/reference/tools/agent-defaults-reset/) | Clear all user agent default overrides so admin defaults apply. |
+| [`fibe_agent_defaults_update`](/reference/tools/agent-defaults-update/) | Replace the authenticated user's agent default overrides. Use the same agent_defaults JSON shape as the profile UI. |
 | [`fibe_artefact_upload`](/reference/tools/artefact-upload/) | Upload and save an artefact from inline text or file content. |
 | [`fibe_memorize`](/reference/tools/memorize/) | Create or update agent-generated memories grounded in one local source conversation. |
 | [`fibe_mutter`](/reference/tools/mutter/) | Create one short mutter for an agent: a visible internal note used for progress, proof, blocker, or problem updates. |
@@ -56,7 +56,7 @@ Use the [complete JSON tool schemas](https://whats.fibe.gg/native/sdk-tool-schem
 
 | Tool | Purpose |
 | --- | --- |
-| [`fibe_feedbacks_get`](/reference/tools/feedbacks-get/) | Get one feedback entry for an agent, including player comments about artefacts or mutters. |
+| [`fibe_feedbacks_get`](/reference/tools/feedbacks-get/) | Get one feedback entry for an agent, including user comments about artefacts or mutters. |
 | [`fibe_feedbacks_list`](/reference/tools/feedbacks-list/) | List all feedback entries associated with an agent. |
 | [`fibe_local_playgrounds_info`](/reference/tools/local-playgrounds-info/) | Inspect local playground names, current link state, repo roots, URLs, mounts, or details from /opt/fibe/playgrounds or HOST_ROOT. |
 | [`fibe_local_playgrounds_link`](/reference/tools/local-playgrounds-link/) | Link local playground mounts into a working directory. |

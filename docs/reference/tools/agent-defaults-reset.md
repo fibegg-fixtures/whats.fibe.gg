@@ -1,6 +1,6 @@
 ---
 title: "Agent Defaults Reset"
-description: "Clear all player agent default overrides so admin defaults apply."
+description: "Clear all user agent default overrides so admin defaults apply."
 slug: /reference/tools/agent-defaults-reset
 sidebar_label: "Agent Defaults Reset"
 image: /img/og/reference-tools-agent-defaults-reset.png
@@ -9,7 +9,7 @@ tags: ["reference", "tool", "tool"]
 format: md
 ---
 
-Clear all player agent default overrides so admin defaults apply.
+Clear all user agent default overrides so admin defaults apply.
 
 This guide uses the released SDK **v0.3.3** input contract. The installation’s Native API routes and authorization determine which server operations are available.
 

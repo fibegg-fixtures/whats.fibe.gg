@@ -9,7 +9,7 @@
   "tools": [
     {
       "name": "fibe_agent_defaults_get",
-      "description": "Read the authenticated player's agent default overrides.",
+      "description": "Read the authenticated user's agent default overrides.",
       "tier": "base",
       "hidden": false,
       "read_only": true,
@@ -26,7 +26,7 @@
     },
     {
       "name": "fibe_agent_defaults_reset",
-      "description": "Clear all player agent default overrides so admin defaults apply.",
+      "description": "Clear all user agent default overrides so admin defaults apply.",
       "tier": "base",
       "hidden": false,
       "read_only": false,
@@ -43,7 +43,7 @@
     },
     {
       "name": "fibe_agent_defaults_update",
-      "description": "Replace the authenticated player's agent default overrides. Use the same agent_defaults JSON shape as the profile UI.",
+      "description": "Replace the authenticated user's agent default overrides. Use the same agent_defaults JSON shape as the profile UI.",
       "tier": "base",
       "hidden": false,
       "read_only": false,
@@ -52,7 +52,7 @@
       "input_schema": {
         "properties": {
           "agent_defaults": {
-            "description": "Canonical player agent defaults object; use provider_overrides.<provider>.cli_version for per-provider CLI pins and default_mounted_files for runtime files.",
+            "description": "Canonical user agent defaults object; use provider_overrides.<provider>.cli_version for per-provider CLI pins and default_mounted_files for runtime files.",
             "properties": {},
             "type": "object"
           },
@@ -604,7 +604,7 @@
       "input_schema": {
         "properties": {
           "agent_id_or_name": {
-            "description": "Optional agent id or name; defaults to FIBE_AGENT_ID when available, otherwise creates a player-owned artefact",
+            "description": "Optional agent id or name; defaults to FIBE_AGENT_ID when available, otherwise creates a user-owned artefact",
             "type": "string"
           },
           "body": {
@@ -775,7 +775,7 @@
     },
     {
       "name": "fibe_feedbacks_get",
-      "description": "Get one feedback entry for an agent, including player comments about artefacts or mutters.",
+      "description": "Get one feedback entry for an agent, including user comments about artefacts or mutters.",
       "tier": "brownfield",
       "hidden": false,
       "read_only": true,
@@ -2423,7 +2423,7 @@
             "type": "array"
           },
           "provision_missing_repositories": {
-            "description": "When the new template references repos the player does not yet own a Repository for, automatically provision a fresh git repo (in the player's connected Gitea or GitHub account) and create a Repository for each. Default \"gitea\" when omitted on this tool. Set to \"off\" to disable and require existing Repositories.",
+            "description": "When the new template references repos the user does not yet own a Repository for, automatically provision a fresh git repo (in the user's connected Gitea or GitHub account) and create a Repository for each. Default \"gitea\" when omitted on this tool. Set to \"off\" to disable and require existing Repositories.",
             "enum": [
               "off",
               "gitea",
@@ -3442,7 +3442,7 @@
             "type": "array"
           },
           "provision_missing_repositories": {
-            "description": "When the new template references repos the player does not yet own a Repository for, automatically provision a fresh git repo (in the player's connected Gitea or GitHub account) and create a Repository for each. \"gitea\" provisions Gitea-backed private repos seeded from the template's source URLs. \"off\" (default) keeps today's behaviour: public repos auto-create Repositories, private/missing repos fail with a manual-creation hint.",
+            "description": "When the new template references repos the user does not yet own a Repository for, automatically provision a fresh git repo (in the user's connected Gitea or GitHub account) and create a Repository for each. \"gitea\" provisions Gitea-backed private repos seeded from the template's source URLs. \"off\" (default) keeps today's behaviour: public repos auto-create Repositories, private/missing repos fail with a manual-creation hint.",
             "enum": [
               "off",
               "gitea",

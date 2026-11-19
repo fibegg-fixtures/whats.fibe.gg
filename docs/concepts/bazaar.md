@@ -1,6 +1,6 @@
 ---
 title: Bazaar
-description: The public Template marketplace. Browse, fork, launch Templates other Players have published.
+description: The public Template marketplace. Browse, fork, launch Templates other users have published.
 slug: /concepts/bazaar
 sidebar_position: 2
 image: /img/og/concepts-bazaar.png
@@ -91,6 +91,6 @@ Nothing. Running Playgrounds keep running. The Template version is already clone
 ## Related
 
 - [Specs & Templates](/concepts/specs/): Template authoring lifecycle, and what a Bazaar launch produces.
-- [Library](/concepts/library/): Pantry is the private counterpart to the public Bazaar.
+- [Library](/concepts/library/): manage your templates and choose which versions to publish.
 - [Before you publish](/operate/publishing/): publishing checklist.
 - **[Fibe Templates](/authoring/overview/)**: full authoring guide.

@@ -14,7 +14,7 @@ Notifications are grouped:
 
 - **Account & Security**: sign-ins, security changes.
 - **Playground**: launch, rollout, error, destroy.
-- **AI Agents & Apps**: Agent messages, Pokes, Build-in-Public activity.
+- **AI Agents & Apps**: Agent messages, scheduled prompts, Build-in-Public activity.
 - **Content & Dev**: Templates, Repositories, Compose detection.
 - **Drift & Playguard**: environment drift, healthcheck flapping.
 - **Integrations**: webhooks, GitHub Apps.
@@ -31,7 +31,7 @@ Commit notifications have a second gate on the [Repository](/concepts/repositori
 
 ## Push to your devices
 
-Besides in-app toasts, Fibe can send **browser push notifications**, so you still hear about Agent replies, Pokes, and Playground events when the Fibe tab is closed.
+Besides in-app toasts, Fibe can send **browser push notifications**, so you still hear about Agent replies, scheduled prompts, and Playground events when the Fibe tab is closed.
 
 - Turn push on for the current browser from the notification settings.
 - Each browser or device subscribes separately and can be removed individually.

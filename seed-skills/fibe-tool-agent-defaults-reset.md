@@ -1,10 +1,10 @@
 ---
 name: fibe-tool-agent-defaults-reset
-description: "Clear all player agent default overrides so admin defaults apply."
+description: "Clear all user agent default overrides so admin defaults apply."
 ---
 # fibe_agent_defaults_reset
 
-Clear all player agent default overrides so admin defaults apply.
+Clear all user agent default overrides so admin defaults apply.
 
 This guide uses the released SDK **v0.3.3** input contract. The installation’s Native API routes and authorization determine which server operations are available.
 
